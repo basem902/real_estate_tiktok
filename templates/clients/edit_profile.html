@@ -1,0 +1,783 @@
+{% extends "base.html" %}
+
+{% block title %}تعديل الملف الشخصي | روابط تك{% endblock %}
+
+{% block extra_head %}
+<style>
+    /* أنماط خاصة بصفحة تعديل البروفايل */
+    :root {
+        --primary-color: #0d6efd;
+        --secondary-color: #6c757d;
+        --dark-color: #212529;
+        --light-color: #f8f9fa;
+        --success-color: #198754;
+        --info-color: #0dcaf0;
+        --warning-color: #ffc107;
+        --danger-color: #dc3545;
+        --profile-bg: var(--light-color);
+        --text-color: var(--dark-color);
+        --border-radius: 15px;
+        --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        --transition-speed: 0.3s;
+    }
+
+    [data-bs-theme="dark"] {
+        --profile-bg: #121212;
+        --text-color: #f8f9fa;
+        --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .edit-profile-container {
+        padding: 1rem;
+        background-color: var(--profile-bg);
+        color: var(--text-color);
+        transition: all var(--transition-speed) ease;
+        padding-bottom: 70px;
+    }
+
+    .profile-form-card {
+        background-color: var(--profile-bg);
+        border-radius: var(--border-radius);
+        margin-bottom: 1.5rem;
+        overflow: hidden;
+        box-shadow: var(--card-shadow);
+        transition: all var(--transition-speed) ease;
+    }
+
+    .profile-avatar-upload {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        margin: 0 auto 1rem;
+        position: relative;
+        border: 4px solid var(--profile-bg);
+        background-color: var(--profile-bg);
+        overflow: hidden;
+        box-shadow: var(--card-shadow);
+    }
+
+    .profile-avatar-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .avatar-upload-btn {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        background-color: var(--primary-color);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all var(--transition-speed) ease;
+    }
+
+    .avatar-upload-btn:hover {
+        transform: scale(1.1);
+    }
+
+    .cover-upload-preview {
+        height: 100px;
+        background-size: cover;
+        background-position: center;
+        border-radius: var(--border-radius) var(--border-radius) 0 0;
+        position: relative;
+        background-image: linear-gradient(135deg, #00c6fb 0%, #005bea 100%);
+    }
+
+    .cover-upload-btn {
+        position: absolute;
+        bottom: 10px;
+        left: 10px;
+        background-color: rgba(0, 0, 0, 0.5);
+        color: white;
+        border: none;
+        transition: all var(--transition-speed) ease;
+    }
+
+    .cover-upload-btn:hover {
+        background-color: rgba(0, 0, 0, 0.7);
+    }
+
+    .form-label {
+        color: var(--text-color);
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+
+    .form-control, .form-select {
+        background-color: var(--profile-bg);
+        border-color: rgba(0, 0, 0, 0.1);
+        color: var(--text-color);
+        border-radius: 8px;
+        padding: 0.6rem 1rem;
+        transition: all var(--transition-speed) ease;
+    }
+
+    [data-bs-theme="dark"] .form-control, [data-bs-theme="dark"] .form-select {
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .form-control:focus, .form-select:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    }
+
+    .form-text {
+        color: var(--secondary-color);
+        font-size: 0.875rem;
+    }
+
+    .color-option {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        margin-right: 10px;
+        cursor: pointer;
+        transition: all var(--transition-speed) ease;
+        position: relative;
+    }
+
+    .color-option.active {
+        transform: scale(1.2);
+        box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--primary-color);
+    }
+
+    .form-section-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--primary-color);
+        margin-bottom: 1.25rem;
+        display: flex;
+        align-items: center;
+    }
+
+    .form-section-title i {
+        margin-left: 8px;
+    }
+
+    .document-upload {
+        border: 2px dashed rgba(0, 0, 0, 0.1);
+        border-radius: var(--border-radius);
+        padding: 2rem 1rem;
+        text-align: center;
+        cursor: pointer;
+        transition: all var(--transition-speed) ease;
+    }
+
+    [data-bs-theme="dark"] .document-upload {
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .document-upload:hover {
+        background-color: rgba(0, 0, 0, 0.03);
+    }
+
+    [data-bs-theme="dark"] .document-upload:hover {
+        background-color: rgba(255, 255, 255, 0.03);
+    }
+
+    .document-upload i {
+        font-size: 2rem;
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+    }
+
+    .document-item {
+        display: flex;
+        align-items: center;
+        padding: 0.75rem;
+        background-color: rgba(0, 0, 0, 0.03);
+        border-radius: 8px;
+        margin-bottom: 0.5rem;
+    }
+
+    [data-bs-theme="dark"] .document-item {
+        background-color: rgba(255, 255, 255, 0.05);
+    }
+
+    .document-item i {
+        font-size: 1.25rem;
+        color: var(--primary-color);
+        margin-left: 1rem;
+    }
+
+    .document-item .document-name {
+        flex: 1;
+    }
+
+    .document-item .document-actions {
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    .theme-preview {
+        padding: 1rem;
+        border-radius: var(--border-radius);
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        margin-bottom: 1rem;
+        transition: all var(--transition-speed) ease;
+    }
+
+    [data-bs-theme="dark"] .theme-preview {
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .theme-preview.selected {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.25);
+    }
+
+    .theme-preview-light {
+        background-color: #ffffff;
+        color: #212529;
+    }
+
+    .theme-preview-dark {
+        background-color: #212529;
+        color: #f8f9fa;
+    }
+
+    .theme-preview-auto {
+        background: linear-gradient(to right, #ffffff 50%, #212529 50%);
+        color: #212529;
+        position: relative;
+    }
+
+    .theme-preview-auto::after {
+        content: "تلقائي";
+        position: absolute;
+        top: 50%;
+        right: 50%;
+        transform: translate(50%, -50%);
+        background-color: rgba(255, 255, 255, 0.9);
+        padding: 2px 8px;
+        border-radius: 10px;
+        font-size: 0.75rem;
+        color: #212529;
+    }
+
+    .preview-icon {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .preview-text {
+        font-size: 0.875rem;
+        text-align: center;
+    }
+
+    /* للشاشات المتوسطة والكبيرة */
+    @media (min-width: 768px) {
+        .edit-profile-container {
+            padding: 2rem;
+        }
+    }
+
+    /* تعديلات للشاشات الصغيرة جدًا */
+    @media (max-width: 360px) {
+        .btn {
+            padding: 0.375rem 0.5rem;
+        }
+    }
+
+    /* أنماط التأثيرات الحركية */
+    .fade-in {
+        animation: fadeIn 0.5s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- التنقل الرئيسي -->
+<nav class="navbar fixed-bottom navbar-light bg-white border-top pt-2 pb-2">
+    <div class="container-fluid">
+        <div class="row w-100 text-center">
+            <div class="col">
+                <a href="{{ url_for('client_feed') }}" class="text-secondary text-decoration-none">
+                    <i class="fas fa-home fa-lg"></i>
+                    <div class="small">الرئيسية</div>
+                </a>
+            </div>
+            <div class="col">
+                <a href="#" class="text-secondary text-decoration-none">
+                    <i class="fas fa-search fa-lg"></i>
+                    <div class="small">البحث</div>
+                </a>
+            </div>
+            <div class="col">
+                <a href="#" class="text-secondary text-decoration-none">
+                    <i class="fas fa-bell fa-lg"></i>
+                    <div class="small">الإشعارات</div>
+                </a>
+            </div>
+            <div class="col">
+                <a href="{{ url_for('client_profile') }}" class="text-primary text-decoration-none">
+                    <i class="fas fa-user fa-lg"></i>
+                    <div class="small">حسابي</div>
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="edit-profile-container pb-5 fade-in">
+    <div class="d-flex align-items-center mb-4">
+        <a href="{{ url_for('client_profile') }}" class="btn btn-sm btn-light me-3">
+            <i class="fas fa-arrow-right"></i>
+        </a>
+        <h1 class="h4 mb-0">تعديل الملف الشخصي</h1>
+    </div>
+
+    <form id="editProfileForm">
+        <!-- قسم المعلومات الأساسية -->
+        <div class="profile-form-card mb-4">
+            <div class="cover-upload-preview" id="coverPreview">
+                <button type="button" class="btn btn-sm btn-dark cover-upload-btn" id="coverUploadBtn">
+                    <i class="fas fa-camera me-1"></i> تغيير الغلاف
+                </button>
+                <input type="file" id="coverUpload" class="d-none" accept="image/*">
+            </div>
+            
+            <div class="p-4">
+                <div class="text-center mb-4">
+                    <div class="profile-avatar-upload">
+                        <img src="{{ url_for('static', filename='img/avatars/default-user.jpg') }}" class="profile-avatar-img" id="avatarPreview" alt="صورة الملف الشخصي">
+                        <div class="avatar-upload-btn" id="avatarUploadBtn">
+                            <i class="fas fa-camera"></i>
+                        </div>
+                        <input type="file" id="avatarUpload" class="d-none" accept="image/*">
+                    </div>
+                    <h5 class="mb-0">أحمد محمد</h5>
+                    <div class="text-muted">@ahmed_mohammed</div>
+                </div>
+                
+                <div class="form-section-title">
+                    <i class="fas fa-user"></i> المعلومات الشخصية
+                </div>
+                
+                <div class="mb-3">
+                    <label for="fullName" class="form-label">الاسم الكامل</label>
+                    <input type="text" class="form-control" id="fullName" value="أحمد محمد">
+                </div>
+                
+                <div class="mb-3">
+                    <label for="username" class="form-label">اسم المستخدم</label>
+                    <div class="input-group">
+                        <span class="input-group-text">@</span>
+                        <input type="text" class="form-control" id="username" value="ahmed_mohammed">
+                    </div>
+                    <div class="form-text">يظهر اسم المستخدم في الملف الشخصي والتعليقات</div>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="email" class="form-label">البريد الإلكتروني</label>
+                    <input type="email" class="form-control" id="email" value="ahmed@example.com">
+                </div>
+                
+                <div class="mb-3">
+                    <label for="phone" class="form-label">رقم الهاتف</label>
+                    <input type="tel" class="form-control" id="phone" value="+966 56 123 4567">
+                </div>
+                
+                <div class="mb-3">
+                    <label for="bio" class="form-label">نبذة تعريفية</label>
+                    <textarea class="form-control" id="bio" rows="3">مهتم بالاستثمار العقاري والبحث عن الفرص المميزة في المناطق الحيوية</textarea>
+                    <div class="form-text">أخبرنا المزيد عن اهتماماتك العقارية</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- قسم التفضيلات العقارية -->
+        <div class="profile-form-card mb-4">
+            <div class="p-4">
+                <div class="form-section-title">
+                    <i class="fas fa-home"></i> تفضيلات العقارات
+                </div>
+                
+                <div class="mb-3">
+                    <label for="propertyType" class="form-label">نوع العقار المفضل</label>
+                    <select class="form-select" id="propertyType">
+                        <option value="apartment" selected>شقة</option>
+                        <option value="villa">فيلا</option>
+                        <option value="duplex">دوبلكس</option>
+                        <option value="land">أرض</option>
+                        <option value="commercial">تجاري</option>
+                    </select>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="location" class="form-label">المناطق المفضلة</label>
+                    <select class="form-select" id="location" multiple>
+                        <option value="riyadh_north" selected>شمال الرياض</option>
+                        <option value="riyadh_east">شرق الرياض</option>
+                        <option value="riyadh_west">غرب الرياض</option>
+                        <option value="jeddah_north">شمال جدة</option>
+                        <option value="dammam">الدمام</option>
+                    </select>
+                    <div class="form-text">يمكنك تحديد أكثر من منطقة (اضغط CTRL واختر)</div>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label">نطاق السعر (ريال سعودي)</label>
+                    <div class="row g-2">
+                        <div class="col">
+                            <input type="number" class="form-control" id="priceMin" placeholder="الحد الأدنى" value="500000">
+                        </div>
+                        <div class="col">
+                            <input type="number" class="form-control" id="priceMax" placeholder="الحد الأقصى" value="1500000">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label">خيارات إضافية</label>
+                    <div class="form-check form-switch mb-2">
+                        <input class="form-check-input" type="checkbox" role="switch" id="newProperty" checked>
+                        <label class="form-check-label" for="newProperty">عقارات جديدة فقط</label>
+                    </div>
+                    <div class="form-check form-switch mb-2">
+                        <input class="form-check-input" type="checkbox" role="switch" id="installmentOption" checked>
+                        <label class="form-check-label" for="installmentOption">يدعم التقسيط</label>
+                    </div>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" role="switch" id="nearServices">
+                        <label class="form-check-label" for="nearServices">قريب من الخدمات</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- قسم توثيق الهوية وإرفاق المستندات -->
+        <div class="profile-form-card mb-4">
+            <div class="p-4">
+                <div class="form-section-title">
+                    <i class="fas fa-id-card"></i> توثيق الهوية
+                </div>
+                
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i> التوثيق يساعد في بناء الثقة مع المسوقين. مستنداتك آمنة ولن تظهر في ملفك العام.
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label">صورة الهوية الوطنية / الإقامة</label>
+                    <div class="document-upload" id="idCardUploadBtn">
+                        <i class="fas fa-id-card"></i>
+                        <p>انقر أو اسحب صورة الهوية هنا</p>
+                        <div class="form-text">صيغ مدعومة: JPG, PNG, PDF</div>
+                        <input type="file" id="idCardUpload" class="d-none" accept=".jpg,.jpeg,.png,.pdf">
+                    </div>
+                </div>
+                
+                <div id="idCardPreview" class="mb-3" style="display: none;">
+                    <label class="form-label">الملفات المرفوعة</label>
+                    <div class="document-item">
+                        <i class="fas fa-id-card"></i>
+                        <div class="document-name">صورة الهوية.jpg</div>
+                        <div class="document-actions">
+                            <button type="button" class="btn btn-sm btn-outline-danger">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label">إثبات الدخل (اختياري)</label>
+                    <div class="document-upload" id="incomeProofUploadBtn">
+                        <i class="fas fa-file-invoice-dollar"></i>
+                        <p>أرفق إثبات الدخل لتعزيز فرص القبول</p>
+                        <div class="form-text">مثل: كشف حساب بنكي، شهادة راتب، إفادة عمل</div>
+                        <input type="file" id="incomeProofUpload" class="d-none" accept=".jpg,.jpeg,.png,.pdf">
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label">مستندات إضافية</label>
+                    <div class="document-upload" id="additionalDocsUploadBtn">
+                        <i class="fas fa-folder-plus"></i>
+                        <p>يمكنك إضافة مستندات أخرى ذات صلة</p>
+                        <input type="file" id="additionalDocsUpload" class="d-none" accept=".jpg,.jpeg,.png,.pdf" multiple>
+                    </div>
+                </div>
+                
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" id="documentConsent">
+                    <label class="form-check-label" for="documentConsent">
+                        أوافق على استخدام بياناتي للتحقق من هويتي وتسهيل التعاملات العقارية
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- قسم تخصيص الواجهة -->
+        <div class="profile-form-card mb-4">
+            <div class="p-4">
+                <div class="form-section-title">
+                    <i class="fas fa-palette"></i> تخصيص الواجهة
+                </div>
+                
+                <div class="mb-4">
+                    <label class="form-label">وضع التطبيق</label>
+                    <div class="row g-3">
+                        <div class="col-4">
+                            <div class="theme-preview theme-preview-light text-center p-3 selected" data-theme="light">
+                                <div class="preview-icon">
+                                    <i class="fas fa-sun"></i>
+                                </div>
+                                <div class="preview-text">فاتح</div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="theme-preview theme-preview-dark text-center p-3" data-theme="dark">
+                                <div class="preview-icon">
+                                    <i class="fas fa-moon"></i>
+                                </div>
+                                <div class="preview-text">داكن</div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="theme-preview theme-preview-auto text-center p-3" data-theme="auto">
+                                <div class="preview-icon">
+                                    <i class="fas fa-adjust"></i>
+                                </div>
+                                <div class="preview-text">&nbsp;</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <label class="form-label">اللون الرئيسي</label>
+                    <div class="d-flex">
+                        <div class="color-option active" style="background-color: #0d6efd;" data-color="#0d6efd"></div>
+                        <div class="color-option" style="background-color: #6f42c1;" data-color="#6f42c1"></div>
+                        <div class="color-option" style="background-color: #d63384;" data-color="#d63384"></div>
+                        <div class="color-option" style="background-color: #fd7e14;" data-color="#fd7e14"></div>
+                        <div class="color-option" style="background-color: #198754;" data-color="#198754"></div>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label">خيارات إضافية</label>
+                    <div class="form-check form-switch mb-2">
+                        <input class="form-check-input" type="checkbox" role="switch" id="reduceMotion">
+                        <label class="form-check-label" for="reduceMotion">تقليل الحركة (تحسين للأجهزة الضعيفة)</label>
+                    </div>
+                    <div class="form-check form-switch mb-2">
+                        <input class="form-check-input" type="checkbox" role="switch" id="highContrast">
+                        <label class="form-check-label" for="highContrast">تباين عالي (لضعاف البصر)</label>
+                    </div>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" role="switch" id="largeText">
+                        <label class="form-check-label" for="largeText">نص كبير</label>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="fontSize" class="form-label">حجم الخط</label>
+                    <input type="range" class="form-range" id="fontSize" min="80" max="120" value="100">
+                    <div class="d-flex justify-content-between text-muted small">
+                        <span>صغير</span>
+                        <span>عادي</span>
+                        <span>كبير</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- قسم الإشعارات -->
+        <div class="profile-form-card mb-4">
+            <div class="p-4">
+                <div class="form-section-title">
+                    <i class="fas fa-bell"></i> إعدادات الإشعارات
+                </div>
+                
+                <div class="mb-3">
+                    <div class="form-check form-switch mb-2">
+                        <input class="form-check-input" type="checkbox" role="switch" id="notifyNewProperties" checked>
+                        <label class="form-check-label" for="notifyNewProperties">إشعارات العقارات الجديدة المطابقة</label>
+                    </div>
+                    <div class="form-check form-switch mb-2">
+                        <input class="form-check-input" type="checkbox" role="switch" id="notifyMessages" checked>
+                        <label class="form-check-label" for="notifyMessages">إشعارات الرسائل الجديدة</label>
+                    </div>
+                    <div class="form-check form-switch mb-2">
+                        <input class="form-check-input" type="checkbox" role="switch" id="notifyComments">
+                        <label class="form-check-label" for="notifyComments">إشعارات التعليقات والردود</label>
+                    </div>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" role="switch" id="notifyUpdates" checked>
+                        <label class="form-check-label" for="notifyUpdates">تحديثات التطبيق والعروض</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- أزرار الحفظ والإلغاء -->
+        <div class="d-flex mb-5">
+            <button type="button" class="btn btn-outline-secondary flex-fill me-2" onclick="window.location.href='{{ url_for('client_profile') }}'">إلغاء</button>
+            <button type="submit" class="btn btn-primary flex-fill">حفظ التغييرات</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // تحميل الصورة الشخصية
+        document.getElementById('avatarUploadBtn').addEventListener('click', function() {
+            document.getElementById('avatarUpload').click();
+        });
+        
+        document.getElementById('avatarUpload').addEventListener('change', function(e) {
+            if (e.target.files && e.target.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('avatarPreview').src = e.target.result;
+                };
+                reader.readAsDataURL(e.target.files[0]);
+            }
+        });
+        
+        // تحميل صورة الغلاف
+        document.getElementById('coverUploadBtn').addEventListener('click', function() {
+            document.getElementById('coverUpload').click();
+        });
+        
+        document.getElementById('coverUpload').addEventListener('change', function(e) {
+            if (e.target.files && e.target.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('coverPreview').style.backgroundImage = `url(${e.target.result})`;
+                };
+                reader.readAsDataURL(e.target.files[0]);
+            }
+        });
+        
+        // تحميل صورة الهوية
+        document.getElementById('idCardUploadBtn').addEventListener('click', function() {
+            document.getElementById('idCardUpload').click();
+        });
+        
+        document.getElementById('idCardUpload').addEventListener('change', function(e) {
+            if (e.target.files && e.target.files[0]) {
+                document.getElementById('idCardPreview').style.display = 'block';
+            }
+        });
+        
+        // التعامل مع مستندات الدخل والمستندات الإضافية
+        document.getElementById('incomeProofUploadBtn').addEventListener('click', function() {
+            document.getElementById('incomeProofUpload').click();
+        });
+        
+        document.getElementById('additionalDocsUploadBtn').addEventListener('click', function() {
+            document.getElementById('additionalDocsUpload').click();
+        });
+        
+        // اختيار الثيم
+        document.querySelectorAll('.theme-preview').forEach(item => {
+            item.addEventListener('click', function() {
+                // إزالة الاختيار السابق
+                document.querySelectorAll('.theme-preview').forEach(prev => {
+                    prev.classList.remove('selected');
+                });
+                
+                // اختيار الثيم الجديد
+                this.classList.add('selected');
+                
+                // تغيير الثيم (هنا يمكن إضافة كود لحفظ التفضيل)
+                const theme = this.dataset.theme;
+                console.log(`تم اختيار الثيم: ${theme}`);
+            });
+        });
+        
+        // اختيار اللون الرئيسي
+        document.querySelectorAll('.color-option').forEach(color => {
+            color.addEventListener('click', function() {
+                // إزالة التحديد السابق
+                document.querySelectorAll('.color-option').forEach(prev => {
+                    prev.classList.remove('active');
+                });
+                
+                // تحديد اللون الجديد
+                this.classList.add('active');
+                
+                // تغيير اللون الرئيسي (هنا يمكن إضافة كود لتطبيق اللون)
+                const colorValue = this.dataset.color;
+                console.log(`تم اختيار اللون: ${colorValue}`);
+                
+                // كمثال: تغيير لون العناصر الرئيسية
+                document.documentElement.style.setProperty('--primary-color', colorValue);
+            });
+        });
+        
+        // معالجة تقديم النموذج
+        document.getElementById('editProfileForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // هنا يمكن إضافة كود لإرسال البيانات للخادم
+            showSaveSuccess();
+        });
+        
+        // إظهار رسالة النجاح
+        function showSaveSuccess() {
+            const alert = document.createElement('div');
+            alert.className = 'alert alert-success alert-dismissible fade show position-fixed top-0 start-50 translate-middle-x mt-3';
+            alert.setAttribute('role', 'alert');
+            alert.innerHTML = `
+                <i class="fas fa-check-circle me-2"></i> تم حفظ التغييرات بنجاح
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="إغلاق"></button>
+            `;
+            document.body.appendChild(alert);
+            
+            // إعادة التوجيه بعد فترة قصيرة
+            setTimeout(() => {
+                window.location.href = '{{ url_for("client_profile") }}';
+            }, 2000);
+        }
+        
+        // تنفيذ سحب وإفلات المستندات
+        ['idCardUploadBtn', 'incomeProofUploadBtn', 'additionalDocsUploadBtn'].forEach(id => {
+            const dropZone = document.getElementById(id);
+            
+            dropZone.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                this.classList.add('bg-light');
+            });
+            
+            dropZone.addEventListener('dragleave', function(e) {
+                e.preventDefault();
+                this.classList.remove('bg-light');
+            });
+            
+            dropZone.addEventListener('drop', function(e) {
+                e.preventDefault();
+                this.classList.remove('bg-light');
+                
+                // إظهار الملفات التي تم إسقاطها
+                const files = e.dataTransfer.files;
+                const inputId = this.id.replace('Btn', '');
+                document.getElementById(inputId).files = files;
+                
+                // إظهار المعاينة للهوية
+                if (inputId === 'idCardUpload') {
+                    document.getElementById('idCardPreview').style.display = 'block';
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

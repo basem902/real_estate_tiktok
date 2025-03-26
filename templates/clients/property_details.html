@@ -1,0 +1,1290 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}تفاصيل العقار - تيك توك العقاري{% endblock %}
+
+{% block meta %}
+<meta name="description" content="تفاصيل كاملة عن العقار مع إمكانية حجز موعد للزيارة">
+<meta property="og:title" content="تفاصيل العقار - تيك توك العقاري">
+<meta property="og:description" content="استكشف تفاصيل هذا العقار المميز مع صور وفيديوهات ومعلومات كاملة">
+<meta property="og:image" content="{% static 'images/property_thumbnail.jpg' %}">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/property_details.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/dark.css">
+{% endblock %}
+
+{% block content %}
+<div class="property-details-container" dir="rtl">
+    <!-- 1. قسم الصور الرئيسية والمعلومات الأساسية -->
+    <section class="property-hero">
+        <div class="property-images">
+            <div class="swiper propertyMainSwiper">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <img src="{% static 'images/properties/property1_1.jpg' %}" alt="صورة العقار" class="main-img">
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="{% static 'images/properties/property1_2.jpg' %}" alt="صورة العقار" class="main-img">
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="{% static 'images/properties/property1_3.jpg' %}" alt="صورة العقار" class="main-img">
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="{% static 'images/properties/property1_4.jpg' %}" alt="صورة العقار" class="main-img">
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="video-slide">
+                            <video controls poster="{% static 'images/properties/property1_video_thumbnail.jpg' %}">
+                                <source src="{% static 'videos/property_tour.mp4' %}" type="video/mp4">
+                                متصفحك لا يدعم تشغيل الفيديو
+                            </video>
+                            <div class="video-overlay">
+                                <i class="fas fa-play-circle"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+            </div>
+            
+            <div class="swiper propertyThumbsSwiper">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <img src="{% static 'images/properties/property1_1.jpg' %}" alt="صورة مصغرة">
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="{% static 'images/properties/property1_2.jpg' %}" alt="صورة مصغرة">
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="{% static 'images/properties/property1_3.jpg' %}" alt="صورة مصغرة">
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="{% static 'images/properties/property1_4.jpg' %}" alt="صورة مصغرة">
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="{% static 'images/properties/property1_video_thumbnail.jpg' %}" alt="فيديو">
+                        <div class="video-indicator">
+                            <i class="fas fa-play"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="image-counter">
+                <span class="current-image">1</span>/<span class="total-images">5</span>
+                <button class="full-screen-btn">
+                    <i class="fas fa-expand"></i>
+                </button>
+                <button class="share-btn">
+                    <i class="fas fa-share-alt"></i>
+                </button>
+            </div>
+        </div>
+        
+        <div class="property-main-info">
+            <div class="property-labels">
+                <span class="label premium">مميز</span>
+                <span class="label new">جديد</span>
+                <span class="label exclusive">حصري</span>
+            </div>
+            
+            <h1 class="property-title">فيلا فاخرة مع مسبح خاص في حي الياسمين</h1>
+            
+            <div class="property-location">
+                <i class="fas fa-map-marker-alt"></i>
+                <span>الرياض، حي الياسمين، شارع الأمير سلطان</span>
+            </div>
+            
+            <div class="property-price">
+                <span class="price-value">2,500,000</span>
+                <span class="currency">ريال سعودي</span>
+            </div>
+            
+            <div class="property-badges">
+                <div class="badge">
+                    <i class="fas fa-ruler-combined"></i>
+                    <span>450 م²</span>
+                    <small>المساحة</small>
+                </div>
+                <div class="badge">
+                    <i class="fas fa-bed"></i>
+                    <span>5</span>
+                    <small>غرف نوم</small>
+                </div>
+                <div class="badge">
+                    <i class="fas fa-bath"></i>
+                    <span>4</span>
+                    <small>حمامات</small>
+                </div>
+                <div class="badge">
+                    <i class="fas fa-car"></i>
+                    <span>2</span>
+                    <small>مواقف</small>
+                </div>
+                <div class="badge">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>2023</span>
+                    <small>سنة البناء</small>
+                </div>
+            </div>
+            
+            <div class="property-actions">
+                <button class="action-btn book-btn" id="bookTourBtn">
+                    <i class="fas fa-calendar-check"></i>
+                    حجز موعد للزيارة
+                </button>
+                <button class="action-btn contact-btn">
+                    <i class="fas fa-comment-dots"></i>
+                    تواصل مع المسوق
+                </button>
+                <button class="action-btn favorite-btn">
+                    <i class="far fa-heart"></i>
+                </button>
+                <button class="action-btn share-btn">
+                    <i class="fas fa-share-alt"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. تبويبات المعلومات -->
+    <section class="property-tabs">
+        <div class="tabs-container">
+            <div class="tabs-header">
+                <button class="tab-btn active" data-tab="details">
+                    <i class="fas fa-info-circle"></i>
+                    التفاصيل
+                </button>
+                <button class="tab-btn" data-tab="features">
+                    <i class="fas fa-list-ul"></i>
+                    المميزات
+                </button>
+                <button class="tab-btn" data-tab="location">
+                    <i class="fas fa-map-marked-alt"></i>
+                    الموقع
+                </button>
+                <button class="tab-btn" data-tab="floor-plans">
+                    <i class="fas fa-drafting-compass"></i>
+                    المخططات
+                </button>
+                <button class="tab-btn" data-tab="virtual-tour">
+                    <i class="fas fa-vr-cardboard"></i>
+                    جولة افتراضية
+                </button>
+                <button class="tab-btn" data-tab="reviews">
+                    <i class="fas fa-star"></i>
+                    التقييمات
+                </button>
+            </div>
+            
+            <div class="tab-content active" id="details">
+                <div class="property-description">
+                    <h3>وصف العقار</h3>
+                    <p>فيلا فاخرة حديثة البناء تقع في قلب حي الياسمين الراقي في شمال الرياض. تمتاز هذه الفيلا بتصميم عصري أنيق وإطلالة مميزة، مع حديقة خارجية ومسبح خاص.</p>
+                    <p>تتكون الفيلا من طابقين: الطابق الأرضي يضم صالة استقبال واسعة، وصالة طعام، ومطبخ مجهز بالكامل، وغرفة ضيوف مع حمام خاص. أما الطابق العلوي فيضم 4 غرف نوم، من بينها غرفة رئيسية فاخرة مع حمام خاص وغرفة ملابس.</p>
+                    <p>تشمل المرافق أيضًا مسبح خارجي، وجلسة خارجية، ومنطقة للشواء، ومواقف سيارات مغطاة. الفيلا مزودة بأنظمة تكييف مركزية، ونظام أمان متطور، وإنترنت فائق السرعة.</p>
+                    
+                    <div class="property-details-list">
+                        <h3>معلومات إضافية</h3>
+                        <ul>
+                            <li><strong>نوع العقار:</strong> فيلا سكنية</li>
+                            <li><strong>الحالة:</strong> جديدة</li>
+                            <li><strong>سند الملكية:</strong> صك إلكتروني</li>
+                            <li><strong>التوجيه:</strong> شمالي غربي</li>
+                            <li><strong>عرض الشارع:</strong> 20 متر</li>
+                            <li><strong>رقم المخطط:</strong> 2344/أ</li>
+                            <li><strong>رقم القطعة:</strong> 156</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="features">
+                <div class="property-features">
+                    <h3>ميزات داخلية</h3>
+                    <div class="features-grid">
+                        <div class="feature-item">
+                            <i class="fas fa-snowflake"></i>
+                            <span>تكييف مركزي</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-wifi"></i>
+                            <span>إنترنت فائق السرعة</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-couch"></i>
+                            <span>مفروشة بالكامل</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-tv"></i>
+                            <span>شاشات ذكية</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-utensils"></i>
+                            <span>مطبخ مجهز</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-door-closed"></i>
+                            <span>أبواب خشبية فاخرة</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-tshirt"></i>
+                            <span>غرفة غسيل</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-warehouse"></i>
+                            <span>غرفة تخزين</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-soap"></i>
+                            <span>حمامات رخامية</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-temperature-low"></i>
+                            <span>عازل حراري</span>
+                        </div>
+                    </div>
+                    
+                    <h3>ميزات خارجية</h3>
+                    <div class="features-grid">
+                        <div class="feature-item">
+                            <i class="fas fa-swimming-pool"></i>
+                            <span>مسبح خاص</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-seedling"></i>
+                            <span>حديقة منسقة</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-drumstick-bite"></i>
+                            <span>منطقة شواء</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-car-side"></i>
+                            <span>موقف مغطى</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-video"></i>
+                            <span>كاميرات مراقبة</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-lock"></i>
+                            <span>بوابة أمان</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-umbrella-beach"></i>
+                            <span>جلسة خارجية</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-water"></i>
+                            <span>نافورة</span>
+                        </div>
+                    </div>
+                    
+                    <h3>المرافق والخدمات</h3>
+                    <div class="features-grid">
+                        <div class="feature-item">
+                            <i class="fas fa-shield-alt"></i>
+                            <span>حراسة 24 ساعة</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-broom"></i>
+                            <span>خدمات تنظيف</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-parking"></i>
+                            <span>مواقف زوار</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-dumbbell"></i>
+                            <span>صالة رياضية قريبة</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="location">
+                <div class="property-location-details">
+                    <div class="map-container">
+                        <div class="property-map" id="propertyMap">
+                            <!-- الخريطة ستُحمَّل هنا عبر JavaScript -->
+                            <img src="{% static 'images/map_placeholder.jpg' %}" alt="خريطة موقع العقار" class="map-placeholder">
+                        </div>
+                        <div class="map-actions">
+                            <button class="map-action-btn" id="showDirectionsBtn">
+                                <i class="fas fa-directions"></i>
+                                الاتجاهات
+                            </button>
+                            <button class="map-action-btn" id="shareLocationBtn">
+                                <i class="fas fa-share-alt"></i>
+                                مشاركة الموقع
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="location-details">
+                        <h3>معلومات عن المنطقة</h3>
+                        <p>يقع العقار في حي الياسمين، وهو من الأحياء الراقية في شمال الرياض. يتميز الحي بمخططه العمراني المنظم والهادئ، وقربه من الطرق الرئيسية وأهم المرافق الحيوية.</p>
+                        
+                        <div class="nearby-places">
+                            <h4>المرافق القريبة</h4>
+                            <div class="nearby-category">
+                                <div class="nearby-category-header">
+                                    <i class="fas fa-graduation-cap"></i>
+                                    <h5>المدارس والتعليم</h5>
+                                </div>
+                                <ul class="nearby-places-list">
+                                    <li>
+                                        <span class="place-name">مدرسة الياسمين الأهلية</span>
+                                        <span class="place-distance">0.8 كم</span>
+                                    </li>
+                                    <li>
+                                        <span class="place-name">مدرسة الفيصلية العالمية</span>
+                                        <span class="place-distance">1.2 كم</span>
+                                    </li>
+                                    <li>
+                                        <span class="place-name">روضة أطفال النجوم</span>
+                                        <span class="place-distance">0.5 كم</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <div class="nearby-category">
+                                <div class="nearby-category-header">
+                                    <i class="fas fa-shopping-cart"></i>
+                                    <h5>التسوق والترفيه</h5>
+                                </div>
+                                <ul class="nearby-places-list">
+                                    <li>
+                                        <span class="place-name">مركز الياسمين التجاري</span>
+                                        <span class="place-distance">1.5 كم</span>
+                                    </li>
+                                    <li>
+                                        <span class="place-name">سوبرماركت العثيم</span>
+                                        <span class="place-distance">0.7 كم</span>
+                                    </li>
+                                    <li>
+                                        <span class="place-name">حديقة الياسمين العامة</span>
+                                        <span class="place-distance">0.3 كم</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <div class="nearby-category">
+                                <div class="nearby-category-header">
+                                    <i class="fas fa-hospital"></i>
+                                    <h5>الصحة والطوارئ</h5>
+                                </div>
+                                <ul class="nearby-places-list">
+                                    <li>
+                                        <span class="place-name">مستشفى الحبيب</span>
+                                        <span class="place-distance">3.2 كم</span>
+                                    </li>
+                                    <li>
+                                        <span class="place-name">مركز الياسمين الطبي</span>
+                                        <span class="place-distance">1.1 كم</span>
+                                    </li>
+                                    <li>
+                                        <span class="place-name">صيدلية النهدي</span>
+                                        <span class="place-distance">0.6 كم</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <div class="nearby-category">
+                                <div class="nearby-category-header">
+                                    <i class="fas fa-mosque"></i>
+                                    <h5>المساجد</h5>
+                                </div>
+                                <ul class="nearby-places-list">
+                                    <li>
+                                        <span class="place-name">جامع الأمير سلطان</span>
+                                        <span class="place-distance">0.2 كم</span>
+                                    </li>
+                                    <li>
+                                        <span class="place-name">مسجد الياسمين</span>
+                                        <span class="place-distance">0.5 كم</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="floor-plans">
+                <div class="property-floor-plans">
+                    <h3>المخططات والتصميم الداخلي</h3>
+                    <div class="floor-plans-tabs">
+                        <button class="floor-plan-tab active" data-floor="ground-floor">الطابق الأرضي</button>
+                        <button class="floor-plan-tab" data-floor="first-floor">الطابق الأول</button>
+                        <button class="floor-plan-tab" data-floor="basement">القبو</button>
+                        <button class="floor-plan-tab" data-floor="3d-view">عرض ثلاثي الأبعاد</button>
+                    </div>
+                    
+                    <div class="floor-plan-content active" id="ground-floor">
+                        <div class="floor-plan-details">
+                            <div class="floor-plan-image">
+                                <img src="{% static 'images/properties/floor_plans/ground_floor.jpg' %}" alt="مخطط الطابق الأرضي">
+                                <button class="expand-plan-btn">
+                                    <i class="fas fa-expand"></i>
+                                </button>
+                            </div>
+                            <div class="floor-plan-info">
+                                <h4>الطابق الأرضي</h4>
+                                <ul class="floor-specs">
+                                    <li><strong>المساحة:</strong> 220 م²</li>
+                                    <li><strong>الارتفاع:</strong> 3.2 م</li>
+                                </ul>
+                                <div class="floor-rooms">
+                                    <h5>الغرف والمساحات:</h5>
+                                    <ul>
+                                        <li>صالة استقبال رئيسية (40 م²)</li>
+                                        <li>صالة طعام (25 م²)</li>
+                                        <li>مطبخ (20 م²)</li>
+                                        <li>غرفة ضيوف مع حمام خاص (18 م²)</li>
+                                        <li>مجلس رجال (35 م²)</li>
+                                        <li>حمام ضيوف (8 م²)</li>
+                                        <li>مدخل وممرات (22 م²)</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="floor-plan-content" id="first-floor">
+                        <div class="floor-plan-details">
+                            <div class="floor-plan-image">
+                                <img src="{% static 'images/properties/floor_plans/first_floor.jpg' %}" alt="مخطط الطابق الأول">
+                                <button class="expand-plan-btn">
+                                    <i class="fas fa-expand"></i>
+                                </button>
+                            </div>
+                            <div class="floor-plan-info">
+                                <h4>الطابق الأول</h4>
+                                <ul class="floor-specs">
+                                    <li><strong>المساحة:</strong> 200 م²</li>
+                                    <li><strong>الارتفاع:</strong> 3 م</li>
+                                </ul>
+                                <div class="floor-rooms">
+                                    <h5>الغرف والمساحات:</h5>
+                                    <ul>
+                                        <li>غرفة النوم الرئيسية مع حمام وغرفة ملابس (45 م²)</li>
+                                        <li>3 غرف نوم (18 م² لكل غرفة)</li>
+                                        <li>حمامان مشتركان (12 م² لكل حمام)</li>
+                                        <li>صالة عائلية (35 م²)</li>
+                                        <li>شرفة (15 م²)</li>
+                                        <li>ممر وسلالم (15 م²)</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="floor-plan-content" id="basement">
+                        <div class="floor-plan-details">
+                            <div class="floor-plan-image">
+                                <img src="{% static 'images/properties/floor_plans/basement.jpg' %}" alt="مخطط القبو">
+                                <button class="expand-plan-btn">
+                                    <i class="fas fa-expand"></i>
+                                </button>
+                            </div>
+                            <div class="floor-plan-info">
+                                <h4>القبو</h4>
+                                <ul class="floor-specs">
+                                    <li><strong>المساحة:</strong> 150 م²</li>
+                                    <li><strong>الارتفاع:</strong> 2.8 م</li>
+                                </ul>
+                                <div class="floor-rooms">
+                                    <h5>الغرف والمساحات:</h5>
+                                    <ul>
+                                        <li>غرفة سائق (15 م²)</li>
+                                        <li>غرفة خادمة (12 م²)</li>
+                                        <li>غرفة غسيل (10 م²)</li>
+                                        <li>مستودع (30 م²)</li>
+                                        <li>غرفة ألعاب/صالة ترفيهية (40 م²)</li>
+                                        <li>حمام (8 م²)</li>
+                                        <li>ممرات ومساحات أخرى (35 م²)</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="floor-plan-content" id="3d-view">
+                        <div class="3d-view-container">
+                            <div class="3d-placeholder">
+                                <img src="{% static 'images/properties/floor_plans/3d_view_placeholder.jpg' %}" alt="نموذج ثلاثي الأبعاد">
+                                <div class="3d-overlay">
+                                    <button class="view-3d-btn">
+                                        <i class="fas fa-cube"></i>
+                                        عرض النموذج الثلاثي الأبعاد
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="3d-info">
+                                <h4>نموذج ثلاثي الأبعاد للفيلا</h4>
+                                <p>يمكنك استكشاف الفيلا بالكامل من الداخل والخارج من خلال هذا النموذج ثلاثي الأبعاد التفاعلي. استخدم الماوس للتحرك والنقر على الأبواب للانتقال بين الغرف.</p>
+                                <p>ملحوظة: قد يتطلب تحميل النموذج بضع ثوانٍ اعتماداً على سرعة الإنترنت لديك.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="virtual-tour">
+                <div class="property-virtual-tour">
+                    <h3>جولة افتراضية في العقار</h3>
+                    <div class="virtual-tour-container">
+                        <div class="virtual-tour-placeholder">
+                            <img src="{% static 'images/properties/virtual_tour_placeholder.jpg' %}" alt="صورة الجولة الافتراضية">
+                            <div class="virtual-tour-overlay">
+                                <button class="start-tour-btn">
+                                    <i class="fas fa-vr-cardboard"></i>
+                                    بدء الجولة الافتراضية
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tour-options">
+                        <h4>خيارات الجولة</h4>
+                        <div class="tour-options-grid">
+                            <button class="tour-option" data-room="living-room">
+                                <i class="fas fa-couch"></i>
+                                <span>الصالة الرئيسية</span>
+                            </button>
+                            <button class="tour-option" data-room="kitchen">
+                                <i class="fas fa-utensils"></i>
+                                <span>المطبخ</span>
+                            </button>
+                            <button class="tour-option" data-room="master-bedroom">
+                                <i class="fas fa-bed"></i>
+                                <span>غرفة النوم الرئيسية</span>
+                            </button>
+                            <button class="tour-option" data-room="bathroom">
+                                <i class="fas fa-bath"></i>
+                                <span>الحمام الرئيسي</span>
+                            </button>
+                            <button class="tour-option" data-room="garden">
+                                <i class="fas fa-leaf"></i>
+                                <span>الحديقة والمسبح</span>
+                            </button>
+                            <button class="tour-option" data-room="exterior">
+                                <i class="fas fa-home"></i>
+                                <span>المظهر الخارجي</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="tour-info">
+                        <div class="tour-tip">
+                            <i class="fas fa-lightbulb"></i>
+                            <div>
+                                <h5>نصيحة للجولة الافتراضية</h5>
+                                <p>يمكنك التنقل في الجولة باستخدام الماوس أو الأسهم في لوحة المفاتيح. على الأجهزة المحمولة، استخدم إصبعك للسحب وتغيير زاوية الرؤية.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="schedule-real-visit">
+                            <h5>هل تفضل زيارة واقعية؟</h5>
+                            <p>احجز موعداً لزيارة العقار شخصياً في الوقت المناسب لك.</p>
+                            <button class="schedule-visit-btn" id="scheduleVisitBtn">
+                                <i class="fas fa-calendar-check"></i>
+                                حجز موعد للزيارة
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="reviews">
+                <div class="property-reviews">
+                    <div class="reviews-header">
+                        <div class="reviews-summary">
+                            <h3>تقييمات العقار</h3>
+                            <div class="rating-summary">
+                                <div class="rating-average">
+                                    <span class="average-number">4.8</span>
+                                    <div class="stars">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star-half-alt"></i>
+                                    </div>
+                                    <span class="reviews-count">12 تقييم</span>
+                                </div>
+                                <div class="rating-breakdown">
+                                    <div class="rating-bar">
+                                        <span class="rating-label">5 <i class="fas fa-star"></i></span>
+                                        <div class="progress">
+                                            <div class="progress-bar" style="width: 80%"></div>
+                                        </div>
+                                        <span class="count">8</span>
+                                    </div>
+                                    <div class="rating-bar">
+                                        <span class="rating-label">4 <i class="fas fa-star"></i></span>
+                                        <div class="progress">
+                                            <div class="progress-bar" style="width: 15%"></div>
+                                        </div>
+                                        <span class="count">2</span>
+                                    </div>
+                                    <div class="rating-bar">
+                                        <span class="rating-label">3 <i class="fas fa-star"></i></span>
+                                        <div class="progress">
+                                            <div class="progress-bar" style="width: 10%"></div>
+                                        </div>
+                                        <span class="count">1</span>
+                                    </div>
+                                    <div class="rating-bar">
+                                        <span class="rating-label">2 <i class="fas fa-star"></i></span>
+                                        <div class="progress">
+                                            <div class="progress-bar" style="width: 5%"></div>
+                                        </div>
+                                        <span class="count">1</span>
+                                    </div>
+                                    <div class="rating-bar">
+                                        <span class="rating-label">1 <i class="fas fa-star"></i></span>
+                                        <div class="progress">
+                                            <div class="progress-bar" style="width: 0%"></div>
+                                        </div>
+                                        <span class="count">0</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="rating-categories">
+                                <div class="category-rating">
+                                    <span class="category">الموقع</span>
+                                    <div class="stars">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                    </div>
+                                    <span class="score">5.0</span>
+                                </div>
+                                <div class="category-rating">
+                                    <span class="category">النظافة</span>
+                                    <div class="stars">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                    </div>
+                                    <span class="score">5.0</span>
+                                </div>
+                                <div class="category-rating">
+                                    <span class="category">الخدمات</span>
+                                    <div class="stars">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="far fa-star"></i>
+                                    </div>
+                                    <span class="score">4.0</span>
+                                </div>
+                                <div class="category-rating">
+                                    <span class="category">القيمة مقابل السعر</span>
+                                    <div class="stars">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star-half-alt"></i>
+                                    </div>
+                                    <span class="score">4.5</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="add-review">
+                            <button class="add-review-btn">
+                                <i class="fas fa-pencil-alt"></i>
+                                كتابة تقييم
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="reviews-list">
+                        <div class="review-item">
+                            <div class="reviewer-info">
+                                <img src="{% static 'images/users/user1.jpg' %}" alt="صورة المستخدم" class="reviewer-avatar">
+                                <div class="reviewer-details">
+                                    <h4 class="reviewer-name">أحمد محمد</h4>
+                                    <span class="review-date">15 مارس 2025</span>
+                                </div>
+                                <div class="review-rating">
+                                    <div class="stars">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                    </div>
+                                    <span class="rating-value">5.0</span>
+                                </div>
+                            </div>
+                            <div class="review-content">
+                                <p>فيلا رائعة بكل المقاييس! زرتها قبل أسبوعين، التصميم عصري والمساحات واسعة، المسبح والحديقة من أجمل ما شاهدت. أنصح بشدة بزيارتها والاستفادة من السعر المميز مقارنة بالمواصفات الموجودة.</p>
+                                <div class="review-photos">
+                                    <img src="{% static 'images/reviews/review1_1.jpg' %}" alt="صورة المراجعة" class="review-photo">
+                                    <img src="{% static 'images/reviews/review1_2.jpg' %}" alt="صورة المراجعة" class="review-photo">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="review-item">
+                            <div class="reviewer-info">
+                                <img src="{% static 'images/users/user2.jpg' %}" alt="صورة المستخدم" class="reviewer-avatar">
+                                <div class="reviewer-details">
+                                    <h4 class="reviewer-name">ريم عبدالله</h4>
+                                    <span class="review-date">10 مارس 2025</span>
+                                </div>
+                                <div class="review-rating">
+                                    <div class="stars">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="far fa-star"></i>
+                                    </div>
+                                    <span class="rating-value">4.0</span>
+                                </div>
+                            </div>
+                            <div class="review-content">
+                                <p>الفيلا جميلة جداً ومساحتها ممتازة، السعر مناسب للمواصفات. أنقص نجمة بسبب بعض التشطيبات في الحمامات التي تحتاج لتحسين، ولكن بشكل عام الفيلا تستحق الشراء.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="review-item">
+                            <div class="reviewer-info">
+                                <img src="{% static 'images/users/user3.jpg' %}" alt="صورة المستخدم" class="reviewer-avatar">
+                                <div class="reviewer-details">
+                                    <h4 class="reviewer-name">خالد السعيد</h4>
+                                    <span class="review-date">25 فبراير 2025</span>
+                                </div>
+                                <div class="review-rating">
+                                    <div class="stars">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star-half-alt"></i>
+                                    </div>
+                                    <span class="rating-value">4.5</span>
+                                </div>
+                            </div>
+                            <div class="review-content">
+                                <p>من أفضل العقارات التي زرتها في الحي، المسبح والحديقة مميزان جداً، المساحات جيدة والتهوية ممتازة. أعجبني التصميم الداخلي والتشطيبات عالية الجودة. موقع الفيلا استراتيجي وقريب من كل الخدمات.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="load-more">
+                            <button class="load-more-btn">عرض المزيد من التقييمات</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. قسم حجز الزيارة -->
+    <section class="booking-section" id="bookingSection">
+        <div class="booking-container">
+            <div class="booking-header">
+                <h2>حجز موعد لزيارة العقار</h2>
+                <button class="close-booking">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="booking-content">
+                <div class="property-summary">
+                    <img src="{% static 'images/properties/property1_1.jpg' %}" alt="صورة العقار" class="booking-image">
+                    <div class="booking-property-info">
+                        <h3>فيلا فاخرة مع مسبح خاص في حي الياسمين</h3>
+                        <p class="booking-property-location">
+                            <i class="fas fa-map-marker-alt"></i>
+                            الرياض، حي الياسمين، شارع الأمير سلطان
+                        </p>
+                        <div class="booking-property-features">
+                            <span><i class="fas fa-ruler-combined"></i> 450 م²</span>
+                            <span><i class="fas fa-bed"></i> 5 غرف نوم</span>
+                            <span><i class="fas fa-bath"></i> 4 حمامات</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <form class="booking-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="visit-date">تاريخ الزيارة</label>
+                            <div class="date-input">
+                                <input type="text" id="visit-date" placeholder="اختر التاريخ" readonly>
+                                <i class="fas fa-calendar-alt"></i>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="visit-time">وقت الزيارة</label>
+                            <div class="time-slots">
+                                <button type="button" class="time-slot">10:00 صباحاً</button>
+                                <button type="button" class="time-slot">12:00 ظهراً</button>
+                                <button type="button" class="time-slot active">2:00 مساءً</button>
+                                <button type="button" class="time-slot">4:00 مساءً</button>
+                                <button type="button" class="time-slot">6:00 مساءً</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="visit-type">نوع الزيارة</label>
+                            <div class="visit-types">
+                                <label class="visit-type">
+                                    <input type="radio" name="visit-type" value="physical" checked>
+                                    <span class="visit-type-text">
+                                        <i class="fas fa-building"></i>
+                                        زيارة فعلية
+                                    </span>
+                                </label>
+                                <label class="visit-type">
+                                    <input type="radio" name="visit-type" value="virtual">
+                                    <span class="visit-type-text">
+                                        <i class="fas fa-video"></i>
+                                        زيارة افتراضية
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="contact-preference">طريقة التواصل المفضلة</label>
+                            <div class="contact-preferences">
+                                <label class="contact-preference">
+                                    <input type="radio" name="contact-preference" value="phone" checked>
+                                    <span class="contact-preference-text">
+                                        <i class="fas fa-phone"></i>
+                                        اتصال هاتفي
+                                    </span>
+                                </label>
+                                <label class="contact-preference">
+                                    <input type="radio" name="contact-preference" value="whatsapp">
+                                    <span class="contact-preference-text">
+                                        <i class="fab fa-whatsapp"></i>
+                                        واتساب
+                                    </span>
+                                </label>
+                                <label class="contact-preference">
+                                    <input type="radio" name="contact-preference" value="email">
+                                    <span class="contact-preference-text">
+                                        <i class="fas fa-envelope"></i>
+                                        بريد إلكتروني
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="booking-notes">ملاحظات إضافية</label>
+                            <textarea id="booking-notes" placeholder="أضف أي معلومات إضافية قد تساعد المسوق العقاري في تقديم خدمة أفضل"></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="cancel-booking">إلغاء</button>
+                        <button type="submit" class="confirm-booking">تأكيد الحجز</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. معلومات المسوق -->
+    <section class="agent-section">
+        <div class="agent-container">
+            <div class="agent-card">
+                <div class="agent-header">
+                    <img src="{% static 'images/agents/agent1.jpg' %}" alt="صورة المسوق" class="agent-avatar">
+                    <div class="agent-info">
+                        <h3>محمد العقاري</h3>
+                        <div class="agent-title">
+                            <span class="verified-badge">
+                                <i class="fas fa-check-circle"></i>
+                                مسوق موثق
+                            </span>
+                            <span class="agent-specialty">متخصص في فلل الرياض الشمالية</span>
+                        </div>
+                        <div class="agent-rating">
+                            <div class="stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <span class="rating-text">4.7 (58 تقييم)</span>
+                        </div>
+                    </div>
+                    <div class="agent-actions">
+                        <button class="follow-agent-btn">
+                            <i class="fas fa-user-plus"></i>
+                            متابعة
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="agent-body">
+                    <div class="agent-stats">
+                        <div class="stat">
+                            <span class="stat-number">127</span>
+                            <span class="stat-label">عقار نشط</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">95%</span>
+                            <span class="stat-label">نسبة الاستجابة</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">35</span>
+                            <span class="stat-label">عمليات بيع</span>
+                        </div>
+                    </div>
+                    
+                    <div class="agent-about">
+                        <p>مسوق عقاري متخصص في فلل وقصور شمال الرياض. أعمل في مجال التسويق العقاري منذ أكثر من 7 سنوات مع خبرة واسعة في أحياء الياسمين والنرجس والملقا.</p>
+                    </div>
+                    
+                    <div class="agent-contact-actions">
+                        <button class="agent-contact-btn call">
+                            <i class="fas fa-phone-alt"></i>
+                            اتصال
+                        </button>
+                        <button class="agent-contact-btn chat">
+                            <i class="fas fa-comment-dots"></i>
+                            محادثة
+                        </button>
+                        <button class="agent-contact-btn whatsapp">
+                            <i class="fab fa-whatsapp"></i>
+                            واتساب
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. عقارات مشابهة -->
+    <section class="similar-properties">
+        <div class="similar-header">
+            <h2>عقارات مشابهة قد تعجبك</h2>
+            <div class="similar-nav">
+                <button class="swiper-button-prev similar-prev">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+                <button class="swiper-button-next similar-next">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            </div>
+        </div>
+        
+        <div class="swiper similarPropertiesSwiper">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <div class="property-card">
+                        <div class="property-card-image">
+                            <img src="{% static 'images/properties/similar1.jpg' %}" alt="عقار مشابه">
+                            <div class="property-card-labels">
+                                <span class="label new">جديد</span>
+                            </div>
+                            <button class="property-card-favorite">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="property-card-content">
+                            <div class="property-card-price">2,200,000 ريال</div>
+                            <h3 class="property-card-title">فيلا فاخرة في حي النرجس</h3>
+                            <div class="property-card-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                الرياض، حي النرجس
+                            </div>
+                            <div class="property-card-features">
+                                <span><i class="fas fa-ruler-combined"></i> 420 م²</span>
+                                <span><i class="fas fa-bed"></i> 4</span>
+                                <span><i class="fas fa-bath"></i> 4</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="swiper-slide">
+                    <div class="property-card">
+                        <div class="property-card-image">
+                            <img src="{% static 'images/properties/similar2.jpg' %}" alt="عقار مشابه">
+                            <div class="property-card-labels">
+                                <span class="label premium">مميز</span>
+                            </div>
+                            <button class="property-card-favorite">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="property-card-content">
+                            <div class="property-card-price">2,700,000 ريال</div>
+                            <h3 class="property-card-title">فيلا مع مسبح في حي الياسمين</h3>
+                            <div class="property-card-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                الرياض، حي الياسمين
+                            </div>
+                            <div class="property-card-features">
+                                <span><i class="fas fa-ruler-combined"></i> 480 م²</span>
+                                <span><i class="fas fa-bed"></i> 5</span>
+                                <span><i class="fas fa-bath"></i> 5</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="swiper-slide">
+                    <div class="property-card">
+                        <div class="property-card-image">
+                            <img src="{% static 'images/properties/similar3.jpg' %}" alt="عقار مشابه">
+                            <button class="property-card-favorite">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="property-card-content">
+                            <div class="property-card-price">2,300,000 ريال</div>
+                            <h3 class="property-card-title">فيلا عصرية في حي الملقا</h3>
+                            <div class="property-card-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                الرياض، حي الملقا
+                            </div>
+                            <div class="property-card-features">
+                                <span><i class="fas fa-ruler-combined"></i> 400 م²</span>
+                                <span><i class="fas fa-bed"></i> 4</span>
+                                <span><i class="fas fa-bath"></i> 3</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="swiper-slide">
+                    <div class="property-card">
+                        <div class="property-card-image">
+                            <img src="{% static 'images/properties/similar4.jpg' %}" alt="عقار مشابه">
+                            <div class="property-card-labels">
+                                <span class="label offer">خصم</span>
+                            </div>
+                            <button class="property-card-favorite">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="property-card-content">
+                            <div class="property-card-price">2,150,000 ريال</div>
+                            <h3 class="property-card-title">فيلا بتصميم مودرن في حي الياسمين</h3>
+                            <div class="property-card-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                الرياض، حي الياسمين
+                            </div>
+                            <div class="property-card-features">
+                                <span><i class="fas fa-ruler-combined"></i> 430 م²</span>
+                                <span><i class="fas fa-bed"></i> 5</span>
+                                <span><i class="fas fa-bath"></i> 4</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="view-more-container">
+            <a href="#" class="view-more-link">عرض المزيد من العقارات المشابهة <i class="fas fa-arrow-left"></i></a>
+        </div>
+    </section>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ar.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // الصور الرئيسية والمصغرات
+    const thumbsSwiper = new Swiper('.propertyThumbsSwiper', {
+        spaceBetween: 10,
+        slidesPerView: 4,
+        freeMode: true,
+        watchSlidesProgress: true
+    });
+    
+    const mainSwiper = new Swiper('.propertyMainSwiper', {
+        spaceBetween: 0,
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+        thumbs: {
+            swiper: thumbsSwiper
+        },
+        on: {
+            slideChange: function() {
+                document.querySelector('.current-image').textContent = this.activeIndex + 1;
+            }
+        }
+    });
+    
+    // عداد الصور
+    document.querySelector('.total-images').textContent = mainSwiper.slides.length;
+    
+    // تهيئة العقارات المشابهة
+    const similarSwiper = new Swiper('.similarPropertiesSwiper', {
+        slidesPerView: 1,
+        spaceBetween: 20,
+        navigation: {
+            nextEl: '.similar-next',
+            prevEl: '.similar-prev',
+        },
+        breakpoints: {
+            640: {
+                slidesPerView: 2
+            },
+            1024: {
+                slidesPerView: 3
+            },
+            1280: {
+                slidesPerView: 4
+            }
+        }
+    });
+    
+    // تفعيل تقويم حجز الزيارة
+    flatpickr('#visit-date', {
+        locale: 'ar',
+        minDate: 'today',
+        dateFormat: 'Y-m-d',
+        disableMobile: true
+    });
+    
+    // تبويبات تفاصيل العقار
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    const tabContents = document.querySelectorAll('.tab-content');
+    
+    tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const tabId = button.getAttribute('data-tab');
+            
+            // إزالة الكلاس active من جميع الأزرار والمحتويات
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            tabContents.forEach(content => content.classList.remove('active'));
+            
+            // إضافة الكلاس active للزر المختار والمحتوى المناسب
+            button.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        });
+    });
+    
+    // تبويبات مخطط الطابق
+    const floorPlanTabs = document.querySelectorAll('.floor-plan-tab');
+    const floorPlanContents = document.querySelectorAll('.floor-plan-content');
+    
+    floorPlanTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            const floorId = tab.getAttribute('data-floor');
+            
+            floorPlanTabs.forEach(t => t.classList.remove('active'));
+            floorPlanContents.forEach(content => content.classList.remove('active'));
+            
+            tab.classList.add('active');
+            document.getElementById(floorId).classList.add('active');
+        });
+    });
+    
+    // تفعيل قسم حجز الزيارة
+    const bookTourBtn = document.getElementById('bookTourBtn');
+    const scheduleVisitBtn = document.getElementById('scheduleVisitBtn');
+    const bookingSection = document.getElementById('bookingSection');
+    const closeBookingBtn = document.querySelector('.close-booking');
+    const cancelBookingBtn = document.querySelector('.cancel-booking');
+    
+    // فتح نافذة الحجز
+    function openBookingForm() {
+        bookingSection.classList.add('active');
+        document.body.classList.add('no-scroll');
+    }
+    
+    // إغلاق نافذة الحجز
+    function closeBookingForm() {
+        bookingSection.classList.remove('active');
+        document.body.classList.remove('no-scroll');
+    }
+    
+    bookTourBtn.addEventListener('click', openBookingForm);
+    scheduleVisitBtn.addEventListener('click', openBookingForm);
+    closeBookingBtn.addEventListener('click', closeBookingForm);
+    cancelBookingBtn.addEventListener('click', closeBookingForm);
+    
+    // اختيار وقت الزيارة
+    const timeSlots = document.querySelectorAll('.time-slot');
+    
+    timeSlots.forEach(slot => {
+        slot.addEventListener('click', () => {
+            timeSlots.forEach(s => s.classList.remove('active'));
+            slot.classList.add('active');
+        });
+    });
+    
+    // نموذج تأكيد الحجز
+    const bookingForm = document.querySelector('.booking-form');
+    
+    bookingForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        // عرض رسالة التأكيد (يمكن استبدالها بطلب API فعلي)
+        alert('تم حجز الموعد بنجاح! سيتواصل معك المسوق العقاري قريباً لتأكيد التفاصيل.');
+        closeBookingForm();
+    });
+    
+    // تفعيل زر المفضلة
+    const favoriteBtn = document.querySelector('.action-btn.favorite-btn');
+    
+    favoriteBtn.addEventListener('click', function() {
+        this.classList.toggle('active');
+        const icon = this.querySelector('i');
+        
+        if (this.classList.contains('active')) {
+            icon.classList.remove('far');
+            icon.classList.add('fas');
+        } else {
+            icon.classList.remove('fas');
+            icon.classList.add('far');
+        }
+    });
+    
+    // تفعيل زر المتابعة
+    const followAgentBtn = document.querySelector('.follow-agent-btn');
+    
+    followAgentBtn.addEventListener('click', function() {
+        this.classList.toggle('following');
+        
+        if (this.classList.contains('following')) {
+            this.innerHTML = '<i class="fas fa-user-check"></i> تمت المتابعة';
+        } else {
+            this.innerHTML = '<i class="fas fa-user-plus"></i> متابعة';
+        }
+    });
+});
+</script>
+{% endblock %}

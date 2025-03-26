@@ -1,0 +1,1010 @@
+{% extends "base.html" %}
+
+{% block title %}المتابَعون | روابط تك{% endblock %}
+
+{% block extra_head %}
+<style>
+    /* أنماط خاصة بصفحة المتابعين */
+    :root {
+        --primary-color: #0d6efd;
+        --secondary-color: #6c757d;
+        --dark-color: #212529;
+        --light-color: #f8f9fa;
+        --success-color: #198754;
+        --info-color: #0dcaf0;
+        --warning-color: #ffc107;
+        --danger-color: #dc3545;
+        --following-bg: var(--light-color);
+        --text-color: var(--dark-color);
+        --border-radius: 15px;
+        --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        --transition-speed: 0.3s;
+    }
+
+    [data-bs-theme="dark"] {
+        --following-bg: #121212;
+        --text-color: #f8f9fa;
+        --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .following-container {
+        padding: 1rem;
+        background-color: var(--following-bg);
+        color: var(--text-color);
+        transition: all var(--transition-speed) ease;
+        padding-bottom: 70px;
+    }
+
+    .search-bar {
+        position: relative;
+        margin-bottom: 1rem;
+    }
+
+    .search-bar .form-control {
+        border-radius: 50px;
+        padding-right: 50px;
+        background-color: var(--following-bg);
+        border-color: rgba(0, 0, 0, 0.1);
+        color: var(--text-color);
+    }
+
+    [data-bs-theme="dark"] .search-bar .form-control {
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .search-icon {
+        position: absolute;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--secondary-color);
+    }
+
+    .filter-options {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 1rem;
+        overflow-x: auto;
+        padding-bottom: 5px;
+    }
+
+    .filter-options::-webkit-scrollbar {
+        height: 3px;
+    }
+
+    .filter-options::-webkit-scrollbar-thumb {
+        background-color: rgba(0, 0, 0, 0.2);
+        border-radius: 10px;
+    }
+
+    [data-bs-theme="dark"] .filter-options::-webkit-scrollbar-thumb {
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .filter-chip {
+        background-color: var(--following-bg);
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        color: var(--text-color);
+        border-radius: 50px;
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+        cursor: pointer;
+        white-space: nowrap;
+        transition: all var(--transition-speed) ease;
+    }
+
+    [data-bs-theme="dark"] .filter-chip {
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .filter-chip.active {
+        background-color: var(--primary-color);
+        color: white;
+        border-color: var(--primary-color);
+    }
+
+    .filter-chip:hover:not(.active) {
+        background-color: rgba(0, 0, 0, 0.05);
+    }
+
+    [data-bs-theme="dark"] .filter-chip:hover:not(.active) {
+        background-color: rgba(255, 255, 255, 0.05);
+    }
+
+    .following-card {
+        background-color: var(--following-bg);
+        border-radius: var(--border-radius);
+        margin-bottom: 1rem;
+        overflow: hidden;
+        box-shadow: var(--card-shadow);
+        transition: all var(--transition-speed) ease;
+        position: relative;
+    }
+
+    .following-card:hover {
+        transform: translateY(-3px);
+    }
+
+    .following-avatar {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+    .following-info {
+        flex: 1;
+    }
+
+    .following-name {
+        font-weight: 600;
+        margin-bottom: 0.25rem;
+        display: flex;
+        align-items: center;
+    }
+
+    .verified-badge {
+        color: var(--primary-color);
+        margin-right: 5px;
+        font-size: 14px;
+    }
+
+    .following-meta {
+        color: var(--secondary-color);
+        font-size: 0.85rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .meta-item {
+        display: flex;
+        align-items: center;
+    }
+
+    .meta-item i {
+        margin-left: 5px;
+    }
+
+    .following-badge {
+        font-size: 0.7rem;
+        padding: 0.2rem 0.5rem;
+        border-radius: 50px;
+        margin-right: 5px;
+    }
+
+    .unfollow-btn {
+        padding: 0.25rem 0.75rem;
+        font-size: 0.85rem;
+        border-radius: 50px;
+    }
+
+    .notification-toggle {
+        color: var(--secondary-color);
+        font-size: 1.2rem;
+        cursor: pointer;
+        transition: all var(--transition-speed) ease;
+    }
+
+    .notification-toggle.active {
+        color: var(--primary-color);
+    }
+
+    .following-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .tab-content {
+        padding-top: 1rem;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 3rem 1rem;
+    }
+
+    .empty-state i {
+        font-size: 4rem;
+        color: var(--secondary-color);
+        margin-bottom: 1rem;
+    }
+
+    .empty-state h4 {
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+
+    .empty-state p {
+        color: var(--secondary-color);
+        margin-bottom: 1.5rem;
+    }
+
+    .suggestion-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+        margin-top: 2rem;
+    }
+
+    .suggestion-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+    }
+
+    .suggestion-refresh {
+        color: var(--primary-color);
+        cursor: pointer;
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+    }
+
+    .suggestion-refresh i {
+        margin-left: 5px;
+    }
+
+    .skeleton-loader {
+        animation: pulse 1.5s infinite;
+        background: linear-gradient(
+            90deg,
+            rgba(0, 0, 0, 0.05) 25%,
+            rgba(0, 0, 0, 0.1) 50%,
+            rgba(0, 0, 0, 0.05) 75%
+        );
+        background-size: 200% 100%;
+        border-radius: var(--border-radius);
+    }
+
+    [data-bs-theme="dark"] .skeleton-loader {
+        background: linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0.05) 25%,
+            rgba(255, 255, 255, 0.1) 50%,
+            rgba(255, 255, 255, 0.05) 75%
+        );
+        background-size: 200% 100%;
+    }
+
+    @keyframes pulse {
+        0% { background-position: 200% 0; }
+        100% { background-position: -200% 0; }
+    }
+
+    /* لأجهزة متوسطة وكبيرة */
+    @media (min-width: 768px) {
+        .following-container {
+            padding: 2rem;
+        }
+        
+        .filter-options {
+            flex-wrap: wrap;
+        }
+    }
+
+    /* للشاشات الصغيرة جداً */
+    @media (max-width: 360px) {
+        .following-meta {
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        .following-actions {
+            flex-direction: column;
+            align-items: flex-end;
+        }
+    }
+
+    /* أنماط التأثيرات الحركية */
+    .fade-in {
+        animation: fadeIn 0.5s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    .action-indicator {
+        position: fixed;
+        bottom: 100px;
+        right: 50%;
+        transform: translateX(50%);
+        background-color: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 50px;
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 0.9rem;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+    }
+
+    .action-indicator.show {
+        opacity: 1;
+    }
+
+    /* Pull to refresh */
+    .refresh-indicator {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px 0;
+        visibility: hidden;
+        height: 0;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+
+    .refresh-indicator.visible {
+        visibility: visible;
+        height: 60px;
+    }
+
+    .refresh-spinner {
+        width: 30px;
+        height: 30px;
+        border: 3px solid rgba(0, 0, 0, 0.1);
+        border-top-color: var(--primary-color);
+        border-radius: 50%;
+        animation: spin 1s infinite linear;
+    }
+
+    @keyframes spin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- التنقل الرئيسي -->
+<nav class="navbar fixed-bottom navbar-light bg-white border-top pt-2 pb-2">
+    <div class="container-fluid">
+        <div class="row w-100 text-center">
+            <div class="col">
+                <a href="{{ url_for('client_feed') }}" class="text-secondary text-decoration-none">
+                    <i class="fas fa-home fa-lg"></i>
+                    <div class="small">الرئيسية</div>
+                </a>
+            </div>
+            <div class="col">
+                <a href="#" class="text-secondary text-decoration-none">
+                    <i class="fas fa-search fa-lg"></i>
+                    <div class="small">البحث</div>
+                </a>
+            </div>
+            <div class="col">
+                <a href="#" class="text-secondary text-decoration-none">
+                    <i class="fas fa-bell fa-lg"></i>
+                    <div class="small">الإشعارات</div>
+                </a>
+            </div>
+            <div class="col">
+                <a href="{{ url_for('client_profile') }}" class="text-secondary text-decoration-none">
+                    <i class="fas fa-user fa-lg"></i>
+                    <div class="small">حسابي</div>
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="following-container fade-in">
+    <div class="d-flex align-items-center mb-4">
+        <a href="javascript:history.back()" class="btn btn-sm btn-light me-3">
+            <i class="fas fa-arrow-right"></i>
+        </a>
+        <h1 class="h4 mb-0">المتابَعون</h1>
+    </div>
+
+    <!-- مؤشر السحب للتحديث -->
+    <div class="refresh-indicator" id="refreshIndicator">
+        <div class="refresh-spinner"></div>
+    </div>
+
+    <!-- شريط البحث -->
+    <div class="search-bar">
+        <input type="text" class="form-control" placeholder="ابحث عن مسوق أو شركة..." id="searchInput">
+        <i class="fas fa-search search-icon"></i>
+    </div>
+
+    <!-- خيارات التصفية -->
+    <div class="filter-options">
+        <div class="filter-chip active" data-filter="all">الكل</div>
+        <div class="filter-chip" data-filter="marketers">المسوقين</div>
+        <div class="filter-chip" data-filter="companies">الشركات</div>
+        <div class="filter-chip" data-filter="starred">المميزة</div>
+        <div class="filter-chip" data-filter="verified">الموثقة</div>
+        <div class="filter-chip" data-filter="recent">الأحدث</div>
+        <div class="filter-chip" data-filter="active">الأكثر نشاطاً</div>
+    </div>
+
+    <!-- تبويبات التصنيف -->
+    <ul class="nav nav-tabs" id="followingTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="all-tab" data-bs-toggle="tab" data-bs-target="#all-content" type="button" role="tab" aria-controls="all-content" aria-selected="true">
+                الكل <span class="badge bg-secondary ms-1">24</span>
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="marketers-tab" data-bs-toggle="tab" data-bs-target="#marketers-content" type="button" role="tab" aria-controls="marketers-content" aria-selected="false">
+                المسوقين <span class="badge bg-secondary ms-1">15</span>
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="companies-tab" data-bs-toggle="tab" data-bs-target="#companies-content" type="button" role="tab" aria-controls="companies-content" aria-selected="false">
+                الشركات <span class="badge bg-secondary ms-1">9</span>
+            </button>
+        </li>
+    </ul>
+
+    <!-- محتوى التبويبات -->
+    <div class="tab-content" id="followingTabsContent">
+        <!-- تبويب الكل -->
+        <div class="tab-pane fade show active" id="all-content" role="tabpanel" aria-labelledby="all-tab">
+            <div id="allFollowingList">
+                <!-- ستضاف البطاقات هنا باستخدام جافاسكريبت -->
+            </div>
+        </div>
+
+        <!-- تبويب المسوقين -->
+        <div class="tab-pane fade" id="marketers-content" role="tabpanel" aria-labelledby="marketers-tab">
+            <div id="marketersFollowingList">
+                <!-- ستضاف البطاقات هنا باستخدام جافاسكريبت -->
+            </div>
+        </div>
+
+        <!-- تبويب الشركات -->
+        <div class="tab-pane fade" id="companies-content" role="tabpanel" aria-labelledby="companies-tab">
+            <div id="companiesFollowingList">
+                <!-- ستضاف البطاقات هنا باستخدام جافاسكريبت -->
+            </div>
+        </div>
+    </div>
+
+    <!-- الاقتراحات -->
+    <div class="suggestion-header">
+        <div class="suggestion-title">قد يهمك متابعتهم</div>
+        <div class="suggestion-refresh">
+            <i class="fas fa-sync-alt"></i> تحديث
+        </div>
+    </div>
+
+    <div id="suggestionsList" class="mb-5">
+        <!-- ستضاف الاقتراحات هنا باستخدام جافاسكريبت -->
+    </div>
+
+    <!-- مؤشر الإجراءات -->
+    <div class="action-indicator" id="actionIndicator">
+        <i class="fas fa-check"></i> <span id="actionMessage"></span>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // بيانات المتابعين (محاكاة استجابة API)
+        const followingData = [
+            {
+                id: 1,
+                name: "أحمد العقاري",
+                username: "ahmed_realestate",
+                avatar: "{{ url_for('static', filename='img/avatars/marketer-1.jpg') }}",
+                type: "marketer",
+                verified: true,
+                starred: true,
+                properties: 45,
+                rating: 4.8,
+                followers: 1250,
+                lastActive: "اليوم",
+                notificationsEnabled: true,
+                description: "مسوق عقاري متخصص في الفلل الفاخرة والقصور",
+                tags: ["فلل فاخرة", "أراضي", "استثمارات"]
+            },
+            {
+                id: 2,
+                name: "شركة الأفق العقارية",
+                username: "horizon_realty",
+                avatar: "{{ url_for('static', filename='img/avatars/company-1.jpg') }}",
+                type: "company",
+                verified: true,
+                starred: false,
+                properties: 120,
+                rating: 4.5,
+                followers: 5600,
+                lastActive: "اليوم",
+                notificationsEnabled: true,
+                description: "شركة رائدة في تسويق العقارات السكنية والتجارية",
+                tags: ["شقق", "مكاتب تجارية", "مجمعات سكنية"]
+            },
+            {
+                id: 3,
+                name: "سارة المتألقة",
+                username: "sara_realtor",
+                avatar: "{{ url_for('static', filename='img/avatars/marketer-2.jpg') }}",
+                type: "marketer",
+                verified: true,
+                starred: true,
+                properties: 32,
+                rating: 4.9,
+                followers: 2350,
+                lastActive: "اليوم",
+                notificationsEnabled: true,
+                description: "مسوقة عقارية متخصصة في المناطق الراقية بالرياض",
+                tags: ["شقق فاخرة", "فلل", "دوبلكس"]
+            },
+            {
+                id: 4,
+                name: "مجموعة العليا",
+                username: "olaya_group",
+                avatar: "{{ url_for('static', filename='img/avatars/company-2.jpg') }}",
+                type: "company",
+                verified: true,
+                starred: false,
+                properties: 85,
+                rating: 4.3,
+                followers: 3800,
+                lastActive: "أمس",
+                notificationsEnabled: false,
+                description: "وكيل حصري لأكبر المشاريع السكنية في المملكة",
+                tags: ["أحياء متكاملة", "مشاريع سكنية", "وحدات جاهزة"]
+            },
+            {
+                id: 5,
+                name: "فهد الخبير",
+                username: "fahad_expert",
+                avatar: "{{ url_for('static', filename='img/avatars/marketer-3.jpg') }}",
+                type: "marketer",
+                verified: false,
+                starred: false,
+                properties: 18,
+                rating: 4.2,
+                followers: 520,
+                lastActive: "منذ يومين",
+                notificationsEnabled: true,
+                description: "خبير استشارات عقارية وتثمين ممتلكات",
+                tags: ["استشارات", "تثمين", "دراسات جدوى"]
+            },
+            {
+                id: 6,
+                name: "شركة النخبة",
+                username: "elite_properties",
+                avatar: "{{ url_for('static', filename='img/avatars/company-3.jpg') }}",
+                type: "company",
+                verified: true,
+                starred: false,
+                properties: 95,
+                rating: 4.7,
+                followers: 4200,
+                lastActive: "اليوم",
+                notificationsEnabled: true,
+                description: "رواد التسويق العقاري في المنطقة الشرقية",
+                tags: ["فلل", "أراضي", "عقارات استثمارية"]
+            }
+        ];
+
+        // بيانات الاقتراحات
+        const suggestionsData = [
+            {
+                id: 101,
+                name: "خالد العمري",
+                username: "khalid_omari",
+                avatar: "{{ url_for('static', filename='img/avatars/marketer-4.jpg') }}",
+                type: "marketer",
+                verified: true,
+                properties: 28,
+                rating: 4.6,
+                followers: 840,
+                description: "متخصص في بيع وتأجير العقارات التجارية",
+                tags: ["مكاتب", "معارض", "مستودعات"]
+            },
+            {
+                id: 102,
+                name: "الشركة العقارية المتحدة",
+                username: "united_realty",
+                avatar: "{{ url_for('static', filename='img/avatars/company-4.jpg') }}",
+                type: "company",
+                verified: true,
+                properties: 110,
+                rating: 4.4,
+                followers: 3200,
+                description: "وكيل حصري لمشاريع سكنية راقية في الرياض وجدة",
+                tags: ["مشاريع حديثة", "فلل", "شقق"]
+            },
+            {
+                id: 103,
+                name: "سلطان المطوع",
+                username: "sultan_properties",
+                avatar: "{{ url_for('static', filename='img/avatars/marketer-5.jpg') }}",
+                type: "marketer",
+                verified: false,
+                properties: 15,
+                rating: 4.7,
+                followers: 620,
+                description: "مسوق عقاري متخصص في الأراضي السكنية والتجارية",
+                tags: ["أراضي", "مخططات", "استثمار"]
+            }
+        ];
+
+        // تهيئة قوائم المتابعين
+        function initializeFollowingLists() {
+            renderFollowingList(followingData, 'allFollowingList');
+            renderFollowingList(followingData.filter(item => item.type === 'marketer'), 'marketersFollowingList');
+            renderFollowingList(followingData.filter(item => item.type === 'company'), 'companiesFollowingList');
+            renderSuggestions(suggestionsData);
+        }
+
+        // إنشاء بطاقة متابعة
+        function createFollowingCard(following) {
+            const verifiedBadge = following.verified ? '<i class="fas fa-check-circle verified-badge"></i>' : '';
+            const starredClass = following.starred ? 'fas text-warning' : 'far';
+            const notificationClass = following.notificationsEnabled ? 'active' : '';
+            const typeBadge = following.type === 'marketer' ? 
+                '<span class="badge bg-info following-badge">مسوق</span>' : 
+                '<span class="badge bg-primary following-badge">شركة</span>';
+            
+            return `
+                <div class="following-card p-3 mb-3" data-id="${following.id}" data-type="${following.type}">
+                    <div class="d-flex">
+                        <img src="${following.avatar}" alt="${following.name}" class="following-avatar me-3">
+                        <div class="following-info">
+                            <div class="following-name">
+                                ${following.name} ${verifiedBadge}
+                            </div>
+                            <div class="text-muted mb-2">@${following.username}</div>
+                            <div class="following-meta">
+                                <div class="meta-item">
+                                    <i class="fas fa-home"></i> ${following.properties} عقار
+                                </div>
+                                <div class="meta-item">
+                                    <i class="fas fa-star"></i> ${following.rating}/5
+                                </div>
+                                <div class="meta-item">
+                                    <i class="fas fa-users"></i> ${following.followers} متابع
+                                </div>
+                            </div>
+                        </div>
+                        <div class="following-actions d-flex flex-column align-items-end">
+                            <div class="d-flex align-items-center mb-2">
+                                ${typeBadge}
+                                <i class="${starredClass} fa-star ms-2 star-btn" data-id="${following.id}"></i>
+                            </div>
+                            <div class="d-flex align-items-center mt-auto">
+                                <i class="fas fa-bell notification-toggle ${notificationClass} me-3" data-id="${following.id}"></i>
+                                <button class="btn btn-sm btn-outline-danger unfollow-btn" data-id="${following.id}">إلغاء المتابعة</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // عرض قائمة المتابعين
+        function renderFollowingList(data, containerId) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            
+            if (data.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-user-friends"></i>
+                        <h4>لا يوجد متابَعين حالياً</h4>
+                        <p>ابدأ بمتابعة المسوقين والشركات لتظهر هنا</p>
+                        <button class="btn btn-primary">استكشاف المسوقين</button>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = data.map(following => createFollowingCard(following)).join('');
+            
+            // إضافة الأحداث للأزرار
+            container.querySelectorAll('.unfollow-btn').forEach(btn => {
+                btn.addEventListener('click', handleUnfollow);
+            });
+            
+            container.querySelectorAll('.notification-toggle').forEach(btn => {
+                btn.addEventListener('click', handleNotificationToggle);
+            });
+            
+            container.querySelectorAll('.star-btn').forEach(btn => {
+                btn.addEventListener('click', handleStarToggle);
+            });
+        }
+
+        // إنشاء بطاقة اقتراح
+        function createSuggestionCard(suggestion) {
+            const verifiedBadge = suggestion.verified ? '<i class="fas fa-check-circle verified-badge"></i>' : '';
+            const typeBadge = suggestion.type === 'marketer' ? 
+                '<span class="badge bg-info following-badge">مسوق</span>' : 
+                '<span class="badge bg-primary following-badge">شركة</span>';
+            
+            return `
+                <div class="following-card p-3 mb-3" data-id="${suggestion.id}" data-type="${suggestion.type}">
+                    <div class="d-flex">
+                        <img src="${suggestion.avatar}" alt="${suggestion.name}" class="following-avatar me-3">
+                        <div class="following-info">
+                            <div class="following-name">
+                                ${suggestion.name} ${verifiedBadge}
+                            </div>
+                            <div class="text-muted mb-2">@${suggestion.username}</div>
+                            <div class="following-meta">
+                                <div class="meta-item">
+                                    <i class="fas fa-home"></i> ${suggestion.properties} عقار
+                                </div>
+                                <div class="meta-item">
+                                    <i class="fas fa-star"></i> ${suggestion.rating}/5
+                                </div>
+                            </div>
+                        </div>
+                        <div class="following-actions d-flex flex-column align-items-end">
+                            <div class="d-flex align-items-center mb-2">
+                                ${typeBadge}
+                            </div>
+                            <div class="d-flex align-items-center mt-auto">
+                                <button class="btn btn-sm btn-primary follow-btn" data-id="${suggestion.id}">متابعة</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // عرض قائمة الاقتراحات
+        function renderSuggestions(data) {
+            const container = document.getElementById('suggestionsList');
+            if (!container) return;
+            
+            container.innerHTML = data.map(suggestion => createSuggestionCard(suggestion)).join('');
+            
+            // إضافة الأحداث للأزرار
+            container.querySelectorAll('.follow-btn').forEach(btn => {
+                btn.addEventListener('click', handleFollow);
+            });
+        }
+
+        // معالجة إلغاء المتابعة
+        function handleUnfollow(e) {
+            const id = parseInt(e.currentTarget.dataset.id);
+            
+            // إظهار رسالة التأكيد
+            showActionMessage("تم إلغاء المتابعة");
+            
+            // في التطبيق الحقيقي: إرسال طلب للخادم لإلغاء المتابعة
+            // هنا نقوم فقط بإخفاء البطاقة كمحاكاة
+            const cards = document.querySelectorAll(`.following-card[data-id="${id}"]`);
+            cards.forEach(card => {
+                card.style.opacity = "0";
+                card.style.height = card.offsetHeight + "px";
+                setTimeout(() => {
+                    card.style.height = "0";
+                    card.style.padding = "0";
+                    card.style.margin = "0";
+                    card.style.overflow = "hidden";
+                }, 300);
+                setTimeout(() => {
+                    card.remove();
+                }, 600);
+            });
+        }
+
+        // معالجة المتابعة
+        function handleFollow(e) {
+            const id = parseInt(e.currentTarget.dataset.id);
+            
+            // إظهار رسالة التأكيد
+            showActionMessage("تمت المتابعة بنجاح");
+            
+            // في التطبيق الحقيقي: إرسال طلب للخادم لإضافة المتابعة
+            // هنا نقوم فقط بتحديث زر المتابعة وإضافة التأثير البصري
+            const btn = e.currentTarget;
+            btn.innerHTML = "تمت المتابعة";
+            btn.classList.remove("btn-primary");
+            btn.classList.add("btn-success");
+            btn.disabled = true;
+            
+            // إخفاء البطاقة بعد فترة زمنية
+            setTimeout(() => {
+                const card = btn.closest('.following-card');
+                card.style.opacity = "0";
+                card.style.height = card.offsetHeight + "px";
+                setTimeout(() => {
+                    card.style.height = "0";
+                    card.style.padding = "0";
+                    card.style.margin = "0";
+                    card.style.overflow = "hidden";
+                }, 300);
+                setTimeout(() => {
+                    card.remove();
+                }, 600);
+            }, 1500);
+        }
+
+        // معالجة تفعيل/إلغاء الإشعارات
+        function handleNotificationToggle(e) {
+            const id = parseInt(e.currentTarget.dataset.id);
+            const isEnabled = e.currentTarget.classList.toggle('active');
+            
+            // إظهار رسالة التأكيد
+            showActionMessage(isEnabled ? "تم تفعيل الإشعارات" : "تم إيقاف الإشعارات");
+            
+            // في التطبيق الحقيقي: إرسال طلب للخادم لتحديث إعدادات الإشعارات
+        }
+
+        // معالجة تمييز/إلغاء تمييز المتابع
+        function handleStarToggle(e) {
+            const id = parseInt(e.currentTarget.dataset.id);
+            const isStarred = e.currentTarget.classList.contains('far');
+            
+            if (isStarred) {
+                e.currentTarget.classList.remove('far');
+                e.currentTarget.classList.add('fas', 'text-warning');
+                showActionMessage("تمت إضافة المتابع للمفضلة");
+            } else {
+                e.currentTarget.classList.remove('fas', 'text-warning');
+                e.currentTarget.classList.add('far');
+                showActionMessage("تمت إزالة المتابع من المفضلة");
+            }
+            
+            // في التطبيق الحقيقي: إرسال طلب للخادم لتحديث حالة التمييز
+        }
+
+        // إظهار رسالة إجراء مع الاختفاء التلقائي
+        function showActionMessage(message) {
+            const indicator = document.getElementById('actionIndicator');
+            const messageEl = document.getElementById('actionMessage');
+            
+            messageEl.textContent = message;
+            indicator.classList.add('show');
+            
+            setTimeout(() => {
+                indicator.classList.remove('show');
+            }, 2000);
+        }
+
+        // البحث في قائمة المتابعين
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            
+            const filteredData = followingData.filter(following => 
+                following.name.toLowerCase().includes(searchTerm) ||
+                following.username.toLowerCase().includes(searchTerm) ||
+                following.description.toLowerCase().includes(searchTerm) ||
+                following.tags.some(tag => tag.toLowerCase().includes(searchTerm))
+            );
+            
+            renderFollowingList(filteredData, 'allFollowingList');
+            
+            const filteredMarketers = filteredData.filter(item => item.type === 'marketer');
+            renderFollowingList(filteredMarketers, 'marketersFollowingList');
+            
+            const filteredCompanies = filteredData.filter(item => item.type === 'company');
+            renderFollowingList(filteredCompanies, 'companiesFollowingList');
+            
+            // تحديث عدد النتائج
+            document.querySelector('#all-tab .badge').textContent = filteredData.length;
+            document.querySelector('#marketers-tab .badge').textContent = filteredMarketers.length;
+            document.querySelector('#companies-tab .badge').textContent = filteredCompanies.length;
+        });
+
+        // تصفية البيانات باستخدام الشرائح
+        document.querySelectorAll('.filter-chip').forEach(chip => {
+            chip.addEventListener('click', function() {
+                // تحديث المظهر النشط
+                document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+                this.classList.add('active');
+                
+                const filter = this.dataset.filter;
+                let filteredData = [...followingData];
+                
+                // تطبيق التصفية
+                switch(filter) {
+                    case 'marketers':
+                        filteredData = filteredData.filter(item => item.type === 'marketer');
+                        break;
+                    case 'companies':
+                        filteredData = filteredData.filter(item => item.type === 'company');
+                        break;
+                    case 'starred':
+                        filteredData = filteredData.filter(item => item.starred);
+                        break;
+                    case 'verified':
+                        filteredData = filteredData.filter(item => item.verified);
+                        break;
+                    case 'recent':
+                        filteredData.sort((a, b) => b.id - a.id);
+                        break;
+                    case 'active':
+                        filteredData.sort((a, b) => {
+                            if (a.lastActive === 'اليوم' && b.lastActive !== 'اليوم') return -1;
+                            if (a.lastActive !== 'اليوم' && b.lastActive === 'اليوم') return 1;
+                            if (a.lastActive === 'أمس' && b.lastActive !== 'أمس' && b.lastActive !== 'اليوم') return -1;
+                            if (a.lastActive !== 'أمس' && a.lastActive !== 'اليوم' && b.lastActive === 'أمس') return 1;
+                            return 0;
+                        });
+                        break;
+                }
+                
+                renderFollowingList(filteredData, 'allFollowingList');
+            });
+        });
+
+        // تحديث الاقتراحات
+        document.querySelector('.suggestion-refresh').addEventListener('click', function() {
+            const suggestionsList = document.getElementById('suggestionsList');
+            
+            // إظهار حالة التحميل
+            suggestionsList.innerHTML = `
+                <div class="following-card p-3 mb-3 skeleton-loader" style="height: 100px;"></div>
+                <div class="following-card p-3 mb-3 skeleton-loader" style="height: 100px;"></div>
+            `;
+            
+            // محاكاة تأخير طلب الشبكة
+            setTimeout(() => {
+                // ترتيب عشوائي للاقتراحات
+                const shuffledSuggestions = [...suggestionsData].sort(() => 0.5 - Math.random());
+                renderSuggestions(shuffledSuggestions);
+                showActionMessage("تم تحديث الاقتراحات");
+            }, 1000);
+        });
+
+        // تنفيذ سحب لتحديث (Pull to refresh)
+        let startY = 0;
+        let isDragging = false;
+
+        document.addEventListener('touchstart', function(e) {
+            const scrollTop = document.scrollingElement.scrollTop;
+            startY = e.touches[0].clientY;
+            
+            // فقط إذا كان المستخدم في أعلى الصفحة
+            if (scrollTop <= 0) {
+                isDragging = true;
+            }
+        }, { passive: true });
+
+        document.addEventListener('touchmove', function(e) {
+            if (!isDragging) return;
+            
+            const currentY = e.touches[0].clientY;
+            const diff = currentY - startY;
+            
+            // إذا كان السحب للأسفل
+            if (diff > 0) {
+                const refreshIndicator = document.getElementById('refreshIndicator');
+                
+                if (diff > 70) {
+                    refreshIndicator.classList.add('visible');
+                }
+            }
+        }, { passive: true });
+
+        document.addEventListener('touchend', function() {
+            if (!isDragging) return;
+            
+            const refreshIndicator = document.getElementById('refreshIndicator');
+            
+            if (refreshIndicator.classList.contains('visible')) {
+                // تنفيذ التحديث
+                setTimeout(() => {
+                    initializeFollowingLists();
+                    refreshIndicator.classList.remove('visible');
+                    showActionMessage("تم تحديث القائمة");
+                }, 1000);
+            }
+            
+            isDragging = false;
+        }, { passive: true });
+
+        // تهيئة الصفحة
+        initializeFollowingLists();
+    });
+</script>
+{% endblock %}

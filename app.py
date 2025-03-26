@@ -374,6 +374,11 @@ def marketers_ai_conversation_analyzer():
     # صفحة محلل المحادثات
     return render_template('marketers/ai-assistant/conversation-analyzer.html')
 
+@app.route('/marketers/ai-assistant/conversation-analyzer.html')
+def marketers_ai_conversation_analyzer_html():
+    # صفحة محلل المحادثات (مع لاحقة .html)
+    return render_template('marketers/ai-assistant/conversation-analyzer.html')
+
 @app.route('/marketers/ai-assistant/market-analyzer')
 def marketers_ai_market_analyzer():
     # صفحة محلل السوق

@@ -8,9 +8,22 @@
         background-color: var(--background-color);
         color: var(--text-color);
         padding-bottom: 0 !important;
-        margin-bottom: 0;
-        transition: background-color 0.3s ease, color 0.3s ease;
-        overflow-y: auto;
+        margin: 0;
+        font-family: 'Tajawal', sans-serif;
+        overflow-x: hidden;
+        direction: rtl;
+    }
+    
+    :root {
+        --primary-color: #d4af37;
+        --secondary-color: #4a4a4a;
+        --background-color: #000000;
+        --text-color: #ffffff;
+        --highlight-color: #e0c463;
+        --error-color: #ff6b6b;
+        --success-color: #51cf66;
+        --info-color: #339af0;
+        --warning-color: #fcc419;
     }
     
     .video-feed {
@@ -447,7 +460,7 @@
         border: none;
     }
     
-    /* تنسيق شاشة المشاركة */
+    /* تنسيقات شاشة المشاركة */
     .share-option {
         background-color: rgba(0, 0, 0, 0.2);
         padding: 15px;
@@ -467,7 +480,7 @@
         background-color: rgba(0, 0, 0, 0.3);
     }
     
-    /* تنسيق شاشة التواصل مع الوكيل */
+    /* تنسيقات شاشة التواصل مع الوكيل */
     #contactAgentForm .form-control {
         background-color: rgba(0, 0, 0, 0.15) !important;
         border: 1px solid rgba(255, 255, 255, 0.1);
@@ -536,14 +549,724 @@
         color: white;
         backdrop-filter: blur(5px);
     }
+    
+    /* زر البحث والفلترة */
+    .search-filter-button {
+        position: absolute;
+        right: 20px;
+        top: 100px;
+        width: 45px;
+        height: 45px;
+        background-color: rgba(255, 255, 255, 0.3);
+        border: none;
+        border-radius: 50%;
+        color: white;
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.2s;
+        backdrop-filter: blur(5px);
+    }
+    
+    .search-filter-button:hover {
+        background-color: rgba(255, 255, 255, 0.5);
+        transform: scale(1.1);
+    }
+    
+    .search-filter-button.active {
+        background-color: rgba(212, 175, 55, 0.7);
+    }
+    
+    /* تنسيقات شاشة البحث والفلترة */
+    #searchFilterScreen .form-label {
+        color: #fff;
+        font-weight: 600; /* زيادة سماكة الخط */
+        margin-bottom: 5px;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7); /* زيادة قوة التظليل */
+    }
+    
+    #searchFilterScreen .form-control,
+    #searchFilterScreen .form-select {
+        background-color: rgba(255, 255, 255, 0.9); /* زيادة تعتيم الخلفية */
+        color: #000; /* جعل النص أسود للتباين */
+        border: 1px solid var(--primary-color);
+        font-weight: 500; /* خط أكثر سماكة */
+    }
+    
+    #searchFilterScreen .form-control:focus,
+    #searchFilterScreen .form-select:focus {
+        box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
+        border-color: rgba(212, 175, 55, 0.5);
+    }
+    
+    #searchFilterScreen .btn-filter {
+        background-color: rgba(212, 175, 55, 0.5);
+        color: white;
+        border-radius: 10px;
+        padding: 12px;
+        font-weight: 600;
+        width: 100%;
+        transition: all 0.2s ease;
+        border: none;
+    }
+    
+    #searchFilterScreen .btn-filter:hover {
+        background-color: rgba(212, 175, 55, 0.7);
+        transform: translateY(-2px);
+    }
+    
+    #searchFilterScreen .btn-reset {
+        background-color: rgba(0, 0, 0, 0.3);
+        color: white;
+        border-radius: 10px;
+        padding: 12px;
+        font-weight: 600;
+        width: 100%;
+        transition: all 0.2s ease;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    #searchFilterScreen .btn-reset:hover {
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+    
+    .filter-chip {
+        display: inline-block;
+        padding: 5px 12px;
+        background-color: rgba(212, 175, 55, 0.3);
+        border-radius: 20px;
+        margin-right: 5px;
+        margin-bottom: 5px;
+        font-size: 14px;
+        color: #fff;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    
+    .filter-chip:hover {
+        background-color: rgba(212, 175, 55, 0.5);
+    }
+    
+    .filter-chip.active {
+        background-color: rgba(212, 175, 55, 0.7);
+    }
+    
+    .filter-chip i {
+        margin-right: 5px;
+    }
+    
+    .range-slider-container {
+        padding: 0 10px;
+    }
+    
+    .slider-values {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 5px;
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 14px;
+    }
+    
+    /* تنسيقات تصنيفات الفيديوهات */
+    .video-categories {
+        position: fixed;
+        top: 20px;
+        left: 0;
+        right: 0;
+        display: flex;
+        justify-content: center;
+        z-index: 10;
+        padding: 0 20px;
+    }
+    
+    .category-tabs {
+        display: flex;
+        background-color: rgba(0, 0, 0, 0.4);
+        border-radius: 30px;
+        padding: 5px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        backdrop-filter: blur(10px);
+    }
+    
+    .category-tab {
+        padding: 8px 20px;
+        border-radius: 25px;
+        cursor: pointer;
+        color: rgba(255, 255, 255, 0.7);
+        font-weight: 600;
+        transition: all 0.3s ease;
+        position: relative;
+        white-space: nowrap;
+    }
+    
+    .category-tab.active {
+        background-color: rgba(212, 175, 55, 0.7);
+        color: white;
+        box-shadow: 0 2px 10px rgba(212, 175, 55, 0.3);
+    }
+    
+    .category-tab:hover:not(.active) {
+        background-color: rgba(255, 255, 255, 0.1);
+        color: white;
+    }
+    
+    /* تنسيقات توصيات العقارات */
+    .recommendation-badge {
+        position: absolute;
+        top: 150px;
+        right: 20px;
+        background-color: rgba(212, 175, 55, 0.7);
+        color: white;
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        z-index: 10;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        display: flex;
+        align-items: center;
+    }
+    
+    .recommendation-badge i {
+        margin-left: 5px;
+        font-size: 14px;
+    }
+    
+    .recommendation-reason {
+        background-color: rgba(0, 0, 0, 0.6);
+        border-radius: 10px;
+        padding: 12px 15px;
+        margin-top: 10px;
+        font-size: 14px;
+        color: white;
+        max-width: 300px;
+        position: absolute;
+        top: 180px;
+        right: 20px;
+        z-index: 10;
+        display: none;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(5px);
+    }
+    
+    .recommendation-badge:hover + .recommendation-reason {
+        display: block;
+    }
+    
+    /* تنسيقات الإشعارات */
+    .property-alert {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: rgba(255, 255, 255, 0.95);
+        border-radius: 15px;
+        padding: 15px;
+        width: 300px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+        animation: slideIn 0.5s forwards;
+        display: flex;
+        overflow: hidden;
+        color: #333;
+        border-right: 4px solid #D4AF37;
+    }
+    
+    .property-alert-image {
+        width: 70px;
+        height: 70px;
+        border-radius: 10px;
+        object-fit: cover;
+        margin-left: 15px;
+    }
+    
+    .property-alert-content {
+        flex: 1;
+    }
+    
+    .property-alert-title {
+        font-weight: 700;
+        margin-bottom: 5px;
+        font-size: 16px;
+    }
+    
+    .property-alert-desc {
+        font-size: 13px;
+        color: #666;
+        margin-bottom: 10px;
+    }
+    
+    .property-alert-action {
+        color: #D4AF37;
+        font-weight: 600;
+        font-size: 13px;
+        cursor: pointer;
+    }
+    
+    .property-alert-close {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        font-size: 12px;
+        color: #999;
+        cursor: pointer;
+    }
+    
+    @keyframes slideIn {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+    
+    @keyframes slideOut {
+        from {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        to {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+    }
+    
+    /* مؤشر السحب للأعلى */
+    .swipe-indicator {
+        position: absolute;
+        bottom: 80px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        z-index: 10;
+        opacity: 0;
+        transition: opacity 0.5s ease;
+        pointer-events: none;
+    }
+    
+    .swipe-indicator.visible {
+        opacity: 1;
+    }
+    
+    .swipe-arrow {
+        width: 40px;
+        height: 40px;
+        background-color: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        animation: bounce 1.5s infinite;
+        margin-bottom: 5px;
+        backdrop-filter: blur(5px);
+    }
+    
+    .swipe-arrow i {
+        color: white;
+        font-size: 20px;
+    }
+    
+    .swipe-text {
+        color: white;
+        font-size: 14px;
+        font-weight: 600;
+        text-shadow: 0 2px 5px rgba(0, 0, 0, 0.8);
+    }
+    
+    @keyframes bounce {
+        0%, 20%, 50%, 80%, 100% {
+            transform: translateY(0);
+        }
+        40% {
+            transform: translateY(-10px);
+        }
+        60% {
+            transform: translateY(-5px);
+        }
+    }
+    
+    /* تنسيقات البحث المتقدم */
+    #searchFilterScreen {
+        max-width: 100%;
+        width: 100%;
+        height: 100%;
+        overflow-y: auto;
+        background-color: var(--dark-bg-color);
+    }
+    
+    .search-filter-content {
+        padding: 15px;
+    }
+    
+    .search-tabs {
+        display: flex;
+        overflow-x: auto;
+        background-color: rgba(0, 0, 0, 0.2);
+        border-radius: 10px;
+        margin-bottom: 15px;
+    }
+    
+    .search-tab {
+        flex: 1;
+        text-align: center;
+        padding: 12px 15px;
+        color: rgba(255, 255, 255, 0.7);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        white-space: nowrap;
+    }
+    
+    .search-tab.active {
+        color: #fff;
+        background-color: rgba(212, 175, 55, 0.2);
+    }
+    
+    .search-tab.active::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background-color: var(--primary-color);
+    }
+    
+    .search-tab i {
+        margin-right: 5px;
+    }
+    
+    .btn-search {
+        background-color: var(--primary-color);
+        color: #fff;
+        border: none;
+    }
+    
+    /* تنسيقات البحث الصوتي */
+    .voice-search-container {
+        background-color: rgba(0, 0, 0, 0.2);
+        border-radius: 10px;
+    }
+    
+    .voice-icon-container {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background-color: var(--primary-color);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0 auto;
+        position: relative;
+        cursor: pointer;
+    }
+    
+    .voice-icon {
+        font-size: 32px;
+        color: #fff;
+    }
+    
+    .voice-icon-container.listening::before {
+        content: '';
+        position: absolute;
+        top: -5px;
+        left: -5px;
+        right: -5px;
+        bottom: -5px;
+        border-radius: 50%;
+        border: 2px solid var(--primary-color);
+        animation: pulse 1.5s infinite;
+    }
+    
+    @keyframes pulse {
+        0% {
+            transform: scale(1);
+            opacity: 1;
+        }
+        50% {
+            transform: scale(1.2);
+            opacity: 0.5;
+        }
+        100% {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+    
+    .voice-instruction {
+        color: rgba(255, 255, 255, 0.8);
+    }
+    
+    .voice-status {
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.6);
+    }
+    
+    .btn-voice-search {
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 8px 20px;
+        border-radius: 20px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+    
+    .voice-result {
+        background-color: rgba(255, 255, 255, 0.1);
+        padding: 10px;
+        border-radius: 5px;
+        color: #fff;
+        min-height: 40px;
+    }
+    
+    /* تنسيقات البحث بالصورة */
+    .upload-area {
+        border: 2px dashed rgba(212, 175, 55, 0.5);
+        border-radius: 10px;
+        padding: 30px;
+        text-align: center;
+        background-color: rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .upload-area:hover {
+        background-color: rgba(0, 0, 0, 0.3);
+        border-color: var(--primary-color);
+    }
+    
+    .upload-icon {
+        font-size: 40px;
+        color: var(--primary-color);
+        margin-bottom: 10px;
+    }
+    
+    .image-preview {
+        position: relative;
+        max-width: 300px;
+        margin: 0 auto;
+    }
+    
+    .btn-remove-image {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background-color: rgba(0, 0, 0, 0.5);
+        color: white;
+        border: none;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-remove-image:hover {
+        background-color: rgba(255, 0, 0, 0.5);
+    }
+    
+    .btn-image-search {
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 8px 20px;
+        border-radius: 20px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+    
+    .btn-image-search:disabled {
+        background-color: #555;
+        cursor: not-allowed;
+    }
+    
+    /* تنسيقات البحث بالخريطة */
+    .search-map {
+        width: 100%;
+        height: 300px;
+        border-radius: 10px;
+        background-color: #e5e3df;
+        border: 2px solid var(--primary-color);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    .btn-clear-map {
+        background-color: rgba(255, 255, 255, 0.2);
+        color: #fff;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: 12px;
+    }
+    
+    .selected-areas {
+        background-color: rgba(0, 0, 0, 0.2);
+        border-radius: 5px;
+        padding: 10px;
+        max-height: 100px;
+        overflow-y: auto;
+    }
+    
+    /* تنسيقات الأكورديون */
+    .accordion-item {
+        background-color: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        margin-bottom: 8px;
+    }
+    
+    .accordion-button {
+        background-color: rgba(0, 0, 0, 0.2);
+        color: #fff;
+        box-shadow: none;
+        padding: 12px 15px;
+        font-weight: 500;
+    }
+    
+    .accordion-button:not(.collapsed) {
+        background-color: rgba(212, 175, 55, 0.1);
+        color: var(--primary-color);
+    }
+    
+    .accordion-button::after {
+        filter: brightness(4);
+    }
+    
+    .accordion-button:not(.collapsed)::after {
+        filter: brightness(1.5) sepia(1) saturate(5) hue-rotate(15deg);
+    }
+    
+    .accordion-body {
+        background-color: rgba(0, 0, 0, 0.1);
+        padding: 15px;
+    }
+    
+    .form-label.small {
+        font-size: 12px;
+        margin-bottom: 5px;
+        color: rgba(255, 255, 255, 0.8);
+    }
+    
+    /* تحسين شكل الفورم */
+    .form-control, .form-select {
+        background-color: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: #fff;
+    }
+    
+    .form-control:focus, .form-select:focus {
+        background-color: rgba(255, 255, 255, 0.15);
+        border-color: var(--primary-color);
+        color: #fff;
+        box-shadow: 0 0 0 0.25rem rgba(212, 175, 55, 0.25);
+    }
+    
+    .form-control::placeholder {
+        color: rgba(255, 255, 255, 0.5);
+    }
+    
+    .form-check-input {
+        background-color: rgba(255, 255, 255, 0.2);
+        border-color: rgba(255, 255, 255, 0.3);
+    }
+    
+    .form-check-input:checked {
+        background-color: var(--primary-color);
+        border-color: var(--primary-color);
+    }
+    
+    /* تحسين أزرار الفلترة */
+    .btn-filter, .btn-reset {
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-weight: 500;
+        transition: all 0.3s;
+        border: none;
+    }
+    
+    .btn-filter {
+        background-color: var(--primary-color);
+        color: #000;
+    }
+    
+    .btn-reset {
+        background-color: rgba(255, 255, 255, 0.2);
+        color: #fff;
+    }
+    
+    .btn-filter:hover {
+        background-color: #e6c23b;
+        transform: translateY(-2px);
+    }
+    
+    .btn-reset:hover {
+        background-color: rgba(255, 255, 255, 0.3);
+    }
 </style>
+{% endblock %}
+
+{% block extra_head %}
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<!-- Leaflet - للخرائط -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js"></script>
 {% endblock %}
 
 {% block content %}
 <div class="video-feed" id="videoFeed">
+    <!-- تصنيفات الفيديوهات -->
+    <div class="video-categories">
+        <div class="category-tabs">
+            <div class="category-tab active" data-category="recent" onclick="changeCategory('recent')">
+                <i class="fas fa-clock"></i> أحدث العقارات
+            </div>
+            <div class="category-tab" data-category="popular" onclick="changeCategory('popular')">
+                <i class="fas fa-fire"></i> الأكثر مشاهدة
+            </div>
+            <div class="category-tab" data-category="recommended" onclick="changeCategory('recommended')">
+                <i class="fas fa-magic"></i> مقترحة لك
+            </div>
+        </div>
+    </div>
+    
+    <!-- زر البحث والفلترة -->
+    <button class="search-filter-button" onclick="showInteractionScreen('searchFilterScreen')">
+        <i class="fas fa-search"></i>
+    </button>
+    
+    <div class="swipe-indicator">
+        <div class="swipe-arrow">
+            <i class="fas fa-chevron-up"></i>
+        </div>
+        <div class="swipe-text">اسحب للأعلى</div>
+    </div>
+    
     {% for property in properties %}
-    <div class="video-container" data-property-id="{{ property.id }}">
+    <div class="video-container" data-property-id="{{ property.id }}" data-category="{% if loop.index0 < 3 %}recent{% elif loop.index0 < 6 %}popular{% else %}recommended{% endif %}">
         <div style="position: relative; width: 100%; height: 100%;">
+            <!-- شارة التوصية الذكية (تظهر فقط في فئة "مقترحة لك") -->
+            {% if loop.index0 > 5 %}
+            <div class="recommendation-badge">
+                <span>موصى به لك</span>
+                <i class="fas fa-info-circle"></i>
+            </div>
+            <div class="recommendation-reason">
+                هذا العقار مطابق لتفضيلاتك: {% if loop.index0 == 6 %}موقع مميز في نفس المنطقة المفضلة لديك{% elif loop.index0 == 7 %}مساحة وعدد غرف مشابهة لعقارات أعجبتك سابقاً{% else %}نطاق سعري مناسب لبحثك الأخير{% endif %}
+            </div>
+            {% endif %}
             <iframe 
                 class="property-video"
                 {% if loop.index0 == 0 %}
@@ -607,6 +1330,9 @@
             </div>
             <div class="action-button save-button" onclick="saveProperty('{{ property.id }}', this)">
                 <i class="fas fa-bookmark"></i>
+            </div>
+            <div class="action-button action-search" onclick="showInteractionScreen('searchFilterScreen')">
+                <i class="fas fa-search"></i>
             </div>
         </div>
     </div>
@@ -684,6 +1410,7 @@
         <div class="form-group mb-3">
             <label for="contactSubject" class="mb-2">الموضوع</label>
             <select class="form-control" id="contactSubject">
+                <option value="">اختر الموضوع</option>
                 <option value="inquiry">استفسار عن العقار</option>
                 <option value="visit">طلب معاينة</option>
                 <option value="price">استفسار عن السعر</option>
@@ -702,7 +1429,404 @@
     </form>
 </div>
 
-<!-- عنصر الإشعارات -->
+<!-- نافذة البحث والفلترة -->
+<div id="searchFilterScreen" class="interaction-screen">
+    <div class="interaction-header">
+        <h3><i class="fas fa-search me-2"></i> البحث المتقدم</h3>
+        <button class="close-interaction" onclick="hideInteractionScreen('searchFilterScreen')">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+    <div class="search-filter-content">
+        <form id="filterForm">
+            <!-- طرق البحث المتعددة -->
+            <div class="search-options mb-4">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="search-tabs">
+                            <div class="search-tab active" data-search-type="text" onclick="switchSearchType('text')">
+                                <i class="fas fa-keyboard"></i> نص
+                            </div>
+                            <div class="search-tab" data-search-type="voice" onclick="switchSearchType('voice')">
+                                <i class="fas fa-microphone"></i> صوت
+                            </div>
+                            <div class="search-tab" data-search-type="image" onclick="switchSearchType('image')">
+                                <i class="fas fa-image"></i> صورة
+                            </div>
+                            <div class="search-tab" data-search-type="map" onclick="switchSearchType('map')">
+                                <i class="fas fa-map-marker-alt"></i> خريطة
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- حقول البحث (تظهر/تختفي حسب نوع البحث المختار) -->
+            <div id="textSearchSection" class="search-section">
+                <!-- البحث بالكلمات المفتاحية -->
+                <div class="mb-3">
+                    <label for="keywordSearch" class="form-label">البحث بالكلمات المفتاحية</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="keywordSearch" placeholder="ابحث باسم الحي، المدينة، المسوق، الشركة...">
+                        <button class="btn btn-search" type="button">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="voiceSearchSection" class="search-section" style="display: none;">
+                <div class="voice-search-container text-center p-4">
+                    <div class="voice-icon-container mb-3">
+                        <i class="fas fa-microphone voice-icon"></i>
+                    </div>
+                    <p class="voice-instruction">اضغط على الأيقونة وتحدث عما تبحث عنه</p>
+                    <p class="voice-status" id="voiceStatus">جاهز للاستماع...</p>
+                    <button type="button" class="btn-voice-search mt-3" id="startVoiceSearch">
+                        ابدأ البحث الصوتي
+                    </button>
+                    <div class="voice-result mt-3" id="voiceResult"></div>
+                </div>
+            </div>
+
+            <div id="imageSearchSection" class="search-section" style="display: none;">
+                <div class="image-search-container text-center p-3">
+                    <div class="upload-area mb-3" id="uploadArea">
+                        <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                        <p>اسحب صورة هنا أو انقر للتحميل</p>
+                        <input type="file" id="imageUpload" accept="image/*" class="d-none">
+                    </div>
+                    <div class="image-preview" id="imagePreview" style="display: none;">
+                        <img src="" alt="معاينة الصورة" id="previewImg" class="img-fluid rounded">
+                        <button type="button" class="btn-remove-image" id="removeImage">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <button type="button" class="btn-image-search mt-3" id="startImageSearch" disabled>
+                        ابحث عن عقارات مشابهة
+                    </button>
+                </div>
+            </div>
+
+            <div id="mapSearchSection" class="search-section" style="display: none;">
+                <div class="map-search-container p-2">
+                    <div id="searchMap" class="search-map mb-3"></div>
+                    <div class="map-controls mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="drawArea">
+                            <label class="form-check-label" for="drawArea">
+                                رسم منطقة مخصصة
+                            </label>
+                        </div>
+                        <button type="button" class="btn-clear-map mt-2" id="clearMapSelection">
+                            <i class="fas fa-eraser me-1"></i> مسح التحديد
+                        </button>
+                    </div>
+                    <div class="selected-areas mb-3" id="selectedAreas">
+                        <p class="text-muted small">لم يتم تحديد مناطق بعد</p>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="my-4">
+
+            <!-- عناصر الفلترة المتقدمة -->
+            <div class="accordion mb-3" id="filterAccordion">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingPropertyType">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePropertyType" aria-expanded="true" aria-controls="collapsePropertyType">
+                            نوع العقار
+                        </button>
+                    </h2>
+                    <div id="collapsePropertyType" class="accordion-collapse collapse show" aria-labelledby="headingPropertyType" data-bs-parent="#filterAccordion">
+                        <div class="accordion-body">
+                            <div class="d-flex flex-wrap">
+                                <div class="filter-chip" data-type="flat" onclick="toggleFilterChip(this)">شقة</div>
+                                <div class="filter-chip" data-type="villa" onclick="toggleFilterChip(this)">فيلا</div>
+                                <div class="filter-chip" data-type="land" onclick="toggleFilterChip(this)">أرض</div>
+                                <div class="filter-chip" data-type="office" onclick="toggleFilterChip(this)">مكتب</div>
+                                <div class="filter-chip" data-type="commercial" onclick="toggleFilterChip(this)">تجاري</div>
+                                <div class="filter-chip" data-type="farm" onclick="toggleFilterChip(this)">مزرعة</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingPrice">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePrice" aria-expanded="false" aria-controls="collapsePrice">
+                            نطاق السعر
+                        </button>
+                    </h2>
+                    <div id="collapsePrice" class="accordion-collapse collapse" aria-labelledby="headingPrice" data-bs-parent="#filterAccordion">
+                        <div class="accordion-body">
+                            <div class="price-range-controls">
+                                <div class="row mb-3">
+                                    <div class="col-6">
+                                        <label for="minPriceInput" class="form-label small">الحد الأدنى (ريال)</label>
+                                        <input type="number" class="form-control form-control-sm" id="minPriceInput" min="0" step="1000">
+                                    </div>
+                                    <div class="col-6">
+                                        <label for="maxPriceInput" class="form-label small">الحد الأقصى (ريال)</label>
+                                        <input type="number" class="form-control form-control-sm" id="maxPriceInput" min="0" step="1000">
+                                    </div>
+                                </div>
+                                <div class="range-slider-container">
+                                    <div id="priceRangeSlider" class="my-3"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingRooms">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRooms" aria-expanded="false" aria-controls="collapseRooms">
+                            الغرف والمواصفات
+                        </button>
+                    </h2>
+                    <div id="collapseRooms" class="accordion-collapse collapse" aria-labelledby="headingRooms" data-bs-parent="#filterAccordion">
+                        <div class="accordion-body">
+                            <div class="row g-3">
+                                <div class="col-6">
+                                    <label class="form-label small">عدد الغرف</label>
+                                    <div class="d-flex flex-wrap">
+                                        <div class="filter-chip" data-rooms="studio" onclick="toggleFilterChip(this)">استوديو</div>
+                                        <div class="filter-chip" data-rooms="1" onclick="toggleFilterChip(this)">1</div>
+                                        <div class="filter-chip" data-rooms="2" onclick="toggleFilterChip(this)">2</div>
+                                        <div class="filter-chip" data-rooms="3" onclick="toggleFilterChip(this)">3</div>
+                                        <div class="filter-chip" data-rooms="4" onclick="toggleFilterChip(this)">4</div>
+                                        <div class="filter-chip" data-rooms="5+" onclick="toggleFilterChip(this)">5+</div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <label class="form-label small">عدد الحمامات</label>
+                                    <div class="d-flex flex-wrap">
+                                        <div class="filter-chip" data-bathrooms="1" onclick="toggleFilterChip(this)">1</div>
+                                        <div class="filter-chip" data-bathrooms="2" onclick="toggleFilterChip(this)">2</div>
+                                        <div class="filter-chip" data-bathrooms="3" onclick="toggleFilterChip(this)">3</div>
+                                        <div class="filter-chip" data-bathrooms="4+" onclick="toggleFilterChip(this)">4+</div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label small">المساحة (متر مربع)</label>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <input type="number" class="form-control form-control-sm" id="minArea" placeholder="الحد الأدنى">
+                                        </div>
+                                        <div class="col-6">
+                                            <input type="number" class="form-control form-control-sm" id="maxArea" placeholder="الحد الأقصى">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingLocation">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLocation" aria-expanded="false" aria-controls="collapseLocation">
+                            الموقع
+                        </button>
+                    </h2>
+                    <div id="collapseLocation" class="accordion-collapse collapse" aria-labelledby="headingLocation" data-bs-parent="#filterAccordion">
+                        <div class="accordion-body">
+                            <div class="location-filters">
+                                <div class="mb-3">
+                                    <label for="citySelect" class="form-label small">المدينة</label>
+                                    <select class="form-select form-select-sm" id="citySelect">
+                                        <option value="">اختر المدينة</option>
+                                        <option value="riyadh">الرياض</option>
+                                        <option value="jeddah">جدة</option>
+                                        <option value="dammam">الدمام</option>
+                                        <option value="makkah">مكة المكرمة</option>
+                                        <option value="madinah">المدينة المنورة</option>
+                                        <option value="abha">أبها</option>
+                                        <option value="taif">الطائف</option>
+                                        <option value="khobar">الخبر</option>
+                                        <option value="tabuk">تبوك</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="districtSelect" class="form-label small">الحي</label>
+                                    <select class="form-select form-select-sm" id="districtSelect" disabled>
+                                        <option value="">اختر الحي</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" id="nearbySearch">
+                                    <label class="form-check-label small" for="nearbySearch">
+                                        البحث في المناطق المجاورة
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingAmenities">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAmenities" aria-expanded="false" aria-controls="collapseAmenities">
+                            المرافق ووسائل الراحة
+                        </button>
+                    </h2>
+                    <div id="collapseAmenities" class="accordion-collapse collapse" aria-labelledby="headingAmenities" data-bs-parent="#filterAccordion">
+                        <div class="accordion-body">
+                            <div class="amenities-list">
+                                <div class="row g-2">
+                                    <div class="col-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="amenityPool">
+                                            <label class="form-check-label" for="amenityPool">
+                                                <i class="fas fa-swimming-pool text-primary me-1"></i> مسبح
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="amenityParking">
+                                            <label class="form-check-label" for="amenityParking">
+                                                <i class="fas fa-parking text-primary me-1"></i> موقف سيارات
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="amenityGarden">
+                                            <label class="form-check-label" for="amenityGarden">
+                                                <i class="fas fa-leaf text-primary me-1"></i> حديقة
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="amenityElevator">
+                                            <label class="form-check-label" for="amenityElevator">
+                                                <i class="fas fa-elevator text-primary me-1"></i> مصعد
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="amenitySecurity">
+                                            <label class="form-check-label" for="amenitySecurity">
+                                                <i class="fas fa-shield-alt text-primary me-1"></i> أمن 24 ساعة
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="amenityGym">
+                                            <label class="form-check-label" for="amenityGym">
+                                                <i class="fas fa-dumbbell text-primary me-1"></i> صالة رياضية
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="amenityAC">
+                                            <label class="form-check-label" for="amenityAC">
+                                                <i class="fas fa-snowflake text-primary me-1"></i> تكييف مركزي
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="amenityBalcony">
+                                            <label class="form-check-label" for="amenityBalcony">
+                                                <i class="fas fa-door-open text-primary me-1"></i> شرفة
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingAdvanced">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAdvanced" aria-expanded="false" aria-controls="collapseAdvanced">
+                            خيارات متقدمة
+                        </button>
+                    </h2>
+                    <div id="collapseAdvanced" class="accordion-collapse collapse" aria-labelledby="headingAdvanced" data-bs-parent="#filterAccordion">
+                        <div class="accordion-body">
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <label class="form-label small">حالة العقار</label>
+                                    <div class="d-flex flex-wrap">
+                                        <div class="filter-chip" data-property-status="new" onclick="toggleFilterChip(this)">جديد</div>
+                                        <div class="filter-chip" data-property-status="resale" onclick="toggleFilterChip(this)">إعادة بيع</div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label small">الغرض</label>
+                                    <div class="d-flex flex-wrap">
+                                        <div class="filter-chip" data-purpose="sale" onclick="toggleFilterChip(this)">للبيع</div>
+                                        <div class="filter-chip" data-purpose="rent" onclick="toggleFilterChip(this)">للإيجار</div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="verifiedOnly">
+                                        <label class="form-check-label" for="verifiedOnly">
+                                            العقارات الموثقة فقط
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="virtualTourOnly">
+                                        <label class="form-check-label" for="virtualTourOnly">
+                                            عقارات مع جولة افتراضية فقط
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="newListingsOnly">
+                                        <label class="form-check-label" for="newListingsOnly">
+                                            العقارات المضافة حديثاً (آخر 30 يوم)
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- أزرار التطبيق وإعادة التعيين */
+            <div class="d-flex justify-content-between mt-4">
+                <button type="button" class="btn-reset" onclick="resetFilters()">
+                    <i class="fas fa-undo me-1"></i> إعادة تعيين
+                </button>
+                <button type="button" class="btn-filter" onclick="applyFilters()">
+                    <i class="fas fa-filter me-1"></i> تطبيق الفلترة
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- الإشعارات الفورية للعقارات المطابقة -->
+<div id="propertyMatchAlert" class="property-alert" style="display: none;">
+    <img src="/static/img/properties/sample-property.jpg" alt="عقار مطابق" class="property-alert-image">
+    <div class="property-alert-content">
+        <div class="property-alert-title">عقار جديد يطابق بحثك!</div>
+        <div class="property-alert-desc">تم إضافة عقار جديد يطابق معايير البحث الخاصة بك.</div>
+        <div class="property-alert-action" onclick="viewMatchedProperty()">عرض العقار</div>
+    </div>
+    <div class="property-alert-close" onclick="closePropertyAlert()">
+        <i class="fas fa-times"></i>
+    </div>
+</div>
+
+<!-- عنصر الإشعارات */
 <div id="notification" class="notification"></div>
 {% endblock %}
 
@@ -711,27 +1835,265 @@
 <script src="{{ url_for('static', filename='js/video-feed.js') }}"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // تحقق من وجود عناصر توست
+        if (!document.getElementById('appToast')) {
+            const toastContainer = document.createElement('div');
+            toastContainer.id = 'appToast';
+            toastContainer.className = 'toast-container position-fixed top-0 end-0 p-3';
+            document.body.appendChild(toastContainer);
+        }
+        
+        // تهيئة أول فيديو وجعله نشطًا
+        const firstVideo = document.querySelector('.video-container');
+        if (firstVideo) {
+            firstVideo.classList.add('active');
+            const videoElement = firstVideo.querySelector('video');
+            if (videoElement) {
+                videoElement.currentTime = 0;
+                videoElement.play().catch(error => {
+                    console.warn('لم يتم تشغيل الفيديو تلقائيًا:', error);
+                });
+            }
+        }
+        
+        // تهيئة وظائف البحث المتقدم
+        initializeVoiceSearch();
+        initializeImageSearch();
+        initializeMapSearch();
+        
+        // إضافة مستمع أحداث لزر تطبيق البحث
+        const applyFilterBtn = document.querySelector('.btn-apply');
+        if (applyFilterBtn) {
+            applyFilterBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                applyFilters();
+            });
+        }
+        
+        // ربط أزرار البحث بدالة إظهار شاشة البحث المتقدم
+        const searchButtons = document.querySelectorAll('.action-search');
+        searchButtons.forEach(btn => {
+            btn.addEventListener('click', function() {
+                showInteractionScreen('searchFilterScreen');
+            });
+        });
+        
+        console.log('تم تهيئة الصفحة بنجاح');
+    });
+    
+    // إعداد تفاعلات العميل
+    function setupClientInteractions() {
         // التحقق من حالة تسجيل الدخول
         if (!localStorage.getItem('clientLoggedIn')) {
             window.location.href = '/clients/login';
             return;
         }
         
-        // إضافة معالجات الأحداث لأزرار التفاعل
-        setupClientInteractions();
-    });
-    
-    // إعداد تفاعلات العميل
-    function setupClientInteractions() {
-        // معالجات الأحداث تمت إضافتها بالفعل من خلال onclick
+        // إعداد السحب بين الفيديوهات
+        setupVideoSwipe();
         
-        // إضافة معالج حدث لحقل النص في نموذج التعليق للإرسال عند الضغط على Enter
-        document.getElementById('commentText').addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                document.getElementById('submitComment').click();
+        // تحميل البيانات الأولية للمستخدم لنظام التوصيات
+        loadUserPreferences();
+        
+        // عرض إشعار عقار مطابق بعد 10 ثوان
+        setTimeout(showPropertyMatchAlert, 10000);
+    }
+
+    // إعداد تفاعلات تحريك الفيديوهات بالسحب
+    function setupVideoSwipe() {
+        const videoContainers = document.querySelectorAll('.video-container');
+        let startY, currentIndex = 0;
+        let isSwiping = false;
+        let touchStartTime;
+        
+        // إخفاء جميع الفيديوهات باستثناء الأول
+        videoContainers.forEach((container, index) => {
+            if (index !== 0) {
+                container.style.display = 'none';
             }
         });
+        
+        // إضافة مؤشر السحب للأعلى بعد ثانيتين
+        setTimeout(() => {
+            const swipeIndicator = document.querySelector('.swipe-indicator');
+            if (swipeIndicator) {
+                swipeIndicator.classList.add('visible');
+                
+                // إخفاء المؤشر بعد 3 ثواني
+                setTimeout(() => {
+                    swipeIndicator.classList.remove('visible');
+                }, 3000);
+            }
+        }, 2000);
+        
+        // إضافة معالجات أحداث اللمس
+        document.addEventListener('touchstart', function(e) {
+            startY = e.touches[0].clientY;
+            touchStartTime = new Date().getTime();
+            isSwiping = true;
+        });
+        
+        document.addEventListener('touchmove', function(e) {
+            if (!isSwiping) return;
+            
+            const currentY = e.touches[0].clientY;
+            const diff = startY - currentY;
+            
+            // تطبيق تأثير الانتقال أثناء السحب
+            if (diff > 0 && currentIndex < videoContainers.length - 1) { // سحب للأعلى
+                videoContainers[currentIndex].style.transform = `translateY(${-diff * 0.5}px)`;
+            } else if (diff < 0 && currentIndex > 0) { // سحب للأسفل
+                videoContainers[currentIndex].style.transform = `translateY(${-diff * 0.5}px)`;
+            }
+        });
+        
+        document.addEventListener('touchend', function(e) {
+            if (!isSwiping) return;
+            
+            const touchEndTime = new Date().getTime();
+            const swipeDuration = touchEndTime - touchStartTime;
+            
+            const touchEnd = e.changedTouches[0].clientY;
+            const diff = startY - touchEnd;
+            
+            // إذا كانت حركة السحب سريعة بما فيه الكفاية أو كانت المسافة كبيرة بما فيه الكفاية
+            const swipeThreshold = 100;
+            const quickSwipe = swipeDuration < 300 && Math.abs(diff) > 30;
+            
+            if ((diff > swipeThreshold || (diff > 0 && quickSwipe)) && currentIndex < videoContainers.length - 1) {
+                // سحب للأعلى - الانتقال للفيديو التالي
+                videoContainers[currentIndex].style.transform = 'translateY(-100%)';
+                videoContainers[currentIndex].style.transition = 'transform 0.3s ease-out';
+                
+                setTimeout(() => {
+                    videoContainers[currentIndex].style.display = 'none';
+                    videoContainers[currentIndex].style.transform = '';
+                    videoContainers[currentIndex].style.transition = '';
+                    currentIndex++;
+                    videoContainers[currentIndex].style.display = 'flex';
+                    videoContainers[currentIndex].style.transform = 'translateY(0)';
+                    
+                    // إيقاف الفيديو السابق وتشغيل الفيديو الحالي
+                    toggleVideoPlayback(currentIndex, currentIndex - 1);
+                }, 300);
+                
+            } else if ((diff < -swipeThreshold || (diff < 0 && quickSwipe)) && currentIndex > 0) {
+                // سحب للأسفل - الانتقال للفيديو السابق
+                videoContainers[currentIndex].style.transform = 'translateY(100%)';
+                videoContainers[currentIndex].style.transition = 'transform 0.3s ease-out';
+                
+                setTimeout(() => {
+                    videoContainers[currentIndex].style.display = 'none';
+                    videoContainers[currentIndex].style.transform = '';
+                    videoContainers[currentIndex].style.transition = '';
+                    currentIndex--;
+                    videoContainers[currentIndex].style.display = 'flex';
+                    videoContainers[currentIndex].style.transform = 'translateY(0)';
+                    
+                    // إيقاف الفيديو السابق وتشغيل الفيديو الحالي
+                    toggleVideoPlayback(currentIndex, currentIndex + 1);
+                }, 300);
+                
+            } else {
+                // إعادة الفيديو الحالي إلى موضعه الأصلي
+                videoContainers[currentIndex].style.transition = 'transform 0.3s ease-out';
+                videoContainers[currentIndex].style.transform = 'translateY(0)';
+                
+                setTimeout(() => {
+                    videoContainers[currentIndex].style.transition = '';
+                }, 300);
+            }
+            
+            isSwiping = false;
+        });
+    }
+    
+    // تبديل تشغيل وإيقاف الفيديوهات
+    function toggleVideoPlayback(playIndex, pauseIndex) {
+        const videoContainers = document.querySelectorAll('.video-container');
+        
+        // إيقاف الفيديو السابق
+        if (pauseIndex >= 0 && pauseIndex < videoContainers.length) {
+            const iframe = videoContainers[pauseIndex].querySelector('iframe');
+            if (iframe && iframe.contentWindow) {
+                // إرسال رسالة لإيقاف الفيديو
+                iframe.contentWindow.postMessage('{"method":"pause"}', '*');
+            }
+        }
+        
+        // تشغيل الفيديو الحالي
+        if (playIndex >= 0 && playIndex < videoContainers.length) {
+            const iframe = videoContainers[playIndex].querySelector('iframe');
+            if (iframe && iframe.contentWindow) {
+                // إرسال رسالة لتشغيل الفيديو
+                iframe.contentWindow.postMessage('{"method":"play"}', '*');
+            }
+        }
+    }
+    
+    // وظائف خاصة بتصنيفات الفيديوهات
+    function changeCategory(category) {
+        // تحديث الزر النشط
+        const tabs = document.querySelectorAll('.category-tab');
+        tabs.forEach(tab => {
+            if (tab.dataset.category === category) {
+                tab.classList.add('active');
+            } else {
+                tab.classList.remove('active');
+            }
+        });
+        
+        // إخفاء/إظهار الفيديوهات حسب الفئة
+        const videos = document.querySelectorAll('.video-container');
+        videos.forEach(video => {
+            if (video.dataset.category === category) {
+                video.style.display = 'flex';
+            } else {
+                video.style.display = 'none';
+            }
+        });
+        
+        // إظهار إشعار للمستخدم
+        const categoryNames = {
+            'recent': 'أحدث العقارات',
+            'popular': 'العقارات الأكثر مشاهدة',
+            'recommended': 'العقارات المقترحة لك'
+        };
+        
+        showNotification(`تم تغيير الفئة إلى ${categoryNames[category]}`, 'info');
+    }
+    
+    // دوال خاصة بالإشعارات الفورية للعقارات المطابقة
+    function showPropertyMatchAlert() {
+        const alert = document.getElementById('propertyMatchAlert');
+        alert.style.display = 'flex';
+        
+        // إخفاء الإشعار تلقائياً بعد 10 ثوان
+        setTimeout(() => {
+            closePropertyAlert();
+        }, 10000);
+    }
+    
+    function closePropertyAlert() {
+        const alert = document.getElementById('propertyMatchAlert');
+        alert.style.animation = 'slideOut 0.5s forwards';
+        
+        setTimeout(() => {
+            alert.style.display = 'none';
+            alert.style.animation = 'slideIn 0.5s forwards';
+        }, 500);
+    }
+    
+    function viewMatchedProperty() {
+        // هنا يمكن توجيه المستخدم إلى صفحة العقار المطابق
+        closePropertyAlert();
+        showNotification('جاري فتح صفحة العقار المطابق...', 'success');
+        
+        // محاكاة فتح صفحة العقار
+        setTimeout(() => {
+            // يمكن هنا تنفيذ الانتقال لصفحة العقار بعد الانتهاء من تطويرها
+            console.log('تم النقر على عرض العقار المطابق');
+        }, 1000);
     }
     
     // وظائف التفاعل
@@ -970,7 +2332,530 @@
         }, 1500);
     }
     
-    // وظائف مساعدة للتفاعل
+    // دوال خاصة بالبحث والفلترة
+    function toggleFilterChip(chip) {
+        chip.classList.toggle('active');
+        // يمكن هنا حفظ حالة الفلترة في متغيرات عامة للاستخدام لاحقاً
+    }
+    
+    function resetFilters() {
+        // إعادة تعيين جميع الفلاتر
+        document.getElementById('keywordSearch').value = '';
+        document.getElementById('priceRange').value = 5000000;
+        document.getElementById('locationSelect').value = '';
+        updatePriceLabels(5000000);
+        
+        // إزالة التفعيل من جميع رقائق الفلترة
+        const chips = document.querySelectorAll('.filter-chip');
+        chips.forEach(chip => {
+            chip.classList.remove('active');
+        });
+        
+        showNotification('تم إعادة تعيين جميع الفلاتر', 'info');
+    }
+    
+    function applyFilters() {
+        // الحصول على النموذج الصحيح
+        const filterForm = document.getElementById('filterForm');
+        if (!filterForm) {
+            console.error('نموذج الفلتر غير موجود');
+            return;
+        }
+        
+        const formData = new FormData(filterForm);
+        
+        // بناء كائن الفلتر
+        const filters = {
+            keywords: formData.get('keywords') || '',
+            propertyType: formData.get('propertyType') || '',
+            priceRange: formData.get('priceRange') || '',
+            bedrooms: formData.get('bedrooms') || '',
+            bathrooms: formData.get('bathrooms') || '',
+            city: formData.get('city') || '',
+            district: formData.get('district') || '',
+            purpose: formData.get('purpose') || '',
+            status: formData.get('status') || '',
+            amenities: []
+        };
+        
+        // جمع وسائل الراحة المحددة
+        const amenitiesChecks = document.querySelectorAll('input[name="amenities"]:checked');
+        amenitiesChecks.forEach(check => {
+            filters.amenities.push(check.value);
+        });
+        
+        // إضافة مناطق الخريطة إذا تم تحديدها
+        if (window.drawnItems && window.drawnItems.getLayers().length > 0) {
+            const areas = [];
+            window.drawnItems.eachLayer(layer => {
+                if (layer instanceof L.Polygon) {
+                    const coordinates = layer.getLatLngs()[0].map(latlng => {
+                        return { lat: latlng.lat, lng: latlng.lng };
+                    });
+                    areas.push(coordinates);
+                }
+            });
+            filters.mapAreas = areas;
+        }
+        
+        // إضافة معرف البحث الصوتي إذا كان موجودًا
+        const voiceResult = document.getElementById('voiceResult');
+        if (voiceResult && voiceResult.textContent.trim() !== '') {
+            filters.voiceQuery = voiceResult.textContent;
+        }
+        
+        // إضافة معرف الصورة إذا تم تحميلها
+        const uploadedImage = document.getElementById('uploadedImage');
+        if (uploadedImage && uploadedImage.src && uploadedImage.src !== '') {
+            filters.imageData = uploadedImage.src;
+        }
+        
+        console.log('تطبيق الفلاتر:', filters);
+        
+        // طلب البيانات من الخادم
+        fetchFilteredProperties(filters);
+        
+        // إغلاق شاشة البحث المتقدم
+        hideInteractionScreen('searchFilterScreen');
+        
+        // عرض رسالة تحميل للمستخدم
+        showToast('جارٍ تحميل العقارات المطابقة للبحث...', 'info');
+    }
+    
+    // وظيفة جلب العقارات المفلترة
+    function fetchFilteredProperties(filters) {
+        // هنا في بيئة الإنتاج ستكون هناك مكالمة API حقيقية
+        console.log('Fetching properties with filters:', filters);
+        
+        // محاكاة مكالمة API ناجحة
+        setTimeout(() => {
+            const mockResponse = {
+                success: true,
+                count: 15,
+                properties: []  // هنا ستكون العقارات الحقيقية
+            };
+            
+            showToast(`تم العثور على ${mockResponse.count} عقار مطابق للبحث`, 'success');
+            
+            // الانتقال إلى الفيديو التالي
+            swipeToNextVideo();
+        }, 1500);
+    }
+    
+    // دالة الانتقال إلى الفيديو التالي
+    function swipeToNextVideo() {
+        const currentVideo = document.querySelector('.video-container.active');
+        if (currentVideo) {
+            const nextVideo = currentVideo.nextElementSibling;
+            if (nextVideo && nextVideo.classList.contains('video-container')) {
+                // توقف الفيديو الحالي
+                const currentVideoElement = currentVideo.querySelector('video');
+                if (currentVideoElement) currentVideoElement.pause();
+                
+                // إزالة الفئة النشطة من الفيديو الحالي
+                currentVideo.classList.remove('active');
+                
+                // تنشيط الفيديو التالي
+                nextVideo.classList.add('active');
+                
+                // تشغيل الفيديو التالي
+                const nextVideoElement = nextVideo.querySelector('video');
+                if (nextVideoElement) {
+                    nextVideoElement.currentTime = 0;
+                    nextVideoElement.play().catch(error => {
+                        console.warn('لم يتم تشغيل الفيديو التالي تلقائيًا:', error);
+                    });
+                }
+                
+                // تمرير إلى موقع الفيديو التالي
+                document.getElementById('videoFeed').scrollTo({
+                    top: nextVideo.offsetTop,
+                    behavior: 'smooth'
+                });
+            }
+        }
+    }
+    
+    // دوال مساعدة
+    function formatPrice(value) {
+        return new Intl.NumberFormat('ar-SA', {
+            style: 'currency',
+            currency: 'SAR',
+            maximumFractionDigits: 0
+        }).format(value);
+    }
+    
+    function showToast(message, type = 'info') {
+        // التحقق مما إذا كانت مكتبة Bootstrap موجودة
+        if (typeof bootstrap !== 'undefined' && bootstrap.Toast) {
+            const toastEl = document.getElementById('appToast');
+            if (toastEl) {
+                const toastBody = toastEl.querySelector('.toast-body');
+                
+                // تغيير لون التوست بناءً على النوع
+                toastEl.className = 'toast';
+                switch (type) {
+                    case 'success':
+                        toastEl.classList.add('bg-success', 'text-white');
+                        break;
+                    case 'error':
+                        toastEl.classList.add('bg-danger', 'text-white');
+                        break;
+                    case 'warning':
+                        toastEl.classList.add('bg-warning');
+                        break;
+                    default:
+                        toastEl.classList.add('bg-info', 'text-white');
+                }
+                
+                toastBody.textContent = message;
+                const toast = new bootstrap.Toast(toastEl);
+                toast.show();
+                return;
+            }
+        }
+        
+        // احتياطي إذا لم تكن مكتبة Bootstrap متاحة
+        alert(message);
+    }
+    
+    function initializeVoiceSearch() {
+        const voiceBtn = document.getElementById('startVoice');
+        const stopVoiceBtn = document.getElementById('stopVoice');
+        const voiceResult = document.getElementById('voiceResult');
+        const voiceContainer = document.querySelector('.voice-icon-container');
+        
+        if (!voiceBtn || !stopVoiceBtn || !voiceResult) {
+            console.error('عناصر البحث الصوتي غير موجودة');
+            return;
+        }
+        
+        // التحقق من دعم التعرف الصوتي في المتصفح
+        if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+            voiceResult.textContent = 'عذراً، المتصفح الخاص بك لا يدعم ميزة التعرف الصوتي.';
+            voiceBtn.disabled = true;
+            voiceBtn.classList.add('disabled');
+            return;
+        }
+        
+        // إنشاء كائن التعرف الصوتي
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        const recognition = new SpeechRecognition();
+        
+        // ضبط إعدادات التعرف الصوتي
+        recognition.lang = 'ar-SA'; // اللغة العربية
+        recognition.continuous = false;
+        recognition.interimResults = false;
+        
+        // عند بدء التعرف الصوتي
+        recognition.onstart = function() {
+            console.log('تم بدء الاستماع...');
+            voiceContainer.classList.add('listening');
+            stopVoiceBtn.style.display = 'block';
+            voiceBtn.style.display = 'none';
+            voiceResult.textContent = 'جاري الاستماع...';
+        };
+        
+        // عند انتهاء التعرف الصوتي
+        recognition.onend = function() {
+            console.log('تم إيقاف الاستماع');
+            voiceContainer.classList.remove('listening');
+            stopVoiceBtn.style.display = 'none';
+            voiceBtn.style.display = 'block';
+        };
+        
+        // عند حدوث خطأ
+        recognition.onerror = function(event) {
+            console.error('خطأ في التعرف الصوتي:', event.error);
+            voiceResult.textContent = 'حدث خطأ. الرجاء المحاولة مرة أخرى.';
+            recognition.stop();
+        };
+        
+        // عند الحصول على نتيجة
+        recognition.onresult = function(event) {
+            const result = event.results[0][0].transcript;
+            voiceResult.textContent = result;
+            console.log('تم التعرف على:', result);
+            
+            // بلاغ نجاح التعرف الصوتي
+            showToast('تم التعرف على الكلام بنجاح!', 'success');
+        };
+        
+        // مستمع أحداث لزر بدء التعرف الصوتي
+        voiceBtn.addEventListener('click', function() {
+            recognition.start();
+        });
+        
+        // مستمع أحداث لزر إيقاف التعرف الصوتي
+        stopVoiceBtn.addEventListener('click', function() {
+            recognition.stop();
+        });
+    }
+    
+    function initializeImageSearch() {
+        const imageTab = document.getElementById('imageTab');
+        const imageUpload = document.getElementById('imageUpload');
+        const imagePreview = document.getElementById('imagePreview');
+        const uploadedImage = document.getElementById('uploadedImage');
+        const removeImage = document.getElementById('removeImage');
+        
+        if (!imageTab || !imageUpload || !imagePreview) {
+            console.error('عناصر البحث بالصورة غير موجودة');
+            return;
+        }
+        
+        // مستمع أحداث لتغيير الصورة
+        imageUpload.addEventListener('change', function(e) {
+            if (e.target.files && e.target.files[0]) {
+                const file = e.target.files[0];
+                const reader = new FileReader();
+                
+                // التأكد من أن الملف هو صورة
+                if (!file.type.match('image.*')) {
+                    showToast('الرجاء اختيار ملف صورة صالح', 'error');
+                    return;
+                }
+                
+                // التأكد من أن حجم الصورة مناسب (أقل من 5 ميجابايت)
+                if (file.size > 5 * 1024 * 1024) {
+                    showToast('حجم الصورة كبير جداً، الحد الأقصى هو 5 ميجابايت', 'error');
+                    return;
+                }
+                
+                reader.onload = function(e) {
+                    uploadedImage.src = e.target.result;
+                    uploadedImage.style.display = 'block';
+                    removeImage.style.display = 'block';
+                    imagePreview.classList.add('has-image');
+                    
+                    // إظهار رسالة نجاح
+                    showToast('تم تحميل الصورة بنجاح!', 'success');
+                };
+                
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        // مستمع أحداث لإزالة الصورة
+        removeImage.addEventListener('click', function() {
+            uploadedImage.src = '';
+            uploadedImage.style.display = 'none';
+            removeImage.style.display = 'none';
+            imagePreview.classList.remove('has-image');
+            imageUpload.value = '';
+        });
+        
+        // تحسين تجربة المستخدم بإضافة خاصية السحب والإفلات
+        imagePreview.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            imagePreview.classList.add('dragover');
+        });
+        
+        imagePreview.addEventListener('dragleave', function() {
+            imagePreview.classList.remove('dragover');
+        });
+        
+        imagePreview.addEventListener('drop', function(e) {
+            e.preventDefault();
+            imagePreview.classList.remove('dragover');
+            
+            if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+                const file = e.dataTransfer.files[0];
+                
+                // التأكد من أن الملف هو صورة
+                if (!file.type.match('image.*')) {
+                    showToast('الرجاء اختيار ملف صورة صالح', 'error');
+                    return;
+                }
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    uploadedImage.src = e.target.result;
+                    uploadedImage.style.display = 'block';
+                    removeImage.style.display = 'block';
+                    imagePreview.classList.add('has-image');
+                    
+                    // إظهار رسالة نجاح
+                    showToast('تم تحميل الصورة بنجاح!', 'success');
+                };
+                
+                reader.readAsDataURL(file);
+                
+                // جعل حقل الإدخال يشير إلى نفس الملف (لدواعي التناسق)
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(file);
+                imageUpload.files = dataTransfer.files;
+            }
+        });
+    }
+    
+    // وظائف البحث بالخريطة
+    function initializeMapSearch() {
+        // العناصر المطلوبة للخريطة
+        const mapTab = document.getElementById('mapTab');
+        const mapSection = document.getElementById('mapSearchSection');
+        const mapElement = document.getElementById('searchMap');
+        const areaListElement = document.getElementById('areaList');
+        
+        if (!mapTab || !mapSection || !mapElement) {
+            console.error('عناصر البحث بالخريطة غير موجودة');
+            return;
+        }
+        
+        // تهيئة الخريطة
+        const map = L.map(mapElement, {
+            center: [24.7136, 46.6753], // الرياض كمركز افتراضي
+            zoom: 12,
+            zoomControl: true,
+            scrollWheelZoom: true
+        });
+        
+        // إضافة طبقة الخريطة
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+        
+        // إضافة عنصر التحكم في الرسم
+        const drawnItems = new L.FeatureGroup();
+        map.addLayer(drawnItems);
+        window.drawnItems = drawnItems; // للوصول إليه عالميًا
+        
+        const drawControl = new L.Control.Draw({
+            draw: {
+                polyline: false,
+                circle: false,
+                circlemarker: false,
+                marker: false,
+                polygon: {
+                    allowIntersection: false,
+                    drawError: {
+                        color: '#e1e100',
+                        message: '<strong>خطأ:</strong> لا يمكن تداخل المضلعات!'
+                    },
+                    shapeOptions: {
+                        color: '#d4af37',
+                        fillColor: 'rgba(212, 175, 55, 0.4)',
+                        weight: 3
+                    }
+                },
+                rectangle: {
+                    shapeOptions: {
+                        color: '#d4af37',
+                        fillColor: 'rgba(212, 175, 55, 0.4)',
+                        weight: 3
+                    }
+                }
+            },
+            edit: {
+                featureGroup: drawnItems,
+                remove: true
+            }
+        });
+        map.addControl(drawControl);
+        
+        // تحديث قائمة المناطق عند رسم منطقة جديدة
+        map.on('draw:created', function(e) {
+            drawnItems.addLayer(e.layer);
+            updateSelectedAreas();
+            
+            // بلاغ للمستخدم
+            showToast('تمت إضافة منطقة البحث بنجاح!', 'success');
+        });
+        
+        // تحديث قائمة المناطق عند تحرير أو حذف منطقة
+        map.on('draw:edited', updateSelectedAreas);
+        map.on('draw:deleted', updateSelectedAreas);
+        
+        // تأكد من إعادة ضبط حجم الخريطة عند إظهارها
+        mapTab.addEventListener('click', function() {
+            setTimeout(function() {
+                map.invalidateSize();
+            }, 100);
+        });
+        
+        // إعادة ضبط الخريطة عند الضغط على زر المسح
+        document.getElementById('clearMap').addEventListener('click', function() {
+            drawnItems.clearLayers();
+            updateSelectedAreas();
+            
+            // بلاغ للمستخدم
+            showToast('تم مسح جميع مناطق البحث', 'info');
+        });
+    }
+    
+    // تحديث قائمة المناطق المحددة على الخريطة
+    function updateSelectedAreas() {
+        const areaListElement = document.getElementById('areaList');
+        const noAreasMessage = document.getElementById('noAreasMessage');
+        
+        if (!areaListElement || !noAreasMessage) return;
+        
+        // مسح العناصر الحالية
+        areaListElement.innerHTML = '';
+        
+        if (!window.drawnItems || window.drawnItems.getLayers().length === 0) {
+            // إظهار رسالة عدم وجود مناطق
+            noAreasMessage.style.display = 'block';
+            return;
+        }
+        
+        // إخفاء رسالة عدم وجود مناطق
+        noAreasMessage.style.display = 'none';
+        
+        // إضافة المناطق إلى القائمة
+        window.drawnItems.eachLayer(function(layer, index) {
+            const area = calculateArea(layer);
+            const areaItem = document.createElement('div');
+            areaItem.className = 'area-item';
+            areaItem.innerHTML = `
+                <span>منطقة ${window.drawnItems.getLayers().indexOf(layer) + 1} (${area} كم²)</span>
+                <button class="btn-sm btn-outline-danger" onclick="removeArea(${window.drawnItems.getLayers().indexOf(layer)})">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            areaListElement.appendChild(areaItem);
+        });
+    }
+    
+    // إزالة منطقة محددة بواسطة الفهرس
+    function removeArea(index) {
+        if (!window.drawnItems) return;
+        
+        const layers = window.drawnItems.getLayers();
+        if (index >= 0 && index < layers.length) {
+            window.drawnItems.removeLayer(layers[index]);
+            updateSelectedAreas();
+            
+            // بلاغ للمستخدم
+            showToast('تم حذف المنطقة بنجاح', 'info');
+        }
+    }
+    
+    // حساب مساحة المضلع بالكيلومتر المربع
+    function calculateArea(layer) {
+        let area = 0;
+        
+        if (layer instanceof L.Polygon) {
+            area = L.GeometryUtil.geodesicArea(layer.getLatLngs()[0]);
+        } else if (layer instanceof L.Rectangle) {
+            const bounds = layer.getBounds();
+            const latLngs = [
+                bounds.getNorthWest(),
+                bounds.getNorthEast(),
+                bounds.getSouthEast(),
+                bounds.getSouthWest()
+            ];
+            area = L.GeometryUtil.geodesicArea(latLngs);
+        }
+        
+        // تحويل المساحة من متر مربع إلى كيلومتر مربع
+        area = area / 1000000;
+        
+        // تقريب الرقم إلى رقمين عشريين
+        return area.toFixed(2);
+    }
+    
+    // دوال مساعدة للتعامل مع الشاشات المنبثقة
     function showInteractionScreen(screenId) {
         // إخفاء أي شاشة مفتوحة حالياً
         document.querySelectorAll('.interaction-screen').forEach(screen => {
@@ -978,7 +2863,35 @@
         });
         
         // إظهار الشاشة المطلوبة
-        document.getElementById(screenId).classList.add('show');
+        const targetScreen = document.getElementById(screenId);
+        if (targetScreen) {
+            targetScreen.classList.add('show');
+            
+            // إذا كانت شاشة الخريطة، أعد ضبط حجم الخريطة
+            if (screenId === 'searchFilterScreen') {
+                // تأكد من إظهار القسم الصحيح حسب علامة التبويب النشطة
+                const activeTab = document.querySelector('.search-tab.active');
+                if (activeTab) {
+                    const targetSection = activeTab.getAttribute('data-target');
+                    if (targetSection) {
+                        document.querySelectorAll('.search-section').forEach(section => {
+                            section.style.display = 'none';
+                        });
+                        document.getElementById(targetSection).style.display = 'block';
+                        
+                        // إعادة ضبط حجم الخريطة إذا كانت ظاهرة
+                        if (targetSection === 'mapSearchSection' && typeof L !== 'undefined') {
+                            setTimeout(() => {
+                                const map = document.getElementById('searchMap');
+                                if (map) {
+                                    window.dispatchEvent(new Event('resize'));
+                                }
+                            }, 300);
+                        }
+                    }
+                }
+            }
+        }
         
         // إضافة طبقة التعتيم خلف الشاشة
         let overlay = document.getElementById('interactionOverlay');
@@ -990,8 +2903,8 @@
             overlay.style.left = '0';
             overlay.style.width = '100%';
             overlay.style.height = '100%';
-            overlay.style.backgroundColor = 'transparent';
-            overlay.style.backdropFilter = 'none';
+            overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+            overlay.style.backdropFilter = 'blur(3px)';
             overlay.style.zIndex = '99';
             overlay.style.opacity = '0';
             overlay.style.transition = 'opacity 0.3s ease';
@@ -1011,7 +2924,10 @@
     
     function hideInteractionScreen(screenId) {
         // إخفاء الشاشة
-        document.getElementById(screenId).classList.remove('show');
+        const screen = document.getElementById(screenId);
+        if (screen) {
+            screen.classList.remove('show');
+        }
         
         // إخفاء طبقة التعتيم
         const overlay = document.getElementById('interactionOverlay');
@@ -1021,21 +2937,6 @@
                 overlay.remove();
             }, 300);
         }
-    }
-    
-    function showNotification(message, type) {
-        const notification = document.getElementById('notification');
-        notification.textContent = message;
-        notification.className = 'notification ' + type;
-        notification.style.display = 'block';
-        notification.style.opacity = '1';
-        
-        setTimeout(() => {
-            notification.style.opacity = '0';
-            setTimeout(() => {
-                notification.style.display = 'none';
-            }, 300);
-        }, 3000);
     }
 </script>
 {% endblock %}
