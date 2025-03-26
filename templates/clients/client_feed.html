@@ -1814,7 +1814,7 @@
     </div>
 </div>
 
-<!-- الإشعارات الفورية للعقارات المطابقة -->
+<!-- الإشعارات الفورية للعقارات المطابقة */
 <div id="propertyMatchAlert" class="property-alert" style="display: none;">
     <img src="/static/img/properties/sample-property.jpg" alt="عقار مطابق" class="property-alert-image">
     <div class="property-alert-content">
@@ -2731,7 +2731,7 @@
                     allowIntersection: false,
                     drawError: {
                         color: '#e1e100',
-                        message: '<strong>خطأ:</strong> لا يمكن تداخل المضلعات!'
+                        message: '<strong>خطأ:</strong> لا يمكن تداخل المضلع!'
                     },
                     shapeOptions: {
                         color: '#d4af37',
@@ -2939,5 +2939,37 @@
             }, 300);
         }
     }
+</script>
+
+<script>
+    // سكريبت خاص بزر البحث - يتم تنفيذه فور تحميل الصفحة
+    document.addEventListener('DOMContentLoaded', function() {
+        // التأكد من وجود زر البحث
+        const searchButton = document.querySelector('.search-filter-button');
+        if (searchButton) {
+            // تعديل خصائص الزر لجعله أكثر وضوحاً
+            searchButton.style.position = 'fixed';
+            searchButton.style.right = '20px';
+            searchButton.style.top = '100px';
+            searchButton.style.width = '60px';
+            searchButton.style.height = '60px';
+            searchButton.style.backgroundColor = 'rgba(255, 0, 0, 0.7)'; // لون أحمر للفت الانتباه
+            searchButton.style.border = '3px solid white';
+            searchButton.style.borderRadius = '50%';
+            searchButton.style.display = 'flex';
+            searchButton.style.alignItems = 'center';
+            searchButton.style.justifyContent = 'center';
+            searchButton.style.zIndex = '9999';
+            searchButton.style.boxShadow = '0 4px 15px rgba(0, 0, 0, 0.5)';
+            
+            // التأكد من أن الزر مرئي
+            searchButton.style.opacity = '1';
+            searchButton.style.visibility = 'visible';
+            
+            console.log('تم تهيئة زر البحث بنجاح');
+        } else {
+            console.error('لم يتم العثور على زر البحث!');
+        }
+    });
 </script>
 {% endblock %}
