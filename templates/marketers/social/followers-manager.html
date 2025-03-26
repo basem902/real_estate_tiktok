@@ -1,0 +1,632 @@
+{% extends 'marketers/includes/base.html' %}
+
+{% block title %}إدارة المتابعين - لوحة تحكم المسوقين العقاريين{% endblock %}
+
+{% block meta_description %}إدارة المتابعين - متابعة وتحليل متابعين حسابات التواصل الاجتماعي{% endblock %}
+
+{% block additional_css %}
+<style>
+    /* تحسينات تصميم الصفحة وتقليل المساحات البيضاء */
+    body {
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+    }
+    
+    .main-layout {
+        display: flex;
+        width: 100%;
+        min-height: 100vh;
+    }
+    
+    #page-content {
+        padding: 0;
+    }
+    
+    .container-fluid {
+        padding: 1.5rem;
+    }
+    
+    /* تحسين تصميم البطاقات */
+    .card {
+        border-radius: var(--card-border-radius);
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+        height: 100%;
+        border: none;
+        margin-bottom: 1rem;
+    }
+    
+    .card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .card-body {
+        padding: 1rem;
+    }
+    
+    /* تعديل الصفوف لتكون متقاربة أكثر */
+    .row {
+        margin-right: -8px;
+        margin-left: -8px;
+    }
+    
+    .row > [class^="col-"] {
+        padding-right: 8px;
+        padding-left: 8px;
+    }
+    
+    /* تصغير المساحات بين الأقسام */
+    .section-spacing {
+        margin-bottom: 1rem;
+    }
+    
+    /* تنسيق فلتر المتابعين */
+    .followers-filter {
+        background-color: #f8f9fa;
+        border-radius: 0.5rem;
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    /* تنسيق قائمة المتابعين */
+    .follower-card {
+        display: flex;
+        align-items: center;
+        border-right: 3px solid transparent;
+        transition: all 0.2s ease;
+    }
+    
+    .follower-card:hover {
+        border-right-color: var(--primary-color);
+        background-color: rgba(0, 123, 255, 0.05);
+    }
+    
+    .follower-avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+    
+    .platform-icon {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+    }
+    
+    .facebook-bg {
+        background-color: #3b5998;
+    }
+    
+    .instagram-bg {
+        background: linear-gradient(45deg, #f09433, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888);
+    }
+    
+    .twitter-bg {
+        background-color: #1da1f2;
+    }
+    
+    .linkedin-bg {
+        background-color: #0077b5;
+    }
+    
+    .follower-badge {
+        font-size: 0.7rem;
+        padding: 0.2rem 0.4rem;
+    }
+    
+    .engagement-high {
+        background-color: #28a745;
+        color: white;
+    }
+    
+    .engagement-medium {
+        background-color: #ffc107;
+        color: #212529;
+    }
+    
+    .engagement-low {
+        background-color: #6c757d;
+        color: white;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- عنوان الصفحة وأزرار الإجراءات -->
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center mb-4">
+        <div>
+            <h2 class="page-title mb-0">إدارة المتابعين</h2>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0 mt-1">
+                    <li class="breadcrumb-item"><a href="../dashboard.html">الرئيسية</a></li>
+                    <li class="breadcrumb-item"><a href="social-hub.html">المنصات الاجتماعية</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">إدارة المتابعين</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="btn-toolbar mb-2 mb-md-0">
+            <button type="button" class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#exportFollowersModal">
+                <i class="fas fa-download me-1"></i>
+                تصدير البيانات
+            </button>
+            <div class="btn-group me-2">
+                <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#syncFollowersModal">
+                    <i class="fas fa-sync me-1"></i>
+                    تحديث البيانات
+                </button>
+                <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#followersSettingsModal">
+                    <i class="fas fa-cog me-1"></i>
+                    إعدادات
+                </button>
+            </div>
+            <div class="dropdown">
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dateRangeDropdown" data-bs-toggle="dropdown">
+                    آخر 30 يوم
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dateRangeDropdown">
+                    <li><a class="dropdown-item" href="#" data-range="7">آخر 7 أيام</a></li>
+                    <li><a class="dropdown-item active" href="#" data-range="30">آخر 30 يوم</a></li>
+                    <li><a class="dropdown-item" href="#" data-range="90">آخر 3 أشهر</a></li>
+                    <li><a class="dropdown-item" href="#" data-range="365">آخر سنة</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <!-- إضافة قائمة التنقل الفرعية للأقسام -->
+    <div class="sub-nav mb-4">
+        <ul class="nav nav-pills">
+            <li class="nav-item">
+                <a class="nav-link" href="review-manager.html">
+                    <i class="fas fa-star me-1"></i>
+                    إدارة التقييمات
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="followers-manager.html">
+                    <i class="fas fa-users me-1"></i>
+                    إدارة المتابعين
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="likes-manager.html">
+                    <i class="fas fa-thumbs-up me-1"></i>
+                    إدارة الإعجابات
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="comments-manager.html">
+                    <i class="fas fa-comment me-1"></i>
+                    إدارة التعليقات
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="chats-manager.html">
+                    <i class="fas fa-comments me-1"></i>
+                    المحادثات الداخلية
+                </a>
+            </li>
+        </ul>
+    </div>
+    
+    <!-- قسم إحصائيات المتابعين -->
+    <div class="row mb-4">
+        <div class="col-md-3 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-center">
+                    <i class="fas fa-users fa-2x text-primary mb-3"></i>
+                    <h3 class="counter" id="totalFollowers">15,842</h3>
+                    <p class="card-text">إجمالي المتابعين</p>
+                    <div class="badge bg-success">
+                        <i class="fas fa-arrow-up"></i> 12.5%
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-center">
+                    <i class="fas fa-user-plus fa-2x text-success mb-3"></i>
+                    <h3 class="counter" id="newFollowers">542</h3>
+                    <p class="card-text">متابعين جدد هذا الشهر</p>
+                    <div class="badge bg-success">
+                        <i class="fas fa-arrow-up"></i> 5.2%
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-center">
+                    <i class="fas fa-user-minus fa-2x text-danger mb-3"></i>
+                    <h3 class="counter" id="lostFollowers">127</h3>
+                    <p class="card-text">متابعين مفقودين</p>
+                    <div class="badge bg-warning">
+                        <i class="fas fa-arrow-down"></i> 2.1%
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-center">
+                    <i class="fas fa-chart-line fa-2x text-info mb-3"></i>
+                    <h3 class="counter" id="engagementRate">3.8%</h3>
+                    <p class="card-text">نسبة التفاعل</p>
+                    <div class="badge bg-info">
+                        <i class="fas fa-arrow-up"></i> 0.5%
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- قسم توزيع المتابعين حسب المنصة -->
+    <div class="row mb-4">
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-white">
+                    <h5 class="card-title mb-0">توزيع المتابعين حسب المنصة</h5>
+                </div>
+                <div class="card-body">
+                    <div class="chart-container">
+                        <canvas id="platformDistributionChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-white">
+                    <h5 class="card-title mb-0">نمو المتابعين</h5>
+                </div>
+                <div class="card-body">
+                    <div class="chart-container">
+                        <canvas id="followerGrowthChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- فلتر المتابعين -->
+    <div class="followers-filter mb-4">
+        <div class="row align-items-end">
+            <div class="col-md-3 mb-3 mb-md-0">
+                <label for="platformFilter" class="form-label">المنصة</label>
+                <select class="form-select" id="platformFilter">
+                    <option value="all" selected>جميع المنصات</option>
+                    <option value="facebook">فيسبوك</option>
+                    <option value="instagram">انستجرام</option>
+                    <option value="twitter">تويتر</option>
+                    <option value="linkedin">لينكد إن</option>
+                </select>
+            </div>
+            <div class="col-md-3 mb-3 mb-md-0">
+                <label for="engagementFilter" class="form-label">مستوى التفاعل</label>
+                <select class="form-select" id="engagementFilter">
+                    <option value="all" selected>جميع المستويات</option>
+                    <option value="high">تفاعل عالي</option>
+                    <option value="medium">تفاعل متوسط</option>
+                    <option value="low">تفاعل منخفض</option>
+                </select>
+            </div>
+            <div class="col-md-3 mb-3 mb-md-0">
+                <label for="sortFilter" class="form-label">ترتيب حسب</label>
+                <select class="form-select" id="sortFilter">
+                    <option value="newest">الأحدث متابعة</option>
+                    <option value="oldest">الأقدم متابعة</option>
+                    <option value="engagement">التفاعل (الأعلى أولاً)</option>
+                    <option value="alphabetical">أبجدي (أ-ي)</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="بحث عن متابع..." id="searchFollowers">
+                    <button class="btn btn-primary" type="button" id="searchBtn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- قائمة المتابعين -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-white d-flex justify-content-between align-items-center">
+            <h5 class="card-title mb-0">قائمة المتابعين</h5>
+            <span class="text-muted small">إجمالي: 15,842 متابع</span>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th scope="col" class="border-0">المتابع</th>
+                            <th scope="col" class="border-0">المنصة</th>
+                            <th scope="col" class="border-0">تاريخ المتابعة</th>
+                            <th scope="col" class="border-0">التفاعل</th>
+                            <th scope="col" class="border-0">الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- متابع 1 -->
+                        <tr class="follower-card">
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <img src="https://via.placeholder.com/50" alt="avatar" class="follower-avatar me-3">
+                                    <div>
+                                        <h6 class="mb-0">أحمد محمد</h6>
+                                        <span class="text-muted small">@ahmed_m</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="platform-icon instagram-bg">
+                                    <i class="fab fa-instagram"></i>
+                                </span>
+                                انستجرام
+                            </td>
+                            <td>15 مارس 2025</td>
+                            <td>
+                                <span class="badge follower-badge engagement-high">
+                                    تفاعل عالي (8.2%)
+                                </span>
+                            </td>
+                            <td>
+                                <div class="dropdown">
+                                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                        إجراءات
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i> عرض الملف الشخصي</a></li>
+                                        <li><a class="dropdown-item" href="#"><i class="fas fa-chart-line me-2"></i> تحليل النشاط</a></li>
+                                        <li><a class="dropdown-item" href="#"><i class="fas fa-envelope me-2"></i> إرسال رسالة</a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-flag me-2"></i> الإبلاغ عن محتوى</a></li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <!-- متابع 2 -->
+                        <tr class="follower-card">
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <img src="https://via.placeholder.com/50" alt="avatar" class="follower-avatar me-3">
+                                    <div>
+                                        <h6 class="mb-0">سارة أحمد</h6>
+                                        <span class="text-muted small">@sara_ahmed</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="platform-icon facebook-bg">
+                                    <i class="fab fa-facebook-f"></i>
+                                </span>
+                                فيسبوك
+                            </td>
+                            <td>10 مارس 2025</td>
+                            <td>
+                                <span class="badge follower-badge engagement-medium">
+                                    تفاعل متوسط (4.5%)
+                                </span>
+                            </td>
+                            <td>
+                                <div class="dropdown">
+                                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                        إجراءات
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i> عرض الملف الشخصي</a></li>
+                                        <li><a class="dropdown-item" href="#"><i class="fas fa-chart-line me-2"></i> تحليل النشاط</a></li>
+                                        <li><a class="dropdown-item" href="#"><i class="fas fa-envelope me-2"></i> إرسال رسالة</a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-flag me-2"></i> الإبلاغ عن محتوى</a></li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <!-- متابع 3 -->
+                        <tr class="follower-card">
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <img src="https://via.placeholder.com/50" alt="avatar" class="follower-avatar me-3">
+                                    <div>
+                                        <h6 class="mb-0">محمد علي</h6>
+                                        <span class="text-muted small">@m_ali</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="platform-icon twitter-bg">
+                                    <i class="fab fa-twitter"></i>
+                                </span>
+                                تويتر
+                            </td>
+                            <td>5 مارس 2025</td>
+                            <td>
+                                <span class="badge follower-badge engagement-high">
+                                    تفاعل عالي (7.8%)
+                                </span>
+                            </td>
+                            <td>
+                                <div class="dropdown">
+                                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                        إجراءات
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i> عرض الملف الشخصي</a></li>
+                                        <li><a class="dropdown-item" href="#"><i class="fas fa-chart-line me-2"></i> تحليل النشاط</a></li>
+                                        <li><a class="dropdown-item" href="#"><i class="fas fa-envelope me-2"></i> إرسال رسالة</a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-flag me-2"></i> الإبلاغ عن محتوى</a></li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <!-- الرجاء إضافة المزيد من المتابعين هنا -->
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer bg-white d-flex justify-content-between align-items-center">
+            <button class="btn btn-sm btn-outline-secondary">
+                <i class="fas fa-download me-1"></i> تصدير القائمة
+            </button>
+            <nav aria-label="صفحات المتابعين">
+                <ul class="pagination pagination-sm mb-0">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#">السابق</a>
+                    </li>
+                    <li class="page-item active">
+                        <a class="page-link" href="#">1</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">2</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">3</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">التالي</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block additional_scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // رسم بياني لتوزيع المتابعين حسب المنصة
+        const platformCtx = document.getElementById('platformDistributionChart').getContext('2d');
+        const platformChart = new Chart(platformCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['فيسبوك', 'انستجرام', 'تويتر', 'لينكد إن', 'يوتيوب'],
+                datasets: [{
+                    data: [5842, 4230, 3125, 1845, 800],
+                    backgroundColor: [
+                        '#3b5998', // فيسبوك
+                        '#e1306c', // انستجرام
+                        '#1da1f2', // تويتر
+                        '#0077b5', // لينكد إن
+                        '#ff0000'  // يوتيوب
+                    ],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        labels: {
+                            boxWidth: 15,
+                            padding: 15,
+                            font: {
+                                size: 12
+                            }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const label = context.label || '';
+                                const value = context.formattedValue || '';
+                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                const percentage = Math.round((context.raw / total) * 100);
+                                return `${label}: ${value} (${percentage}%)`;
+                            }
+                        }
+                    }
+                },
+                cutout: '60%'
+            }
+        });
+        
+        // رسم بياني لنمو المتابعين
+        const growthCtx = document.getElementById('followerGrowthChart').getContext('2d');
+        const growthChart = new Chart(growthCtx, {
+            type: 'line',
+            data: {
+                labels: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'],
+                datasets: [
+                    {
+                        label: 'إجمالي المتابعين',
+                        data: [8200, 9400, 10300, 11200, 12100, 12800, 13500, 14200, 14600, 15100, 15500, 15842],
+                        borderColor: '#007bff',
+                        backgroundColor: 'rgba(0, 123, 255, 0.1)',
+                        fill: true,
+                        tension: 0.3
+                    },
+                    {
+                        label: 'متابعين جدد',
+                        data: [8200, 1200, 900, 900, 900, 700, 700, 700, 400, 500, 400, 342],
+                        borderColor: '#28a745',
+                        backgroundColor: 'transparent',
+                        tension: 0.3
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                if (value >= 1000) {
+                                    return (value/1000) + 'k';
+                                }
+                                return value;
+                            }
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'top'
+                    }
+                }
+            }
+        });
+        
+        // تفعيل فلاتر البحث والتصفية
+        document.getElementById('searchBtn').addEventListener('click', function() {
+            alert('سيتم تنفيذ البحث عن المتابعين...');
+        });
+        
+        document.getElementById('platformFilter').addEventListener('change', function() {
+            alert('سيتم تصفية المتابعين حسب المنصة: ' + this.value);
+        });
+        
+        document.getElementById('engagementFilter').addEventListener('change', function() {
+            alert('سيتم تصفية المتابعين حسب مستوى التفاعل: ' + this.value);
+        });
+        
+        document.getElementById('sortFilter').addEventListener('change', function() {
+            alert('سيتم ترتيب المتابعين حسب: ' + this.value);
+        });
+    });
+</script>
+{% endblock %}

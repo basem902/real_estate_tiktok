@@ -1,0 +1,314 @@
+{% extends 'developers/dashboard/base_dashboard.html' %}
+
+{% block title %}جدول المواعيد | لوحة تحكم المطورين{% endblock %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item active" aria-current="page">جدول المواعيد</li>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <!-- عنوان الصفحة والأزرار -->
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center mb-4">
+        <h1 class="h2">جدول المواعيد</h1>
+        <div class="btn-toolbar mb-2 mb-md-0">
+            <button type="button" class="btn btn-sm btn-primary me-2" data-bs-toggle="modal" data-bs-target="#addAppointmentModal">
+                <i class="fas fa-plus me-1"></i>
+                إضافة موعد جديد
+            </button>
+            <div class="btn-group me-2">
+                <button type="button" class="btn btn-sm btn-outline-secondary">تصدير</button>
+                <button type="button" class="btn btn-sm btn-outline-secondary">تنقية</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- قسم بطاقات إحصائيات المواعيد -->
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">إجمالي المواعيد</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">عدد المواعيد المبرمجة</h6>
+                    <p class="card-text">100</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">المواعيد اليومية</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">عدد المواعيد المبرمجة اليوم</h6>
+                    <p class="card-text">20</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">المواعيد الأسبوعية</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">عدد المواعيد المبرمجة هذا الأسبوع</h6>
+                    <p class="card-text">50</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- قسم التقويم وجدول المواعيد -->
+    <div class="row mt-4">
+        <!-- التقويم الشهري -->
+        <div class="col-md-5">
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-white py-3">
+                    <h5 class="card-title mb-0">التقويم الشهري</h5>
+                </div>
+                <div class="card-body">
+                    <div class="calendar-container">
+                        <div class="calendar-header mb-3 d-flex justify-content-between align-items-center">
+                            <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-chevron-right"></i></button>
+                            <h5 class="mb-0">مارس 2025</h5>
+                            <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-chevron-left"></i></button>
+                        </div>
+                        <table class="table table-bordered text-center calendar">
+                            <thead>
+                                <tr>
+                                    <th>الأحد</th>
+                                    <th>الإثنين</th>
+                                    <th>الثلاثاء</th>
+                                    <th>الأربعاء</th>
+                                    <th>الخميس</th>
+                                    <th>الجمعة</th>
+                                    <th>السبت</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="text-muted">26</td>
+                                    <td class="text-muted">27</td>
+                                    <td class="text-muted">28</td>
+                                    <td>1</td>
+                                    <td>2</td>
+                                    <td>3</td>
+                                    <td>4</td>
+                                </tr>
+                                <tr>
+                                    <td>5</td>
+                                    <td>6</td>
+                                    <td>7</td>
+                                    <td>8</td>
+                                    <td>9</td>
+                                    <td>10</td>
+                                    <td>11</td>
+                                </tr>
+                                <tr>
+                                    <td>12</td>
+                                    <td>13</td>
+                                    <td>14</td>
+                                    <td>15</td>
+                                    <td>16</td>
+                                    <td>17</td>
+                                    <td>18</td>
+                                </tr>
+                                <tr>
+                                    <td>19</td>
+                                    <td>20</td>
+                                    <td>21</td>
+                                    <td class="bg-primary text-white" style="position: relative;">
+                                        22
+                                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                            4
+                                        </span>
+                                    </td>
+                                    <td>23</td>
+                                    <td>24</td>
+                                    <td>25</td>
+                                </tr>
+                                <tr>
+                                    <td>26</td>
+                                    <td>27</td>
+                                    <td>28</td>
+                                    <td>29</td>
+                                    <td>30</td>
+                                    <td>31</td>
+                                    <td class="text-muted">1</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- جدول المواعيد القادمة -->
+        <div class="col-md-7">
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0">المواعيد القادمة</h5>
+                    <div class="dropdown">
+                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownFilterButton" data-bs-toggle="dropdown" aria-expanded="false">
+                            تصفية حسب
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownFilterButton">
+                            <li><a class="dropdown-item" href="#">جميع المواعيد</a></li>
+                            <li><a class="dropdown-item" href="#">اليوم</a></li>
+                            <li><a class="dropdown-item" href="#">هذا الأسبوع</a></li>
+                            <li><a class="dropdown-item" href="#">هذا الشهر</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <div class="list-group list-group-flush">
+                        <div class="list-group-item border-0 p-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="mb-1">اجتماع مع فريق التسويق</h6>
+                                    <p class="text-muted small mb-0">
+                                        <i class="fas fa-calendar-alt me-1"></i> 22/03/2025
+                                        <i class="fas fa-clock ms-2 me-1"></i> 10:00 صباحاً
+                                        <i class="fas fa-map-marker-alt ms-2 me-1"></i> مكتب المبيعات الرئيسي
+                                    </p>
+                                </div>
+                                <div class="d-flex">
+                                    <button class="btn btn-sm btn-outline-primary me-1"><i class="fas fa-edit"></i></button>
+                                    <button class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="list-group-item border-0 p-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="mb-1">زيارة موقع مشروع الواحة</h6>
+                                    <p class="text-muted small mb-0">
+                                        <i class="fas fa-calendar-alt me-1"></i> 22/03/2025
+                                        <i class="fas fa-clock ms-2 me-1"></i> 01:30 ظهراً
+                                        <i class="fas fa-map-marker-alt ms-2 me-1"></i> موقع المشروع
+                                    </p>
+                                </div>
+                                <div class="d-flex">
+                                    <button class="btn btn-sm btn-outline-primary me-1"><i class="fas fa-edit"></i></button>
+                                    <button class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="list-group-item border-0 p-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="mb-1">عرض تقديمي للمستثمرين</h6>
+                                    <p class="text-muted small mb-0">
+                                        <i class="fas fa-calendar-alt me-1"></i> 22/03/2025
+                                        <i class="fas fa-clock ms-2 me-1"></i> 04:00 عصراً
+                                        <i class="fas fa-map-marker-alt ms-2 me-1"></i> قاعة المؤتمرات
+                                    </p>
+                                </div>
+                                <div class="d-flex">
+                                    <button class="btn btn-sm btn-outline-primary me-1"><i class="fas fa-edit"></i></button>
+                                    <button class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="list-group-item border-0 p-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="mb-1">اجتماع مع المهندس المعماري</h6>
+                                    <p class="text-muted small mb-0">
+                                        <i class="fas fa-calendar-alt me-1"></i> 22/03/2025
+                                        <i class="fas fa-clock ms-2 me-1"></i> 06:00 مساءً
+                                        <i class="fas fa-map-marker-alt ms-2 me-1"></i> مكتب التصميم
+                                    </p>
+                                </div>
+                                <div class="d-flex">
+                                    <button class="btn btn-sm btn-outline-primary me-1"><i class="fas fa-edit"></i></button>
+                                    <button class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- هنا سيتم إضافة محتوى الجزء الرابع (النافذة المنبثقة) -->
+<div class="modal fade" id="addAppointmentModal" tabindex="-1" aria-labelledby="addAppointmentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addAppointmentModalLabel">إضافة موعد جديد</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <label for="appointmentTitle" class="form-label">عنوان الموعد <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="appointmentTitle" placeholder="أدخل عنوان الموعد" required>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="appointmentDate" class="form-label">تاريخ الموعد <span class="text-danger">*</span></label>
+                            <input type="date" class="form-control" id="appointmentDate" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="appointmentTime" class="form-label">وقت الموعد <span class="text-danger">*</span></label>
+                            <input type="time" class="form-control" id="appointmentTime" required>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="appointmentType" class="form-label">نوع الموعد</label>
+                            <select class="form-select" id="appointmentType">
+                                <option value="" selected>اختر نوع الموعد</option>
+                                <option value="meeting">اجتماع</option>
+                                <option value="visit">زيارة ميدانية</option>
+                                <option value="presentation">عرض تقديمي</option>
+                                <option value="call">مكالمة هاتفية</option>
+                                <option value="other">أخرى</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="appointmentLocation" class="form-label">مكان الموعد</label>
+                            <input type="text" class="form-control" id="appointmentLocation" placeholder="أدخل مكان الموعد">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <label for="appointmentParticipants" class="form-label">المشاركون</label>
+                            <select class="form-select" id="appointmentParticipants" multiple>
+                                <option value="1">أحمد محمد - مسوق</option>
+                                <option value="2">سارة أحمد - مسوق</option>
+                                <option value="3">محمد علي - مهندس</option>
+                                <option value="4">فاطمة حسن - مدير مشروع</option>
+                                <option value="5">خالد عمر - مستثمر</option>
+                            </select>
+                            <small class="form-text text-muted">اضغط على Ctrl أو Cmd لاختيار أكثر من مشارك</small>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <label for="appointmentDescription" class="form-label">وصف الموعد</label>
+                            <textarea class="form-control" id="appointmentDescription" rows="3" placeholder="أدخل وصفاً تفصيلياً للموعد"></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="sendNotification">
+                                <label class="form-check-label" for="sendNotification">
+                                    إرسال إشعار للمشاركين
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                <button type="button" class="btn btn-primary">حفظ الموعد</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

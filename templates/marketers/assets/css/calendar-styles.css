@@ -1,0 +1,356 @@
+/**
+ * calendar-styles.css
+ * أنماط مخصصة لشاشة جدولة المواعيد
+ */
+
+/* أنماط عامة للتقويم */
+.calendar-container {
+    background-color: var(--light-surface);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+}
+
+.dark-theme .calendar-container {
+    background-color: var(--dark-surface);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.calendar-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+    gap: 0.75rem;
+}
+
+.calendar-toolbar .btn-group {
+    border-radius: 50px;
+    overflow: hidden;
+}
+
+.calendar-toolbar .btn {
+    border-radius: 0;
+    padding: 0.375rem 0.75rem;
+    font-size: 0.9rem;
+}
+
+.calendar-search {
+    position: relative;
+    min-width: 250px;
+}
+
+.calendar-search .form-control {
+    padding-right: 2.5rem;
+    border-radius: 50px;
+    background-color: var(--light-input);
+    border: 1px solid var(--border-color);
+}
+
+.dark-theme .calendar-search .form-control {
+    background-color: var(--dark-input);
+    border-color: var(--dark-border);
+    color: var(--light-text);
+}
+
+.calendar-search .search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--secondary-text);
+}
+
+/* أنماط FullCalendar */
+.fc {
+    font-family: 'Tajawal', sans-serif;
+}
+
+.fc .fc-toolbar-title {
+    font-size: 1.6rem;
+    font-weight: 500;
+    color: var(--primary-text);
+}
+
+.dark-theme .fc .fc-toolbar-title {
+    color: var(--light-text);
+}
+
+.fc .fc-button-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    box-shadow: none !important;
+}
+
+.fc .fc-button-primary:hover {
+    background-color: var(--primary-color-dark);
+    border-color: var(--primary-color-dark);
+}
+
+.fc .fc-button-primary:disabled {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+}
+
+.fc table {
+    font-size: 0.9rem;
+}
+
+.fc th {
+    padding: 10px 0;
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    color: var(--secondary-text);
+}
+
+.dark-theme .fc th {
+    color: var(--light-secondary);
+}
+
+.fc-day-today {
+    background-color: rgba(var(--primary-rgb), 0.05) !important;
+}
+
+.dark-theme .fc-day-today {
+    background-color: rgba(var(--primary-rgb), 0.15) !important;
+}
+
+.fc-event {
+    border: none;
+    padding: 3px 5px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.fc-event:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+}
+
+.fc-event-title {
+    font-weight: 500;
+}
+
+.fc-event-time {
+    font-weight: 400;
+    opacity: 0.8;
+}
+
+/* القائمة الجانبية */
+.calendar-sidebar {
+    background-color: var(--light-surface);
+    border-radius: 12px;
+    padding: 20px;
+    height: 100%;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.dark-theme .calendar-sidebar {
+    background-color: var(--dark-surface);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.calendar-sidebar h5 {
+    font-weight: 600;
+    margin-bottom: 1.2rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--primary-text);
+}
+
+.dark-theme .calendar-sidebar h5 {
+    color: var(--light-text);
+    border-color: var(--dark-border);
+}
+
+.upcoming-appointment {
+    background-color: var(--card-bg);
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    border-right: 4px solid var(--primary-color);
+}
+
+.dark-theme .upcoming-appointment {
+    background-color: var(--dark-card);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.upcoming-appointment:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.upcoming-appointment h6 {
+    font-weight: 500;
+    margin-bottom: 10px;
+    color: var(--primary-text);
+}
+
+.dark-theme .upcoming-appointment h6 {
+    color: var(--light-text);
+}
+
+.upcoming-appointment i {
+    width: 16px;
+    text-align: center;
+    margin-left: 8px;
+}
+
+.appointment-stats {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.appointment-stat-card {
+    flex: 1;
+    min-width: 120px;
+    padding: 15px;
+    border-radius: 10px;
+    background-color: var(--card-bg);
+    margin-left: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.dark-theme .appointment-stat-card {
+    background-color: var(--dark-card);
+}
+
+.appointment-stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.appointment-stat-card .stat-value {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 5px;
+}
+
+.appointment-stat-card .stat-label {
+    font-size: 0.85rem;
+    color: var(--secondary-text);
+}
+
+.dark-theme .appointment-stat-card .stat-label {
+    color: var(--light-secondary);
+}
+
+/* نافذة إضافة/تعديل موعد */
+.appointment-modal .modal-content {
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.dark-theme .appointment-modal .modal-content {
+    background-color: var(--dark-surface);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.appointment-modal .modal-header {
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 12px 12px 0 0;
+    padding: 15px 20px;
+}
+
+.appointment-modal .modal-title {
+    font-weight: 500;
+}
+
+.appointment-modal .modal-body {
+    padding: 20px;
+}
+
+.appointment-modal .form-label {
+    font-weight: 500;
+    color: var(--primary-text);
+    margin-bottom: 8px;
+}
+
+.dark-theme .appointment-modal .form-label {
+    color: var(--light-text);
+}
+
+.appointment-modal .form-control,
+.appointment-modal .form-select {
+    border-radius: 8px;
+    padding: 10px 12px;
+    border: 1px solid var(--border-color);
+    background-color: var(--light-input);
+}
+
+.dark-theme .appointment-modal .form-control,
+.dark-theme .appointment-modal .form-select {
+    background-color: var(--dark-input);
+    border-color: var(--dark-border);
+    color: var(--light-text);
+}
+
+.appointment-modal .modal-footer {
+    padding: 15px 20px;
+    border-top: 1px solid var(--border-color);
+}
+
+.dark-theme .appointment-modal .modal-footer {
+    border-color: var(--dark-border);
+}
+
+.appointment-modal .btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    border-radius: 8px;
+    padding: 8px 20px;
+}
+
+.appointment-modal .btn-primary:hover {
+    background-color: var(--primary-color-dark);
+    border-color: var(--primary-color-dark);
+}
+
+.appointment-modal .btn-secondary {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+    border-radius: 8px;
+    padding: 8px 20px;
+}
+
+.appointment-modal .btn-danger {
+    border-radius: 8px;
+    padding: 8px 20px;
+}
+
+/* إشعارات */
+.toast {
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+/* تخصيص حسب حجم الشاشة */
+@media (max-width: 768px) {
+    .calendar-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .calendar-search {
+        width: 100%;
+        margin-top: 10px;
+    }
+    
+    .appointment-stat-card {
+        min-width: calc(50% - 10px);
+    }
+}

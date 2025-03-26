@@ -1,0 +1,672 @@
+{% extends 'marketers/includes/base.html' %}
+
+{% block title %}فيديوهاتي الإعلانية - لوحة تحكم المسوقين العقاريين{% endblock %}
+
+{% block meta_description %}فيديوهاتي الإعلانية - لوحة تحكم المسوقين العقاريين{% endblock %}
+
+{% block additional_css %}
+<style>
+    /* تنسيقات أساسية */
+    body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: #000;
+        font-family: 'Cairo', 'Roboto', sans-serif;
+    }
+    
+    .tiktok-layout {
+        height: 100vh;
+        width: 100%;
+        position: relative;
+        overflow: hidden;
+        color: white;
+    }
+    
+    /* شريط التنقل العلوي بأسلوب تيك توك */
+    .tiktok-header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 44px;
+        background-color: rgba(0, 0, 0, 0.4);
+        backdrop-filter: blur(10px);
+        z-index: 100;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 15px;
+        border-bottom: 0.5px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .header-tabs {
+        display: flex;
+        gap: 24px;
+        justify-content: center;
+        flex: 1;
+    }
+    
+    .header-tab {
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        position: relative;
+        padding: 5px 0;
+        opacity: 0.6;
+        transition: opacity 0.3s;
+    }
+    
+    .header-tab.active {
+        opacity: 1;
+    }
+    
+    .header-tab.active::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 30px;
+        height: 3px;
+        background-color: #fff;
+        border-radius: 3px;
+    }
+    
+    .header-actions {
+        display: flex;
+        gap: 15px;
+        align-items: center;
+    }
+    
+    .header-icon {
+        font-size: 20px;
+        cursor: pointer;
+    }
+    
+    /* حاوية الفيديوهات بأسلوب تيك توك */
+    .tiktok-videos-container {
+        height: 100vh;
+        width: 100%;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .tiktok-video-item {
+        height: 100vh;
+        width: 100%;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        scroll-snap-align: start;
+    }
+    
+    /* مشغل الفيديو */
+    .video-player {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+    
+    /* شريط أدوات التفاعل الجانبي */
+    .tiktok-sidebar {
+        position: absolute;
+        right: 15px;
+        bottom: 130px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        z-index: 10;
+    }
+    
+    .sidebar-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        cursor: pointer;
+    }
+    
+    .sidebar-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: rgba(255, 255, 255, 0.08);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 3px;
+        font-size: 1.2rem;
+        transition: transform 0.2s, background-color 0.2s;
+    }
+    
+    .sidebar-icon:hover {
+        transform: scale(1.1);
+        background-color: rgba(255, 255, 255, 0.15);
+    }
+    
+    .sidebar-count {
+        font-size: 12px;
+        font-weight: 500;
+    }
+    
+    /* معلومات الفيديو */
+    .video-info {
+        position: absolute;
+        bottom: 110px;
+        left: 15px;
+        max-width: 75%;
+        z-index: 10;
+    }
+    
+    .video-agent {
+        display: flex;
+        align-items: center;
+        margin-bottom: 12px;
+    }
+    
+    .video-agent-avatar {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        border: 2px solid rgba(255, 255, 255, 0.9);
+        margin-right: 10px;
+        object-fit: cover;
+        background-color: #444;
+    }
+    
+    .video-agent-name {
+        font-weight: bold;
+        font-size: 16px;
+    }
+    
+    .video-follow-btn {
+        background-color: #FF0050;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        padding: 3px 12px;
+        font-size: 14px;
+        margin-left: 10px;
+        cursor: pointer;
+    }
+    
+    .video-description {
+        margin-bottom: 8px;
+        font-size: 15px;
+        line-height: 1.4;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    }
+    
+    .video-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 10px;
+    }
+    
+    .video-tag {
+        background-color: rgba(255, 255, 255, 0.15);
+        padding: 2px 10px;
+        border-radius: 15px;
+        font-size: 13px;
+    }
+    
+    .property-details {
+        margin-top: 12px;
+        font-size: 13px;
+        background-color: rgba(0, 0, 0, 0.4);
+        padding: 8px 12px;
+        border-radius: 10px;
+        backdrop-filter: blur(5px);
+        border: 0.5px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .property-detail {
+        display: flex;
+        align-items: center;
+        margin-bottom: 4px;
+    }
+    
+    .property-detail i {
+        margin-right: 8px;
+        font-size: 14px;
+        width: 20px;
+        text-align: center;
+        color: #FF0050;
+    }
+    
+    /* شريط التنقل السفلي */
+    .tiktok-footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 50px;
+        background-color: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(10px);
+        z-index: 100;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        border-top: 0.5px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .footer-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        cursor: pointer;
+        opacity: 0.6;
+        transition: opacity 0.2s;
+    }
+    
+    .footer-item.active {
+        opacity: 1;
+    }
+    
+    .footer-icon {
+        font-size: 20px;
+        margin-bottom: 2px;
+    }
+    
+    .footer-label {
+        font-size: 10px;
+    }
+    
+    /* مؤثرات إضافية */
+    .video-loading {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: rgba(0, 0, 0, 0.6);
+        color: white;
+        padding: 10px 20px;
+        border-radius: 30px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .spinner {
+        width: 18px;
+        height: 18px;
+        border: 3px solid rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        border-top-color: white;
+        animation: spin 1s ease-in-out infinite;
+    }
+    
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+    
+    /* زر العودة */
+    .back-button {
+        position: fixed;
+        top: 12px;
+        left: 12px;
+        z-index: 1000;
+        background-color: rgba(0,0,0,0.5);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 36px;
+        height: 36px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        font-size: 1.2rem;
+        transition: background-color 0.3s;
+    }
+    
+    .back-button:hover {
+        background-color: rgba(0,0,0,0.8);
+    }
+    
+    /* تخصيصات للمسح لأعلى وأسفل */
+    .tiktok-swiper {
+        height: 100vh;
+        overflow-y: scroll;
+        scroll-snap-type: y mandatory;
+        scrollbar-width: none; /* Firefox */
+        -ms-overflow-style: none;  /* IE and Edge */
+    }
+    
+    .tiktok-swiper::-webkit-scrollbar {
+        display: none; /* Chrome, Safari and Opera */
+    }
+    
+    /* زر مشاركة العقار */
+    .share-property-btn {
+        position: absolute;
+        bottom: 70px;
+        right: 15px;
+        background-color: #FF0050;
+        color: white;
+        border: none;
+        border-radius: 30px;
+        padding: 8px 15px;
+        font-weight: bold;
+        font-size: 13px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        z-index: 10;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        transition: transform 0.2s, background-color 0.2s;
+    }
+    
+    .share-property-btn:hover {
+        transform: translateY(-2px);
+        background-color: #e6004a;
+    }
+    
+    /* تخصيصات إضافية لتشبه واجهة تيك توك */
+    .music-display {
+        position: absolute;
+        bottom: 30px;
+        right: 15px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        z-index: 10;
+        animation: slide 8s linear infinite;
+    }
+    
+    @keyframes slide {
+        0% { transform: translateX(100%); }
+        100% { transform: translateX(-50%); }
+    }
+    
+    .music-icon {
+        font-size: 15px;
+        animation: rotate 3s linear infinite;
+        transform-origin: center;
+    }
+    
+    @keyframes rotate {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    
+    .music-text {
+        font-size: 13px;
+        white-space: nowrap;
+        max-width: 150px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- زر العودة إلى معرض الفيديوهات -->
+<button class="back-button" onclick="window.location.href='/marketers/video-gallery'">
+    <i class="fas fa-arrow-left"></i>
+</button>
+
+<div class="tiktok-layout">
+    <!-- شريط التنقل العلوي -->
+    <div class="tiktok-header">
+        <div class="header-tabs">
+            <div class="header-tab active">اكتشف</div>
+            <div class="header-tab">متابَعون</div>
+            <div class="header-tab">فخامة</div>
+        </div>
+        <div class="header-actions">
+            <div class="header-icon">
+                <i class="fas fa-search"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- حاوية الفيديوهات -->
+    <div class="tiktok-swiper" id="tiktok-videos-container">
+        <!-- سيتم إضافة الفيديوهات هنا ديناميكيًا -->
+    </div>
+
+    <!-- شريط التنقل السفلي -->
+    <div class="tiktok-footer">
+        <div class="footer-item active">
+            <div class="footer-icon"><i class="fas fa-home"></i></div>
+            <div class="footer-label">الرئيسية</div>
+        </div>
+        <div class="footer-item">
+            <div class="footer-icon"><i class="fas fa-compass"></i></div>
+            <div class="footer-label">اكتشف</div>
+        </div>
+        <div class="footer-item">
+            <div class="footer-icon"><i class="fas fa-plus-circle"></i></div>
+            <div class="footer-label">إضافة</div>
+        </div>
+        <div class="footer-item">
+            <div class="footer-icon"><i class="fas fa-inbox"></i></div>
+            <div class="footer-label">الرسائل</div>
+        </div>
+        <div class="footer-item">
+            <div class="footer-icon"><i class="fas fa-user"></i></div>
+            <div class="footer-label">أنا</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // بيانات الفيديوهات التجريبية (في الواقع ستأتي من قاعدة البيانات)
+        const videos = [
+            {
+                id: 1,
+                videoUrl: 'https://vimeo.com/1052566570/60a627009b',
+                agent: {
+                    name: 'أحمد المسوق',
+                    avatar: '/static/img/user-avatar.png'
+                },
+                description: 'شقة فاخرة للبيع في قلب المدينة، إطلالة رائعة على البحر والمدينة',
+                tags: ['شقة فاخرة', 'إطلالة بحر', 'غرفتين نوم'],
+                likes: 1245,
+                comments: 89,
+                shares: 124,
+                propertyDetails: {
+                    type: 'شقة',
+                    area: '120 متر مربع',
+                    rooms: '2 غرف نوم',
+                    price: '1,200,000 ريال'
+                }
+            },
+            {
+                id: 2,
+                videoUrl: 'https://vimeo.com/1052566651/6b1774aec0',
+                agent: {
+                    name: 'أحمد المسوق',
+                    avatar: '/static/img/user-avatar.png'
+                },
+                description: 'فيلا مستقلة جديدة للبيع، بتصميم عصري مع حديقة واسعة ومسبح خاص',
+                tags: ['فيلا مستقلة', 'مسبح خاص', 'حديقة'],
+                likes: 3670,
+                comments: 215,
+                shares: 430,
+                propertyDetails: {
+                    type: 'فيلا',
+                    area: '350 متر مربع',
+                    rooms: '5 غرف نوم',
+                    price: '3,500,000 ريال'
+                }
+            },
+            {
+                id: 3,
+                videoUrl: 'https://vimeo.com/1052566689/e7339c8b31',
+                agent: {
+                    name: 'أحمد المسوق',
+                    avatar: '/static/img/user-avatar.png'
+                },
+                description: 'شقة استوديو للإيجار، موقع استراتيجي قريب من الجامعات ومناطق التسوق',
+                tags: ['استوديو', 'للإيجار', 'موقع مركزي'],
+                likes: 876,
+                comments: 35,
+                shares: 62,
+                propertyDetails: {
+                    type: 'استوديو',
+                    area: '60 متر مربع',
+                    rooms: 'غرفة واحدة',
+                    price: '2,500 ريال/شهر'
+                }
+            },
+            {
+                id: 4,
+                videoUrl: 'https://vimeo.com/1052566714/2ec45d0872',
+                agent: {
+                    name: 'أحمد المسوق',
+                    avatar: '/static/img/user-avatar.png'
+                },
+                description: 'شقة دوبلكس في مجمع سكني راقي مع مسبح مشترك وصالة رياضية',
+                tags: ['دوبلكس', 'مجمع سكني', 'خدمات متكاملة'],
+                likes: 2150,
+                comments: 132,
+                shares: 185,
+                propertyDetails: {
+                    type: 'دوبلكس',
+                    area: '180 متر مربع',
+                    rooms: '3 غرف نوم',
+                    price: '2,300,000 ريال'
+                }
+            }
+        ];
+
+        // إنشاء عناصر الفيديو في واجهة تيك توك
+        const videosContainer = document.getElementById('tiktok-videos-container');
+        
+        videos.forEach(video => {
+            const videoItemElement = document.createElement('div');
+            videoItemElement.className = 'tiktok-video-item';
+            
+            // إنشاء مشغل الفيديو
+            const videoFrame = document.createElement('iframe');
+            videoFrame.className = 'video-player';
+            videoFrame.src = video.videoUrl;
+            videoFrame.frameBorder = "0";
+            videoFrame.allow = "autoplay; fullscreen; picture-in-picture";
+            videoFrame.allowFullscreen = true;
+            
+            // إنشاء معلومات الفيديو
+            const videoInfoElement = document.createElement('div');
+            videoInfoElement.className = 'video-info';
+            
+            // إنشاء معلومات الوكيل/المسوق
+            const videoAgentElement = document.createElement('div');
+            videoAgentElement.className = 'video-agent';
+            
+            videoAgentElement.innerHTML = `
+                <img src="${video.agent.avatar}" alt="${video.agent.name}" class="video-agent-avatar">
+                <div class="video-agent-name">@${video.agent.name}</div>
+                <button class="video-follow-btn">متابعة</button>
+            `;
+            
+            // إنشاء وصف الفيديو
+            const videoDescriptionElement = document.createElement('div');
+            videoDescriptionElement.className = 'video-description';
+            videoDescriptionElement.textContent = video.description;
+            
+            // إنشاء علامات الفيديو
+            const videoTagsElement = document.createElement('div');
+            videoTagsElement.className = 'video-tags';
+            
+            video.tags.forEach(tag => {
+                const tagElement = document.createElement('div');
+                tagElement.className = 'video-tag';
+                tagElement.textContent = '#' + tag.replace(/\s+/g, '_');
+                videoTagsElement.appendChild(tagElement);
+            });
+            
+            // إنشاء تفاصيل العقار
+            const propertyDetailsElement = document.createElement('div');
+            propertyDetailsElement.className = 'property-details';
+            
+            propertyDetailsElement.innerHTML = `
+                <div class="property-detail"><i class="fas fa-building"></i> ${video.propertyDetails.type}</div>
+                <div class="property-detail"><i class="fas fa-ruler-combined"></i> ${video.propertyDetails.area}</div>
+                <div class="property-detail"><i class="fas fa-bed"></i> ${video.propertyDetails.rooms}</div>
+                <div class="property-detail"><i class="fas fa-tag"></i> ${video.propertyDetails.price}</div>
+            `;
+            
+            // إضافة جميع عناصر معلومات الفيديو
+            videoInfoElement.appendChild(videoAgentElement);
+            videoInfoElement.appendChild(videoDescriptionElement);
+            videoInfoElement.appendChild(videoTagsElement);
+            videoInfoElement.appendChild(propertyDetailsElement);
+            
+            // إنشاء شريط الأدوات الجانبي
+            const sidebarElement = document.createElement('div');
+            sidebarElement.className = 'tiktok-sidebar';
+            
+            sidebarElement.innerHTML = `
+                <div class="sidebar-item">
+                    <div class="sidebar-icon"><i class="fas fa-heart"></i></div>
+                    <div class="sidebar-count">${video.likes}</div>
+                </div>
+                <div class="sidebar-item">
+                    <div class="sidebar-icon"><i class="fas fa-comment-dots"></i></div>
+                    <div class="sidebar-count">${video.comments}</div>
+                </div>
+                <div class="sidebar-item">
+                    <div class="sidebar-icon"><i class="fas fa-share"></i></div>
+                    <div class="sidebar-count">${video.shares}</div>
+                </div>
+                <div class="sidebar-item">
+                    <div class="sidebar-icon"><i class="fas fa-bookmark"></i></div>
+                </div>
+            `;
+            
+            // زر مشاركة العقار
+            const shareButton = document.createElement('button');
+            shareButton.className = 'share-property-btn';
+            shareButton.innerHTML = '<i class="fas fa-phone-alt"></i> تواصل الآن';
+            
+            // إضافة عنصر الموسيقى الدوارة (مميزة في تيك توك)
+            const musicElement = document.createElement('div');
+            musicElement.className = 'music-display';
+            musicElement.innerHTML = `
+                <div class="music-icon"><i class="fas fa-music"></i></div>
+                <div class="music-text">عقارات فاخرة - ${video.propertyDetails.type} للبيع - ${video.agent.name}</div>
+            `;
+            
+            // إضافة جميع العناصر إلى عنصر الفيديو
+            videoItemElement.appendChild(videoFrame);
+            videoItemElement.appendChild(videoInfoElement);
+            videoItemElement.appendChild(sidebarElement);
+            videoItemElement.appendChild(shareButton);
+            videoItemElement.appendChild(musicElement);
+            
+            // إضافة عنصر الفيديو إلى حاوية الفيديوهات
+            videosContainer.appendChild(videoItemElement);
+        });
+        
+        // إضافة مستمعي الأحداث للتبديل بين علامات التبويب
+        const tabButtons = document.querySelectorAll('.header-tab');
+        tabButtons.forEach(tab => {
+            tab.addEventListener('click', function() {
+                tabButtons.forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                // يمكن إضافة منطق تصفية الفيديوهات هنا حسب علامة التبويب
+            });
+        });
+        
+        // إضافة مستمعي الأحداث لأزرار شريط التنقل السفلي
+        const footerItems = document.querySelectorAll('.footer-item');
+        footerItems.forEach(item => {
+            item.addEventListener('click', function() {
+                footerItems.forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+                // يمكن إضافة منطق التنقل هنا حسب الزر
+            });
+        });
+    });
+</script>
+{% endblock %}

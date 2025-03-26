@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة الإشعارات | منصة التسويق العقاري</title>
+    
+    <!-- Bootstrap RTL -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- الأنماط الرئيسية -->
+    <link rel="stylesheet" href="../assets/css/main-styles.css">
+    
+    <!-- أنماط نظام الإشعارات -->
+    <link rel="stylesheet" href="assets/css/notifications-styles.css">
+</head>
+<body class="bg-light" dir="rtl">
+    <!-- شريط التنقل العلوي -->
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top" id="mainNav">
+        <div class="container-fluid">
+            <!-- الشعار -->
+            <a class="navbar-brand" href="../dashboard.html">
+                <img src="../assets/img/logo.svg" alt="شعار منصة التسويق العقاري" height="40">
+            </a>
+            
+            <!-- زر القائمة للشاشات الصغيرة -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <!-- محتوى القائمة -->
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <!-- عناصر القائمة الرئيسية -->
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../dashboard.html">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>لوحة التحكم</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../crm/customers.html">
+                            <i class="fas fa-users"></i>
+                            <span>إدارة العملاء</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../properties/listings.html">
+                            <i class="fas fa-building"></i>
+                            <span>العقارات</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../schedule/calendar-view.html">
+                            <i class="fas fa-calendar"></i>
+                            <span>المواعيد</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../analytics/analytics-dashboard.html">
+                            <i class="fas fa-chart-bar"></i>
+                            <span>التحليلات</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="notifications-panel.html">
+                            <i class="fas fa-bell"></i>
+                            <span>الإشعارات</span>
+                        </a>
+                    </li>
+                </ul>
+                
+                <!-- عناصر الجانب الأيمن من القائمة -->
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <!-- البحث -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="searchToggle">
+                            <i class="fas fa-search"></i>
+                        </a>
+                    </li>
+                    
+                    <!-- زر تبديل الوضع المظلم/الفاتح -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="themeToggle">
+                            <i class="fas fa-moon"></i>
+                        </a>
+                    </li>
+                    
+                    <!-- ملف المستخدم -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+                            <img src="../assets/img/profile-avatar.jpg" alt="الصورة الشخصية" class="rounded-circle me-1" width="32" height="32">
+                            <span>أحمد محمد</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="../profile/settings.html"><i class="fas fa-user-cog me-2"></i>الإعدادات</a></li>
+                            <li><a class="dropdown-item" href="../help/support.html"><i class="fas fa-question-circle me-2"></i>المساعدة</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="../auth/logout.html"><i class="fas fa-sign-out-alt me-2"></i>تسجيل الخروج</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- حقل البحث المنزلق -->
+    <div class="search-wrapper" id="searchWrapper">
+        <div class="container">
+            <div class="search-content">
+                <input type="text" class="form-control" placeholder="البحث في النظام...">
+                <button class="btn-close" id="searchClose"></button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- المحتوى الرئيسي -->
+    <main class="content">
+        <div class="container py-4">
+            <!-- عنوان الصفحة -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h2 class="page-title">
+                            <i class="fas fa-bell me-2"></i>
+                            <span>لوحة الإشعارات</span>
+                        </h2>
+                        
+                        <div class="page-actions">
+                            <button class="btn btn-primary" id="markAllAsRead">
+                                <i class="fas fa-check me-1"></i>
+                                <span>تحديد الكل كمقروء</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <!-- لوحة الإشعارات -->
+                <div class="col-lg-8 mb-4">
+                    <div class="notifications-panel" id="notificationsPanel">
+                        <!-- تبويبات الإشعارات -->
+                        <div class="notifications-tabs">
+                            <ul class="nav nav-tabs" id="notificationsTabs" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active" data-bs-toggle="tab" data-tab="all" type="button">
+                                        جميع الإشعارات
+                                        <span class="badge">10</span>
+                                    </button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" data-bs-toggle="tab" data-tab="unread" type="button">
+                                        غير المقروءة
+                                        <span class="badge">5</span>
+                                    </button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" data-bs-toggle="tab" data-tab="important" type="button">
+                                        المهمة
+                                        <span class="badge">3</span>
+                                    </button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" data-bs-toggle="tab" data-tab="tasks" type="button">
+                                        المهام
+                                        <span class="badge">1</span>
+                                    </button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" data-bs-toggle="tab" data-tab="meetings" type="button">
+                                        المواعيد
+                                        <span class="badge">2</span>
+                                    </button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" data-bs-toggle="tab" data-tab="system" type="button">
+                                        النظام
+                                        <span class="badge">2</span>
+                                    </button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" data-bs-toggle="tab" data-tab="archived" type="button">
+                                        المؤرشفة
+                                        <span class="badge">1</span>
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <!-- محتوى الإشعارات -->
+                        <div class="notifications-container" id="notificationsContainer">
+                            <!-- سيتم تحميل الإشعارات هنا بواسطة JavaScript -->
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- قسم الإعدادات -->
+                <div class="col-lg-4">
+                    <div class="notification-settings-section">
+                        <div class="notification-settings-card">
+                            <h3 class="settings-title">إعدادات الإشعارات</h3>
+                            
+                            <div class="settings-group">
+                                <h4 class="settings-group-title">قنوات الإشعارات</h4>
+                                <div class="setting-item">
+                                    <div class="setting-label">إشعارات البريد الإلكتروني</div>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="emailNotifications" checked>
+                                    </div>
+                                </div>
+                                <div class="setting-item">
+                                    <div class="setting-label">إشعارات الرسائل النصية</div>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="smsNotifications">
+                                    </div>
+                                </div>
+                                <div class="setting-item">
+                                    <div class="setting-label">إشعارات التطبيق</div>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="pushNotifications" checked>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="settings-group">
+                                <h4 class="settings-group-title">أنواع الإشعارات</h4>
+                                <div class="setting-item">
+                                    <div class="setting-label">إشعارات المهام الجديدة</div>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="notifyOnNewTask" checked>
+                                    </div>
+                                </div>
+                                <div class="setting-item">
+                                    <div class="setting-label">إشعارات المواعيد الجديدة</div>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="notifyOnNewMeeting" checked>
+                                    </div>
+                                </div>
+                                <div class="setting-item">
+                                    <div class="setting-label">إشعارات الرسائل الجديدة</div>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="notifyOnNewMessage" checked>
+                                    </div>
+                                </div>
+                                <div class="setting-item">
+                                    <div class="setting-label">تحديثات المبيعات</div>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="notifyOnSalesUpdate" checked>
+                                    </div>
+                                </div>
+                                <div class="setting-item">
+                                    <div class="setting-label">نشاط العملاء</div>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="notifyOnCustomerActivity" checked>
+                                    </div>
+                                </div>
+                                <div class="setting-item">
+                                    <div class="setting-label">تحديثات النظام</div>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="notifyOnSystemUpdate">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="settings-group">
+                                <h4 class="settings-group-title">الخيارات المتقدمة</h4>
+                                <div class="setting-item">
+                                    <div class="setting-label">ملخص الإشعارات</div>
+                                    <select class="form-select form-select-sm" id="notificationDigest" style="width: 120px;">
+                                        <option value="immediate">فوري</option>
+                                        <option value="daily" selected>يومي</option>
+                                        <option value="weekly">أسبوعي</option>
+                                    </select>
+                                </div>
+                                <div class="setting-item">
+                                    <div class="setting-label">وقت عدم الإزعاج</div>
+                                    <div class="time-range-group">
+                                        <input type="time" class="form-control form-control-sm" id="doNotDisturbStart" value="22:00">
+                                        <span>إلى</span>
+                                        <input type="time" class="form-control form-control-sm" id="doNotDisturbEnd" value="07:00">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-3">
+                                <button class="btn btn-primary" id="saveSettings">حفظ الإعدادات</button>
+                                <button class="btn btn-outline-secondary" id="resetSettings">إعادة تعيين</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- الفوتر -->
+    <footer class="footer mt-auto py-3">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <span class="text-muted">© 2025 منصة التسويق العقاري. جميع الحقوق محفوظة.</span>
+                </div>
+                <div>
+                    <a href="../help/terms.html" class="text-muted me-3">الشروط والأحكام</a>
+                    <a href="../help/privacy.html" class="text-muted me-3">سياسة الخصوصية</a>
+                    <a href="../help/support.html" class="text-muted">الدعم الفني</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- بيانات الإشعارات والمدير -->
+    <script src="assets/js/notifications-data.js"></script>
+    <script src="assets/js/notifications-manager.js"></script>
+    
+    <script>
+        // تهيئة بعد تحميل DOM
+        document.addEventListener('DOMContentLoaded', function() {
+            // تهيئة مدير الإشعارات
+            window.notificationsManager.initialize();
+            
+            // مستمعو الأحداث للتبويبات
+            const tabButtons = document.querySelectorAll('[data-tab]');
+            tabButtons.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // إزالة الصنف النشط من جميع التبويبات
+                    tabButtons.forEach(t => t.classList.remove('active'));
+                    // إضافة الصنف النشط للتبويب المحدد
+                    this.classList.add('active');
+                    
+                    // تحميل الإشعارات حسب التبويب
+                    const tabId = this.getAttribute('data-tab');
+                    loadNotificationsByTab(tabId);
+                });
+            });
+            
+            // تحميل الإشعارات حسب التبويب
+            function loadNotificationsByTab(tabId) {
+                // استخدام الدالة المناسبة من مدير الإشعارات
+                window.notificationsManager.renderNotificationsPanel();
+            }
+            
+            // مستمع الأحداث لزر "تحديد الكل كمقروء"
+            const markAllAsReadBtn = document.getElementById('markAllAsRead');
+            if (markAllAsReadBtn) {
+                markAllAsReadBtn.addEventListener('click', function() {
+                    // الحصول على جميع الإشعارات غير المقروءة
+                    const unreadNotifications = window.notificationsData.getUnreadNotifications();
+                    
+                    // تعيين جميع الإشعارات غير المقروءة كمقروءة
+                    unreadNotifications.forEach(notification => {
+                        window.notificationsData.updateNotificationStatus(notification.id, window.notificationsData.STATUS.READ);
+                    });
+                    
+                    // تحديث واجهة المستخدم
+                    window.notificationsManager.updateNotificationsCounter();
+                    window.notificationsManager.renderNotificationsPanel();
+                    
+                    // عرض رسالة نجاح
+                    alert('تم تحديد جميع الإشعارات كمقروءة');
+                });
+            }
+            
+            // مستمع الأحداث لزر "حفظ الإعدادات"
+            const saveSettingsBtn = document.getElementById('saveSettings');
+            if (saveSettingsBtn) {
+                saveSettingsBtn.addEventListener('click', function() {
+                    // جمع قيم الإعدادات
+                    const settings = {
+                        emailNotifications: document.getElementById('emailNotifications').checked,
+                        smsNotifications: document.getElementById('smsNotifications').checked,
+                        pushNotifications: document.getElementById('pushNotifications').checked,
+                        notifyOnNewTask: document.getElementById('notifyOnNewTask').checked,
+                        notifyOnNewMeeting: document.getElementById('notifyOnNewMeeting').checked,
+                        notifyOnNewMessage: document.getElementById('notifyOnNewMessage').checked,
+                        notifyOnSalesUpdate: document.getElementById('notifyOnSalesUpdate').checked,
+                        notifyOnCustomerActivity: document.getElementById('notifyOnCustomerActivity').checked,
+                        notifyOnSystemUpdate: document.getElementById('notifyOnSystemUpdate').checked,
+                        notificationDigest: document.getElementById('notificationDigest').value,
+                        doNotDisturbStart: document.getElementById('doNotDisturbStart').value,
+                        doNotDisturbEnd: document.getElementById('doNotDisturbEnd').value
+                    };
+                    
+                    // تحديث الإعدادات
+                    window.notificationsData.updateNotificationSettings(settings);
+                    
+                    // عرض رسالة نجاح
+                    alert('تم حفظ الإعدادات بنجاح');
+                });
+            }
+            
+            // مستمع الأحداث لزر "إعادة تعيين الإعدادات"
+            const resetSettingsBtn = document.getElementById('resetSettings');
+            if (resetSettingsBtn) {
+                resetSettingsBtn.addEventListener('click', function() {
+                    if (confirm('هل أنت متأكد من إعادة تعيين جميع الإعدادات إلى القيم الافتراضية؟')) {
+                        // الحصول على الإعدادات الافتراضية
+                        const defaultSettings = {
+                            emailNotifications: true,
+                            smsNotifications: false,
+                            pushNotifications: true,
+                            notifyOnNewTask: true,
+                            notifyOnNewMeeting: true,
+                            notifyOnNewMessage: true,
+                            notifyOnSalesUpdate: true,
+                            notifyOnCustomerActivity: true,
+                            notifyOnSystemUpdate: false,
+                            notificationDigest: 'daily',
+                            doNotDisturbStart: '22:00',
+                            doNotDisturbEnd: '07:00'
+                        };
+                        
+                        // تحديث الإعدادات
+                        window.notificationsData.updateNotificationSettings(defaultSettings);
+                        
+                        // تحديث حالة عناصر النموذج
+                        document.getElementById('emailNotifications').checked = defaultSettings.emailNotifications;
+                        document.getElementById('smsNotifications').checked = defaultSettings.smsNotifications;
+                        document.getElementById('pushNotifications').checked = defaultSettings.pushNotifications;
+                        document.getElementById('notifyOnNewTask').checked = defaultSettings.notifyOnNewTask;
+                        document.getElementById('notifyOnNewMeeting').checked = defaultSettings.notifyOnNewMeeting;
+                        document.getElementById('notifyOnNewMessage').checked = defaultSettings.notifyOnNewMessage;
+                        document.getElementById('notifyOnSalesUpdate').checked = defaultSettings.notifyOnSalesUpdate;
+                        document.getElementById('notifyOnCustomerActivity').checked = defaultSettings.notifyOnCustomerActivity;
+                        document.getElementById('notifyOnSystemUpdate').checked = defaultSettings.notifyOnSystemUpdate;
+                        document.getElementById('notificationDigest').value = defaultSettings.notificationDigest;
+                        document.getElementById('doNotDisturbStart').value = defaultSettings.doNotDisturbStart;
+                        document.getElementById('doNotDisturbEnd').value = defaultSettings.doNotDisturbEnd;
+                        
+                        // عرض رسالة نجاح
+                        alert('تم إعادة تعيين الإعدادات بنجاح');
+                    }
+                });
+            }
+            
+            // مستمع الأحداث لزر تبديل الوضع المظلم/الفاتح
+            const themeToggle = document.getElementById('themeToggle');
+            if (themeToggle) {
+                themeToggle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const icon = themeToggle.querySelector('i');
+                    
+                    if (document.body.classList.contains('dark-theme')) {
+                        // تبديل إلى الوضع الفاتح
+                        document.body.classList.remove('dark-theme');
+                        localStorage.setItem('theme', 'light');
+                        icon.classList.remove('fa-sun');
+                        icon.classList.add('fa-moon');
+                    } else {
+                        // تبديل إلى الوضع المظلم
+                        document.body.classList.add('dark-theme');
+                        localStorage.setItem('theme', 'dark');
+                        icon.classList.remove('fa-moon');
+                        icon.classList.add('fa-sun');
+                    }
+                });
+                
+                // التحقق من الوضع المخزن
+                const savedTheme = localStorage.getItem('theme');
+                if (savedTheme === 'dark') {
+                    document.body.classList.add('dark-theme');
+                    const icon = themeToggle.querySelector('i');
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                }
+            }
+            
+            // مستمع الأحداث لزر البحث
+            const searchToggle = document.getElementById('searchToggle');
+            const searchWrapper = document.getElementById('searchWrapper');
+            const searchClose = document.getElementById('searchClose');
+            
+            if (searchToggle && searchWrapper && searchClose) {
+                searchToggle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    searchWrapper.classList.add('show');
+                    setTimeout(() => {
+                        searchWrapper.querySelector('input').focus();
+                    }, 100);
+                });
+                
+                searchClose.addEventListener('click', function() {
+                    searchWrapper.classList.remove('show');
+                });
+            }
+        });
+    </script>
+</body>
+</html>

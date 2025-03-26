@@ -1,0 +1,191 @@
+/* أنماط مركز التواصل الاجتماعي */
+
+/* أنماط عامة */
+.chart-container {
+    height: 300px;
+    margin-bottom: 20px;
+}
+
+/* أنماط البطاقات */
+.counter {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+/* أنماط جدول الحسابات */
+.platform-icon {
+    font-size: 1.2rem;
+    width: 30px;
+    text-align: center;
+}
+
+.account-status {
+    width: 90px;
+}
+
+.account-status.connected {
+    color: #198754;
+}
+
+.account-status.pending {
+    color: #fd7e14;
+}
+
+.account-status.expired {
+    color: #dc3545;
+}
+
+/* أنماط المنشورات المجدولة */
+.upcoming-posts {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.post-item {
+    position: relative;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    border-right: 4px solid #0d6efd;
+    background-color: rgba(13, 110, 253, 0.05);
+    transition: all 0.3s ease;
+}
+
+.post-item:hover {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.post-item.instagram {
+    border-right-color: #e1306c;
+    background-color: rgba(225, 48, 108, 0.05);
+}
+
+.post-item.twitter {
+    border-right-color: #1da1f2;
+    background-color: rgba(29, 161, 242, 0.05);
+}
+
+.post-item.tiktok {
+    border-right-color: #000000;
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.post-item .post-date {
+    font-size: 0.8rem;
+    color: #6c757d;
+    margin-bottom: 8px;
+}
+
+.post-item .post-content {
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+.post-item .post-platforms {
+    display: flex;
+    gap: 8px;
+}
+
+.post-item .platform-badge {
+    font-size: 0.75rem;
+    padding: 2px 8px;
+    border-radius: 12px;
+}
+
+/* أنماط تقويم المحتوى */
+.content-calendar {
+    height: 400px;
+}
+
+.fc-event {
+    cursor: pointer;
+}
+
+.fc-event-facebook {
+    background-color: #1877f2;
+    border-color: #1877f2;
+}
+
+.fc-event-instagram {
+    background-color: #e1306c;
+    border-color: #e1306c;
+}
+
+.fc-event-twitter {
+    background-color: #1da1f2;
+    border-color: #1da1f2;
+}
+
+.fc-event-tiktok {
+    background-color: #000000;
+    border-color: #000000;
+}
+
+/* أنماط رفع الوسائط */
+.dropzone-upload {
+    border: 2px dashed #dee2e6;
+    transition: all 0.3s ease;
+}
+
+.dropzone-upload:hover, .dropzone-upload.dragover {
+    border-color: #0d6efd;
+    background-color: rgba(13, 110, 253, 0.05);
+}
+
+.media-preview-item {
+    position: relative;
+    margin-bottom: 10px;
+}
+
+.media-preview-item img, .media-preview-item video {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.media-remove-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.media-remove-btn:hover {
+    background-color: #fff;
+}
+
+/* أنماط النوافذ المنبثقة */
+.platform-btn.selected {
+    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.25);
+}
+
+.connection-instructions {
+    min-height: 150px;
+}
+
+/* أنماط تبويبات المنصات */
+.placeholder-content {
+    min-height: 300px;
+}
+
+/* تحسينات للشاشات الصغيرة */
+@media (max-width: 767.98px) {
+    .chart-container {
+        height: 250px;
+    }
+    
+    .content-calendar {
+        height: 350px;
+    }
+}

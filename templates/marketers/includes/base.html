@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{% block meta_description %}منصة العقارات على تيك توك - لوحة تحكم المسوقين العقاريين{% endblock %}">
+    <meta name="theme-color" content="#2c3e50">
+    
+    <title>{% block title %}منصة العقارات على تيك توك{% endblock %}</title>
+    
+    <!-- روابط الخطوط -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- أيقونات Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    
+    <!-- بوتستراب 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- ملفات التصميم المخصصة -->
+    <link href="/static/css/modern-dashboard.css" rel="stylesheet">
+    <link href="/static/css/dark-mode.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2ecc71;
+            --accent-color: #f39c12;
+            --light-color: #f8f9fa;
+            --dark-color: #2c3e50;
+            --card-border-radius: 15px;
+            --transition-speed: 0.3s;
+        }
+        
+        /* تنسيق القائمة الجانبية */
+        .sidebar {
+            background: linear-gradient(to bottom, var(--dark-color), #34495e);
+            color: white;
+            width: 280px;
+            position: fixed;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+            transition: all var(--transition-speed) ease;
+            z-index: 1000;
+        }
+        
+        .sidebar-header {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .sidebar-nav .nav-link {
+            color: rgba(255, 255, 255, 0.8);
+            border-radius: 8px;
+            padding: 10px 15px;
+            margin-bottom: 5px;
+            transition: all var(--transition-speed) ease;
+        }
+        
+        .sidebar-nav .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            transform: translateX(-5px);
+        }
+        
+        .sidebar-nav .nav-link.active {
+            background-color: var(--secondary-color);
+            color: white;
+            font-weight: 500;
+        }
+        
+        .sidebar-footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .avatar-container {
+            position: relative;
+        }
+        
+        .status-badge {
+            font-size: 0.75rem;
+        }
+        
+        .status-badge.online {
+            color: #2ecc71;
+        }
+        
+        .status-badge i {
+            font-size: 0.65rem;
+        }
+        
+        /* تنسيق المحتوى الرئيسي */
+        .main-content {
+            margin-right: 280px;
+            padding: 20px;
+            transition: all var(--transition-speed) ease;
+        }
+        
+        /* للشاشات الصغيرة */
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(100%);
+            }
+            
+            .sidebar.show {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-right: 0;
+            }
+        }
+        
+        /* تأثيرات الحركة */
+        .fade-in {
+            animation: fadeIn 0.8s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+    
+    {% block additional_css %}{% endblock %}
+</head>
+<body>
+    <div class="main-layout">
+        <!-- القائمة الجانبية -->
+        {% include 'marketers/includes/sidebar.html' %}
+        
+        <main class="main-content">
+            <!-- الرأس العلوي -->
+            {% include 'marketers/includes/header.html' %}
+            
+            <!-- محتوى الصفحة -->
+            <div id="page-content">
+                {% block content %}{% endblock %}
+            </div>
+            
+            <!-- تذييل الصفحة -->
+            <footer class="page-footer p-3 text-center text-muted mt-5">
+                <p>جميع الحقوق محفوظة &copy; منصة العقارات على تيك توك 2025</p>
+            </footer>
+        </main>
+    </div>
+    
+    <!-- سكريبت بوتستراب 5 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- سكريبت الدارك مود -->
+    <script src="/static/js/dark-mode.js"></script>
+    
+    <script>
+        // تفعيل زر تبديل القائمة الجانبية
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('sidebar-toggle').addEventListener('click', function() {
+                document.getElementById('main-sidebar').classList.toggle('show');
+            });
+        });
+    </script>
+    
+    {% block scripts %}{% endblock %}
+</body>
+</html>

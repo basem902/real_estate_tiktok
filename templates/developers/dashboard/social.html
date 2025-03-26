@@ -1,0 +1,457 @@
+{% extends "developers/dashboard/base_dashboard.html" %}
+
+{% block title %}إدارة منصات التواصل الاجتماعي{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-4 mt-4 rtl">
+    <!-- عنوان الصفحة والأزرار -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h3 mb-0 text-gray-800">إدارة منصات التواصل الاجتماعي</h1>
+            <p class="mb-0">إدارة حساباتك على منصات التواصل وتنظيم المحتوى</p>
+        </div>
+        <div>
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPostModal">
+                <i class="fas fa-plus ml-1"></i> منشور جديد
+            </button>
+        </div>
+    </div>
+
+    <!-- إحصائيات التواصل الاجتماعي -->
+    <div class="row">
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                إجمالي المتابعين</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">25,412</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-users fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                معدل التفاعل</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">4.8%</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-chart-line fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-info shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                المنشورات الشهرية</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">32</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                زيارات من وسائل التواصل</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">1,453</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-eye fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- إدارة الحسابات والمنصات -->
+    <div class="row">
+        <div class="col-xl-4 col-lg-5">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">حساباتي المرتبطة</h6>
+                    <div class="dropdown no-arrow">
+                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                           data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                             aria-labelledby="dropdownMenuLink">
+                            <div class="dropdown-header">خيارات:</div>
+                            <a class="dropdown-item" href="#"><i class="fas fa-plus fa-sm fa-fw me-2 text-gray-400"></i>إضافة حساب</a>
+                            <a class="dropdown-item" href="#"><i class="fas fa-sync fa-sm fa-fw me-2 text-gray-400"></i>تحديث الكل</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3 pb-3 border-bottom">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center">
+                                <div class="me-3">
+                                    <i class="fab fa-instagram fa-2x text-danger"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0">انستغرام</h6>
+                                    <small class="text-muted">@realestate_dev</small>
+                                </div>
+                            </div>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="instagramSwitch" checked>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3 pb-3 border-bottom">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center">
+                                <div class="me-3">
+                                    <i class="fab fa-facebook fa-2x text-primary"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0">فيسبوك</h6>
+                                    <small class="text-muted">Real Estate Developers</small>
+                                </div>
+                            </div>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="facebookSwitch" checked>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3 pb-3 border-bottom">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center">
+                                <div class="me-3">
+                                    <i class="fab fa-twitter fa-2x text-info"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0">تويتر</h6>
+                                    <small class="text-muted">@real_estate_developers</small>
+                                </div>
+                            </div>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="twitterSwitch" checked>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3 pb-3 border-bottom">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center">
+                                <div class="me-3">
+                                    <i class="fab fa-tiktok fa-2x"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0">تيك توك</h6>
+                                    <small class="text-muted">@realestate_tiktok</small>
+                                </div>
+                            </div>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="tiktokSwitch" checked>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center">
+                                <div class="me-3">
+                                    <i class="fab fa-linkedin fa-2x text-primary"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0">لينكد إن</h6>
+                                    <small class="text-muted">Real Estate Development Corp.</small>
+                                </div>
+                            </div>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="linkedinSwitch">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-3">
+                        <button class="btn btn-outline-primary btn-sm">
+                            <i class="fas fa-plus"></i> إضافة منصة جديدة
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- جدول زمني للمنشورات والمحتوى -->
+        <div class="col-xl-8 col-lg-7">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">جدول المنشورات</h6>
+                    <div class="dropdown no-arrow">
+                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink2"
+                           data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                             aria-labelledby="dropdownMenuLink2">
+                            <div class="dropdown-header">تصفية حسب:</div>
+                            <a class="dropdown-item" href="#">جميع المنصات</a>
+                            <a class="dropdown-item" href="#">انستغرام</a>
+                            <a class="dropdown-item" href="#">فيسبوك</a>
+                            <a class="dropdown-item" href="#">تويتر</a>
+                            <a class="dropdown-item" href="#">تيك توك</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="timeline-item mb-4">
+                        <div class="d-flex">
+                            <div class="timeline-icon me-3">
+                                <div class="icon-circle bg-primary">
+                                    <i class="fab fa-instagram text-white"></i>
+                                </div>
+                            </div>
+                            <div class="timeline-content border rounded p-3 w-100">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <h6 class="mb-0">عرض لشقق فاخرة في مشروع الواحة</h6>
+                                    <span class="badge bg-success">تم النشر</span>
+                                </div>
+                                <p class="mb-2">صور حصرية من داخل الشقق الفاخرة في مشروع الواحة الجديد. تصميم عصري وإطلالات رائعة!</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <small class="text-muted"><i class="fas fa-clock me-1"></i> 23 مارس، 09:30 صباحاً</small>
+                                    <div>
+                                        <button class="btn btn-sm btn-outline-primary me-1"><i class="fas fa-edit"></i></button>
+                                        <button class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="timeline-item mb-4">
+                        <div class="d-flex">
+                            <div class="timeline-icon me-3">
+                                <div class="icon-circle bg-primary">
+                                    <i class="fab fa-facebook text-white"></i>
+                                </div>
+                            </div>
+                            <div class="timeline-content border rounded p-3 w-100">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <h6 class="mb-0">عرض ترويجي محدود الوقت!</h6>
+                                    <span class="badge bg-warning">مجدول</span>
+                                </div>
+                                <p class="mb-2">عرض خاص لفترة محدودة! خصم 10% على جميع الوحدات السكنية عند الحجز خلال شهر رمضان المبارك.</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <small class="text-muted"><i class="fas fa-clock me-1"></i> 24 مارس، 10:00 صباحاً</small>
+                                    <div>
+                                        <button class="btn btn-sm btn-outline-primary me-1"><i class="fas fa-edit"></i></button>
+                                        <button class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="timeline-item mb-4">
+                        <div class="d-flex">
+                            <div class="timeline-icon me-3">
+                                <div class="icon-circle bg-primary">
+                                    <i class="fab fa-tiktok text-white"></i>
+                                </div>
+                            </div>
+                            <div class="timeline-content border rounded p-3 w-100">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <h6 class="mb-0">جولة سريعة داخل فيلا نموذجية</h6>
+                                    <span class="badge bg-info">مسودة</span>
+                                </div>
+                                <p class="mb-2">فيديو قصير يعرض التصميم الداخلي للفيلا النموذجية في مشروع الواحة. تصوير وإنتاج احترافي.</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <small class="text-muted"><i class="fas fa-clock me-1"></i> 25 مارس، 02:30 مساءً</small>
+                                    <div>
+                                        <button class="btn btn-sm btn-outline-primary me-1"><i class="fas fa-edit"></i></button>
+                                        <button class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="d-flex">
+                            <div class="timeline-icon me-3">
+                                <div class="icon-circle bg-primary">
+                                    <i class="fab fa-twitter text-white"></i>
+                                </div>
+                            </div>
+                            <div class="timeline-content border rounded p-3 w-100">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <h6 class="mb-0">أسعار العقارات ترتفع بنسبة 15%</h6>
+                                    <span class="badge bg-warning">مجدول</span>
+                                </div>
+                                <p class="mb-2">تقرير: أسعار العقارات في المنطقة ترتفع بنسبة 15%، استثمر الآن في مشروعنا الجديد بالأسعار الحالية قبل الزيادة!</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <small class="text-muted"><i class="fas fa-clock me-1"></i> 26 مارس، 11:00 صباحاً</small>
+                                    <div>
+                                        <button class="btn btn-sm btn-outline-primary me-1"><i class="fas fa-edit"></i></button>
+                                        <button class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- تحليلات أداء المنشورات -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">تحليلات المنشورات</h6>
+                </div>
+                <div class="card-body">
+                    <div class="chart-area">
+                        <div style="height: 300px; background-color: #f8f9fc; display: flex; justify-content: center; align-items: center;">
+                            <h6 class="text-muted">الرسم البياني لمعدل التفاعل مع المنشورات خلال الأشهر الستة الماضية</h6>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row mt-4">
+                        <div class="col-md-3 col-sm-6 mb-4">
+                            <div class="card border-0">
+                                <div class="card-body text-center">
+                                    <h6 class="text-primary">الإعجابات</h6>
+                                    <h3>12,458</h3>
+                                    <span class="text-success"><i class="fas fa-arrow-up"></i> 12.5%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6 mb-4">
+                            <div class="card border-0">
+                                <div class="card-body text-center">
+                                    <h6 class="text-primary">التعليقات</h6>
+                                    <h3>1,865</h3>
+                                    <span class="text-success"><i class="fas fa-arrow-up"></i> 8.3%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6 mb-4">
+                            <div class="card border-0">
+                                <div class="card-body text-center">
+                                    <h6 class="text-primary">المشاركات</h6>
+                                    <h3>3,245</h3>
+                                    <span class="text-success"><i class="fas fa-arrow-up"></i> 15.8%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6 mb-4">
+                            <div class="card border-0">
+                                <div class="card-body text-center">
+                                    <h6 class="text-primary">الزيارات</h6>
+                                    <h3>8,325</h3>
+                                    <span class="text-danger"><i class="fas fa-arrow-down"></i> 2.4%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- نافذة إضافة منشور جديد -->
+<div class="modal fade" id="addPostModal" tabindex="-1" aria-labelledby="addPostModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addPostModalLabel">إضافة منشور جديد</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="postTitle" class="form-label">عنوان المنشور <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="postTitle" placeholder="أدخل عنوان المنشور" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="postContent" class="form-label">محتوى المنشور <span class="text-danger">*</span></label>
+                        <textarea class="form-control" id="postContent" rows="4" placeholder="أدخل محتوى المنشور" required></textarea>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="postPlatforms" class="form-label">المنصات <span class="text-danger">*</span></label>
+                            <div class="d-flex flex-wrap gap-2">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="instagram" checked>
+                                    <label class="form-check-label" for="instagram">
+                                        انستغرام
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="facebook" checked>
+                                    <label class="form-check-label" for="facebook">
+                                        فيسبوك
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="twitter">
+                                    <label class="form-check-label" for="twitter">
+                                        تويتر
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="tiktok">
+                                    <label class="form-check-label" for="tiktok">
+                                        تيك توك
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="postSchedule" class="form-label">جدولة النشر</label>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <input type="date" class="form-control mb-2" id="postDate">
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="time" class="form-control" id="postTime">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="postMedia" class="form-label">الوسائط المرفقة</label>
+                        <input type="file" class="form-control" id="postMedia" multiple>
+                        <small class="form-text text-muted">يمكنك إرفاق صور أو فيديوهات (الحد الأقصى: 5 ملفات)</small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="postTags" class="form-label">الوسوم</label>
+                        <input type="text" class="form-control" id="postTags" placeholder="أدخل الوسوم مفصولة بفواصل (مثال: عقارات، استثمار، منازل)">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                <button type="button" class="btn btn-info">حفظ كمسودة</button>
+                <button type="button" class="btn btn-success">نشر الآن</button>
+                <button type="button" class="btn btn-primary">جدولة النشر</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="لوحة تحكم المسوقين العقاريين - نظرة عامة">
+    <meta name="theme-color" content="#2c3e50">
+    
+    <title>نظرة عامة - لوحة تحكم المسوقين العقاريين</title>
+    
+    <!-- روابط الخطوط -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- أيقونات Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    
+    <!-- بوتستراب 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- أنماط المشروع المخصصة -->
+    <link rel="stylesheet" href="../assets/css/main-styles.css">
+    <link rel="stylesheet" href="../assets/css/dashboard-styles.css">
+    
+    <!-- أنماط مخصصة مضافة -->
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2ecc71;
+            --accent-color: #f39c12;
+            --light-color: #f8f9fa;
+            --dark-color: #2c3e50;
+            --card-border-radius: 15px;
+            --transition-speed: 0.3s;
+        }
+        
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: #f5f7fa;
+            color: #333;
+        }
+        
+        /* تنسيق القائمة الجانبية */
+        .sidebar {
+            background: linear-gradient(to bottom, var(--dark-color), #34495e);
+            color: white;
+            width: 280px;
+            position: fixed;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+            transition: all var(--transition-speed) ease;
+            z-index: 1000;
+        }
+        
+        .sidebar-header {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .sidebar-nav .nav-link {
+            color: rgba(255, 255, 255, 0.8);
+            border-radius: 8px;
+            padding: 10px 15px;
+            margin-bottom: 5px;
+            transition: all var(--transition-speed) ease;
+        }
+        
+        .sidebar-nav .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            transform: translateX(-5px);
+        }
+        
+        .sidebar-nav .nav-link.active {
+            background-color: var(--secondary-color);
+            color: white;
+            font-weight: 500;
+        }
+        
+        .sidebar-footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* تنسيق المحتوى الرئيسي */
+        .main-content {
+            margin-right: 280px;
+            padding: 20px;
+            transition: all var(--transition-speed) ease;
+        }
+        
+        .top-header {
+            background-color: white;
+            padding: 15px 20px;
+            border-radius: var(--card-border-radius);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .search-bar .form-control {
+            border-radius: 50px;
+            padding-right: 15px;
+            border: 1px solid #e0e0e0;
+            transition: all var(--transition-speed) ease;
+        }
+        
+        .search-bar .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+        }
+        
+        .search-bar .btn-outline {
+            border-radius: 50px;
+            border: 1px solid #e0e0e0;
+            color: #777;
+            transition: all var(--transition-speed) ease;
+        }
+        
+        .search-bar .btn-outline:hover {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        
+        /* تنسيق البطاقات والأقسام */
+        .card {
+            border-radius: var(--card-border-radius);
+            transition: all var(--transition-speed) ease;
+            overflow: hidden;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-header {
+            background-color: white;
+            font-weight: 600;
+        }
+        
+        .section-title {
+            font-weight: 700;
+            color: var(--dark-color);
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 10px;
+            display: inline-block;
+        }
+        
+        /* الأيقونات والأزرار */
+        .icon-circle {
+            width: 60px;
+            height: 60px;
+            background-color: rgba(52, 152, 219, 0.1);
+            color: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        
+        .btn-custom {
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-weight: 500;
+            transition: all var(--transition-speed) ease;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .btn-primary:hover {
+            background-color: #2980b9;
+            border-color: #2980b9;
+            transform: translateY(-2px);
+        }
+        
+        .btn-success {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+        
+        .btn-success:hover {
+            background-color: #27ae60;
+            border-color: #27ae60;
+            transform: translateY(-2px);
+        }
+        
+        /* الحالة والمؤشرات */
+        .status-badge {
+            padding: 5px 10px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        
+        .online {
+            color: var(--secondary-color);
+        }
+        
+        /* التأثيرات والانتقالات */
+        .fade-in {
+            animation: fadeIn 0.8s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* للشاشات الصغيرة */
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(100%);
+            }
+            
+            .sidebar.show {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-right: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-layout">
+        <!-- القائمة الجانبية -->
+        <aside class="sidebar" id="main-sidebar">
+            <div class="sidebar-header p-3">
+                <div class="logo text-center mb-4">
+                    <img src="../assets/img/logos/real-estate-logo.png" alt="شعار منصة العقارات" class="img-fluid" style="max-height: 60px;">
+                </div>
+                <div class="user-info d-flex align-items-center mb-3">
+                    <div class="avatar-container me-2">
+                        <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="صورة المستخدم" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover; border: 2px solid var(--secondary-color);">
+                    </div>
+                    <div>
+                        <h6 class="mb-0 fw-bold">أهلاً، أحمد!</h6>
+                        <small class="text-white-50">مسوق عقاري محترف</small>
+                    </div>
+                </div>
+            </div>
+            
+            <nav class="sidebar-nav p-3">
+                <ul class="nav flex-column">
+                    <li class="nav-item mb-2">
+                        <a href="/marketers/dashboard/overview" class="nav-link active">
+                            <i class="fas fa-home me-2"></i>
+                            <span>لوحة التحكم</span>
+                        </a>
+                    </li>
+                    <li class="nav-item mb-2">
+                        <a href="/marketers/crm/customers" class="nav-link">
+                            <i class="fas fa-users me-2"></i>
+                            <span>إدارة العملاء</span>
+                        </a>
+                    </li>
+                    <li class="nav-item mb-2">
+                        <a href="/marketers/scheduler" class="nav-link">
+                            <i class="fas fa-calendar-alt me-2"></i>
+                            <span>جدولة المواعيد</span>
+                        </a>
+                    </li>
+                    <li class="nav-item mb-2">
+                        <a href="/marketers/ads" class="nav-link">
+                            <i class="fas fa-ad me-2"></i>
+                            <span>إدارة الإعلانات</span>
+                        </a>
+                    </li>
+                    <li class="nav-item mb-2">
+                        <a href="/marketers/ai-assistant" class="nav-link">
+                            <i class="fas fa-robot me-2"></i>
+                            <span>المساعد الذكي</span>
+                            <span class="badge bg-success rounded-pill ms-auto">جديد</span>
+                        </a>
+                    </li>
+                    <li class="nav-item mb-2">
+                        <a href="/marketers/video-gallery" class="nav-link">
+                            <i class="fas fa-video me-2"></i>
+                            <span>معرض الفيديوهات</span>
+                        </a>
+                    </li>
+                    <li class="nav-item mb-2">
+                        <a href="/marketers/commissions" class="nav-link">
+                            <i class="fas fa-money-bill-alt me-2"></i>
+                            <span>العمولات والمدفوعات</span>
+                        </a>
+                    </li>
+                    <li class="nav-item mb-2">
+                        <a href="/marketers/social" class="nav-link">
+                            <i class="fas fa-share-alt me-2"></i>
+                            <span>التفاعل الاجتماعي</span>
+                        </a>
+                    </li>
+                    <li class="nav-item mb-2">
+                        <a href="/marketers/settings" class="nav-link">
+                            <i class="fas fa-cog me-2"></i>
+                            <span>الإعدادات</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer p-3 mt-auto">
+                <div class="d-flex justify-content-between align-items-center">
+                    <a href="#" id="theme-toggle" class="btn btn-sm btn-dark rounded-circle" title="تبديل الوضع الداكن">
+                        <i class="fas fa-moon"></i>
+                    </a>
+                    <span id="connection-status" class="status-badge online"><i class="fas fa-circle me-1 small"></i> متصل</span>
+                    <a href="/logout" id="logout-btn" class="btn btn-sm btn-danger rounded-pill" title="تسجيل الخروج">
+                        <i class="fas fa-sign-out-alt me-1"></i> خروج
+                    </a>
+                </div>
+            </div>
+        </aside>
+        
+        <!-- المحتوى الرئيسي -->
+        <main class="main-content">
+            <!-- الرأس العلوي -->
+            <header class="top-header">
+                <div class="menu-toggle d-block d-lg-none">
+                    <button class="btn btn-custom" id="sidebar-toggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+                
+                <div class="search-bar">
+                    <form class="d-flex">
+                        <input class="form-control me-2" type="search" placeholder="ابحث عن عقارات، عملاء، مهام..." aria-label="بحث">
+                        <button class="btn btn-outline" type="submit">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </form>
+                </div>
+                
+                <div class="header-actions d-flex align-items-center">
+                    <div class="notifications me-3 dropdown">
+                        <a href="#" class="dropdown-toggle position-relative text-dark" id="notificationsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-bell fa-lg"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                3
+                                <span class="visually-hidden">إشعارات جديدة</span>
+                            </span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="notificationsDropdown" style="width: 300px; border-radius: 15px;">
+                            <li><h6 class="dropdown-header">الإشعارات الجديدة</h6></li>
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center py-2" href="#">
+                                    <span class="icon-circle me-2" style="width: 40px; height: 40px; font-size: 16px;">
+                                        <i class="fas fa-user"></i>
+                                    </span>
+                                    <div>
+                                        <p class="mb-0 fw-bold">عميل جديد مهتم بالعقار #1234</p>
+                                        <small class="text-muted">منذ 30 دقيقة</small>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center py-2" href="#">
+                                    <span class="icon-circle me-2" style="width: 40px; height: 40px; background-color: rgba(46, 204, 113, 0.1); color: var(--secondary-color); font-size: 16px;">
+                                        <i class="fas fa-calendar-check"></i>
+                                    </span>
+                                    <div>
+                                        <p class="mb-0 fw-bold">موعد مع عميل بعد ساعتين</p>
+                                        <small class="text-muted">اليوم 14:30</small>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center py-2" href="#">
+                                    <span class="icon-circle me-2" style="width: 40px; height: 40px; background-color: rgba(243, 156, 18, 0.1); color: var(--accent-color); font-size: 16px;">
+                                        <i class="fas fa-money-bill-wave"></i>
+                                    </span>
+                                    <div>
+                                        <p class="mb-0 fw-bold">تم تأكيد عمولة جديدة</p>
+                                        <small class="text-muted">بالأمس</small>
+                                    </div>
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item text-center text-primary fw-bold" href="#">عرض كل الإشعارات</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="messages me-3 dropdown">
+                        <a href="#" class="dropdown-toggle position-relative text-dark" id="messagesDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-envelope fa-lg"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
+                                2
+                                <span class="visually-hidden">رسائل جديدة</span>
+                            </span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="messagesDropdown" style="width: 300px; border-radius: 15px;">
+                            <li><h6 class="dropdown-header">الرسائل الجديدة</h6></li>
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center py-2" href="#">
+                                    <img src="../assets/img/logos/user-avatar.png" class="rounded-circle me-2" style="width: 40px; height: 40px; object-fit: cover;">
+                                    <div>
+                                        <p class="mb-0 fw-bold">محمد أحمد</p>
+                                        <small class="text-muted">استفسار عن العقار رقم #3421</small>
+                                    </div>
+                                    <span class="ms-auto badge bg-success rounded-pill">جديد</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center py-2" href="#">
+                                    <img src="../assets/img/logos/user-avatar.png" class="rounded-circle me-2" style="width: 40px; height: 40px; object-fit: cover;">
+                                    <div>
+                                        <p class="mb-0 fw-bold">نورة السالم</p>
+                                        <small class="text-muted">تأكيد موعد المعاينة غداً</small>
+                                    </div>
+                                    <span class="ms-auto text-muted small">منذ ساعة</span>
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item text-center text-primary fw-bold" href="#">عرض كل الرسائل</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="user-dropdown dropdown">
+                        <a href="#" class="dropdown-toggle d-flex align-items-center text-dark" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="https://randomuser.me/api/portraits/men/45.jpg" class="rounded-circle me-2" width="40" height="40" alt="صورة المستخدم">
+                            <div>
+                                <span class="fw-bold d-block">أحمد محمد</span>
+                                <small class="text-muted">مسوق عقاري</small>
+                            </div>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="userDropdown" style="border-radius: 15px;">
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i> الملف الشخصي</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i> الإعدادات</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-question-circle me-2"></i> المساعدة</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item text-danger" href="/logout"><i class="fas fa-sign-out-alt me-2"></i> تسجيل الخروج</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </header>
+            
+            <!-- محتوى الصفحة -->
+            <div id="page-content">
+                <div class="container-fluid px-4 mt-4">
+                    <!-- عنوان الصفحة وشريط الأدوات -->
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h2 class="h3 mb-0">لوحة التحكم الرئيسية</h2>
+                        <div class="dashboard-actions d-flex align-items-center">
+                            <div class="period-selector me-3">
+                                <select id="period-selector" class="form-select form-select-sm">
+                                    <option value="week">الأسبوع الحالي</option>
+                                    <option value="month" selected>الشهر الحالي</option>
+                                    <option value="quarter">الربع الحالي</option>
+                                    <option value="half">النصف الحالي</option>
+                                    <option value="year">السنة الحالية</option>
+                                </select>
+                            </div>
+                            <button id="refresh-dashboard" class="btn btn-sm btn-primary">
+                                <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                                <i class="fas fa-sync-alt"></i> تحديث
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- الترحيب والإحصائيات -->
+                    <div class="welcome-section mb-4 fade-in">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-body p-4">
+                                <div class="row align-items-center">
+                                    <div class="col-lg-8">
+                                        <h2 class="mb-1 fw-bold text-dark">مرحباً بك، أحمد!</h2>
+                                        <p class="lead mb-0 text-muted">هذه نظرة عامة على أدائك ومؤشراتك الرئيسية لهذا الشهر</p>
+                                        <div class="mt-4">
+                                            <a href="/marketers/scheduler" class="btn btn-primary me-2 btn-custom">
+                                                <i class="fas fa-calendar-plus me-1"></i> إضافة موعد جديد
+                                            </a>
+                                            <a href="/marketers/crm/customers" class="btn btn-outline-primary btn-custom">
+                                                <i class="fas fa-user-plus me-1"></i> إضافة عميل
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 d-none d-lg-block text-center">
+                                        <img src="https://img.freepik.com/free-vector/real-estate-searching_52683-46407.jpg" class="img-fluid" style="max-height: 180px;" alt="رسم توضيحي للوحة التحكم">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- الإحصائيات والأرقام الرئيسية -->
+                    <div class="stats-overview mb-4 fade-in" style="animation-delay: 0.2s;">
+                        <h4 class="section-title">الإحصائيات الرئيسية</h4>
+                        <div class="row stats-cards">
+                            <!-- بطاقة العملاء الجدد -->
+                            <div class="col-12 col-sm-6 col-lg-3 mb-3">
+                                <div class="card border-0 shadow h-100">
+                                    <div class="card-body p-4">
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <div class="icon-circle" style="background-color: rgba(52, 152, 219, 0.1); color: var(--primary-color);">
+                                                <i class="fas fa-users"></i>
+                                            </div>
+                                            <span class="badge bg-success rounded-pill">+8.5%</span>
+                                        </div>
+                                        <h3 class="fw-bold mb-1">24</h3>
+                                        <p class="text-muted mb-0">عملاء جدد</p>
+                                        <div class="progress mt-3" style="height: 6px;">
+                                            <div class="progress-bar bg-primary" role="progressbar" style="width: 75%;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- بطاقة المبيعات المكتملة -->
+                            <div class="col-12 col-sm-6 col-lg-3 mb-3">
+                                <div class="card border-0 shadow h-100">
+                                    <div class="card-body p-4">
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <div class="icon-circle" style="background-color: rgba(46, 204, 113, 0.1); color: var(--secondary-color);">
+                                                <i class="fas fa-check-circle"></i>
+                                            </div>
+                                            <span class="badge bg-success rounded-pill">+12.3%</span>
+                                        </div>
+                                        <h3 class="fw-bold mb-1">8</h3>
+                                        <p class="text-muted mb-0">عمليات مكتملة</p>
+                                        <div class="progress mt-3" style="height: 6px;">
+                                            <div class="progress-bar bg-success" role="progressbar" style="width: 65%;" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- بطاقة العمولات -->
+                            <div class="col-12 col-sm-6 col-lg-3 mb-3">
+                                <div class="card border-0 shadow h-100">
+                                    <div class="card-body p-4">
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <div class="icon-circle" style="background-color: rgba(243, 156, 18, 0.1); color: var(--accent-color);">
+                                                <i class="fas fa-money-bill-wave"></i>
+                                            </div>
+                                            <span class="badge bg-success rounded-pill">+15.7%</span>
+                                        </div>
+                                        <h3 class="fw-bold mb-1">32,500 ر.س</h3>
+                                        <p class="text-muted mb-0">إجمالي العمولات</p>
+                                        <div class="progress mt-3" style="height: 6px;">
+                                            <div class="progress-bar" style="width: 80%; background-color: var(--accent-color);" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- بطاقة المواعيد المقبلة -->
+                            <div class="col-12 col-sm-6 col-lg-3 mb-3">
+                                <div class="card border-0 shadow h-100">
+                                    <div class="card-body p-4">
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <div class="icon-circle" style="background-color: rgba(155, 89, 182, 0.1); color: #9b59b6;">
+                                                <i class="fas fa-calendar-alt"></i>
+                                            </div>
+                                            <span class="badge bg-warning rounded-pill text-dark">اليوم</span>
+                                        </div>
+                                        <h3 class="fw-bold mb-1">5</h3>
+                                        <p class="text-muted mb-0">مواعيد مقبلة</p>
+                                        <div class="progress mt-3" style="height: 6px;">
+                                            <div class="progress-bar" style="width: 50%; background-color: #9b59b6;" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- الرسوم البيانية -->
+                    <div class="row charts-section mb-4 fade-in" style="animation-delay: 0.4s;">
+                        <div class="col-12 col-lg-8 mb-3">
+                            <div class="card border-0 shadow h-100">
+                                <div class="card-header bg-white border-0 py-3 d-flex justify-content-between align-items-center">
+                                    <h5 class="card-title mb-0">أداء المبيعات</h5>
+                                    <select class="form-select form-select-sm" style="width: auto;">
+                                        <option>آخر 7 أيام</option>
+                                        <option selected>آخر 30 يوم</option>
+                                        <option>آخر 90 يوم</option>
+                                    </select>
+                                </div>
+                                <div class="card-body p-4">
+                                    <div id="sales-performance" style="height: 300px; position: relative;">
+                                        <!-- استبدال المؤشر الذي يلف بالرسم البياني -->
+                                        <div class="chart-container">
+                                            <canvas id="salesChart" width="100%" height="300"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-4 mb-3">
+                            <div class="card border-0 shadow h-100">
+                                <div class="card-header bg-white border-0 py-3">
+                                    <h5 class="card-title mb-0">توزيع العملاء</h5>
+                                </div>
+                                <div class="card-body p-4">
+                                    <div id="customer-distribution" style="height: 300px; position: relative;">
+                                        <!-- استبدال المؤشر الذي يلف بالرسم البياني الدائري -->
+                                        <div class="chart-container">
+                                            <canvas id="customerDistributionChart" width="100%" height="250"></canvas>
+                                        </div>
+                                        <div class="chart-legend mt-3">
+                                            <div class="d-flex align-items-center mb-2">
+                                                <span class="badge rounded-pill me-2" style="background-color: #3498db; width: 30px;">&nbsp;</span>
+                                                <span>عملاء سكني (45%)</span>
+                                            </div>
+                                            <div class="d-flex align-items-center mb-2">
+                                                <span class="badge rounded-pill me-2" style="background-color: #2ecc71; width: 30px;">&nbsp;</span>
+                                                <span>عملاء تجاري (30%)</span>
+                                            </div>
+                                            <div class="d-flex align-items-center mb-2">
+                                                <span class="badge rounded-pill me-2" style="background-color: #f39c12; width: 30px;">&nbsp;</span>
+                                                <span>عملاء استثماري (25%)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- المهام والتفاعلات -->
+                    <div class="row tasks-interactions mb-4 fade-in" style="animation-delay: 0.6s;">
+                        <div class="col-12 col-lg-6 mb-3">
+                            <div class="card border-0 shadow h-100">
+                                <div class="card-header bg-white border-0 py-3 d-flex justify-content-between align-items-center">
+                                    <h5 class="card-title mb-0">المهام العاجلة</h5>
+                                    <a href="/marketers/scheduler" class="btn btn-sm btn-outline-primary">كل المهام</a>
+                                </div>
+                                <div class="card-body">
+                                    <div id="urgent-tasks-list" class="tasks-list">
+                                        <!-- استبدال المؤشر بمهام فعلية -->
+                                        <div class="task-item p-3 mb-3 border rounded">
+                                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                                <h6 class="mb-0 fw-bold">اجتماع مع عميل محتمل</h6>
+                                                <span class="badge bg-danger">اليوم</span>
+                                            </div>
+                                            <p class="text-muted small mb-2">اجتماع مع خالد العمري لمناقشة شقق الروضة</p>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <span class="small text-muted"><i class="far fa-clock me-1"></i> 14:00 - 15:30</span>
+                                                <button class="btn btn-sm btn-outline-success"><i class="fas fa-check"></i> تم</button>
+                                            </div>
+                                        </div>
+                                        <div class="task-item p-3 mb-3 border rounded">
+                                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                                <h6 class="mb-0 fw-bold">متابعة طلب تمويل</h6>
+                                                <span class="badge bg-warning text-dark">غداً</span>
+                                            </div>
+                                            <p class="text-muted small mb-2">متابعة طلب التمويل العقاري للعميل سعيد الغامدي</p>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <span class="small text-muted"><i class="far fa-clock me-1"></i> 10:00 - 11:00</span>
+                                                <button class="btn btn-sm btn-outline-success"><i class="fas fa-check"></i> تم</button>
+                                            </div>
+                                        </div>
+                                        <div class="task-item p-3 mb-3 border rounded">
+                                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                                <h6 class="mb-0 fw-bold">تحديث بيانات العملاء</h6>
+                                                <span class="badge bg-info text-dark">الأربعاء</span>
+                                            </div>
+                                            <p class="text-muted small mb-2">تحديث بيانات العملاء في نظام إدارة العلاقات</p>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <span class="small text-muted"><i class="far fa-clock me-1"></i> يوم كامل</span>
+                                                <button class="btn btn-sm btn-outline-success"><i class="fas fa-check"></i> تم</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-12 col-lg-6 mb-3">
+                            <div class="card border-0 shadow h-100">
+                                <div class="card-header bg-white border-0 py-3 d-flex justify-content-between align-items-center">
+                                    <h5 class="card-title mb-0">أحدث التفاعلات من العملاء</h5>
+                                    <a href="/marketers/crm/customers" class="btn btn-sm btn-outline-primary">كل التفاعلات</a>
+                                </div>
+                                <div class="card-body">
+                                    <div id="latest-interactions-list" class="interactions-list">
+                                        <!-- استبدال المؤشر بتفاعلات فعلية -->
+                                        <div class="interaction-item p-3 mb-3 border rounded">
+                                            <div class="d-flex align-items-center mb-2">
+                                                <img src="https://randomuser.me/api/portraits/men/32.jpg" class="rounded-circle me-2" width="40" height="40" alt="صورة العميل">
+                                                <div>
+                                                    <h6 class="mb-0 fw-bold">أحمد العتيبي</h6>
+                                                    <span class="text-muted small">منذ ساعة واحدة</span>
+                                                </div>
+                                            </div>
+                                            <p class="text-muted small mb-2">طلب معلومات إضافية عن فيلا الياسمين في مشروع الوادي</p>
+                                            <div class="d-flex justify-content-end">
+                                                <a href="#" class="btn btn-sm btn-primary"><i class="fas fa-reply me-1"></i> رد</a>
+                                            </div>
+                                        </div>
+
+                                        <div class="interaction-item p-3 mb-3 border rounded">
+                                            <div class="d-flex align-items-center mb-2">
+                                                <img src="https://randomuser.me/api/portraits/women/28.jpg" class="rounded-circle me-2" width="40" height="40" alt="صورة العميلة">
+                                                <div>
+                                                    <h6 class="mb-0 fw-bold">نورة الحربي</h6>
+                                                    <span class="text-muted small">منذ 3 ساعات</span>
+                                                </div>
+                                            </div>
+                                            <p class="text-muted small mb-2">أكدت حضورها لمعاينة الشقة غداً الساعة 4 مساءً</p>
+                                            <div class="d-flex justify-content-end">
+                                                <a href="#" class="btn btn-sm btn-primary"><i class="fas fa-reply me-1"></i> رد</a>
+                                            </div>
+                                        </div>
+
+                                        <div class="interaction-item p-3 mb-3 border rounded">
+                                            <div class="d-flex align-items-center mb-2">
+                                                <img src="https://randomuser.me/api/portraits/men/22.jpg" class="rounded-circle me-2" width="40" height="40" alt="صورة العميل">
+                                                <div>
+                                                    <h6 class="mb-0 fw-bold">محمد القحطاني</h6>
+                                                    <span class="text-muted small">منذ 6 ساعات</span>
+                                                </div>
+                                            </div>
+                                            <p class="text-muted small mb-2">استفسار عن الدفعة المقدمة وخيارات التمويل المتاحة</p>
+                                            <div class="d-flex justify-content-end">
+                                                <a href="#" class="btn btn-sm btn-primary"><i class="fas fa-reply me-1"></i> رد</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- تذييل الصفحة -->
+            <footer class="page-footer p-3 text-center text-muted mt-5">
+                <p>جميع الحقوق محفوظة &copy; منصة العقارات على تيك توك 2025</p>
+            </footer>
+        </main>
+    </div>
+    
+    <!-- Bootstrap JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- مكتبة Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- ملفات JavaScript الخاصة بالمشروع -->
+    <script src="../assets/js/theme-switcher.js"></script>
+    <script src="../assets/js/pwa-setup.js"></script>
+    
+    <!-- ملفات الشاشة الرئيسية -->
+    <script src="../assets/js/dashboard-data.js"></script>
+    <script src="../assets/js/dashboard-ui.js"></script>
+    
+    <!-- مكتبات الرسوم البيانية -->
+    <script>
+        // تهيئة الرسوم البيانية عند تحميل الصفحة
+        document.addEventListener('DOMContentLoaded', function() {
+            // رسم بياني للمبيعات
+            const salesCtx = document.getElementById('salesChart').getContext('2d');
+            new Chart(salesCtx, {
+                type: 'line',
+                data: {
+                    labels: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو'],
+                    datasets: [{
+                        label: 'المبيعات المكتملة',
+                        data: [3, 5, 4, 6, 8, 7, 9],
+                        borderColor: '#2ecc71',
+                        backgroundColor: 'rgba(46, 204, 113, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    }, {
+                        label: 'المبيعات المحتملة',
+                        data: [5, 7, 8, 10, 12, 14, 15],
+                        borderColor: '#3498db',
+                        backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            rtl: true
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                drawBorder: false
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+
+            // رسم بياني لتوزيع العملاء
+            const customerCtx = document.getElementById('customerDistributionChart').getContext('2d');
+            new Chart(customerCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['عملاء سكني', 'عملاء تجاري', 'عملاء استثماري'],
+                    datasets: [{
+                        data: [45, 30, 25],
+                        backgroundColor: [
+                            '#3498db',
+                            '#2ecc71',
+                            '#f39c12'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    cutout: '65%'
+                }
+            });
+        });
+
+        // تبديل القائمة الجانبية
+        document.getElementById('sidebar-toggle').addEventListener('click', function() {
+            document.getElementById('main-sidebar').classList.toggle('collapsed');
+            document.querySelector('.main-content').classList.toggle('expanded');
+        });
+
+        // تحديث لوحة التحكم
+        document.getElementById('refresh-dashboard').addEventListener('click', function() {
+            const spinner = this.querySelector('.spinner-border');
+            const icon = this.querySelector('.fa-sync-alt');
+            
+            spinner.classList.remove('d-none');
+            icon.classList.add('d-none');
+            
+            // محاكاة لعملية التحديث
+            setTimeout(function() {
+                spinner.classList.add('d-none');
+                icon.classList.remove('d-none');
+                
+                // إظهار رسالة نجاح التحديث
+                const toast = new bootstrap.Toast(document.getElementById('update-toast'));
+                toast.show();
+            }, 1500);
+        });
+    </script>
+</body>
+</html>

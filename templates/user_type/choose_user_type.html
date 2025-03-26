@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}اختر نوع المستخدم | روابط تك{% endblock %}
+
+{% block content %}
+<div class="user-type-container">
+    <div class="user-type-title text-center mb-5">
+        <div class="logo-container mb-4">
+            <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="شعار روابط تك" class="logo-img-large">
+        </div>
+        <h1 class="mb-3 fw-bold display-5 text-primary">مرحباً بك في روابط تك</h1>
+        <p class="fs-5 fw-medium text-dark mb-4">اختر نوع المستخدم للمتابعة</p>
+    </div>
+    
+    <div class="user-type-cards">
+        <!-- شركات التطوير -->
+        <div class="user-type-card fade-in delay-1" data-user-type="developers">
+            <div class="user-type-icon">
+                <i class="fas fa-building"></i>
+            </div>
+            <h3 class="user-type-name">شركات التطوير</h3>
+            <p class="user-type-description">قم بعرض وتسويق مشاريعك العقارية وتواصل مباشرة مع العملاء المهتمين</p>
+            <a href="/login/developers" class="btn btn-outline-primary rounded-pill px-4">الدخول كشركة تطوير</a>
+        </div>
+        
+        <!-- المسوقين -->
+        <div class="user-type-card fade-in delay-2" data-user-type="marketers">
+            <div class="user-type-icon">
+                <i class="fas fa-bullhorn"></i>
+            </div>
+            <h3 class="user-type-name">المسوقين</h3>
+            <p class="user-type-description">سوّق للعقارات بطريقة مبتكرة واكسب عمولات مجزية على كل عملية بيع ناجحة</p>
+            <a href="/marketers/login_marketers" class="btn btn-outline-primary rounded-pill px-4">الدخول كمسوق</a>
+        </div>
+        
+        <!-- العملاء -->
+        <div class="user-type-card fade-in delay-2" data-user-type="clients">
+            <div class="user-type-icon">
+                <i class="fas fa-user"></i>
+            </div>
+            <h3 class="user-type-name">العملاء</h3>
+            <p class="user-type-description">ابحث عن عقارك المثالي واتصل مباشرة بالمطورين للحصول على أفضل العروض</p>
+            <a href="/login/clients" class="btn btn-outline-primary rounded-pill px-4">الدخول كعميل</a>
+        </div>
+        
+        <!-- الزوار -->
+        <div class="user-type-card fade-in delay-3" data-user-type="visitors">
+            <div class="user-type-icon">
+                <i class="fas fa-eye"></i>
+            </div>
+            <h3 class="user-type-name">الزوار</h3>
+            <p class="user-type-description">تصفح الفيديوهات العقارية واستكشف المنصة دون الحاجة لإنشاء حساب</p>
+            <a href="/visitors/feed" class="btn btn-outline-primary rounded-pill px-4">الدخول كزائر</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

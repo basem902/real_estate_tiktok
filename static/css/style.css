@@ -1,0 +1,437 @@
+:root {
+    --primary-color: #3498db;
+    --secondary-color: #27ae60;
+    --text-color: #333;
+    --background-color: #f8f9fa;
+    --card-bg: #ffffff;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+    --border-color: #dee2e6;
+    --splash-bg: linear-gradient(135deg, #3498db, #8e44ad);
+}
+
+[data-bs-theme="dark"] {
+    --primary-color: #2980b9;
+    --secondary-color: #2ecc71;
+    --text-color: #f8f9fa;
+    --background-color: #212529;
+    --card-bg: #343a40;
+    --shadow-color: rgba(0, 0, 0, 0.25);
+    --border-color: #495057;
+    --splash-bg: linear-gradient(135deg, #2c3e50, #8e44ad);
+}
+
+/* عام */
+body {
+    font-family: 'Tajawal', sans-serif;
+    color: var(--text-color);
+    background-color: var(--background-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* زر تبديل الوضع */
+#theme-toggle {
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    box-shadow: 0 2px 10px var(--shadow-color);
+    z-index: 1000;
+}
+
+/* شاشات البداية */
+.splash-screen {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: var(--splash-bg);
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.splash-content {
+    padding: 2rem;
+    z-index: 10;
+    max-width: 90%;
+}
+
+.splash-image {
+    max-width: 80%;
+    margin: 2rem auto;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.splash-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.splash-text {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.skip-button {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 2px solid white;
+    padding: 8px 15px;
+    border-radius: 30px;
+    font-size: 1rem;
+    z-index: 15;
+    transition: all 0.3s ease;
+}
+
+.skip-button:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+/* الشعار */
+.logo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo-img {
+    width: 120px;
+    height: auto;
+    filter: drop-shadow(0px 4px 6px rgba(0, 0, 0, 0.3));
+}
+
+.logo-img-large {
+    width: 150px;
+    height: auto;
+    filter: drop-shadow(0px 4px 6px rgba(0, 0, 0, 0.3));
+}
+
+/* تأثيرات الأنيميشن */
+.bounce-in {
+    animation: bounceIn 1s ease-out forwards;
+}
+
+.zoom-in {
+    animation: zoomIn 1s ease-out forwards;
+}
+
+.slide-up {
+    animation: slideUp 0.8s ease-out forwards;
+}
+
+.fade-in-right {
+    animation: fadeInRight 0.8s ease-out forwards;
+}
+
+.pulse {
+    animation: pulse 2s infinite;
+}
+
+@keyframes bounceIn {
+    0% { transform: scale(0.3); opacity: 0; }
+    50% { transform: scale(1.1); }
+    70% { transform: scale(0.9); }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes zoomIn {
+    0% { transform: scale(0.5); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes slideUp {
+    0% { transform: translateY(50px); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes fadeInRight {
+    0% { transform: translateX(-30px); opacity: 0; }
+    100% { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 0.8; }
+    50% { transform: scale(1.1); opacity: 1; }
+    100% { transform: scale(1); opacity: 0.8; }
+}
+
+.fade-in {
+    animation: fadeIn 1s forwards;
+    opacity: 0;
+}
+
+.delay-1 {
+    animation-delay: 0.3s;
+}
+
+.delay-2 {
+    animation-delay: 0.6s;
+}
+
+.delay-3 {
+    animation-delay: 0.9s;
+}
+
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+/* صفحة اختيار نوع المستخدم */
+.user-type-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.user-type-title {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.user-type-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    width: 100%;
+    max-width: 1200px;
+}
+
+.user-type-card {
+    background-color: var(--card-bg);
+    border-radius: 15px;
+    padding: 2rem;
+    text-align: center;
+    box-shadow: 0 5px 15px var(--shadow-color);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    border: 1px solid var(--border-color);
+}
+
+.user-type-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 25px var(--shadow-color);
+}
+
+.user-type-icon {
+    font-size: 3rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.user-type-name {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.user-type-description {
+    color: var(--text-color);
+    opacity: 0.8;
+    margin-bottom: 1.5rem;
+}
+
+/* صفحات تسجيل الدخول */
+.login-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #3498db, #8e44ad);
+    padding: 2rem;
+}
+
+.login-card {
+    background-color: var(--card-bg);
+    border-radius: 15px;
+    padding: 2.5rem;
+    width: 100%;
+    max-width: 450px;
+    transition: all 0.3s ease;
+}
+
+.login-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.login-logo {
+    width: 100px;
+    height: auto;
+    margin-bottom: 1rem;
+    filter: drop-shadow(0px 4px 6px rgba(0, 0, 0, 0.2));
+}
+
+.login-footer {
+    margin-top: 1.5rem;
+}
+
+/* تأثيرات التفاعل */
+.hover-effect {
+    transition: all 0.3s ease;
+}
+
+.hover-effect:hover {
+    transform: translateY(-3px);
+    color: var(--primary-color) !important;
+}
+
+.zoom-on-hover {
+    transition: transform 0.3s ease;
+}
+
+.zoom-on-hover:hover {
+    transform: scale(1.05);
+}
+
+.copy-btn {
+    transition: all 0.3s ease;
+}
+
+.copy-btn:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+/* تحسينات لعناصر النموذج */
+.form-control:focus {
+    box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25);
+}
+
+.form-check-input:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+/* تصميم لوحة التحكم */
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: var(--background-color);
+}
+
+.dashboard-content {
+    flex: 1;
+    padding: 2rem;
+}
+
+.sidebar {
+    background-color: var(--card-bg);
+    border-right: 1px solid var(--border-color);
+}
+
+.sidebar .nav-link {
+    color: var(--text-color);
+    border-radius: 0.25rem;
+    margin-bottom: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.sidebar .nav-link:hover {
+    background-color: rgba(52, 152, 219, 0.1);
+}
+
+.sidebar .nav-link.active {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.card-dashboard {
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.card-dashboard:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* صفحة الفيديوهات */
+.video-container {
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+}
+
+.video-item {
+    height: 100vh;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.video-content {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding: 1.5rem;
+    color: white;
+    z-index: 10;
+    width: 100%;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+}
+
+.video-actions {
+    position: absolute;
+    left: 1rem;
+    bottom: 5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 20;
+}
+
+.video-action-btn {
+    background-color: rgba(255, 255, 255, 0.2);
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    color: white;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.video-action-btn:hover {
+    background-color: rgba(255, 255, 255, 0.4);
+}
+
+/* تصميم متجاوب */
+@media (max-width: 768px) {
+    .splash-title {
+        font-size: 2rem;
+    }
+    
+    .splash-text {
+        font-size: 1rem;
+    }
+    
+    .user-type-cards {
+        grid-template-columns: 1fr;
+    }
+    
+    .login-card {
+        padding: 1.5rem;
+    }
+}

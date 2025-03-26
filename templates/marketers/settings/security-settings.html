@@ -1,0 +1,266 @@
+<!-- هذا الملف يحتوي على محتوى قسم إعدادات الأمان والخصوصية الذي سيتم تضمينه في صفحة الإعدادات الرئيسية -->
+
+<div class="row">
+    <div class="col-md-6 mb-4">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-transparent py-3">
+                <h5 class="mb-0">المصادقة الثنائية</h5>
+            </div>
+            <div class="card-body">
+                <p class="text-muted mb-3">قم بتأمين حسابك باستخدام المصادقة الثنائية.</p>
+                
+                <div class="form-check form-switch mb-3">
+                    <input class="form-check-input" type="checkbox" id="enable2FA">
+                    <label class="form-check-label" for="enable2FA">تفعيل المصادقة الثنائية</label>
+                </div>
+                
+                <div id="twoFactorOptions" class="border rounded p-3 mb-3" style="display: none;">
+                    <h6 class="mb-3">اختر طريقة المصادقة الثنائية:</h6>
+                    
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="radio" name="twoFactorMethod" id="twoFactorApp" checked>
+                        <label class="form-check-label" for="twoFactorApp">
+                            تطبيق المصادقة (Google Authenticator، Microsoft Authenticator، إلخ)
+                        </label>
+                    </div>
+                    
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="radio" name="twoFactorMethod" id="twoFactorSMS">
+                        <label class="form-check-label" for="twoFactorSMS">
+                            رسائل SMS
+                        </label>
+                    </div>
+                    
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="radio" name="twoFactorMethod" id="twoFactorEmail">
+                        <label class="form-check-label" for="twoFactorEmail">
+                            البريد الإلكتروني
+                        </label>
+                    </div>
+                    
+                    <button class="btn btn-primary">إعداد المصادقة الثنائية</button>
+                </div>
+                
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i>
+                    المصادقة الثنائية تضيف طبقة إضافية من الأمان لحسابك عن طريق طلب رمز تحقق عند تسجيل الدخول.
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6 mb-4">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-transparent py-3">
+                <h5 class="mb-0">الأجهزة المتصلة</h5>
+            </div>
+            <div class="card-body">
+                <p class="text-muted mb-3">راقب وإدار الأجهزة التي قمت بتسجيل الدخول إليها.</p>
+                
+                <div class="device-list">
+                    <div class="device-item d-flex align-items-center p-3 border rounded mb-2">
+                        <div class="device-icon me-3">
+                            <i class="fas fa-laptop fs-3 text-primary"></i>
+                        </div>
+                        <div class="device-info flex-grow-1">
+                            <h6 class="mb-1">MacBook Pro - Chrome</h6>
+                            <p class="text-muted mb-0 small">الرياض، السعودية • آخر نشاط: منذ 2 دقيقة</p>
+                            <span class="badge bg-success">الجهاز الحالي</span>
+                        </div>
+                        <div class="device-actions">
+                            <button class="btn btn-sm btn-outline-danger">
+                                <i class="fas fa-sign-out-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="device-item d-flex align-items-center p-3 border rounded mb-2">
+                        <div class="device-icon me-3">
+                            <i class="fas fa-mobile-alt fs-3 text-secondary"></i>
+                        </div>
+                        <div class="device-info flex-grow-1">
+                            <h6 class="mb-1">iPhone 13 - Safari</h6>
+                            <p class="text-muted mb-0 small">الرياض، السعودية • آخر نشاط: منذ 3 ساعات</p>
+                        </div>
+                        <div class="device-actions">
+                            <button class="btn btn-sm btn-outline-danger">
+                                <i class="fas fa-sign-out-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="device-item d-flex align-items-center p-3 border rounded">
+                        <div class="device-icon me-3">
+                            <i class="fas fa-desktop fs-3 text-secondary"></i>
+                        </div>
+                        <div class="device-info flex-grow-1">
+                            <h6 class="mb-1">Windows PC - Edge</h6>
+                            <p class="text-muted mb-0 small">الرياض، السعودية • آخر نشاط: منذ 2 أيام</p>
+                        </div>
+                        <div class="device-actions">
+                            <button class="btn btn-sm btn-outline-danger">
+                                <i class="fas fa-sign-out-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-3">
+                    <button class="btn btn-danger btn-sm">تسجيل الخروج من جميع الأجهزة الأخرى</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6 mb-4">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-transparent py-3">
+                <h5 class="mb-0">تاريخ تسجيل الدخول</h5>
+            </div>
+            <div class="card-body">
+                <p class="text-muted mb-3">راجع نشاط تسجيل الدخول الأخير لحسابك.</p>
+                
+                <div class="login-history">
+                    <div class="login-item d-flex align-items-center p-2 border-bottom">
+                        <div class="login-icon me-3">
+                            <i class="fas fa-check-circle text-success"></i>
+                        </div>
+                        <div class="login-info flex-grow-1">
+                            <h6 class="mb-1">تسجيل دخول ناجح</h6>
+                            <p class="text-muted mb-0 small">24 مارس 2025، 4:10 صباحاً • الرياض، السعودية • Chrome على MacOS</p>
+                        </div>
+                    </div>
+                    
+                    <div class="login-item d-flex align-items-center p-2 border-bottom">
+                        <div class="login-icon me-3">
+                            <i class="fas fa-check-circle text-success"></i>
+                        </div>
+                        <div class="login-info flex-grow-1">
+                            <h6 class="mb-1">تسجيل دخول ناجح</h6>
+                            <p class="text-muted mb-0 small">23 مارس 2025، 8:45 مساءً • الرياض، السعودية • Safari على iOS</p>
+                        </div>
+                    </div>
+                    
+                    <div class="login-item d-flex align-items-center p-2 border-bottom">
+                        <div class="login-icon me-3">
+                            <i class="fas fa-times-circle text-danger"></i>
+                        </div>
+                        <div class="login-info flex-grow-1">
+                            <h6 class="mb-1">محاولة تسجيل دخول فاشلة</h6>
+                            <p class="text-muted mb-0 small">22 مارس 2025، 7:30 صباحاً • لندن، المملكة المتحدة • Firefox على Windows</p>
+                        </div>
+                    </div>
+                    
+                    <div class="login-item d-flex align-items-center p-2 border-bottom">
+                        <div class="login-icon me-3">
+                            <i class="fas fa-check-circle text-success"></i>
+                        </div>
+                        <div class="login-info flex-grow-1">
+                            <h6 class="mb-1">تسجيل دخول ناجح</h6>
+                            <p class="text-muted mb-0 small">21 مارس 2025، 10:15 مساءً • الرياض، السعودية • Edge على Windows</p>
+                        </div>
+                    </div>
+                    
+                    <div class="login-item d-flex align-items-center p-2">
+                        <div class="login-icon me-3">
+                            <i class="fas fa-check-circle text-success"></i>
+                        </div>
+                        <div class="login-info flex-grow-1">
+                            <h6 class="mb-1">تسجيل دخول ناجح</h6>
+                            <p class="text-muted mb-0 small">20 مارس 2025، 9:20 صباحاً • الرياض، السعودية • Chrome على MacOS</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-3 text-center">
+                    <button class="btn btn-sm btn-link">عرض المزيد من النشاط</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6 mb-4">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-transparent py-3">
+                <h5 class="mb-0">إعدادات الخصوصية</h5>
+            </div>
+            <div class="card-body">
+                <p class="text-muted mb-3">تحكم في ما يمكن للآخرين مشاهدته عن حسابك ونشاطك.</p>
+                
+                <div class="mb-3">
+                    <label class="form-label fw-bold">من يمكنه رؤية ملفك الشخصي؟</label>
+                    <select class="form-select">
+                        <option value="all">الجميع</option>
+                        <option value="registered" selected>المستخدمون المسجلون فقط</option>
+                        <option value="team">فريق العمل فقط</option>
+                    </select>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label fw-bold">من يمكنه رؤية إحصائيات أدائك؟</label>
+                    <select class="form-select">
+                        <option value="all">الجميع</option>
+                        <option value="registered">المستخدمون المسجلون فقط</option>
+                        <option value="team" selected>فريق العمل فقط</option>
+                        <option value="none">لا أحد</option>
+                    </select>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label fw-bold">إعدادات متقدمة للخصوصية</label>
+                    
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="showOnlineStatus" checked>
+                        <label class="form-check-label" for="showOnlineStatus">
+                            إظهار حالة الاتصال (متصل/غير متصل)
+                        </label>
+                    </div>
+                    
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="showLastActive" checked>
+                        <label class="form-check-label" for="showLastActive">
+                            إظهار آخر نشاط
+                        </label>
+                    </div>
+                    
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="allowTagging" checked>
+                        <label class="form-check-label" for="allowTagging">
+                            السماح بالإشارة إليك في المنشورات والتعليقات
+                        </label>
+                    </div>
+                    
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="shareActivityData">
+                        <label class="form-check-label" for="shareActivityData">
+                            مشاركة بيانات النشاط لتحسين الخدمة
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    تغيير إعدادات الخصوصية قد يؤثر على تفاعل العملاء المحتملين مع ملفك الشخصي.
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-12">
+        <div class="d-flex justify-content-end">
+            <button type="button" class="btn btn-outline-secondary me-2">استعادة الإعدادات الافتراضية</button>
+            <button type="submit" class="btn btn-primary">حفظ التغييرات</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // تفعيل وإخفاء خيارات المصادقة الثنائية
+    document.getElementById('enable2FA').addEventListener('change', function() {
+        if (this.checked) {
+            document.getElementById('twoFactorOptions').style.display = 'block';
+        } else {
+            document.getElementById('twoFactorOptions').style.display = 'none';
+        }
+    });
+</script>

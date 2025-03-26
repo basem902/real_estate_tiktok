@@ -1,0 +1,134 @@
+<!-- الرأس العلوي -->
+<header class="top-header">
+    <div class="menu-toggle d-block d-lg-none">
+        <button class="btn" id="sidebar-toggle">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+    
+    <div class="search-container">
+        <form class="search-form">
+            <div class="input-group">
+                <span class="input-group-text bg-transparent border-0">
+                    <i class="fas fa-search text-muted"></i>
+                </span>
+                <input type="text" class="form-control border-0 shadow-none" placeholder="البحث عن...">
+            </div>
+        </form>
+    </div>
+    
+    <div class="header-actions d-flex align-items-center">
+        <!-- زر تبديل الدارك مود -->
+        <div class="me-3">
+            <label class="theme-switch" for="theme-toggle-checkbox">
+                <input type="checkbox" id="theme-toggle-checkbox">
+                <span class="slider">
+                    <i class="fas fa-sun theme-icon sun-icon"></i>
+                    <i class="fas fa-moon theme-icon moon-icon"></i>
+                </span>
+            </label>
+        </div>
+        <div class="notifications me-3 dropdown">
+            <a href="#" class="dropdown-toggle position-relative" id="notificationsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fas fa-bell fa-lg"></i>
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    3
+                </span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-end notification-dropdown" aria-labelledby="notificationsDropdown">
+                <h6 class="dropdown-header">الإشعارات</h6>
+                <div class="notification-item unread">
+                    <div class="d-flex">
+                        <div class="flex-shrink-0">
+                            <div class="icon-circle bg-primary text-white">
+                                <i class="fas fa-calendar-alt"></i>
+                            </div>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h6 class="notification-title">موعد جديد</h6>
+                            <p class="notification-text text-muted">تم تحديد موعد مع محمد أحمد</p>
+                            <small class="text-muted">منذ 15 دقيقة</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="notification-item">
+                    <div class="d-flex">
+                        <div class="flex-shrink-0">
+                            <div class="icon-circle bg-success text-white">
+                                <i class="fas fa-money-bill-alt"></i>
+                            </div>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h6 class="notification-title">عمولة جديدة</h6>
+                            <p class="notification-text text-muted">تم إضافة عمولة بقيمة 5000 ريال</p>
+                            <small class="text-muted">منذ 3 ساعات</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="notification-item">
+                    <div class="d-flex">
+                        <div class="flex-shrink-0">
+                            <div class="icon-circle bg-warning text-white">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h6 class="notification-title">تنبيه</h6>
+                            <p class="notification-text text-muted">يرجى تحديث معلومات الملف الشخصي</p>
+                            <small class="text-muted">منذ يوم واحد</small>
+                        </div>
+                    </div>
+                </div>
+                <a href="#" class="dropdown-item text-center">عرض جميع الإشعارات</a>
+            </div>
+        </div>
+        <div class="messages me-3 dropdown">
+            <a href="#" class="dropdown-toggle position-relative" id="messagesDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fas fa-envelope fa-lg"></i>
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    2
+                </span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-end notification-dropdown" aria-labelledby="messagesDropdown">
+                <h6 class="dropdown-header">الرسائل</h6>
+                <div class="notification-item unread">
+                    <div class="d-flex">
+                        <div class="flex-shrink-0">
+                            <img src="/static/img/avatars/user1.png" class="rounded-circle" width="40" height="40" alt="صورة المستخدم">
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h6 class="notification-title">خالد العبدالله</h6>
+                            <p class="notification-text text-muted">هل يمكننا تحديد موعد للمعاينة؟</p>
+                            <small class="text-muted">منذ 30 دقيقة</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="notification-item">
+                    <div class="d-flex">
+                        <div class="flex-shrink-0">
+                            <img src="/static/img/avatars/user2.png" class="rounded-circle" width="40" height="40" alt="صورة المستخدم">
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h6 class="notification-title">سارة الأحمد</h6>
+                            <p class="notification-text text-muted">شكراً لك على المتابعة</p>
+                            <small class="text-muted">منذ 1 ساعة</small>
+                        </div>
+                    </div>
+                </div>
+                <a href="#" class="dropdown-item text-center">عرض جميع الرسائل</a>
+            </div>
+        </div>
+        <div class="user-profile dropdown">
+            <a href="#" class="dropdown-toggle d-flex align-items-center" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <img src="https://randomuser.me/api/portraits/men/45.jpg" class="rounded-circle me-2" width="32" height="32" alt="صورة المستخدم">
+                <span class="d-none d-sm-inline">أحمد</span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                <li><a class="dropdown-item" href="/marketers/profile"><i class="fas fa-user me-2"></i>الملف الشخصي</a></li>
+                <li><a class="dropdown-item" href="/marketers/settings"><i class="fas fa-cog me-2"></i>الإعدادات</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="/logout"><i class="fas fa-sign-out-alt me-2"></i>تسجيل الخروج</a></li>
+            </ul>
+        </div>
+    </div>
+</header>

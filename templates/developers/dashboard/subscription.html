@@ -1,0 +1,385 @@
+{% extends "developers/dashboard/base_dashboard.html" %}
+
+{% block title %}إدارة الاشتراك والباقات{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-4 mt-4 rtl">
+    <!-- عنوان الصفحة -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h3 mb-0 text-gray-800">إدارة الاشتراك والباقات</h1>
+            <p class="mb-0">مراجعة وإدارة خطة الاشتراك الخاصة بك والميزات المتاحة</p>
+        </div>
+        <div>
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#upgradeModal">
+                <i class="fas fa-crown me-1"></i> ترقية الاشتراك
+            </button>
+        </div>
+    </div>
+
+    <!-- حالة الاشتراك الحالي -->
+    <div class="row">
+        <div class="col-xl-12 mb-4">
+            <div class="card bg-primary text-white shadow h-100">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-8">
+                            <h4 class="mb-1">خطة الاشتراك الحالية: <span class="fw-bold">الباقة المميزة</span></h4>
+                            <p class="mb-2">تجديد الاشتراك في: 23 يونيو 2025 (متبقي 93 يوم)</p>
+                            <p class="mb-0">الفاتورة التالية: 500 ريال</p>
+                        </div>
+                        <div class="col-4 text-end">
+                            <button class="btn btn-outline-light btn-sm me-2">تغيير طريقة الدفع</button>
+                            <button class="btn btn-outline-light btn-sm">إلغاء التجديد التلقائي</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- مقارنة الباقات -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card shadow">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">مقارنة الباقات المتاحة</h6>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered text-center">
+                            <thead>
+                                <tr>
+                                    <th style="width: 25%">الميزات</th>
+                                    <th style="width: 25%">الباقة الأساسية</th>
+                                    <th style="width: 25%" class="bg-light">الباقة المميزة</th>
+                                    <th style="width: 25%">الباقة الاحترافية</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="text-start">السعر الشهري</td>
+                                    <td>مجاناً</td>
+                                    <td class="bg-light fw-bold">500 ريال</td>
+                                    <td>1,200 ريال</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-start">عدد المشاريع</td>
+                                    <td>1</td>
+                                    <td class="bg-light fw-bold">5</td>
+                                    <td>غير محدود</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-start">عدد الإعلانات الشهرية</td>
+                                    <td>3</td>
+                                    <td class="bg-light fw-bold">20</td>
+                                    <td>50</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-start">عدد المسوقين</td>
+                                    <td>1</td>
+                                    <td class="bg-light fw-bold">10</td>
+                                    <td>غير محدود</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-start">تحليلات متقدمة</td>
+                                    <td><i class="fas fa-times text-danger"></i></td>
+                                    <td class="bg-light fw-bold"><i class="fas fa-check text-success"></i></td>
+                                    <td><i class="fas fa-check text-success"></i></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-start">دعم العملاء</td>
+                                    <td>عبر البريد الإلكتروني</td>
+                                    <td class="bg-light fw-bold">على مدار الساعة</td>
+                                    <td>مدير حساب شخصي</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-start">الظهور في نتائج البحث</td>
+                                    <td>عادي</td>
+                                    <td class="bg-light fw-bold">مميز</td>
+                                    <td>أولوية قصوى</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-start">سجل المبيعات والعمولات</td>
+                                    <td><i class="fas fa-times text-danger"></i></td>
+                                    <td class="bg-light fw-bold"><i class="fas fa-check text-success"></i></td>
+                                    <td><i class="fas fa-check text-success"></i></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-start">تصدير التقارير</td>
+                                    <td><i class="fas fa-times text-danger"></i></td>
+                                    <td class="bg-light fw-bold"><i class="fas fa-check text-success"></i></td>
+                                    <td><i class="fas fa-check text-success"></i></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-start">المواعيد والتقويم</td>
+                                    <td>أساسي</td>
+                                    <td class="bg-light fw-bold">متقدم</td>
+                                    <td>احترافي</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>
+                                        <button class="btn btn-outline-primary">اختر الباقة</button>
+                                    </td>
+                                    <td class="bg-light">
+                                        <button class="btn btn-success" disabled>الباقة الحالية</button>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-primary">ترقية الباقة</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- سجل المدفوعات والفواتير -->
+    <div class="row">
+        <div class="col-xl-12 mb-4">
+            <div class="card shadow">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">سجل الفواتير والمدفوعات</h6>
+                    <div class="dropdown no-arrow">
+                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+                            <div class="dropdown-header">خيارات:</div>
+                            <a class="dropdown-item" href="#"><i class="fas fa-file-pdf fa-sm fa-fw me-2 text-gray-400"></i>تصدير كملف PDF</a>
+                            <a class="dropdown-item" href="#"><i class="fas fa-file-excel fa-sm fa-fw me-2 text-gray-400"></i>تصدير كملف Excel</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>رقم الفاتورة</th>
+                                    <th>التاريخ</th>
+                                    <th>الوصف</th>
+                                    <th>المبلغ</th>
+                                    <th>حالة الدفع</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>#INV-2025-1123</td>
+                                    <td>2025/02/23</td>
+                                    <td>اشتراك الباقة المميزة - شهر فبراير</td>
+                                    <td>500 ريال</td>
+                                    <td><span class="badge bg-success">مدفوع</span></td>
+                                    <td>
+                                        <a href="#" class="btn btn-sm btn-outline-primary"><i class="fas fa-eye"></i></a>
+                                        <a href="#" class="btn btn-sm btn-outline-info"><i class="fas fa-download"></i></a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>#INV-2025-0987</td>
+                                    <td>2025/01/23</td>
+                                    <td>اشتراك الباقة المميزة - شهر يناير</td>
+                                    <td>500 ريال</td>
+                                    <td><span class="badge bg-success">مدفوع</span></td>
+                                    <td>
+                                        <a href="#" class="btn btn-sm btn-outline-primary"><i class="fas fa-eye"></i></a>
+                                        <a href="#" class="btn btn-sm btn-outline-info"><i class="fas fa-download"></i></a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>#INV-2024-0856</td>
+                                    <td>2024/12/23</td>
+                                    <td>اشتراك الباقة المميزة - شهر ديسمبر</td>
+                                    <td>500 ريال</td>
+                                    <td><span class="badge bg-success">مدفوع</span></td>
+                                    <td>
+                                        <a href="#" class="btn btn-sm btn-outline-primary"><i class="fas fa-eye"></i></a>
+                                        <a href="#" class="btn btn-sm btn-outline-info"><i class="fas fa-download"></i></a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>#INV-2024-0742</td>
+                                    <td>2024/11/23</td>
+                                    <td>اشتراك الباقة المميزة - شهر نوفمبر</td>
+                                    <td>500 ريال</td>
+                                    <td><span class="badge bg-success">مدفوع</span></td>
+                                    <td>
+                                        <a href="#" class="btn btn-sm btn-outline-primary"><i class="fas fa-eye"></i></a>
+                                        <a href="#" class="btn btn-sm btn-outline-info"><i class="fas fa-download"></i></a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>#INV-2024-0631</td>
+                                    <td>2024/10/23</td>
+                                    <td>اشتراك الباقة المميزة - شهر أكتوبر</td>
+                                    <td>500 ريال</td>
+                                    <td><span class="badge bg-success">مدفوع</span></td>
+                                    <td>
+                                        <a href="#" class="btn btn-sm btn-outline-primary"><i class="fas fa-eye"></i></a>
+                                        <a href="#" class="btn btn-sm btn-outline-info"><i class="fas fa-download"></i></a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- معلومات الدفع -->
+    <div class="row">
+        <div class="col-xl-12 mb-4">
+            <div class="card shadow">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">طرق الدفع</h6>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card mb-3 border">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="d-flex align-items-center">
+                                            <div class="me-3">
+                                                <i class="fab fa-cc-visa fa-2x text-primary"></i>
+                                            </div>
+                                            <div>
+                                                <h6 class="mb-0">فيزا ••••3456</h6>
+                                                <small class="text-muted">تنتهي في 08/2027</small>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <span class="badge bg-success">افتراضي</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card mb-3 border">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="d-flex align-items-center">
+                                            <div class="me-3">
+                                                <i class="fab fa-cc-mastercard fa-2x text-warning"></i>
+                                            </div>
+                                            <div>
+                                                <h6 class="mb-0">ماستركارد ••••7890</h6>
+                                                <small class="text-muted">تنتهي في 12/2025</small>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <button class="btn btn-sm btn-outline-primary">تعيين كافتراضي</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 text-center mt-3">
+                            <button class="btn btn-outline-primary">
+                                <i class="fas fa-plus me-1"></i> إضافة طريقة دفع جديدة
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- نافذة ترقية الاشتراك -->
+<div class="modal fade" id="upgradeModal" tabindex="-1" aria-labelledby="upgradeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="upgradeModalLabel">ترقية الاشتراك</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+            </div>
+            <div class="modal-body">
+                <div class="text-center mb-4">
+                    <h4>اختر الباقة المناسبة لاحتياجاتك</h4>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card mb-4">
+                            <div class="card-header text-center py-3 bg-light">
+                                <h5 class="mb-0">الباقة الأساسية</h5>
+                                <div class="d-flex justify-content-center">
+                                    <h3>مجاناً</h3>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <ul class="list-unstyled">
+                                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i> مشروع واحد</li>
+                                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i> 3 إعلانات شهرياً</li>
+                                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i> مسوق واحد</li>
+                                    <li class="mb-2"><i class="fas fa-times text-danger me-2"></i> تحليلات متقدمة</li>
+                                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i> دعم عبر البريد الإلكتروني</li>
+                                </ul>
+                            </div>
+                            <div class="card-footer text-center">
+                                <button class="btn btn-outline-primary">اختر هذه الباقة</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card mb-4 border-primary">
+                            <div class="card-header text-center py-3 bg-primary text-white">
+                                <span class="badge bg-warning position-absolute top-0 start-50 translate-middle-x" style="margin-top: -10px;">الأكثر شيوعاً</span>
+                                <h5 class="mb-0">الباقة المميزة</h5>
+                                <div class="d-flex justify-content-center">
+                                    <h3>500 ريال</h3>
+                                    <span class="align-self-end mb-1">/شهر</span>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <ul class="list-unstyled">
+                                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i> 5 مشاريع</li>
+                                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i> 20 إعلان شهرياً</li>
+                                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i> 10 مسوقين</li>
+                                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i> تحليلات متقدمة</li>
+                                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i> دعم على مدار الساعة</li>
+                                </ul>
+                            </div>
+                            <div class="card-footer text-center">
+                                <button class="btn btn-success" disabled>الباقة الحالية</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card mb-4">
+                            <div class="card-header text-center py-3 bg-light">
+                                <h5 class="mb-0">الباقة الاحترافية</h5>
+                                <div class="d-flex justify-content-center">
+                                    <h3>1,200 ريال</h3>
+                                    <span class="align-self-end mb-1">/شهر</span>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <ul class="list-unstyled">
+                                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i> عدد غير محدود من المشاريع</li>
+                                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i> 50 إعلان شهرياً</li>
+                                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i> عدد غير محدود من المسوقين</li>
+                                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i> تحليلات متقدمة واحترافية</li>
+                                    <li class="mb-2"><i class="fas fa-check text-success me-2"></i> مدير حساب شخصي</li>
+                                </ul>
+                            </div>
+                            <div class="card-footer text-center">
+                                <button class="btn btn-primary">ترقية إلى هذه الباقة</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

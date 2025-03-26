@@ -1,0 +1,70 @@
+{
+  "name": "روابط تك للتطوير العقاري",
+  "short_name": "روابط تك العقارية",
+  "description": "لوحة تحكم شركات التطوير العقاري | روابط تك",
+  "start_url": "/developers/login",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#3498db",
+  "orientation": "portrait-primary",
+  "dir": "rtl",
+  "lang": "ar",
+  "icons": [
+    {
+      "src": "/static/images/logo-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/static/images/logo-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "تسجيل الدخول",
+      "short_name": "تسجيل الدخول",
+      "description": "تسجيل الدخول إلى لوحة التحكم",
+      "url": "/developers/login",
+      "icons": [
+        {
+          "src": "/static/images/login-96x96.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "المشاريع العقارية",
+      "short_name": "المشاريع",
+      "description": "إدارة المشاريع العقارية",
+      "url": "/developers/projects",
+      "icons": [
+        {
+          "src": "/static/images/projects-96x96.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/static/images/screenshot1.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "platform": "wide",
+      "label": "لوحة التحكم الرئيسية لشركات التطوير العقاري"
+    },
+    {
+      "src": "/static/images/screenshot2.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "platform": "wide",
+      "label": "صفحة المشاريع العقارية"
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false
+}

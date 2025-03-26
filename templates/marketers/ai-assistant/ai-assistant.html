@@ -1,0 +1,512 @@
+{% extends 'marketers/includes/base.html' %}
+
+{% block title %}المساعد الذكي - لوحة تحكم المسوقين العقاريين{% endblock %}
+
+{% block meta_description %}المساعد الذكي - لوحة تحكم المسوقين العقاريين{% endblock %}
+
+{% block additional_css %}
+<style>
+    /* تحسين الهوامش العامة */
+    body {
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+    }
+    
+    .main-layout {
+        display: flex;
+        width: 100%;
+        min-height: 100vh;
+    }
+    
+    #page-content {
+        padding: 0;
+    }
+    
+    .container-fluid {
+        padding: 1.5rem;
+    }
+    
+    /* تعديل الصفوف لتكون متقاربة أكثر */
+    .row {
+        margin-right: -8px;
+        margin-left: -8px;
+    }
+    
+    .row > [class^="col-"] {
+        padding-right: 8px;
+        padding-left: 8px;
+    }
+    
+    /* تصغير المساحات بين الأقسام */
+    .section-spacing {
+        margin-bottom: 1rem;
+    }
+    
+    /* تحسين تصميم البطاقات */
+    .card {
+        border-radius: var(--card-border-radius);
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+        height: 100%;
+        border: none;
+        margin-bottom: 1rem;
+    }
+    
+    .card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .card-body {
+        padding: 1rem;
+    }
+    
+    /* تنسيق المحادثة */
+    .chat-container {
+        height: 550px;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .chat-messages {
+        flex: 1;
+        overflow-y: auto;
+        padding: 1rem;
+    }
+    
+    .chat-message {
+        display: flex;
+        margin-bottom: 1rem;
+    }
+    
+    .chat-message.user-message {
+        justify-content: flex-end;
+    }
+    
+    .message-content {
+        max-width: 75%;
+        padding: 0.75rem 1rem;
+        border-radius: 1rem;
+        position: relative;
+    }
+    
+    .user-message .message-content {
+        background-color: var(--primary-color);
+        color: white;
+        border-bottom-right-radius: 0.25rem;
+    }
+    
+    .assistant-message .message-content {
+        background-color: var(--light-bg-color);
+        border-bottom-left-radius: 0.25rem;
+    }
+    
+    .chat-input {
+        padding: 1rem;
+        background-color: #f8f9fa;
+        border-top: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    
+    .chat-input .form-control {
+        border-radius: 20px;
+        padding-right: 80px;
+    }
+    
+    .chat-input .btn {
+        position: absolute;
+        right: 4px;
+        top: 4px;
+        bottom: 4px;
+        border-radius: 20px;
+    }
+    
+    /* تصميم القوالب السريعة */
+    .quick-prompts .btn {
+        margin-bottom: 0.5rem;
+        font-size: 0.875rem;
+        white-space: normal;
+        text-align: start;
+        padding: 0.5rem 0.75rem;
+    }
+    
+    /* أيقونات الخدمات */
+    .service-card {
+        text-align: center;
+        padding: 1rem;
+    }
+    
+    .service-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1rem;
+        font-size: 1.75rem;
+    }
+    
+    /* تصميم بطاقات الخدمات الإضافية */
+    .ai-service-card {
+        transition: all 0.3s ease;
+        border-radius: 12px;
+        overflow: hidden;
+        cursor: pointer;
+    }
+    
+    .ai-service-card:hover {
+        transform: translateY(-5px);
+    }
+    
+    .ai-service-card .card-bg-icon {
+        position: absolute;
+        left: -20px;
+        bottom: -20px;
+        font-size: 8rem;
+        opacity: 0.06;
+        transform: rotate(-10deg);
+    }
+    
+    .ai-tools-section {
+        margin-top: 2rem;
+    }
+    
+    .ai-tools-section .section-title {
+        margin-bottom: 1.5rem;
+        position: relative;
+        display: inline-block;
+        padding-bottom: 0.5rem;
+    }
+    
+    .ai-tools-section .section-title:after {
+        content: '';
+        position: absolute;
+        width: 60%;
+        height: 3px;
+        background: var(--primary-color);
+        bottom: 0;
+        right: 0;
+    }
+    
+    .info-card {
+        background: linear-gradient(45deg, #FBAF7E, #FF5454);
+        color: white;
+        margin-top: 1rem;
+    }
+    
+    .info-card i {
+        font-size: 1.5rem;
+        margin-left: 0.5rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div id="page-content" class="fade-in">
+    <div class="container-fluid">
+        <!-- عنوان الصفحة -->
+        <div class="page-header d-flex flex-wrap justify-content-between align-items-center mb-4">
+            <div>
+                <h2 class="page-title mb-1">المساعد الذكي</h2>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item"><a href="{{ url_for('marketers_dashboard_overview') }}">لوحة التحكم</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">المساعد الذكي</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+        
+        <!-- قسم أدوات الذكاء الاصطناعي -->
+        <div class="ai-tools-section">
+            <h4 class="section-title mb-4">أدوات الذكاء الاصطناعي</h4>
+            <div class="row">
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="card ai-service-card h-100 border-0">
+                        <div class="card-body position-relative overflow-hidden bg-light-blue">
+                            <i class="fas fa-pen-fancy card-bg-icon"></i>
+                            <h5>كاتب المحتوى</h5>
+                            <p class="mb-4">أنشئ محتوى تسويقي جذاب ومتوافق مع محركات البحث</p>
+                            <a href="{{ url_for('marketers_ai_content_writer') }}" class="btn btn-sm btn-outline-primary w-100">
+                                <i class="fas fa-external-link-alt me-1"></i>فتح الأداة
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="card ai-service-card h-100 border-0">
+                        <div class="card-body position-relative overflow-hidden bg-light-green">
+                            <i class="fas fa-bullhorn card-bg-icon"></i>
+                            <h5>مولّد الإعلانات</h5>
+                            <p class="mb-4">إنشاء إعلانات مؤثرة لمنصات التواصل الاجتماعي المختلفة</p>
+                            <a href="{{ url_for('marketers_ai_ad_generator') }}" class="btn btn-sm btn-outline-success w-100">
+                                <i class="fas fa-external-link-alt me-1"></i>فتح الأداة
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="card ai-service-card h-100 border-0">
+                        <div class="card-body position-relative overflow-hidden bg-light-orange">
+                            <i class="fas fa-comments-alt card-bg-icon"></i>
+                            <h5>محلل المحادثات</h5>
+                            <p class="mb-4">تحليل محادثات العملاء واستخراج الرؤى والاتجاهات</p>
+                            <a href="{{ url_for('marketers_ai_conversation_analyzer') }}" class="btn btn-sm btn-outline-warning w-100">
+                                <i class="fas fa-external-link-alt me-1"></i>فتح الأداة
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="card ai-service-card h-100 border-0">
+                        <div class="card-body position-relative overflow-hidden bg-light-purple">
+                            <i class="fas fa-chart-line card-bg-icon"></i>
+                            <h5>محلل السوق</h5>
+                            <p class="mb-4">تحليل اتجاهات السوق العقاري وتوقعات المبيعات</p>
+                            <a href="{{ url_for('marketers_ai_market_analyzer') }}" class="btn btn-sm btn-outline-secondary w-100">
+                                <i class="fas fa-external-link-alt me-1"></i>قريباً
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- بطاقة معلومات سريعة -->
+        <div class="card info-card">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-lightbulb"></i>
+                    <div>
+                        <h5 class="mb-1">نصيحة ذكية</h5>
+                        <p class="mb-0">استخدم أدوات الذكاء الاصطناعي بانتظام لزيادة إنتاجيتك. يمكنك حفظ المحتوى المولّد وتنظيمه ضمن مشاريع مختلفة.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mt-4">
+            <!-- المحادثة الرئيسية -->
+            <div class="col-lg-8">
+                <div class="card mb-4">
+                    <div class="card-header bg-transparent d-flex justify-content-between align-items-center">
+                        <h5 class="card-title mb-0">المساعد الذكي للتسويق العقاري</h5>
+                        <div>
+                            <button class="btn btn-sm btn-outline-secondary me-1">
+                                <i class="fas fa-download"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="chat-container">
+                        <div class="chat-messages" id="chatMessages">
+                            <!-- رسالة ترحيبية من المساعد -->
+                            <div class="chat-message assistant-message">
+                                <div class="message-content">
+                                    <p class="mb-0">مرحباً! أنا المساعد الذكي للتسويق العقاري. كيف يمكنني مساعدتك اليوم؟</p>
+                                </div>
+                            </div>
+                            
+                            <!-- مثال على رسالة من المستخدم -->
+                            <div class="chat-message user-message">
+                                <div class="message-content">
+                                    <p class="mb-0">أحتاج إلى إنشاء وصف جذاب لشقة فاخرة</p>
+                                </div>
+                            </div>
+                            
+                            <!-- مثال على رد المساعد -->
+                            <div class="chat-message assistant-message">
+                                <div class="message-content">
+                                    <p class="mb-0">يمكنني مساعدتك في إنشاء وصف جذاب لشقة فاخرة. لكي أقدم لك وصفاً مميزاً، هل يمكنك توفير المزيد من المعلومات مثل:</p>
+                                    <ul class="mb-0 mt-2">
+                                        <li>مساحة الشقة وعدد الغرف</li>
+                                        <li>موقع الشقة والمميزات المحيطة</li>
+                                        <li>المميزات الخاصة (مثل الإطلالة، التشطيبات الفاخرة، المرافق)</li>
+                                        <li>الفئة المستهدفة من العملاء</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="chat-input position-relative">
+                            <div class="input-group">
+                                <input type="text" id="messageInput" class="form-control" placeholder="اكتب رسالتك هنا...">
+                                <button class="btn btn-primary" id="sendButton" onclick="sendMessage()">
+                                    <i class="fas fa-paper-plane"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- القوالب السريعة والخدمات -->
+            <div class="col-lg-4">
+                <!-- القوالب السريعة -->
+                <div class="card mb-4">
+                    <div class="card-header bg-transparent">
+                        <h5 class="card-title mb-0">قوالب سريعة</h5>
+                    </div>
+                    <div class="card-body quick-prompts">
+                        <button class="btn btn-light text-start w-100 mb-2" onclick="insertPrompt('أنشئ وصفاً إعلانياً لفيلا فاخرة بمساحة 500 متر مربع')">
+                            <i class="fas fa-home text-primary me-2"></i>
+                            أنشئ وصفاً إعلانياً لفيلا فاخرة بمساحة 500 متر مربع
+                        </button>
+                        <button class="btn btn-light text-start w-100 mb-2" onclick="insertPrompt('اقترح 5 أفكار لمحتوى فيديو قصير لتسويق شقق فاخرة على تيك توك')">
+                            <i class="fas fa-video text-danger me-2"></i>
+                            اقترح 5 أفكار لمحتوى فيديو قصير لتسويق شقق فاخرة على تيك توك
+                        </button>
+                        <button class="btn btn-light text-start w-100 mb-2" onclick="insertPrompt('اكتب رسالة للرد على استفسار عميل حول أسعار الوحدات السكنية')">
+                            <i class="fas fa-envelope text-success me-2"></i>
+                            اكتب رسالة للرد على استفسار عميل حول أسعار الوحدات السكنية
+                        </button>
+                        <button class="btn btn-light text-start w-100 mb-2" onclick="insertPrompt('قم بإنشاء خطة تسويقية لمشروع عقاري جديد لمدة شهر')">
+                            <i class="fas fa-calendar-alt text-warning me-2"></i>
+                            قم بإنشاء خطة تسويقية لمشروع عقاري جديد لمدة شهر
+                        </button>
+                        <button class="btn btn-light text-start w-100" onclick="insertPrompt('اقترح 10 هاشتاج فعالة للتسويق العقاري على منصات التواصل الاجتماعي')">
+                            <i class="fas fa-hashtag text-info me-2"></i>
+                            اقترح 10 هاشتاج فعالة للتسويق العقاري على منصات التواصل الاجتماعي
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- بطاقة الإحصائيات -->
+                <div class="card">
+                    <div class="card-header bg-transparent">
+                        <h5 class="card-title mb-0">إحصائيات استخدام الذكاء الاصطناعي</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between mb-1">
+                                <span>محتوى تم إنشاؤه</span>
+                                <span>65/100</span>
+                            </div>
+                            <div class="progress" style="height: 6px;">
+                                <div class="progress-bar bg-primary" role="progressbar" style="width: 65%;" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between mb-1">
+                                <span>محادثات تم تحليلها</span>
+                                <span>42/50</span>
+                            </div>
+                            <div class="progress" style="height: 6px;">
+                                <div class="progress-bar bg-success" role="progressbar" style="width: 84%;" aria-valuenow="84" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="d-flex justify-content-between mb-1">
+                                <span>إعلانات تم إنشاؤها</span>
+                                <span>28/50</span>
+                            </div>
+                            <div class="progress" style="height: 6px;">
+                                <div class="progress-bar bg-warning" role="progressbar" style="width: 56%;" aria-valuenow="56" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-4">
+                            <h6 class="mb-3">آخر استخدام:</h6>
+                            <div class="d-flex justify-content-between mb-2 small">
+                                <span>كاتب المحتوى</span>
+                                <span class="text-muted">منذ ساعتين</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2 small">
+                                <span>مولّد الإعلانات</span>
+                                <span class="text-muted">منذ 3 أيام</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2 small">
+                                <span>محلل المحادثات</span>
+                                <span class="text-muted">منذ أسبوع</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Scrolling chat to bottom
+        const chatMessages = document.getElementById('chatMessages');
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+        
+        // Enter key to send message
+        const messageInput = document.getElementById('messageInput');
+        messageInput.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                sendMessage();
+            }
+        });
+        
+        // Add animation for AI tool cards
+        const aiCards = document.querySelectorAll('.ai-service-card');
+        aiCards.forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px)';
+                this.style.boxShadow = '0 10px 20px rgba(0,0,0,0.15)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(-5px)';
+                this.style.boxShadow = '0 5px 15px rgba(0,0,0,0.1)';
+            });
+        });
+    });
+    
+    function sendMessage() {
+        const messageInput = document.getElementById('messageInput');
+        const message = messageInput.value.trim();
+        
+        if (message) {
+            const chatMessages = document.getElementById('chatMessages');
+            
+            // Add user message
+            const userMessageDiv = document.createElement('div');
+            userMessageDiv.className = 'chat-message user-message';
+            userMessageDiv.innerHTML = `
+                <div class="message-content">
+                    <p class="mb-0">${message}</p>
+                </div>
+            `;
+            chatMessages.appendChild(userMessageDiv);
+            
+            // Clear input
+            messageInput.value = '';
+            
+            // Scroll to bottom
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            
+            // Simulate AI response (in real app, this would be an API call)
+            setTimeout(() => {
+                const aiMessageDiv = document.createElement('div');
+                aiMessageDiv.className = 'chat-message assistant-message';
+                aiMessageDiv.innerHTML = `
+                    <div class="message-content">
+                        <p class="mb-0">أنا أعمل على الإجابة على استفسارك حول "${message}"، يرجى الانتظار لحظات...</p>
+                    </div>
+                `;
+                chatMessages.appendChild(aiMessageDiv);
+                
+                // Scroll to bottom again
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }, 500);
+        }
+    }
+    
+    function insertPrompt(promptText) {
+        const messageInput = document.getElementById('messageInput');
+        messageInput.value = promptText;
+        messageInput.focus();
+    }
+</script>
+{% endblock %}

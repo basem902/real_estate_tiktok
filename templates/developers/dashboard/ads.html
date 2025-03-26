@@ -1,0 +1,563 @@
+{% extends 'developers/dashboard/base_dashboard.html' %}
+
+{% block title %}إدارة الإعلانات | لوحة التحكم{% endblock %}
+
+{% block content %}
+<!-- رأس الصفحة -->
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-4 border-bottom">
+    <h1 class="h2">إدارة الإعلانات</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group me-2">
+            <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#createAdModal">
+                <i class="fas fa-plus-circle"></i> إنشاء إعلان جديد
+            </button>
+            <button type="button" class="btn btn-sm btn-outline-success">
+                <i class="fas fa-bullhorn"></i> حملة إعلانية
+            </button>
+        </div>
+        <div class="dropdown">
+            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="adFilterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fas fa-filter"></i> تصفية
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="adFilterDropdown">
+                <li><a class="dropdown-item" href="#">كل الإعلانات</a></li>
+                <li><a class="dropdown-item" href="#">إعلانات نشطة</a></li>
+                <li><a class="dropdown-item" href="#">إعلانات متوقفة</a></li>
+                <li><a class="dropdown-item" href="#">إعلانات مجدولة</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="#">تصفية متقدمة</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- لوحة الإحصائيات -->
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body d-flex align-items-center">
+                <div class="rounded-circle bg-primary bg-opacity-10 p-3 me-3">
+                    <i class="fas fa-ad text-primary fa-2x"></i>
+                </div>
+                <div>
+                    <div class="fs-4 fw-bold">32</div>
+                    <div class="text-muted">إجمالي الإعلانات</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body d-flex align-items-center">
+                <div class="rounded-circle bg-success bg-opacity-10 p-3 me-3">
+                    <i class="fas fa-eye text-success fa-2x"></i>
+                </div>
+                <div>
+                    <div class="fs-4 fw-bold">45.8K</div>
+                    <div class="text-muted">إجمالي المشاهدات</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body d-flex align-items-center">
+                <div class="rounded-circle bg-info bg-opacity-10 p-3 me-3">
+                    <i class="fas fa-mouse-pointer text-info fa-2x"></i>
+                </div>
+                <div>
+                    <div class="fs-4 fw-bold">3.2%</div>
+                    <div class="text-muted">نسبة النقرات</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body d-flex align-items-center">
+                <div class="rounded-circle bg-warning bg-opacity-10 p-3 me-3">
+                    <i class="fas fa-money-bill-wave text-warning fa-2x"></i>
+                </div>
+                <div>
+                    <div class="fs-4 fw-bold">12.5K</div>
+                    <div class="text-muted">ميزانية الإعلانات</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- تحليلات وتصور البيانات -->
+<div class="row mb-4">
+    <div class="col-md-8">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+                <h5 class="card-title mb-0">أداء الإعلانات</h5>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-sm btn-outline-secondary">اليوم</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary active">الأسبوع</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary">الشهر</button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div style="height: 300px; background-color: #f8f9fa; display: flex; justify-content: center; align-items: center;">
+                    <p class="text-muted">رسم بياني لأداء الإعلانات سيظهر هنا</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-white py-3">
+                <h5 class="card-title mb-0">توزيع المنصات</h5>
+            </div>
+            <div class="card-body d-flex flex-column">
+                <div style="height: 200px; background-color: #f8f9fa; display: flex; justify-content: center; align-items: center; margin-bottom: 1rem;">
+                    <p class="text-muted">مخطط دائري سيظهر هنا</p>
+                </div>
+                <ul class="list-group list-group-flush mt-auto">
+                    <li class="list-group-item d-flex justify-content-between align-items-center px-0 border-0">
+                        <div>
+                            <i class="fab fa-facebook text-primary me-2"></i> فيسبوك
+                        </div>
+                        <span class="badge bg-primary rounded-pill">40%</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center px-0 border-0">
+                        <div>
+                            <i class="fab fa-instagram text-danger me-2"></i> انستجرام
+                        </div>
+                        <span class="badge bg-danger rounded-pill">30%</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center px-0 border-0">
+                        <div>
+                            <i class="fab fa-google text-success me-2"></i> جوجل
+                        </div>
+                        <span class="badge bg-success rounded-pill">20%</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center px-0 border-0">
+                        <div>
+                            <i class="fas fa-globe text-info me-2"></i> أخرى
+                        </div>
+                        <span class="badge bg-info rounded-pill">10%</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- قائمة الإعلانات النشطة -->
+<div class="card border-0 shadow-sm mb-4">
+    <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+        <h5 class="card-title mb-0">الإعلانات النشطة</h5>
+        <div class="input-group" style="width: 250px;">
+            <input type="text" class="form-control form-control-sm" placeholder="بحث عن إعلان...">
+            <button class="btn btn-sm btn-outline-secondary" type="button"><i class="fas fa-search"></i></button>
+        </div>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="bg-light">
+                    <tr>
+                        <th class="border-0 py-3 ps-4">الإعلان</th>
+                        <th class="border-0 py-3">المنصة</th>
+                        <th class="border-0 py-3">المشاهدات</th>
+                        <th class="border-0 py-3">النقرات</th>
+                        <th class="border-0 py-3">نسبة التفاعل</th>
+                        <th class="border-0 py-3">الميزانية</th>
+                        <th class="border-0 py-3">الحالة</th>
+                        <th class="border-0 py-3 pe-4">إجراءات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- إعلان 1 -->
+                    <tr>
+                        <td class="ps-4">
+                            <div class="d-flex align-items-center">
+                                <div class="bg-image rounded overflow-hidden me-3" style="width: 50px; height: 50px;">
+                                    <img src="https://via.placeholder.com/100x100" class="img-fluid" alt="إعلان مشروع الواحة">
+                                </div>
+                                <div>
+                                    <h6 class="mb-0">إعلان مشروع الواحة السكني</h6>
+                                    <small class="text-muted">26 مارس - 26 أبريل</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="d-flex">
+                                <i class="fab fa-facebook-square text-primary me-1 fa-lg"></i>
+                                <i class="fab fa-instagram text-danger me-1 fa-lg"></i>
+                            </div>
+                        </td>
+                        <td>12,846</td>
+                        <td>843</td>
+                        <td>6.56%</td>
+                        <td>4,500 ر.س</td>
+                        <td><span class="badge bg-success rounded-pill px-3">نشط</span></td>
+                        <td class="pe-4">
+                            <div class="dropdown">
+                                <button class="btn btn-sm px-2" type="button" id="dropdownAdActionBtn1" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAdActionBtn1">
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-eye me-2 text-primary"></i>عرض</a></li>
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-edit me-2 text-success"></i>تعديل</a></li>
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-chart-line me-2 text-info"></i>تحليل</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item text-warning" href="#"><i class="fas fa-pause me-2"></i>إيقاف</a></li>
+                                    <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-trash-alt me-2"></i>حذف</a></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                    
+                    <!-- إعلان 2 -->
+                    <tr>
+                        <td class="ps-4">
+                            <div class="d-flex align-items-center">
+                                <div class="bg-image rounded overflow-hidden me-3" style="width: 50px; height: 50px;">
+                                    <img src="https://via.placeholder.com/100x100" class="img-fluid" alt="إعلان برج الأفق">
+                                </div>
+                                <div>
+                                    <h6 class="mb-0">إعلان برج الأفق</h6>
+                                    <small class="text-muted">15 مارس - 15 أبريل</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="d-flex">
+                                <i class="fab fa-google me-1 text-success fa-lg"></i>
+                            </div>
+                        </td>
+                        <td>21,503</td>
+                        <td>724</td>
+                        <td>3.37%</td>
+                        <td>3,200 ر.س</td>
+                        <td><span class="badge bg-success rounded-pill px-3">نشط</span></td>
+                        <td class="pe-4">
+                            <div class="dropdown">
+                                <button class="btn btn-sm px-2" type="button" id="dropdownAdActionBtn2" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAdActionBtn2">
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-eye me-2 text-primary"></i>عرض</a></li>
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-edit me-2 text-success"></i>تعديل</a></li>
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-chart-line me-2 text-info"></i>تحليل</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item text-warning" href="#"><i class="fas fa-pause me-2"></i>إيقاف</a></li>
+                                    <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-trash-alt me-2"></i>حذف</a></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                    
+                    <!-- إعلان 3 -->
+                    <tr>
+                        <td class="ps-4">
+                            <div class="d-flex align-items-center">
+                                <div class="bg-image rounded overflow-hidden me-3" style="width: 50px; height: 50px;">
+                                    <img src="https://via.placeholder.com/100x100" class="img-fluid" alt="إعلان فلل الفخامة">
+                                </div>
+                                <div>
+                                    <h6 class="mb-0">إعلان فلل الفخامة</h6>
+                                    <small class="text-muted">10 مارس - 10 أبريل</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="d-flex">
+                                <i class="fab fa-instagram text-danger me-1 fa-lg"></i>
+                                <i class="fab fa-tiktok text-dark me-1 fa-lg"></i>
+                            </div>
+                        </td>
+                        <td>8,927</td>
+                        <td>356</td>
+                        <td>3.99%</td>
+                        <td>2,800 ر.س</td>
+                        <td><span class="badge bg-warning text-dark rounded-pill px-3">متوقف مؤقتاً</span></td>
+                        <td class="pe-4">
+                            <div class="dropdown">
+                                <button class="btn btn-sm px-2" type="button" id="dropdownAdActionBtn3" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAdActionBtn3">
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-eye me-2 text-primary"></i>عرض</a></li>
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-edit me-2 text-success"></i>تعديل</a></li>
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-chart-line me-2 text-info"></i>تحليل</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item text-success" href="#"><i class="fas fa-play me-2"></i>تشغيل</a></li>
+                                    <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-trash-alt me-2"></i>حذف</a></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                    
+                    <!-- إعلان 4 -->
+                    <tr>
+                        <td class="ps-4">
+                            <div class="d-flex align-items-center">
+                                <div class="bg-image rounded overflow-hidden me-3" style="width: 50px; height: 50px;">
+                                    <img src="https://via.placeholder.com/100x100" class="img-fluid" alt="إعلان مشروع النخيل">
+                                </div>
+                                <div>
+                                    <h6 class="mb-0">إعلان مشروع النخيل التجاري</h6>
+                                    <small class="text-muted">1 أبريل - 30 أبريل</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="d-flex">
+                                <i class="fab fa-facebook-square text-primary me-1 fa-lg"></i>
+                                <i class="fab fa-twitter text-info me-1 fa-lg"></i>
+                                <i class="fab fa-linkedin text-primary me-1 fa-lg"></i>
+                            </div>
+                        </td>
+                        <td>2,548</td>
+                        <td>127</td>
+                        <td>4.98%</td>
+                        <td>2,000 ر.س</td>
+                        <td><span class="badge bg-info rounded-pill px-3">مجدول</span></td>
+                        <td class="pe-4">
+                            <div class="dropdown">
+                                <button class="btn btn-sm px-2" type="button" id="dropdownAdActionBtn4" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAdActionBtn4">
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-eye me-2 text-primary"></i>عرض</a></li>
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-edit me-2 text-success"></i>تعديل</a></li>
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-chart-line me-2 text-info"></i>تحليل</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item text-success" href="#"><i class="fas fa-play me-2"></i>تشغيل الآن</a></li>
+                                    <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-trash-alt me-2"></i>حذف</a></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="card-footer bg-white py-3">
+        <div class="d-flex justify-content-between align-items-center">
+            <p class="text-muted mb-0 small">عرض 1-4 من 32 إعلان</p>
+            <nav aria-label="Page navigation">
+                <ul class="pagination pagination-sm mb-0">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<!-- نوافذ الموديل ستضاف في الجزء التالي -->
+
+<!-- نافذة إنشاء إعلان جديد -->
+<div class="modal fade" id="createAdModal" tabindex="-1" aria-labelledby="createAdModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createAdModalLabel">إنشاء إعلان جديد</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+            </div>
+            <div class="modal-body">
+                <form id="createAdForm">
+                    <div class="row mb-4">
+                        <div class="col-md-12 mb-3">
+                            <h6 class="fw-bold mb-3 text-primary">معلومات الإعلان الأساسية</h6>
+                            <div class="row g-3">
+                                <div class="col-md-12">
+                                    <label for="adTitle" class="form-label">عنوان الإعلان <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="adTitle" required>
+                                </div>
+                                <div class="col-md-12">
+                                    <label for="adDescription" class="form-label">وصف الإعلان <span class="text-danger">*</span></label>
+                                    <textarea class="form-control" id="adDescription" rows="3" required></textarea>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="linkURL" class="form-label">رابط الوجهة</label>
+                                    <input type="url" class="form-control" id="linkURL" placeholder="https://">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="projectRelated" class="form-label">المشروع المرتبط</label>
+                                    <select class="form-select" id="projectRelated">
+                                        <option value="" selected>بدون مشروع</option>
+                                        <option value="1">مشروع الواحة السكني</option>
+                                        <option value="2">مشروع النخيل التجاري</option>
+                                        <option value="3">برج الأفق</option>
+                                        <option value="4">فلل الفخامة</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-12 mb-3">
+                            <h6 class="fw-bold mb-3 text-primary">وسائط الإعلان</h6>
+                            <div class="row g-3">
+                                <div class="col-md-12">
+                                    <label for="adType" class="form-label">نوع الإعلان <span class="text-danger">*</span></label>
+                                    <select class="form-select" id="adType" required>
+                                        <option value="" selected disabled>اختر نوع الإعلان</option>
+                                        <option value="image">صورة</option>
+                                        <option value="video">فيديو</option>
+                                        <option value="carousel">شرائح متعددة</option>
+                                        <option value="text">نصي فقط</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="col-md-12 mb-2" id="imageUploadSection">
+                                    <label for="adImage" class="form-label">صورة الإعلان</label>
+                                    <input class="form-control" type="file" id="adImage" accept="image/*">
+                                    <small class="form-text text-muted">الحجم الموصى به: 1200×628 بكسل. الحد الأقصى للحجم: 5 ميجابايت.</small>
+                                </div>
+                                
+                                <div class="col-md-12 mb-2" id="videoUploadSection" style="display: none;">
+                                    <label for="adVideo" class="form-label">فيديو الإعلان</label>
+                                    <input class="form-control" type="file" id="adVideo" accept="video/*">
+                                    <small class="form-text text-muted">الحد الأقصى للمدة: 60 ثانية. الحد الأقصى للحجم: 20 ميجابايت.</small>
+                                </div>
+                                
+                                <div class="col-md-12 mb-2" id="thumbnailUploadSection" style="display: none;">
+                                    <label for="adThumbnail" class="form-label">صورة مصغرة للفيديو</label>
+                                    <input class="form-control" type="file" id="adThumbnail" accept="image/*">
+                                    <small class="form-text text-muted">سيتم عرضها قبل تشغيل الفيديو.</small>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-12 mb-3">
+                            <h6 class="fw-bold mb-3 text-primary">استهداف وجدولة</h6>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="targetPlatforms" class="form-label">المنصات المستهدفة <span class="text-danger">*</span></label>
+                                    <div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="platformFacebook" value="facebook" checked>
+                                            <label class="form-check-label" for="platformFacebook"><i class="fab fa-facebook text-primary me-1"></i> فيسبوك</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="platformInstagram" value="instagram" checked>
+                                            <label class="form-check-label" for="platformInstagram"><i class="fab fa-instagram text-danger me-1"></i> انستجرام</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="platformTwitter" value="twitter">
+                                            <label class="form-check-label" for="platformTwitter"><i class="fab fa-twitter text-info me-1"></i> تويتر</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="platformGoogle" value="google">
+                                            <label class="form-check-label" for="platformGoogle"><i class="fab fa-google text-success me-1"></i> جوجل</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <label for="targetAudience" class="form-label">الجمهور المستهدف</label>
+                                    <select class="form-select" id="targetAudience">
+                                        <option value="all" selected>الجميع</option>
+                                        <option value="custom">مخصص</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <label for="startDate" class="form-label">تاريخ البدء <span class="text-danger">*</span></label>
+                                    <input type="date" class="form-control" id="startDate" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="endDate" class="form-label">تاريخ الانتهاء <span class="text-danger">*</span></label>
+                                    <input type="date" class="form-control" id="endDate" required>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-12">
+                            <h6 class="fw-bold mb-3 text-primary">الميزانية</h6>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="budgetType" class="form-label">نوع الميزانية <span class="text-danger">*</span></label>
+                                    <select class="form-select" id="budgetType" required>
+                                        <option value="daily" selected>يومية</option>
+                                        <option value="lifetime">إجمالية</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="budgetAmount" class="form-label">مبلغ الميزانية <span class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" id="budgetAmount" required>
+                                        <span class="input-group-text">ر.س</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="" id="optimizeSpending" checked>
+                                        <label class="form-check-label" for="optimizeSpending">
+                                            تحسين الإنفاق تلقائيًا للحصول على أفضل النتائج
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">إلغاء</button>
+                <button type="button" class="btn btn-success me-2">معاينة</button>
+                <button type="button" class="btn btn-primary">إنشاء الإعلان</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<!-- اضافة النصوص البرمجية الخاصة بالصفحة -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // تبديل أقسام رفع الوسائط حسب نوع الإعلان المحدد
+        const adTypeSelect = document.getElementById('adType');
+        const imageUploadSection = document.getElementById('imageUploadSection');
+        const videoUploadSection = document.getElementById('videoUploadSection');
+        const thumbnailUploadSection = document.getElementById('thumbnailUploadSection');
+        
+        if (adTypeSelect) {
+            adTypeSelect.addEventListener('change', function() {
+                switch(this.value) {
+                    case 'image':
+                        imageUploadSection.style.display = 'block';
+                        videoUploadSection.style.display = 'none';
+                        thumbnailUploadSection.style.display = 'none';
+                        break;
+                    case 'video':
+                        imageUploadSection.style.display = 'none';
+                        videoUploadSection.style.display = 'block';
+                        thumbnailUploadSection.style.display = 'block';
+                        break;
+                    case 'carousel':
+                        imageUploadSection.style.display = 'block';
+                        videoUploadSection.style.display = 'none';
+                        thumbnailUploadSection.style.display = 'none';
+                        break;
+                    case 'text':
+                        imageUploadSection.style.display = 'none';
+                        videoUploadSection.style.display = 'none';
+                        thumbnailUploadSection.style.display = 'none';
+                        break;
+                }
+            });
+        }
+    });
+</script>
+{% endblock %}

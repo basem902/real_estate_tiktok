@@ -1,0 +1,134 @@
+<!-- نافذة تفاصيل التقييم -->
+<div class="modal fade" id="reviewDetailModal" tabindex="-1" aria-labelledby="reviewDetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="reviewDetailModalLabel">تفاصيل التقييم</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12 mb-3">
+                        <div class="review-detail-container p-3 border rounded">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="flex-shrink-0">
+                                    <div class="avatar-placeholder bg-primary text-white" id="reviewerInitials">
+                                        <span>MS</span>
+                                    </div>
+                                </div>
+                                <div class="flex-grow-1 ms-2">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <h5 class="mb-0" id="reviewerName">محمد السيد</h5>
+                                        <div>
+                                            <span class="badge bg-light text-dark" id="reviewPlatform">
+                                                <i class="fab fa-google me-1"></i> جوجل
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                        <div id="reviewRating" class="me-2">
+                                            <div class="stars-display medium">
+                                                <i class="fas fa-star filled"></i>
+                                                <i class="fas fa-star filled"></i>
+                                                <i class="fas fa-star filled"></i>
+                                                <i class="fas fa-star filled"></i>
+                                                <i class="fas fa-star"></i>
+                                            </div>
+                                        </div>
+                                        <small class="text-muted" id="reviewDate">22 مارس 2025</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="review-content-full mb-3">
+                                <p id="reviewContent">تجربة جيدة في التعامل مع الشركة. الموظفين محترفين والخدمة سريعة. الأسعار معقولة مقارنة بالسوق. أتمنى لو كان هناك خيارات أكثر في المناطق الشمالية.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- حاوية الرد -->
+                    <div class="col-md-12 mb-3" id="responseContainer">
+                        <div class="response-container p-3 border rounded">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <h6 class="mb-0">الرد</h6>
+                                <small class="text-muted" id="responseDate">22 مارس 2025</small>
+                            </div>
+                            <p id="responseContent">شكراً لك محمد على تقييمك وملاحظاتك القيمة. سنعمل على زيادة خياراتنا في المناطق الشمالية في المستقبل القريب. نتطلع لخدمتك مرة أخرى.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- نموذج الرد -->
+                    <div class="col-md-12 mb-3" id="replyForm">
+                        <div class="border rounded p-3">
+                            <h6 class="mb-3">الرد على التقييم</h6>
+                            <div class="mb-3">
+                                <label for="responseText" class="form-label">نص الرد</label>
+                                <textarea class="form-control" id="responseText" rows="4" placeholder="اكتب ردك هنا..."></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">استخدام قالب</label>
+                                <div class="row">
+                                    <div class="col-md-6 mb-2">
+                                        <div class="template-item d-flex align-items-center p-2 border rounded" onclick="insertTemplate(1)">
+                                            <i class="fas fa-thumbs-up text-success me-2"></i>
+                                            <div>
+                                                <div class="fw-bold">رد إيجابي</div>
+                                                <small class="text-muted">شكراً لك على تقييمك الإيجابي!</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-2">
+                                        <div class="template-item d-flex align-items-center p-2 border rounded" onclick="insertTemplate(2)">
+                                            <i class="fas fa-thumbs-down text-danger me-2"></i>
+                                            <div>
+                                                <div class="fw-bold">رد على تقييم سلبي</div>
+                                                <small class="text-muted">نأسف لتجربتك غير المرضية...</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-2">
+                                        <div class="template-item d-flex align-items-center p-2 border rounded" onclick="insertTemplate(3)">
+                                            <i class="fas fa-star-half-alt text-warning me-2"></i>
+                                            <div>
+                                                <div class="fw-bold">رد على تقييم متوسط</div>
+                                                <small class="text-muted">نشكرك على تقييمك ونقدر ملاحظاتك...</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-2">
+                                        <div class="template-item d-flex align-items-center p-2 border rounded" onclick="insertTemplate(4)">
+                                            <i class="fas fa-info-circle text-info me-2"></i>
+                                            <div>
+                                                <div class="fw-bold">شكر على التفاصيل</div>
+                                                <small class="text-muted">نشكرك على الوقت الذي استغرقته...</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="checkbox" id="saveAsTemplate">
+                                <label class="form-check-label" for="saveAsTemplate">
+                                    حفظ الرد كقالب جديد
+                                </label>
+                            </div>
+                            <div class="d-grid">
+                                <button type="button" class="btn btn-primary" id="submitResponse" data-review-id="">
+                                    <i class="fas fa-paper-plane me-1"></i> إرسال الرد
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-primary" onclick="showReplyForm()">
+                    <i class="fas fa-reply me-1"></i> الرد
+                </button>
+                <button type="button" class="btn btn-outline-danger" id="flagReviewBtn">
+                    <i class="fas fa-flag me-1"></i> تمييز التقييم
+                </button>
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">إغلاق</button>
+            </div>
+        </div>
+    </div>
+</div>

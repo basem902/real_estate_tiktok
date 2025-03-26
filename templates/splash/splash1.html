@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}مرحباً بك | روابط تك{% endblock %}
+
+{% block content %}
+<div class="splash-screen">
+    <a href="/user_type" class="skip-button">تخطي <i class="fas fa-arrow-right me-1"></i></a>
+    
+    <div class="splash-content">
+        <div class="logo-container bounce-in mb-4">
+            <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="شعار روابط تك" class="logo-img">
+        </div>
+        <h1 class="splash-title zoom-in">اكتشف العقارات بطريقة جديدة</h1>
+        <div class="splash-image slide-up">
+            <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="صورة عقار فاخر" class="img-fluid rounded-4 shadow-lg">
+        </div>
+        <p class="splash-text fade-in-right">مرحباً بك في أول منصة عقارية تعتمد على الفيديو لعرض العقارات بطريقة مبتكرة</p>
+        <div class="progress fade-in delay-2" style="height: 6px; width: 120px; margin: 0 auto;">
+            <div class="progress-bar progress-bar-animated progress-bar-striped bg-primary" role="progressbar" style="width: 33%;" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+    </div>
+    
+    <div class="splash-animation">
+        <div class="circles">
+            <div class="circle circle-1 pulse"></div>
+            <div class="circle circle-2 pulse"></div>
+            <div class="circle circle-3 pulse"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // الانتقال التلقائي للشاشة التالية بعد 3 ثوانٍ
+    setTimeout(function() {
+        window.location.href = '/splash2';
+    }, 3000);
+</script>
+{% endblock %}

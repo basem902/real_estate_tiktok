@@ -1,0 +1,530 @@
+{% extends 'marketers/includes/base.html' %}
+
+{% block title %}إدارة الإعجابات - لوحة تحكم المسوقين العقاريين{% endblock %}
+
+{% block meta_description %}إدارة الإعجابات - تحليل ومتابعة إعجابات المنشورات على منصات التواصل الاجتماعي{% endblock %}
+
+{% block additional_css %}
+<style>
+    /* تحسينات تصميم الصفحة وتقليل المساحات البيضاء */
+    body {
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+    }
+    
+    .main-layout {
+        display: flex;
+        width: 100%;
+        min-height: 100vh;
+    }
+    
+    #page-content {
+        padding: 0;
+    }
+    
+    .container-fluid {
+        padding: 1.5rem;
+    }
+    
+    /* تحسين تصميم البطاقات */
+    .card {
+        border-radius: var(--card-border-radius);
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+        height: 100%;
+        border: none;
+        margin-bottom: 1rem;
+    }
+    
+    .card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .card-body {
+        padding: 1rem;
+    }
+    
+    /* تنسيق عناصر الإعجابات */
+    .post-item {
+        position: relative;
+        transition: all 0.2s ease;
+        border-right: 3px solid transparent;
+    }
+    
+    .post-item:hover {
+        border-right-color: var(--primary-color);
+        background-color: rgba(0, 123, 255, 0.05);
+    }
+    
+    .post-thumbnail {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 0.5rem;
+    }
+    
+    .platform-badge {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 12px;
+    }
+    
+    .facebook {
+        background-color: #3b5998;
+    }
+    
+    .instagram {
+        background: linear-gradient(45deg, #f09433, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888);
+    }
+    
+    .twitter {
+        background-color: #1da1f2;
+    }
+    
+    .like-count {
+        font-weight: bold;
+        color: #dc3545;
+    }
+    
+    .trend-up {
+        color: #28a745;
+    }
+    
+    .trend-down {
+        color: #dc3545;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- عنوان الصفحة وأزرار الإجراءات -->
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center mb-4">
+        <div>
+            <h2 class="page-title mb-0">إدارة الإعجابات</h2>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0 mt-1">
+                    <li class="breadcrumb-item"><a href="../dashboard.html">الرئيسية</a></li>
+                    <li class="breadcrumb-item"><a href="social-hub.html">المنصات الاجتماعية</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">إدارة الإعجابات</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="btn-toolbar mb-2 mb-md-0">
+            <button type="button" class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#exportLikesModal">
+                <i class="fas fa-download me-1"></i>
+                تصدير البيانات
+            </button>
+            <div class="dropdown">
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dateRangeDropdown" data-bs-toggle="dropdown">
+                    آخر 30 يوم
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dateRangeDropdown">
+                    <li><a class="dropdown-item" href="#" data-range="7">آخر 7 أيام</a></li>
+                    <li><a class="dropdown-item active" href="#" data-range="30">آخر 30 يوم</a></li>
+                    <li><a class="dropdown-item" href="#" data-range="90">آخر 3 أشهر</a></li>
+                    <li><a class="dropdown-item" href="#" data-range="365">آخر سنة</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <!-- إضافة قائمة التنقل الفرعية للأقسام -->
+    <div class="sub-nav mb-4">
+        <ul class="nav nav-pills">
+            <li class="nav-item">
+                <a class="nav-link" href="review-manager.html">
+                    <i class="fas fa-star me-1"></i>
+                    إدارة التقييمات
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="followers-manager.html">
+                    <i class="fas fa-users me-1"></i>
+                    إدارة المتابعين
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="likes-manager.html">
+                    <i class="fas fa-thumbs-up me-1"></i>
+                    إدارة الإعجابات
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="comments-manager.html">
+                    <i class="fas fa-comment me-1"></i>
+                    إدارة التعليقات
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="chats-manager.html">
+                    <i class="fas fa-comments me-1"></i>
+                    المحادثات الداخلية
+                </a>
+            </li>
+        </ul>
+    </div>
+    
+    <!-- قسم إحصائيات الإعجابات -->
+    <div class="row mb-4">
+        <div class="col-md-3 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-center">
+                    <i class="fas fa-thumbs-up fa-2x text-danger mb-3"></i>
+                    <h3 class="counter" id="totalLikes">24,576</h3>
+                    <p class="card-text">إجمالي الإعجابات</p>
+                    <div class="badge bg-success">
+                        <i class="fas fa-arrow-up"></i> 9.8%
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-center">
+                    <i class="fas fa-chart-line fa-2x text-primary mb-3"></i>
+                    <h3 class="counter" id="averageLikes">342</h3>
+                    <p class="card-text">متوسط الإعجابات لكل منشور</p>
+                    <div class="badge bg-success">
+                        <i class="fas fa-arrow-up"></i> 4.2%
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-center">
+                    <i class="fas fa-heart fa-2x text-success mb-3"></i>
+                    <h3 class="counter" id="recentLikes">2,451</h3>
+                    <p class="card-text">إعجابات هذا الأسبوع</p>
+                    <div class="badge bg-success">
+                        <i class="fas fa-arrow-up"></i> 12.5%
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-center">
+                    <i class="fas fa-chart-bar fa-2x text-info mb-3"></i>
+                    <h3 class="counter" id="engagementRate">5.2%</h3>
+                    <p class="card-text">نسبة الإعجابات للمشاهدات</p>
+                    <div class="badge bg-success">
+                        <i class="fas fa-arrow-up"></i> 0.7%
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- رسوم بيانية للإعجابات -->
+    <div class="row mb-4">
+        <div class="col-md-8 mb-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0">الإعجابات عبر الزمن</h5>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-sm btn-outline-secondary active">يومي</button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary">أسبوعي</button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary">شهري</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="chart-container" style="height: 300px;">
+                        <canvas id="likesTimeChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-white">
+                    <h5 class="card-title mb-0">الإعجابات حسب المنصة</h5>
+                </div>
+                <div class="card-body">
+                    <div class="chart-container" style="height: 300px;">
+                        <canvas id="likesByPlatformChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- المنشورات الأكثر إعجاباً -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-white d-flex justify-content-between align-items-center">
+            <h5 class="card-title mb-0">المنشورات الأكثر إعجاباً</h5>
+            <div class="dropdown">
+                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                    جميع المنصات
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item active" href="#">جميع المنصات</a></li>
+                    <li><a class="dropdown-item" href="#">فيسبوك</a></li>
+                    <li><a class="dropdown-item" href="#">انستجرام</a></li>
+                    <li><a class="dropdown-item" href="#">تويتر</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th scope="col" class="border-0">المنشور</th>
+                            <th scope="col" class="border-0">المنصة</th>
+                            <th scope="col" class="border-0">تاريخ النشر</th>
+                            <th scope="col" class="border-0">الإعجابات</th>
+                            <th scope="col" class="border-0">الاتجاه</th>
+                            <th scope="col" class="border-0">الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- منشور 1 -->
+                        <tr class="post-item">
+                            <td>
+                                <div class="d-flex align-items-center position-relative">
+                                    <img src="https://via.placeholder.com/80" alt="صورة المنشور" class="post-thumbnail me-3">
+                                    <span class="platform-badge facebook">
+                                        <i class="fab fa-facebook-f"></i>
+                                    </span>
+                                    <div>
+                                        <h6 class="mb-1">فيلا فاخرة للبيع في حي الياسمين</h6>
+                                        <p class="mb-0 text-muted small">فيلا جديدة بمواصفات عالية وتصميم عصري...</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>فيسبوك</td>
+                            <td>21 مارس 2025</td>
+                            <td><span class="like-count">1,254</span></td>
+                            <td><i class="fas fa-arrow-up trend-up"></i> 32%</td>
+                            <td>
+                                <div class="dropdown">
+                                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                        إجراءات
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="#"><i class="fas fa-eye me-2"></i> عرض المنشور</a></li>
+                                        <li><a class="dropdown-item" href="#"><i class="fas fa-chart-line me-2"></i> تحليل الأداء</a></li>
+                                        <li><a class="dropdown-item" href="#"><i class="fas fa-share me-2"></i> إعادة نشر</a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-trash-alt me-2"></i> حذف</a></li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <!-- منشور 2 -->
+                        <tr class="post-item">
+                            <td>
+                                <div class="d-flex align-items-center position-relative">
+                                    <img src="https://via.placeholder.com/80" alt="صورة المنشور" class="post-thumbnail me-3">
+                                    <span class="platform-badge instagram">
+                                        <i class="fab fa-instagram"></i>
+                                    </span>
+                                    <div>
+                                        <h6 class="mb-1">شقة فاخرة مطلة على البحر</h6>
+                                        <p class="mb-0 text-muted small">شقة بإطلالة بحرية رائعة، تشطيبات فاخرة...</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>انستجرام</td>
+                            <td>18 مارس 2025</td>
+                            <td><span class="like-count">987</span></td>
+                            <td><i class="fas fa-arrow-up trend-up"></i> 18%</td>
+                            <td>
+                                <div class="dropdown">
+                                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                        إجراءات
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="#"><i class="fas fa-eye me-2"></i> عرض المنشور</a></li>
+                                        <li><a class="dropdown-item" href="#"><i class="fas fa-chart-line me-2"></i> تحليل الأداء</a></li>
+                                        <li><a class="dropdown-item" href="#"><i class="fas fa-share me-2"></i> إعادة نشر</a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-trash-alt me-2"></i> حذف</a></li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <!-- منشور 3 -->
+                        <tr class="post-item">
+                            <td>
+                                <div class="d-flex align-items-center position-relative">
+                                    <img src="https://via.placeholder.com/80" alt="صورة المنشور" class="post-thumbnail me-3">
+                                    <span class="platform-badge twitter">
+                                        <i class="fab fa-twitter"></i>
+                                    </span>
+                                    <div>
+                                        <h6 class="mb-1">أراضي استثمارية في منطقة التطوير الجديدة</h6>
+                                        <p class="mb-0 text-muted small">فرصة استثمارية في منطقة التطوير الجديدة...</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>تويتر</td>
+                            <td>15 مارس 2025</td>
+                            <td><span class="like-count">842</span></td>
+                            <td><i class="fas fa-arrow-up trend-up"></i> 25%</td>
+                            <td>
+                                <div class="dropdown">
+                                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                        إجراءات
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="#"><i class="fas fa-eye me-2"></i> عرض المنشور</a></li>
+                                        <li><a class="dropdown-item" href="#"><i class="fas fa-chart-line me-2"></i> تحليل الأداء</a></li>
+                                        <li><a class="dropdown-item" href="#"><i class="fas fa-share me-2"></i> إعادة نشر</a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-trash-alt me-2"></i> حذف</a></li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer bg-white d-flex justify-content-between align-items-center">
+            <button class="btn btn-sm btn-outline-secondary">
+                <i class="fas fa-download me-1"></i> تصدير القائمة
+            </button>
+            <nav aria-label="صفحات المنشورات">
+                <ul class="pagination pagination-sm mb-0">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#">السابق</a>
+                    </li>
+                    <li class="page-item active">
+                        <a class="page-link" href="#">1</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">2</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">3</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">التالي</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block additional_scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // رسم بياني للإعجابات عبر الزمن
+        const likesTimeCtx = document.getElementById('likesTimeChart').getContext('2d');
+        const likesTimeChart = new Chart(likesTimeCtx, {
+            type: 'line',
+            data: {
+                labels: ['1 مارس', '5 مارس', '10 مارس', '15 مارس', '20 مارس', '25 مارس', '30 مارس'],
+                datasets: [
+                    {
+                        label: 'الإعجابات',
+                        data: [540, 680, 520, 780, 920, 1100, 950],
+                        borderColor: '#dc3545',
+                        backgroundColor: 'rgba(220, 53, 69, 0.1)',
+                        fill: true,
+                        tension: 0.3
+                    },
+                    {
+                        label: 'المشاهدات',
+                        data: [12500, 14200, 10800, 15600, 18400, 22000, 19000],
+                        borderColor: '#007bff',
+                        backgroundColor: 'transparent',
+                        borderDash: [5, 5],
+                        tension: 0.3
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                if (value >= 1000) {
+                                    return (value/1000) + 'k';
+                                }
+                                return value;
+                            }
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'top'
+                    }
+                }
+            }
+        });
+        
+        // رسم بياني للإعجابات حسب المنصة
+        const platformCtx = document.getElementById('likesByPlatformChart').getContext('2d');
+        const platformChart = new Chart(platformCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['فيسبوك', 'انستجرام', 'تويتر', 'يوتيوب', 'لينكد إن'],
+                datasets: [{
+                    data: [9852, 8745, 3258, 2105, 616],
+                    backgroundColor: [
+                        '#3b5998', // فيسبوك
+                        '#e1306c', // انستجرام
+                        '#1da1f2', // تويتر
+                        '#ff0000', // يوتيوب
+                        '#0077b5'  // لينكد إن
+                    ],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        labels: {
+                            boxWidth: 15,
+                            padding: 15,
+                            font: {
+                                size: 12
+                            }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const label = context.label || '';
+                                const value = context.formattedValue || '';
+                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                const percentage = Math.round((context.raw / total) * 100);
+                                return `${label}: ${value} (${percentage}%)`;
+                            }
+                        }
+                    }
+                },
+                cutout: '60%'
+            }
+        });
+    });
+</script>
+{% endblock %}

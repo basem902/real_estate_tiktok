@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    
+    <!-- إعدادات تطبيق الويب التقدمي (PWA) -->
+    <meta name="theme-color" content="#2c3e50">
+    <meta name="description" content="منصة Real10 لإدارة وعرض العقارات وتفاعل العملاء">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Real10">
+    
+    <!-- أيقونات تطبيق الويب التقدمي -->
+    <link rel="icon" href="{{ url_for('static', filename='images/icons/favicon.ico') }}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/icons/favicon.ico') }}" type="image/x-icon">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='images/icons/icon-192x192.png') }}">
+    
+    <!-- ملف manifest.json الخاص بتطبيق الويب التقدمي -->
+    <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+    
+    <title>روابط تيك - {% block title %}روابط تيك{% endblock %}</title>
+    
+    <!-- الخطوط -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Tajawal:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- أيقونات Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <!-- Bootstrap RTL -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.rtl.min.css">
+    
+    <!-- ملف CSS الخاص بنا -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/query_history.css') }}">
+    
+    {% block extra_css %}{% endblock %}
+    
+    {% block styles %}{% endblock %}
+</head>
+<body>
+    <!-- زر الوضع المظلم -->
+    <button id="darkModeToggleButton">
+        <i class="fas fa-moon"></i>
+    </button>
+    
+    <div class="app-container">
+        {% block content %}{% endblock %}
+    </div>
+    
+    {% block bottom_nav %}
+    <nav class="bottom-nav">
+        <a href="{{ url_for('index') }}" class="nav-item {% if request.endpoint == 'index' %}active{% endif %}">
+            <i class="fas fa-home"></i>
+            <span>الرئيسية</span>
+        </a>
+        <a href="{{ url_for('user_type') }}" class="nav-item">
+            <i class="fas fa-sign-in-alt"></i>
+            <span>تسجيل دخول</span>
+        </a>
+        <a href="{{ url_for('visitor_feed') }}" class="nav-item {% if request.endpoint == 'visitor_feed' %}active{% endif %}">
+            <i class="fas fa-video"></i>
+            <span>الفيديوهات</span>
+        </a>
+    </nav>
+    {% endblock %}
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- ملفات JavaScript الخاصة بنا -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/dark-mode.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/pwa.js') }}"></script>
+    
+    <!-- جافاسكريبت مباشر للوضع المظلم -->
+    <script>
+        // تنفيذ بعد تحميل DOM مباشرة
+        document.addEventListener('DOMContentLoaded', function() {
+            // الحصول على عناصر DOM
+            const darkModeButton = document.getElementById('darkModeToggleButton');
+            const darkModeIcon = darkModeButton.querySelector('i');
+            
+            // تطبيق الوضع المظلم المحفوظ
+            if (localStorage.getItem('darkMode') === 'enabled') {
+                document.body.classList.add('dark-mode');
+                darkModeIcon.className = 'fas fa-sun';
+            }
+            
+            // إضافة حدث النقر
+            darkModeButton.addEventListener('click', function() {
+                if (document.body.classList.contains('dark-mode')) {
+                    // إلغاء الوضع المظلم
+                    document.body.classList.remove('dark-mode');
+                    localStorage.setItem('darkMode', 'disabled');
+                    darkModeIcon.className = 'fas fa-moon';
+                } else {
+                    // تفعيل الوضع المظلم
+                    document.body.classList.add('dark-mode');
+                    localStorage.setItem('darkMode', 'enabled');
+                    darkModeIcon.className = 'fas fa-sun';
+                }
+            });
+        });
+    </script>
+    
+    {% block extra_js %}{% endblock %}
+    
+    {% block scripts %}{% endblock %}
+</body>
+</html>

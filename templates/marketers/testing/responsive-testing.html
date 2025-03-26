@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختبار تجاوب الشاشات | منصة المسوقين العقاريين</title>
+    <!-- Bootstrap RTL CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: #f8f9fa;
+        }
+        .device-frame {
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .device-screen {
+            width: 100%;
+            height: 400px;
+            overflow: hidden;
+            border: 1px solid #eee;
+            border-radius: 4px;
+        }
+        .device-screen iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .device-controls {
+            padding: 10px;
+            background-color: #f1f1f1;
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
+        }
+        .device-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .test-result {
+            margin-top: 15px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .test-status.passed {
+            color: #28a745;
+        }
+        .test-status.failed {
+            color: #dc3545;
+        }
+        .test-status.pending {
+            color: #ffc107;
+        }
+        .progress-bar-container {
+            height: 8px;
+            background-color: #e9ecef;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        .progress-bar {
+            height: 100%;
+            background-color: #007bff;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4 mb-5">
+        <div class="row">
+            <div class="col-12">
+                <h1 class="mb-4">اختبار تجاوب الشاشات المختلفة</h1>
+                <p class="lead">استخدم هذه الأداة لاختبار تجاوب واجهة منصة المسوقين العقاريين على مختلف أحجام الشاشات والأجهزة.</p>
+                
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i>
+                    تم إنشاء هذه الأداة لمساعدة المطورين في اختبار مدى تجاوب المنصة عبر مختلف الأجهزة والشاشات. يمكنك تحديد نوع الجهاز وحجم الشاشة لمعاينة شكل المنصة على ذلك الجهاز.
+                </div>
+                
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">تقدم الاختبار</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" style="width: 15%;"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="test-item">
+                                    <span class="test-status passed"><i class="fas fa-check-circle"></i></span>
+                                    <span>الصفحة الرئيسية</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="test-item">
+                                    <span class="test-status pending"><i class="fas fa-clock"></i></span>
+                                    <span>لوحة التحكم</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="test-item">
+                                    <span class="test-status pending"><i class="fas fa-clock"></i></span>
+                                    <span>صفحة الإعدادات</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="test-item">
+                                    <span class="test-status pending"><i class="fas fa-clock"></i></span>
+                                    <span>محلل المحادثات</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-lg-3 mb-4">
+                <div class="card">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0">إعدادات الاختبار</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="pageUrl" class="form-label">اختر الصفحة:</label>
+                            <select class="form-select" id="pageUrl">
+                                <option value="../../../index.html">الصفحة الرئيسية</option>
+                                <option value="../../dashboard/main.html">لوحة التحكم</option>
+                                <option value="../../settings/settings.html">صفحة الإعدادات</option>
+                                <option value="../../conversation-analyzer/main.html">محلل المحادثات</option>
+                                <option value="../../social-hub/social-hub.html">مركز التواصل الاجتماعي</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">اختر نوع الجهاز:</label>
+                            <div class="btn-group w-100" role="group">
+                                <button type="button" class="btn btn-outline-primary device-btn" data-width="375" data-height="667">
+                                    <i class="fas fa-mobile-alt"></i>
+                                </button>
+                                <button type="button" class="btn btn-outline-primary device-btn" data-width="768" data-height="1024">
+                                    <i class="fas fa-tablet-alt"></i>
+                                </button>
+                                <button type="button" class="btn btn-outline-primary device-btn" data-width="1366" data-height="768">
+                                    <i class="fas fa-laptop"></i>
+                                </button>
+                                <button type="button" class="btn btn-outline-primary device-btn" data-width="1920" data-height="1080">
+                                    <i class="fas fa-desktop"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="customWidth" class="form-label">عرض مخصص (بكسل):</label>
+                            <input type="number" class="form-control" id="customWidth" value="375">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="customHeight" class="form-label">ارتفاع مخصص (بكسل):</label>
+                            <input type="number" class="form-control" id="customHeight" value="667">
+                        </div>
+                        
+                        <button class="btn btn-primary w-100" id="applySettingsBtn">
+                            <i class="fas fa-sync-alt"></i> تطبيق الإعدادات
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="card mt-4">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0">نقاط الاختبار</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="checkbox" id="check1">
+                            <label class="form-check-label" for="check1">
+                                عرض جميع العناصر بشكل صحيح
+                            </label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="checkbox" id="check2">
+                            <label class="form-check-label" for="check2">
+                                عمل القوائم المنسدلة بشكل صحيح
+                            </label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="checkbox" id="check3">
+                            <label class="form-check-label" for="check3">
+                                تكيف الصور والرسوم البيانية
+                            </label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="checkbox" id="check4">
+                            <label class="form-check-label" for="check4">
+                                عرض النصوص بشكل واضح ومقروء
+                            </label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="checkbox" id="check5">
+                            <label class="form-check-label" for="check5">
+                                تناسق الألوان والعناصر المرئية
+                            </label>
+                        </div>
+                        
+                        <button class="btn btn-success w-100 mt-3" id="saveResultBtn">
+                            <i class="fas fa-save"></i> حفظ نتائج الاختبار
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-9">
+                <div class="device-frame">
+                    <div class="device-meta">
+                        <div>
+                            <span class="device-name">iPhone SE</span>
+                            <span class="device-dimensions badge bg-secondary">375 × 667</span>
+                        </div>
+                        <div>
+                            <button class="btn btn-sm btn-outline-secondary refresh-btn">
+                                <i class="fas fa-sync-alt"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-secondary fullscreen-btn">
+                                <i class="fas fa-expand"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="device-screen">
+                        <iframe id="preview-frame" src="../../../index.html"></iframe>
+                    </div>
+                    
+                    <div class="device-controls">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="input-group">
+                                    <span class="input-group-text">زوم</span>
+                                    <select class="form-select" id="zoomLevel">
+                                        <option value="0.5">50%</option>
+                                        <option value="0.75">75%</option>
+                                        <option value="1" selected>100%</option>
+                                        <option value="1.5">150%</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <button class="btn btn-outline-primary w-100 rotate-btn">
+                                    <i class="fas fa-sync-alt"></i> تدوير الشاشة
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card mt-4">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0">نتائج الاختبار</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="test-result">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <h5 class="mb-0">الصفحة الرئيسية - هاتف محمول (iPhone SE)</h5>
+                                <span class="test-status passed"><i class="fas fa-check-circle"></i> ناجح</span>
+                            </div>
+                            <div class="mb-2">
+                                <strong>تاريخ الاختبار:</strong> 24 مارس 2025، 4:30 صباحًا
+                            </div>
+                            <div class="mb-2">
+                                <strong>المشكلات المكتشفة:</strong>
+                                <ul>
+                                    <li>لا توجد مشكلات</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="test-result">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <h5 class="mb-0">لوحة التحكم - جهاز لوحي (iPad)</h5>
+                                <span class="test-status failed"><i class="fas fa-times-circle"></i> فاشل</span>
+                            </div>
+                            <div class="mb-2">
+                                <strong>تاريخ الاختبار:</strong> 24 مارس 2025، 4:15 صباحًا
+                            </div>
+                            <div class="mb-2">
+                                <strong>المشكلات المكتشفة:</strong>
+                                <ul>
+                                    <li>تداخل في عناصر الرسوم البيانية</li>
+                                    <li>نص غير مقروء في جزء الإحصائيات</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // تحديد المتغيرات
+            const previewFrame = document.getElementById('preview-frame');
+            const deviceBtns = document.querySelectorAll('.device-btn');
+            const applySettingsBtn = document.getElementById('applySettingsBtn');
+            const customWidth = document.getElementById('customWidth');
+            const customHeight = document.getElementById('customHeight');
+            const pageUrlSelect = document.getElementById('pageUrl');
+            const deviceName = document.querySelector('.device-name');
+            const deviceDimensions = document.querySelector('.device-dimensions');
+            const rotateBtn = document.querySelector('.rotate-btn');
+            const zoomLevel = document.getElementById('zoomLevel');
+            const refreshBtn = document.querySelector('.refresh-btn');
+            const saveResultBtn = document.getElementById('saveResultBtn');
+            
+            // إعداد الأزرار لأنواع الأجهزة
+            deviceBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // إزالة الكلاس النشط من جميع الأزرار
+                    deviceBtns.forEach(b => b.classList.remove('active'));
+                    
+                    // إضافة الكلاس النشط للزر المضغوط
+                    this.classList.add('active');
+                    
+                    // تحديث قيم العرض والارتفاع
+                    const width = this.getAttribute('data-width');
+                    const height = this.getAttribute('data-height');
+                    
+                    customWidth.value = width;
+                    customHeight.value = height;
+                    
+                    // تحديث اسم الجهاز
+                    updateDeviceName(width, height);
+                });
+            });
+            
+            // وظيفة لتحديث اسم الجهاز
+            function updateDeviceName(width, height) {
+                let name = "جهاز مخصص";
+                
+                if (width == 375 && height == 667) {
+                    name = "iPhone SE";
+                } else if (width == 768 && height == 1024) {
+                    name = "iPad";
+                } else if (width == 1366 && height == 768) {
+                    name = "لابتوب";
+                } else if (width == 1920 && height == 1080) {
+                    name = "سطح المكتب";
+                }
+                
+                deviceName.textContent = name;
+                deviceDimensions.textContent = width + " × " + height;
+            }
+            
+            // تطبيق الإعدادات عند الضغط على زر التطبيق
+            applySettingsBtn.addEventListener('click', function() {
+                const width = customWidth.value;
+                const height = customHeight.value;
+                const url = pageUrlSelect.value;
+                
+                // تحديث حجم الإطار
+                previewFrame.style.width = width + "px";
+                previewFrame.style.height = height + "px";
+                
+                // تحديث المصدر إذا تغير
+                if (previewFrame.src.split('/').pop() !== url.split('/').pop()) {
+                    previewFrame.src = url;
+                }
+                
+                // تحديث اسم الجهاز
+                updateDeviceName(width, height);
+            });
+            
+            // تدوير الشاشة
+            rotateBtn.addEventListener('click', function() {
+                const tempWidth = customWidth.value;
+                customWidth.value = customHeight.value;
+                customHeight.value = tempWidth;
+                
+                // تحديث حجم الإطار
+                previewFrame.style.width = customWidth.value + "px";
+                previewFrame.style.height = customHeight.value + "px";
+                
+                // تحديث اسم الجهاز ومعلومات الأبعاد
+                deviceDimensions.textContent = customWidth.value + " × " + customHeight.value;
+            });
+            
+            // تغيير مستوى التكبير
+            zoomLevel.addEventListener('change', function() {
+                previewFrame.style.transform = `scale(${this.value})`;
+                previewFrame.style.transformOrigin = "0 0";
+            });
+            
+            // تحديث الإطار
+            refreshBtn.addEventListener('click', function() {
+                previewFrame.src = previewFrame.src;
+            });
+            
+            // حفظ نتائج الاختبار
+            saveResultBtn.addEventListener('click', function() {
+                alert('تم حفظ نتائج الاختبار بنجاح!');
+                
+                // التحقق من الاختبارات المحددة
+                const checkedItems = document.querySelectorAll('.form-check-input:checked');
+                if (checkedItems.length === 5) {
+                    // تحديث حالة الاختبار الحالي
+                    const testItems = document.querySelectorAll('.test-item');
+                    const currentPageName = pageUrlSelect.options[pageUrlSelect.selectedIndex].text;
+                    
+                    // البحث عن العنصر المناسب وتحديث حالته
+                    testItems.forEach(item => {
+                        if (item.querySelector('span:last-child').textContent === currentPageName) {
+                            item.querySelector('.test-status').className = 'test-status passed';
+                            item.querySelector('.test-status i').className = 'fas fa-check-circle';
+                        }
+                    });
+                    
+                    // تحديث شريط التقدم
+                    updateProgressBar();
+                }
+            });
+            
+            // تحديث شريط التقدم
+            function updateProgressBar() {
+                const totalItems = document.querySelectorAll('.test-item').length;
+                const passedItems = document.querySelectorAll('.test-status.passed').length;
+                const progressPercentage = (passedItems / totalItems) * 100;
+                
+                document.querySelector('.progress-bar').style.width = progressPercentage + '%';
+            }
+            
+            // تحديث الإطار عند تحميل الصفحة
+            applySettingsBtn.click();
+        });
+    </script>
+</body>
+</html>

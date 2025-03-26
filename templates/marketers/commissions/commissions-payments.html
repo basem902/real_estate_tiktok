@@ -1,0 +1,1750 @@
+{% extends 'marketers/includes/base.html' %}
+
+{% block title %}العمولات والمدفوعات - لوحة تحكم المسوقين العقاريين{% endblock %}
+
+{% block meta_description %}إدارة العمولات والمدفوعات للمسوقين العقاريين - تتبع وإدارة جميع الإيرادات والعمولات{% endblock %}
+
+{% block additional_css %}
+<style>
+    /* تحسينات عامة للصفحة وتقليل المساحات البيضاء */
+    .container-fluid {
+        padding: 1rem;
+    }
+    
+    .row {
+        margin-right: -8px;
+        margin-left: -8px;
+    }
+    
+    .row > [class^="col-"] {
+        padding-right: 8px;
+        padding-left: 8px;
+    }
+    
+    .section-spacing {
+        margin-bottom: 1rem;
+    }
+    
+    /* تنسيق بطاقات الإحصائيات */
+    .stats-card {
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+        height: 100%;
+        background-color: #fff;
+        border: none;
+    }
+    
+    .stats-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .stats-card-body {
+        padding: 1.25rem;
+    }
+    
+    .stats-icon {
+        width: 48px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        color: #fff;
+        font-size: 1.5rem;
+    }
+    
+    .stats-title {
+        font-size: 0.875rem;
+        color: #6c757d;
+        margin-bottom: 0.25rem;
+        font-weight: 600;
+    }
+    
+    .stats-value {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 0;
+        color: #343a40;
+    }
+    
+    .stats-trend {
+        font-size: 0.75rem;
+        display: flex;
+        align-items: center;
+    }
+    
+    .stats-trend.positive {
+        color: #28a745;
+    }
+    
+    .stats-trend.negative {
+        color: #dc3545;
+    }
+    
+    .stats-trend i {
+        margin-right: 0.25rem;
+    }
+    
+    /* تحسين تصميم البطاقات العامة */
+    .card {
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+        height: 100%;
+        border: none;
+        margin-bottom: 1rem;
+    }
+    
+    .card:hover {
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .card-header {
+        background-color: #f8f9fa;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+    
+    .card-body {
+        padding: 1rem;
+    }
+    
+    .card-footer {
+        background-color: #f8f9fa;
+        border-top: 1px solid rgba(0, 0, 0, 0.05);
+    }
+    
+    /* تنسيق الجداول */
+    .table th {
+        font-weight: 600;
+        font-size: 0.875rem;
+        border-top: none;
+        background-color: #f8f9fa;
+    }
+    
+    .table td {
+        vertical-align: middle;
+        font-size: 0.875rem;
+    }
+    
+    .table-hover tbody tr:hover {
+        background-color: rgba(0, 0, 0, 0.02);
+    }
+    
+    /* تنسيق النوافذ المنبثقة */
+    .modal-header {
+        background-color: #f8f9fa;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+    
+    .modal-footer {
+        background-color: #f8f9fa;
+        border-top: 1px solid rgba(0, 0, 0, 0.05);
+    }
+    
+    /* تنسيق الأزرار والعناصر التفاعلية */
+    .btn-sm {
+        border-radius: 4px;
+        font-size: 0.75rem;
+        padding: 0.25rem 0.5rem;
+    }
+    
+    .btn-group {
+        border-radius: 4px;
+        overflow: hidden;
+    }
+    
+    .badge {
+        padding: 0.25rem 0.5rem;
+        font-weight: 500;
+        font-size: 0.75rem;
+    }
+    
+    /* تنسيق البيانات والنصوص */
+    small.text-muted {
+        font-size: 0.75rem;
+    }
+    
+    /* تحسين العرض على الشاشات الصغيرة */
+    @media (max-width: 767.98px) {
+        .container-fluid {
+            padding: 0.75rem;
+        }
+        
+        .card-body {
+            padding: 0.75rem;
+        }
+        
+        .stats-card-body {
+            padding: 1rem;
+        }
+        
+        .stats-icon {
+            width: 40px;
+            height: 40px;
+            font-size: 1.25rem;
+        }
+        
+        .stats-value {
+            font-size: 1.25rem;
+        }
+    }
+    
+    /* إضافة أنماط جديدة لتحليل العمولات */
+    .stats-summary {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 15px;
+    }
+    
+    .kpi-card {
+        flex: 1;
+        min-width: 120px;
+        background-color: #fff;
+        border-radius: 8px;
+        padding: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+    }
+    
+    .kpi-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .kpi-title {
+        font-size: 0.75rem;
+        color: #6c757d;
+        margin-bottom: 5px;
+    }
+    
+    .kpi-value {
+        font-size: 1.25rem;
+        font-weight: 700;
+        margin-bottom: 0;
+    }
+    
+    .kpi-trend {
+        font-size: 0.7rem;
+        display: flex;
+        align-items: center;
+        margin-top: 5px;
+    }
+    
+    .kpi-trend.positive {
+        color: #28a745;
+    }
+    
+    .kpi-trend.negative {
+        color: #dc3545;
+    }
+    
+    .chart-filter-btn {
+        font-size: 0.75rem;
+        padding: 0.25rem 0.5rem;
+        margin-right: 0.25rem;
+        border-radius: 4px;
+    }
+    
+    .chart-filter-btn.active {
+        background-color: #4e73df;
+        color: #fff;
+        border-color: #4e73df;
+    }
+    
+    .comparison-chart-container {
+        position: relative;
+        height: 300px;
+    }
+    
+    .forecasting-label {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background-color: rgba(246, 194, 62, 0.2);
+        color: #856404;
+        font-size: 0.7rem;
+        padding: 2px 5px;
+        border-radius: 4px;
+        z-index: 10;
+    }
+    
+    .chart-legend {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-top: 10px;
+    }
+    
+    .legend-item {
+        display: flex;
+        align-items: center;
+    }
+    
+    .legend-color {
+        width: 12px;
+        height: 12px;
+        border-radius: 2px;
+        margin-right: 5px;
+    }
+    
+    /* أنماط إضافية لقسم تفاصيل توزيع العمولات */
+    .detail-item {
+        margin-bottom: 8px;
+        padding: 6px;
+        border-radius: 6px;
+        background-color: rgba(0, 0, 0, 0.02);
+    }
+    
+    .detail-label {
+        font-size: 0.7rem;
+        color: #6c757d;
+        margin-bottom: 2px;
+    }
+    
+    .detail-value {
+        font-size: 0.9rem;
+        font-weight: 600;
+    }
+    
+    .detail-value.positive {
+        color: #28a745;
+    }
+    
+    .detail-value.negative {
+        color: #dc3545;
+    }
+    
+    .property-row {
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+    
+    .property-row:hover {
+        background-color: rgba(0, 0, 0, 0.03);
+    }
+    
+    .property-details {
+        border-top: 1px dashed #dee2e6;
+        padding-top: 15px;
+        animation: fadeIn 0.3s ease-in-out;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
+
+<!-- روابط إضافية للرسوم البيانية -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- بطاقات الإحصائيات -->
+    <div class="row mb-4">
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="stats-card">
+                <div class="stats-card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="stats-icon bg-primary">
+                            <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                        <div class="ms-3">
+                            <h5 class="stats-title">إجمالي العمولات</h5>
+                            <h2 class="stats-value" id="total-commissions">65,920 ريال</h2>
+                        </div>
+                    </div>
+                    <div class="stats-trend positive mt-2">
+                        <i class="fas fa-arrow-up"></i> 12.8% مقارنة بالشهر السابق
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="stats-card">
+                <div class="stats-card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="stats-icon bg-success">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="ms-3">
+                            <h5 class="stats-title">المدفوعات المستلمة</h5>
+                            <h2 class="stats-value" id="received-payments">42,380 ريال</h2>
+                        </div>
+                    </div>
+                    <div class="stats-trend positive mt-2">
+                        <i class="fas fa-arrow-up"></i> 8.5% مقارنة بالشهر السابق
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="stats-card">
+                <div class="stats-card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="stats-icon bg-warning">
+                            <i class="fas fa-hourglass-half"></i>
+                        </div>
+                        <div class="ms-3">
+                            <h5 class="stats-title">العمولات المعلقة</h5>
+                            <h2 class="stats-value" id="pending-commissions">16,750 ريال</h2>
+                        </div>
+                    </div>
+                    <div class="stats-trend negative mt-2">
+                        <i class="fas fa-arrow-down"></i> 3.1% مقارنة بالشهر السابق
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="stats-card">
+                <div class="stats-card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="stats-icon bg-info">
+                            <i class="fas fa-handshake"></i>
+                        </div>
+                        <div class="ms-3">
+                            <h5 class="stats-title">عدد الصفقات</h5>
+                            <h2 class="stats-value" id="total-deals">18</h2>
+                        </div>
+                    </div>
+                    <div class="stats-trend positive mt-2">
+                        <i class="fas fa-arrow-up"></i> 22.2% مقارنة بالشهر السابق
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- قسم تحليل العمولات المحسن -->
+    <div class="row mb-4">
+        <div class="col-12 mb-3">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center py-2">
+                    <h5 class="mb-0">تحليل العمولات</h5>
+                    <div class="d-flex align-items-center">
+                        <div class="btn-group me-2">
+                            <button class="btn btn-sm btn-outline-secondary chart-filter-btn active" data-chart-type="monthly">شهري</button>
+                            <button class="btn btn-sm btn-outline-secondary chart-filter-btn" data-chart-type="quarterly">ربع سنوي</button>
+                            <button class="btn btn-sm btn-outline-secondary chart-filter-btn" data-chart-type="yearly">سنوي</button>
+                        </div>
+                        <div class="dropdown">
+                            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="chart-period-dropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                هذا العام
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="chart-period-dropdown">
+                                <li><a class="dropdown-item" href="#" data-period="month">هذا الشهر</a></li>
+                                <li><a class="dropdown-item" href="#" data-period="quarter">هذا الربع</a></li>
+                                <li><a class="dropdown-item active" href="#" data-period="year">هذا العام</a></li>
+                                <li><a class="dropdown-item" href="#" data-period="all">كل الفترات</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body py-2">
+                    <!-- مؤشرات الأداء الرئيسية -->
+                    <div class="stats-summary">
+                        <div class="kpi-card">
+                            <div class="kpi-title">متوسط العمولة</div>
+                            <div class="kpi-value">7,640 ريال</div>
+                            <div class="kpi-trend positive">
+                                <i class="fas fa-arrow-up"></i> 12%
+                            </div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-title">معدل التحويل</div>
+                            <div class="kpi-value">68.5%</div>
+                            <div class="kpi-trend positive">
+                                <i class="fas fa-arrow-up"></i> 5.2%
+                            </div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-title">وقت المعالجة</div>
+                            <div class="kpi-value">3.2 يوم</div>
+                            <div class="kpi-trend negative">
+                                <i class="fas fa-arrow-up"></i> 0.5
+                            </div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-title">عمولات متوقعة</div>
+                            <div class="kpi-value">83,500 ريال</div>
+                            <div class="kpi-trend positive">
+                                <i class="fas fa-arrow-up"></i> 18.3%
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- الرسم البياني الرئيسي -->
+                    <div class="comparison-chart-container mb-3">
+                        <div class="forecasting-label d-none" id="forecasting-label">متوقع <i class="fas fa-chart-line ms-1"></i></div>
+                        <canvas id="commissionsChart" style="width: 100%; height: 300px;"></canvas>
+                    </div>
+                    
+                    <!-- مفتاح الرسم البياني -->
+                    <div class="chart-legend">
+                        <div class="legend-item">
+                            <div class="legend-color" style="background-color: rgba(78, 115, 223, 0.8);"></div>
+                            <span>العمولات المستلمة</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background-color: rgba(246, 194, 62, 0.8);"></div>
+                            <span>العمولات المعلقة</span>
+                        </div>
+                        <div class="legend-item d-none" id="forecast-legend">
+                            <div class="legend-color" style="background-color: rgba(28, 200, 138, 0.8);"></div>
+                            <span>توقعات العمولات</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- قسم التحليلات المختلفة -->
+        <div class="col-lg-6 mb-3">
+            <div class="card h-100">
+                <div class="card-header py-2 d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">توزيع العمولات حسب نوع العقار</h5>
+                    <div class="d-flex">
+                        <div class="btn-group me-2">
+                            <button class="btn btn-sm btn-outline-secondary chart-type-btn active" data-chart-type="doughnut">
+                                <i class="fas fa-chart-pie"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-secondary chart-type-btn" data-chart-type="bar">
+                                <i class="fas fa-chart-bar"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-secondary chart-type-btn" data-chart-type="table">
+                                <i class="fas fa-table"></i>
+                            </button>
+                        </div>
+                        <div class="dropdown">
+                            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="property-detail-level" data-bs-toggle="dropdown" aria-expanded="false">
+                                مستوى التفاصيل
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="property-detail-level">
+                                <li><a class="dropdown-item active" href="#" data-detail-level="basic">أساسي</a></li>
+                                <li><a class="dropdown-item" href="#" data-detail-level="detailed">مفصل</a></li>
+                                <li><a class="dropdown-item" href="#" data-detail-level="comprehensive">شامل</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body py-2">
+                    <div id="property-chart-container" class="position-relative">
+                        <canvas id="propertyTypeChart" style="width: 100%; height: 280px;"></canvas>
+                    </div>
+                    
+                    <div id="property-table-container" class="table-responsive mt-3 d-none">
+                        <table class="table table-sm table-hover mb-0">
+                            <thead>
+                                <tr>
+                                    <th>نوع العقار</th>
+                                    <th>النسبة</th>
+                                    <th>القيمة</th>
+                                    <th>التغيير</th>
+                                </tr>
+                            </thead>
+                            <tbody id="property-table-body">
+                                <!-- سيتم ملؤها بالبيانات عبر JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="property-details mt-3 d-none" id="property-details-container">
+                        <h6 class="text-center mb-2">تفاصيل <span id="selected-property-type">السكني</span></h6>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="detail-item">
+                                    <div class="detail-label">متوسط العمولة:</div>
+                                    <div class="detail-value" id="avg-commission">7,250 ريال</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">عدد الصفقات:</div>
+                                    <div class="detail-value" id="deal-count">123</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="detail-item">
+                                    <div class="detail-label">النمو السنوي:</div>
+                                    <div class="detail-value positive" id="annual-growth">+12.5%</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">أعلى منطقة:</div>
+                                    <div class="detail-value" id="top-area">الرياض</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-6 mb-3">
+            <div class="card h-100">
+                <div class="card-header py-2">
+                    <h5 class="mb-0">مقارنة الأداء السنوي</h5>
+                </div>
+                <div class="card-body py-2">
+                    <div class="comparison-chart-container mb-3">
+                        <div class="forecasting-label" id="future-forecast-label">توقعات مستقبلية <i class="fas fa-chart-line ms-1"></i></div>
+                        <canvas id="yearlyComparisonChart" style="width: 100%; height: 280px;"></canvas>
+                    </div>
+                    <div class="chart-legend">
+                        <div class="legend-item">
+                            <div class="legend-color" style="background-color: rgba(78, 115, 223, 0.8);"></div>
+                            <span>بيانات تاريخية</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background-color: rgba(28, 200, 138, 0.8);"></div>
+                            <span>بيانات السنة الحالية</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background-color: rgba(246, 194, 62, 0.8); height: 2px; width: 20px;"></div>
+                            <span>توقعات مستقبلية</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- جدول العمولات المستحقة -->
+    <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center py-2">
+            <h5 class="mb-0">العمولات المستحقة</h5>
+            <div class="d-flex">
+                <div class="input-group me-2">
+                    <input type="text" class="form-control form-control-sm" placeholder="بحث...">
+                    <button class="btn btn-sm btn-outline-secondary" type="button">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+                <button class="btn btn-sm btn-outline-primary">
+                    <i class="fas fa-filter me-1"></i> فلترة
+                </button>
+            </div>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">العقار</th>
+                            <th scope="col">العميل</th>
+                            <th scope="col">نوع الصفقة</th>
+                            <th scope="col">قيمة الصفقة</th>
+                            <th scope="col">العمولة</th>
+                            <th scope="col">تاريخ الصفقة</th>
+                            <th scope="col">الحالة</th>
+                            <th scope="col">الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="commissions-table-body">
+                        <!-- سيتم تعبئة هذا الجدول بالبيانات من ملف JavaScript -->
+                        <tr>
+                            <td>1</td>
+                            <td>فيلا فاخرة بحي الياسمين</td>
+                            <td>عبدالله محمد</td>
+                            <td>بيع</td>
+                            <td>1,200,000 ريال</td>
+                            <td>12,000 ريال</td>
+                            <td>15 مارس 2025</td>
+                            <td><span class="badge bg-success">مدفوعة</span></td>
+                            <td>
+                                <div class="btn-group">
+                                    <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-eye"></i></button>
+                                    <button class="btn btn-sm btn-outline-primary"><i class="fas fa-file-invoice"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>شقة بحي الروضة</td>
+                            <td>سارة أحمد</td>
+                            <td>إيجار</td>
+                            <td>35,000 ريال</td>
+                            <td>1,750 ريال</td>
+                            <td>22 مارس 2025</td>
+                            <td><span class="badge bg-warning">معلقة</span></td>
+                            <td>
+                                <div class="btn-group">
+                                    <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-eye"></i></button>
+                                    <button class="btn btn-sm btn-outline-primary"><i class="fas fa-file-invoice"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>أرض تجارية بحي النزهة</td>
+                            <td>محمد علي</td>
+                            <td>بيع</td>
+                            <td>3,500,000 ريال</td>
+                            <td>35,000 ريال</td>
+                            <td>1 أبريل 2025</td>
+                            <td><span class="badge bg-warning">معلقة</span></td>
+                            <td>
+                                <div class="btn-group">
+                                    <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-eye"></i></button>
+                                    <button class="btn btn-sm btn-outline-primary"><i class="fas fa-file-invoice"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer py-2">
+            <nav aria-label="صفحات العمولات">
+                <ul class="pagination pagination-sm justify-content-center mb-0">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">السابق</a>
+                    </li>
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">التالي</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+    
+    <!-- جدول سجل المدفوعات -->
+    <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center py-2">
+            <h5 class="mb-0">سجل المدفوعات</h5>
+            <div class="dropdown">
+                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="payments-period-dropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    آخر 6 أشهر
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="payments-period-dropdown">
+                    <li><a class="dropdown-item" href="#" data-period="month">آخر شهر</a></li>
+                    <li><a class="dropdown-item" href="#" data-period="3months">آخر 3 أشهر</a></li>
+                    <li><a class="dropdown-item active" href="#" data-period="6months">آخر 6 أشهر</a></li>
+                    <li><a class="dropdown-item" href="#" data-period="year">آخر سنة</a></li>
+                    <li><a class="dropdown-item" href="#" data-period="all">كل المدفوعات</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">رقم المرجع</th>
+                            <th scope="col">المبلغ</th>
+                            <th scope="col">طريقة الدفع</th>
+                            <th scope="col">تاريخ الدفع</th>
+                            <th scope="col">الوصف</th>
+                            <th scope="col">الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="payments-table-body">
+                        <!-- سيتم تعبئة هذا الجدول بالبيانات من ملف JavaScript -->
+                        <tr>
+                            <td>1</td>
+                            <td>PAY-25032501</td>
+                            <td>12,000 ريال</td>
+                            <td>تحويل بنكي</td>
+                            <td>15 فبراير 2025</td>
+                            <td>عمولة بيع فيلا الياسمين</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-eye"></i></button>
+                                    <button class="btn btn-sm btn-outline-success"><i class="fas fa-file-pdf"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>PAY-25022205</td>
+                            <td>8,500 ريال</td>
+                            <td>تحويل بنكي</td>
+                            <td>22 فبراير 2025</td>
+                            <td>عمولة بيع شقة الملقا</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-eye"></i></button>
+                                    <button class="btn btn-sm btn-outline-success"><i class="fas fa-file-pdf"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>PAY-25021003</td>
+                            <td>2,250 ريال</td>
+                            <td>تحويل بنكي</td>
+                            <td>10 فبراير 2025</td>
+                            <td>عمولة إيجار شقة الورود</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-eye"></i></button>
+                                    <button class="btn btn-sm btn-outline-success"><i class="fas fa-file-pdf"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer py-2">
+            <nav aria-label="صفحات المدفوعات">
+                <ul class="pagination pagination-sm justify-content-center mb-0">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">السابق</a>
+                    </li>
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">التالي</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+    
+    <!-- قسم الفواتير والمستندات -->
+    <div class="row mb-4">
+        <div class="col-lg-6 mb-3">
+            <div class="card h-100">
+                <div class="card-header d-flex justify-content-between align-items-center py-2">
+                    <h5 class="mb-0">الفواتير والمستندات</h5>
+                    <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#uploadDocumentModal">
+                        <i class="fas fa-plus me-1"></i> رفع مستند
+                    </button>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">اسم المستند</th>
+                                    <th scope="col">النوع</th>
+                                    <th scope="col">تاريخ الرفع</th>
+                                    <th scope="col">الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="documents-table-body">
+                                <!-- سيتم تعبئة هذا الجدول بالبيانات من ملف JavaScript -->
+                                <tr>
+                                    <td>1</td>
+                                    <td>فاتورة عمولة بيع فيلا الياسمين</td>
+                                    <td>فاتورة</td>
+                                    <td>15 فبراير 2025</td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-eye"></i></button>
+                                            <button class="btn btn-sm btn-outline-primary"><i class="fas fa-download"></i></button>
+                                            <button class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>عقد بيع شقة الملقا</td>
+                                    <td>عقد</td>
+                                    <td>22 فبراير 2025</td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-eye"></i></button>
+                                            <button class="btn btn-sm btn-outline-primary"><i class="fas fa-download"></i></button>
+                                            <button class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- قسم طلبات السحب -->
+        <div class="col-lg-6 mb-3">
+            <div class="card h-100">
+                <div class="card-header d-flex justify-content-between align-items-center py-2">
+                    <h5 class="mb-0">طلبات السحب</h5>
+                    <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#withdrawalRequestModal">
+                        <i class="fas fa-money-bill-wave me-1"></i> طلب سحب
+                    </button>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">المبلغ</th>
+                                    <th scope="col">تاريخ الطلب</th>
+                                    <th scope="col">طريقة الاستلام</th>
+                                    <th scope="col">الحالة</th>
+                                    <th scope="col">الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="withdrawals-table-body">
+                                <!-- سيتم تعبئة هذا الجدول بالبيانات من ملف JavaScript -->
+                                <tr>
+                                    <td>1</td>
+                                    <td>8,000 ريال</td>
+                                    <td>5 مارس 2025</td>
+                                    <td>تحويل بنكي</td>
+                                    <td><span class="badge bg-success">مكتمل</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-eye"></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>5,000 ريال</td>
+                                    <td>20 مارس 2025</td>
+                                    <td>تحويل بنكي</td>
+                                    <td><span class="badge bg-warning">قيد المعالجة</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-eye"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- نافذة طلب السحب -->
+<div class="modal fade" id="withdrawalRequestModal" tabindex="-1" aria-labelledby="withdrawalRequestModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header py-2">
+                <h5 class="modal-title" id="withdrawalRequestModalLabel">طلب سحب جديد</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-info">
+                    <strong>المبلغ المتاح للسحب:</strong> <span id="available-balance">16,750 ريال</span>
+                </div>
+                
+                <form id="withdrawal-form">
+                    <div class="mb-3">
+                        <label for="withdrawal-amount" class="form-label">مبلغ السحب (ريال)</label>
+                        <input type="number" class="form-control" id="withdrawal-amount" min="100" max="16750" required>
+                        <small class="text-muted">الحد الأدنى للسحب هو 100 ريال</small>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="withdrawal-method" class="form-label">طريقة السحب</label>
+                        <select class="form-select" id="withdrawal-method" required>
+                            <option value="" selected disabled>اختر طريقة السحب</option>
+                            <option value="bank">تحويل بنكي</option>
+                            <option value="wallet">محفظة إلكترونية</option>
+                            <option value="cash">استلام نقدي</option>
+                        </select>
+                    </div>
+                    
+                    <div id="bank-details" class="d-none">
+                        <div class="mb-3">
+                            <label for="bank-name" class="form-label">اسم البنك</label>
+                            <input type="text" class="form-control" id="bank-name">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="account-number" class="form-label">رقم الحساب (IBAN)</label>
+                            <input type="text" class="form-control" id="account-number" placeholder="SA...">
+                        </div>
+                    </div>
+                    
+                    <div id="wallet-details" class="d-none">
+                        <div class="mb-3">
+                            <label for="wallet-type" class="form-label">نوع المحفظة</label>
+                            <select class="form-select" id="wallet-type">
+                                <option value="stcpay">STC Pay</option>
+                                <option value="urpay">UrPay</option>
+                                <option value="other">أخرى</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="wallet-number" class="form-label">رقم المحفظة</label>
+                            <input type="text" class="form-control" id="wallet-number">
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="withdrawal-notes" class="form-label">ملاحظات (اختياري)</label>
+                        <textarea class="form-control" id="withdrawal-notes" rows="3"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer py-2">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                <button type="button" class="btn btn-success" id="submit-withdrawal">تأكيد طلب السحب</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- نافذة رفع مستند -->
+<div class="modal fade" id="uploadDocumentModal" tabindex="-1" aria-labelledby="uploadDocumentModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header py-2">
+                <h5 class="modal-title" id="uploadDocumentModalLabel">رفع مستند جديد</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+            </div>
+            <div class="modal-body">
+                <form id="document-form">
+                    <div class="mb-3">
+                        <label for="document-name" class="form-label">اسم المستند</label>
+                        <input type="text" class="form-control" id="document-name" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="document-type" class="form-label">نوع المستند</label>
+                        <select class="form-select" id="document-type" required>
+                            <option value="" selected disabled>اختر نوع المستند</option>
+                            <option value="invoice">فاتورة</option>
+                            <option value="receipt">إيصال استلام</option>
+                            <option value="contract">عقد</option>
+                            <option value="id">وثيقة هوية</option>
+                            <option value="other">أخرى</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="document-file" class="form-label">المستند</label>
+                        <input type="file" class="form-control" id="document-file" required>
+                        <small class="text-muted">الحد الأقصى لحجم الملف: 5 ميجابايت. الصيغ المدعومة: PDF, JPG, PNG, DOC, DOCX</small>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="document-notes" class="form-label">ملاحظات (اختياري)</label>
+                        <textarea class="form-control" id="document-notes" rows="3"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer py-2">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                <button type="button" class="btn btn-primary" id="submit-document">رفع المستند</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // كود JavaScript للرسوم البيانية والتفاعلات
+    document.addEventListener('DOMContentLoaded', function() {
+        // البيانات للرسوم البيانية
+        const months = ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'];
+        const quarters = ['الربع الأول', 'الربع الثاني', 'الربع الثالث', 'الربع الرابع'];
+        const years = ['2023', '2024', '2025'];
+        
+        // بيانات العمولات الشهرية
+        const monthlyReceivedCommissions = [5200, 4800, 6700, 7900, 8500, 10200, 11500, 9800, 8700, 7600, 6900, 12300];
+        const monthlyPendingCommissions = [1200, 1500, 2000, 2500, 1800, 1700, 1600, 1400, 1300, 1200, 1000, 2200];
+        const monthlyForecastCommissions = [0, 0, 0, 0, 0, 0, 0, 0, 0, 13500, 14200, 15000];
+        
+        // بيانات العمولات الربع سنوية
+        const quarterlyReceivedCommissions = [16700, 26600, 30000, 26800];
+        const quarterlyPendingCommissions = [4700, 6000, 4300, 4400];
+        const quarterlyForecastCommissions = [0, 0, 0, 32000];
+        
+        // بيانات العمولات السنوية
+        const yearlyReceivedCommissions = [72000, 95000, 100100];
+        const yearlyPendingCommissions = [15000, 19000, 18700];
+        const yearlyForecastCommissions = [0, 0, 125000];
+        
+        // إعداد الرسم البياني الرئيسي
+        const ctxCommissions = document.getElementById('commissionsChart').getContext('2d');
+        let currentChart = null;
+        
+        function createCommissionsChart(labels, received, pending, forecast, showForecast = false) {
+            // تدمير الرسم البياني السابق إذا كان موجودًا
+            if (currentChart) {
+                currentChart.destroy();
+            }
+            
+            // عرض/إخفاء مؤشر التوقعات
+            document.getElementById('forecasting-label').classList.toggle('d-none', !showForecast);
+            document.getElementById('forecast-legend').classList.toggle('d-none', !showForecast);
+            
+            // إنشاء مجموعات البيانات
+            const datasets = [
+                {
+                    label: 'العمولات المستلمة',
+                    data: received,
+                    backgroundColor: 'rgba(78, 115, 223, 0.5)',
+                    borderColor: 'rgba(78, 115, 223, 1)',
+                    borderWidth: 1
+                },
+                {
+                    label: 'العمولات المعلقة',
+                    data: pending,
+                    backgroundColor: 'rgba(246, 194, 62, 0.5)',
+                    borderColor: 'rgba(246, 194, 62, 1)',
+                    borderWidth: 1
+                }
+            ];
+            
+            // إضافة بيانات التوقعات إذا كان مطلوبًا
+            if (showForecast) {
+                datasets.push({
+                    label: 'توقعات العمولات',
+                    data: forecast,
+                    backgroundColor: 'rgba(28, 200, 138, 0.5)',
+                    borderColor: 'rgba(28, 200, 138, 1)',
+                    borderWidth: 1,
+                    borderDash: [5, 5]
+                });
+            }
+            
+            // إنشاء الرسم البياني
+            currentChart = new Chart(ctxCommissions, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: datasets
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    label += context.parsed.y.toLocaleString() + ' ريال';
+                                    return label;
+                                }
+                            }
+                        },
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return value.toLocaleString() + ' ريال';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // إنشاء الرسم البياني الأولي (شهري)
+        createCommissionsChart(months, monthlyReceivedCommissions, monthlyPendingCommissions, monthlyForecastCommissions, true);
+        
+        // تبديل نوع الرسم البياني عند النقر على الأزرار
+        document.querySelectorAll('.chart-filter-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                // إزالة الكلاس النشط من جميع الأزرار
+                document.querySelectorAll('.chart-filter-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                
+                // إضافة الكلاس النشط للزر المحدد
+                this.classList.add('active');
+                
+                // تحديث الرسم البياني بناءً على النوع المحدد
+                const chartType = this.dataset.chartType;
+                
+                if (chartType === 'monthly') {
+                    createCommissionsChart(months, monthlyReceivedCommissions, monthlyPendingCommissions, monthlyForecastCommissions, true);
+                } else if (chartType === 'quarterly') {
+                    createCommissionsChart(quarters, quarterlyReceivedCommissions, quarterlyPendingCommissions, quarterlyForecastCommissions, true);
+                } else if (chartType === 'yearly') {
+                    createCommissionsChart(years, yearlyReceivedCommissions, yearlyPendingCommissions, yearlyForecastCommissions, true);
+                }
+            });
+        });
+        
+        // رسم بياني دائري لتوزيع العمولات حسب نوع العقار
+        const ctxPropertyType = document.getElementById('propertyTypeChart').getContext('2d');
+        const propertyTypeChart = new Chart(ctxPropertyType, {
+            type: 'doughnut',
+            data: {
+                labels: ['سكني', 'تجاري', 'أراضي', 'أخرى'],
+                datasets: [{
+                    data: [55, 30, 10, 5],
+                    backgroundColor: [
+                        'rgba(78, 115, 223, 0.8)',
+                        'rgba(28, 200, 138, 0.8)',
+                        'rgba(246, 194, 62, 0.8)',
+                        'rgba(54, 185, 204, 0.8)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.label + ': ' + context.parsed + '%';
+                            }
+                        }
+                    },
+                    datalabels: {
+                        color: '#fff',
+                        font: {
+                            weight: 'bold',
+                            size: 12
+                        },
+                        formatter: function(value) {
+                            return value + '%';
+                        }
+                    }
+                }
+            }
+        });
+        
+        // رسم بياني للمقارنة السنوية الممتد
+        const ctxYearlyComparison = document.getElementById('yearlyComparisonChart').getContext('2d');
+        let yearlyComparisonChart = null;
+        
+        // تعريف بيانات السنوات الماضية والحالية
+        const historicalData = [4800, 5500, 6200, 7100, 7900, 8500, 9300, 8700, 8200, 7600, 8100, 10500];
+        const currentYearData = [5200, 4800, 6700, 7900, 8500, 10200, 11500, 9800, 8700, 7600, 6900, 12300];
+        
+        // دالة لتوليد بيانات مستقبلية مع نمو طبيعي ومتغير
+        function generateFutureData(baseData, years, growthRange = [5, 15], volatilityRange = [2, 8]) {
+            const futureData = [];
+            let lastYearData = [...baseData];
+            
+            for (let year = 0; year < years; year++) {
+                const yearData = [];
+                // نسبة النمو السنوي بين 5% و 15%
+                const annualGrowth = Math.random() * (growthRange[1] - growthRange[0]) + growthRange[0];
+                
+                for (let month = 0; month < lastYearData.length; month++) {
+                    // تقلبات شهرية عشوائية
+                    const volatility = (Math.random() * (volatilityRange[1] - volatilityRange[0]) + volatilityRange[0]) * (Math.random() > 0.5 ? 1 : -1);
+                    // القيمة المتوقعة = قيمة الشهر السابق × (1 + نسبة النمو السنوي + تقلبات عشوائية)
+                    const expectedValue = lastYearData[month] * (1 + (annualGrowth / 100) + (volatility / 100));
+                    yearData.push(Math.round(expectedValue));
+                }
+                
+                futureData.push(yearData);
+                lastYearData = yearData;
+            }
+            
+            return futureData;
+        }
+        
+        // دالة لإنشاء الرسم البياني مع البيانات المستقبلية
+        function createForecastChart(forecastYears) {
+            // توليد البيانات المستقبلية
+            const futureData = generateFutureData(currentYearData, forecastYears);
+            
+            // تعريف متغيرات الرسم البياني
+            const datasets = [
+                {
+                    label: '2024',
+                    data: historicalData,
+                    borderColor: 'rgba(78, 115, 223, 1)',
+                    backgroundColor: 'rgba(78, 115, 223, 0.1)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.4
+                },
+                {
+                    label: '2025',
+                    data: currentYearData,
+                    borderColor: 'rgba(28, 200, 138, 1)',
+                    backgroundColor: 'rgba(28, 200, 138, 0.1)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.4
+                }
+            ];
+            
+            // إضافة مجموعة البيانات المستقبلية
+            for (let i = 0; i < futureData.length; i++) {
+                const year = 2026 + i;
+                datasets.push({
+                    label: year.toString(),
+                    data: futureData[i],
+                    borderColor: 'rgba(246, 194, 62, 1)',
+                    borderWidth: 2,
+                    borderDash: [5, 5],
+                    backgroundColor: 'rgba(246, 194, 62, 0.05)',
+                    fill: true,
+                    tension: 0.4
+                });
+            }
+            
+            // إزالة الرسم البياني السابق
+            if (yearlyComparisonChart) {
+                yearlyComparisonChart.destroy();
+            }
+            
+            // إنشاء الرسم البياني الجديد
+            yearlyComparisonChart = new Chart(ctxYearlyComparison, {
+                type: 'line',
+                data: {
+                    labels: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'],
+                    datasets: datasets
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    label += context.parsed.y.toLocaleString() + ' ريال';
+                                    return label;
+                                }
+                            }
+                        },
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                boxWidth: 12,
+                                usePointStyle: true,
+                                pointStyle: 'circle'
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            ticks: {
+                                callback: function(value) {
+                                    return value.toLocaleString() + ' ريال';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // إنشاء الرسم البياني الأولي بتوقعات 3 سنوات
+        createForecastChart(3);
+        
+        // تفعيل أزرار تغيير عدد سنوات التوقع
+        document.querySelectorAll('button[data-forecast-years]').forEach(button => {
+            button.addEventListener('click', function() {
+                // إزالة الكلاس النشط من جميع الأزرار
+                document.querySelectorAll('button[data-forecast-years]').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                
+                // إضافة الكلاس النشط للزر المحدد
+                this.classList.add('active');
+                
+                // تحديث الرسم البياني بعدد السنوات المطلوب
+                const forecastYears = parseInt(this.dataset.forecastYears);
+                createForecastChart(forecastYears);
+            });
+        });
+        
+        // تفعيل إظهار حقول طرق السحب المختلفة
+        document.getElementById('withdrawal-method').addEventListener('change', function() {
+            const bankDetails = document.getElementById('bank-details');
+            const walletDetails = document.getElementById('wallet-details');
+            
+            // إخفاء جميع الحقول الإضافية أولاً
+            bankDetails.classList.add('d-none');
+            walletDetails.classList.add('d-none');
+            
+            // إظهار الحقول المناسبة حسب طريقة السحب المختارة
+            if (this.value === 'bank') {
+                bankDetails.classList.remove('d-none');
+            } else if (this.value === 'wallet') {
+                walletDetails.classList.remove('d-none');
+            }
+        });
+        
+        // بيانات توزيع العمولات حسب نوع العقار
+        const propertyData = {
+            // مستوى التفاصيل الأساسي
+            basic: {
+                labels: ['سكني', 'تجاري', 'أراضي', 'أخرى'],
+                data: [55, 30, 10, 5],
+                colors: [
+                    'rgba(78, 115, 223, 0.8)',
+                    'rgba(28, 200, 138, 0.8)',
+                    'rgba(246, 194, 62, 0.8)',
+                    'rgba(54, 185, 204, 0.8)'
+                ],
+                details: {
+                    'سكني': {
+                        avg: '7,250 ريال',
+                        count: '123',
+                        growth: '+12.5%',
+                        topArea: 'الرياض'
+                    },
+                    'تجاري': {
+                        avg: '15,600 ريال',
+                        count: '68',
+                        growth: '+8.3%',
+                        topArea: 'جدة'
+                    },
+                    'أراضي': {
+                        avg: '4,800 ريال',
+                        count: '42',
+                        growth: '+5.7%',
+                        topArea: 'الدمام'
+                    },
+                    'أخرى': {
+                        avg: '5,600 ريال',
+                        count: '18',
+                        growth: '+2.1%',
+                        topArea: 'مكة'
+                    }
+                }
+            },
+            // مستوى التفاصيل المفصل
+            detailed: {
+                labels: ['شقق', 'فلل', 'دوبلكس', 'محلات', 'مكاتب', 'مستودعات', 'أراضي سكنية', 'أراضي تجارية', 'مزارع', 'أخرى'],
+                data: [30, 15, 10, 12, 10, 8, 6, 4, 3, 2],
+                colors: [
+                    'rgba(78, 115, 223, 0.8)',
+                    'rgba(78, 115, 223, 0.6)',
+                    'rgba(78, 115, 223, 0.4)',
+                    'rgba(28, 200, 138, 0.8)',
+                    'rgba(28, 200, 138, 0.6)',
+                    'rgba(28, 200, 138, 0.4)',
+                    'rgba(246, 194, 62, 0.8)',
+                    'rgba(246, 194, 62, 0.6)',
+                    'rgba(54, 185, 204, 0.8)',
+                    'rgba(54, 185, 204, 0.6)'
+                ],
+                details: {
+                    'شقق': {
+                        avg: '6,300 ريال',
+                        count: '72',
+                        growth: '+14.2%',
+                        topArea: 'الرياض'
+                    },
+                    'فلل': {
+                        avg: '9,800 ريال',
+                        count: '34',
+                        growth: '+10.1%',
+                        topArea: 'الرياض'
+                    },
+                    'دوبلكس': {
+                        avg: '7,200 ريال',
+                        count: '17',
+                        growth: '+9.5%',
+                        topArea: 'جدة'
+                    },
+                    'محلات': {
+                        avg: '12,400 ريال',
+                        count: '25',
+                        growth: '+7.8%',
+                        topArea: 'جدة'
+                    },
+                    'مكاتب': {
+                        avg: '18,500 ريال',
+                        count: '23',
+                        growth: '+9.2%',
+                        topArea: 'الرياض'
+                    },
+                    'مستودعات': {
+                        avg: '15,900 ريال',
+                        count: '20',
+                        growth: '+6.3%',
+                        topArea: 'الدمام'
+                    },
+                    'أراضي سكنية': {
+                        avg: '5,100 ريال',
+                        count: '26',
+                        growth: '+5.2%',
+                        topArea: 'الدمام'
+                    },
+                    'أراضي تجارية': {
+                        avg: '9,300 ريال',
+                        count: '16',
+                        growth: '+7.1%',
+                        topArea: 'جدة'
+                    },
+                    'مزارع': {
+                        avg: '4,800 ريال',
+                        count: '14',
+                        growth: '+1.8%',
+                        topArea: 'القصيم'
+                    },
+                    'أخرى': {
+                        avg: '5,600 ريال',
+                        count: '18',
+                        growth: '+2.1%',
+                        topArea: 'مكة'
+                    }
+                }
+            },
+            // مستوى التفاصيل الشامل
+            comprehensive: {
+                labels: [
+                    'شقق - تمليك', 'شقق - إيجار', 'فلل - تمليك', 'فلل - إيجار', 'دوبلكس - تمليك', 'دوبلكس - إيجار',
+                    'محلات - بيع', 'محلات - إيجار', 'مكاتب - بيع', 'مكاتب - إيجار', 'مستودعات', 
+                    'أراضي سكنية', 'أراضي تجارية', 'أراضي صناعية', 'مزارع', 'استراحات', 'أخرى'
+                ],
+                data: [20, 10, 10, 5, 6, 4, 5, 7, 4, 6, 8, 4, 2, 2, 2, 3, 2],
+                colors: [
+                    'rgba(78, 115, 223, 0.9)', 'rgba(78, 115, 223, 0.6)',
+                    'rgba(78, 115, 223, 0.8)', 'rgba(78, 115, 223, 0.5)',
+                    'rgba(78, 115, 223, 0.7)', 'rgba(78, 115, 223, 0.4)',
+                    'rgba(28, 200, 138, 0.9)', 'rgba(28, 200, 138, 0.6)',
+                    'rgba(28, 200, 138, 0.8)', 'rgba(28, 200, 138, 0.5)',
+                    'rgba(28, 200, 138, 0.7)',
+                    'rgba(246, 194, 62, 0.9)', 'rgba(246, 194, 62, 0.7)', 'rgba(246, 194, 62, 0.5)',
+                    'rgba(54, 185, 204, 0.9)', 'rgba(54, 185, 204, 0.7)', 'rgba(54, 185, 204, 0.5)'
+                ],
+                details: {
+                    'شقق - تمليك': {
+                        avg: '7,100 ريال',
+                        count: '48',
+                        growth: '+15.3%',
+                        topArea: 'الرياض'
+                    },
+                    'شقق - إيجار': {
+                        avg: '4,800 ريال',
+                        count: '24',
+                        growth: '+11.5%',
+                        topArea: 'جدة'
+                    },
+                    // ... يمكن إضافة المزيد من التفاصيل للأنواع الأخرى
+                }
+            }
+        };
+        
+        // متغيرات حالة العرض
+        let currentChartType = 'doughnut';
+        let currentDetailLevel = 'basic';
+        let currentChart = null;
+        
+        // دالة لتحديث رسم توزيع العمولات
+        function updatePropertyChart() {
+            const container = document.getElementById('property-chart-container');
+            const tableContainer = document.getElementById('property-table-container');
+            const ctx = document.getElementById('propertyTypeChart').getContext('2d');
+            const data = propertyData[currentDetailLevel];
+            
+            // إظهار/إخفاء الرسم البياني أو الجدول
+            if (currentChartType === 'table') {
+                container.classList.add('d-none');
+                tableContainer.classList.remove('d-none');
+                updatePropertyTable();
+                return;
+            } else {
+                container.classList.remove('d-none');
+                tableContainer.classList.add('d-none');
+            }
+            
+            // تدمير الرسم البياني السابق إذا كان موجودًا
+            if (currentChart) {
+                currentChart.destroy();
+            }
+            
+            // إنشاء تكوين الرسم البياني حسب النوع
+            const chartConfig = {
+                type: currentChartType,
+                data: {
+                    labels: data.labels,
+                    datasets: [{
+                        data: data.data,
+                        backgroundColor: data.colors,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.parsed || context.parsed.y || 0;
+                                    return `${label}: ${value}%`;
+                                }
+                            }
+                        },
+                        legend: {
+                            position: currentChartType === 'doughnut' ? 'right' : 'top',
+                            labels: {
+                                boxWidth: 12,
+                                font: {
+                                    size: 10
+                                }
+                            },
+                            display: data.labels.length <= 10 // إخفاء الأسطورة إذا كان عدد العناصر كبيرًا جدًا
+                        }
+                    }
+                }
+            };
+            
+            // إضافة خيارات إضافية حسب نوع الرسم البياني
+            if (currentChartType === 'bar') {
+                chartConfig.options.scales = {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return value + '%';
+                            }
+                        }
+                    }
+                };
+                chartConfig.options.indexAxis = data.labels.length > 8 ? 'y' : 'x'; // تغيير اتجاه الرسم البياني إذا كان عدد العناصر كبيرًا
+            }
+            
+            // إنشاء الرسم البياني
+            currentChart = new Chart(ctx, chartConfig);
+            
+            // إضافة التفاعلية للنقر على العناصر لعرض التفاصيل
+            document.getElementById('propertyTypeChart').onclick = function(evt) {
+                const points = currentChart.getElementsAtEventForMode(evt, 'nearest', { intersect: true }, false);
+                if (points.length) {
+                    const firstPoint = points[0];
+                    const label = currentChart.data.labels[firstPoint.index];
+                    showPropertyTypeDetails(label);
+                }
+            };
+        }
+        
+        // دالة لتحديث جدول توزيع العمولات
+        function updatePropertyTable() {
+            const data = propertyData[currentDetailLevel];
+            const tableBody = document.getElementById('property-table-body');
+            let html = '';
+            
+            // إنشاء صفوف الجدول لكل نوع عقار
+            data.labels.forEach((label, index) => {
+                const details = data.details[label] || {};
+                const growthClass = details.growth && details.growth.startsWith('+') ? 'positive' : 'negative';
+                
+                html += `
+                <tr class="property-row" data-property="${label}">
+                    <td>${label}</td>
+                    <td>${data.data[index]}%</td>
+                    <td>${details.count ? details.count + ' صفقة' : '-'}</td>
+                    <td class="${growthClass}">${details.growth || '-'}</td>
+                </tr>`;
+            });
+            
+            tableBody.innerHTML = html;
+            
+            // إضافة المستمع لكل صف لعرض التفاصيل
+            document.querySelectorAll('.property-row').forEach(row => {
+                row.addEventListener('click', function() {
+                    const propertyType = this.dataset.property;
+                    showPropertyTypeDetails(propertyType);
+                });
+            });
+        }
+        
+        // دالة لعرض تفاصيل نوع عقار معين
+        function showPropertyTypeDetails(propertyType) {
+            const detailsContainer = document.getElementById('property-details-container');
+            const details = propertyData[currentDetailLevel].details[propertyType];
+            
+            if (!details) {
+                detailsContainer.classList.add('d-none');
+                return;
+            }
+            
+            // تعيين التفاصيل في العناصر المناسبة
+            document.getElementById('selected-property-type').textContent = propertyType;
+            document.getElementById('avg-commission').textContent = details.avg || '-';
+            document.getElementById('deal-count').textContent = details.count || '-';
+            
+            const growthElement = document.getElementById('annual-growth');
+            growthElement.textContent = details.growth || '-';
+            growthElement.className = 'detail-value'; // إعادة تعيين الفئة
+            if (details.growth && details.growth.startsWith('+')) {
+                growthElement.classList.add('positive');
+            } else if (details.growth && details.growth.startsWith('-')) {
+                growthElement.classList.add('negative');
+            }
+            
+            document.getElementById('top-area').textContent = details.topArea || '-';
+            
+            // عرض قسم التفاصيل
+            detailsContainer.classList.remove('d-none');
+        }
+        
+        // تبديل نوع الرسم البياني
+        document.querySelectorAll('.chart-type-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                // إزالة الكلاس النشط من جميع الأزرار
+                document.querySelectorAll('.chart-type-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                
+                // إضافة الكلاس النشط للزر المحدد
+                this.classList.add('active');
+                
+                // تحديث نوع الرسم البياني
+                currentChartType = this.dataset.chartType;
+                updatePropertyChart();
+                
+                // إخفاء تفاصيل العقار عند تغيير نوع العرض
+                document.getElementById('property-details-container').classList.add('d-none');
+            });
+        });
+        
+        // تبديل مستوى التفاصيل
+        document.querySelectorAll('[data-detail-level]').forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // إزالة الكلاس النشط من جميع العناصر
+                document.querySelectorAll('[data-detail-level]').forEach(el => {
+                    el.classList.remove('active');
+                });
+                
+                // إضافة الكلاس النشط للعنصر المحدد
+                this.classList.add('active');
+                
+                // تحديث مستوى التفاصيل
+                currentDetailLevel = this.dataset.detailLevel;
+                updatePropertyChart();
+                
+                // إخفاء تفاصيل العقار عند تغيير مستوى التفاصيل
+                document.getElementById('property-details-container').classList.add('d-none');
+            });
+        });
+        
+        // رسم بياني دائري لتوزيع العمولات حسب نوع العقار (الإعداد الأولي)
+        updatePropertyChart();
+    });
+</script>
+{% endblock %}

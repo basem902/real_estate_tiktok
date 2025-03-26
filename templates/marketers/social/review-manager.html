@@ -1,0 +1,272 @@
+{% extends 'marketers/includes/base.html' %}
+
+{% block title %}مدير التقييمات - لوحة تحكم المسوقين العقاريين{% endblock %}
+
+{% block meta_description %}مدير التقييمات - إدارة تقييمات العملاء والرد عليها من مكان واحد{% endblock %}
+
+{% block additional_css %}
+<style>
+    /* تحسينات تصميم الصفحة وتقليل المساحات البيضاء */
+    body {
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+    }
+    
+    .main-layout {
+        display: flex;
+        width: 100%;
+        min-height: 100vh;
+    }
+    
+    #page-content {
+        padding: 0;
+    }
+    
+    .container-fluid {
+        padding: 1.5rem;
+    }
+    
+    /* تحسين تصميم البطاقات */
+    .card {
+        border-radius: var(--card-border-radius);
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+        height: 100%;
+        border: none;
+        margin-bottom: 1rem;
+    }
+    
+    .card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .card-body {
+        padding: 1rem;
+    }
+    
+    /* تعديل الصفوف لتكون متقاربة أكثر */
+    .row {
+        margin-right: -8px;
+        margin-left: -8px;
+    }
+    
+    .row > [class^="col-"] {
+        padding-right: 8px;
+        padding-left: 8px;
+    }
+    
+    /* تصغير المساحات بين الأقسام */
+    .section-spacing {
+        margin-bottom: 1rem;
+    }
+    
+    /* تنسيق لعرض التقييمات */
+    .review-card {
+        border-right: 3px solid;
+        border-right-color: var(--primary-color);
+        transition: all 0.2s ease;
+    }
+    
+    .rating-stars {
+        color: #ffc107;
+    }
+    
+    .review-date {
+        color: #6c757d;
+        font-size: 0.85rem;
+    }
+    
+    .badge-platform {
+        font-size: 0.75rem;
+        padding: 0.25rem 0.5rem;
+        border-radius: 50rem;
+    }
+    
+    .google {
+        background-color: #4285F4;
+        color: white;
+    }
+    
+    .facebook {
+        background-color: #3b5998;
+        color: white;
+    }
+    
+    .yelp {
+        background-color: #d32323;
+        color: white;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- عنوان الصفحة وأزرار الإجراءات -->
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center mb-4">
+        <div>
+            <h2 class="page-title mb-0">إدارة التقييمات</h2>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0 mt-1">
+                    <li class="breadcrumb-item"><a href="../dashboard.html">الرئيسية</a></li>
+                    <li class="breadcrumb-item"><a href="social-hub.html">المنصات الاجتماعية</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">إدارة التقييمات</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="btn-toolbar mb-2 mb-md-0">
+            <button type="button" class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#requestReviewsModal">
+                <i class="fas fa-envelope me-1"></i>
+                طلب تقييمات
+            </button>
+            <div class="btn-group me-2">
+                <button type="button" class="btn btn-outline-secondary" onclick="exportAllReviews()">
+                    <i class="fas fa-download me-1"></i>
+                    تصدير
+                </button>
+                <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#settingsModal">
+                    <i class="fas fa-cog me-1"></i>
+                    إعدادات
+                </button>
+            </div>
+            <div class="dropdown">
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dateRangeDropdown" data-bs-toggle="dropdown">
+                    آخر 30 يوم
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dateRangeDropdown">
+                    <li><a class="dropdown-item" href="#" data-range="7">آخر 7 أيام</a></li>
+                    <li><a class="dropdown-item active" href="#" data-range="30">آخر 30 يوم</a></li>
+                    <li><a class="dropdown-item" href="#" data-range="90">آخر 3 أشهر</a></li>
+                    <li><a class="dropdown-item" href="#" data-range="365">آخر سنة</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <!-- إضافة قائمة التنقل الفرعية للأقسام الجديدة -->
+    <div class="sub-nav mb-4">
+        <ul class="nav nav-pills">
+            <li class="nav-item">
+                <a class="nav-link active" href="review-manager.html">
+                    <i class="fas fa-star me-1"></i>
+                    إدارة التقييمات
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="followers-manager.html">
+                    <i class="fas fa-users me-1"></i>
+                    إدارة المتابعين
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="likes-manager.html">
+                    <i class="fas fa-thumbs-up me-1"></i>
+                    إدارة الإعجابات
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="comments-manager.html">
+                    <i class="fas fa-comment me-1"></i>
+                    إدارة التعليقات
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="chats-manager.html">
+                    <i class="fas fa-comments me-1"></i>
+                    المحادثات الداخلية
+                </a>
+            </li>
+        </ul>
+    </div>
+    
+    <!-- حاوية الإشعارات -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3"></div>
+    
+    <!-- قسم الإحصائيات الرئيسية -->
+    <div id="statisticsSection">
+        <!-- تضمين ملف الإحصائيات -->
+    </div>
+    
+    <!-- قسم قائمة التقييمات -->
+    <div id="reviewsSection">
+        <!-- تضمين ملف قائمة التقييمات -->
+    </div>
+
+    <!-- النوافذ المنبثقة -->
+    <div id="modalsSection">
+        <!-- تضمين ملفات النوافذ المنبثقة -->
+    </div>
+</div>
+{% endblock %}
+
+{% block additional_scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="js/review-manager-data.js"></script>
+<script src="js/review-manager-ui.js"></script>
+
+<script>
+    // تضمين محتوى الأقسام عند تحميل الصفحة
+    document.addEventListener('DOMContentLoaded', function() {
+        fetch('review-manager-stats.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('statisticsSection').innerHTML = data;
+                
+                // تحميل قسم التقييمات بعد تحميل الإحصائيات
+                return fetch('review-manager-list.html');
+            })
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('reviewsSection').innerHTML = data;
+                
+                // تحميل النوافذ المنبثقة
+                return Promise.all([
+                    fetch('review-manager-modals-1.html'),
+                    fetch('review-manager-modals-2.html')
+                ]);
+            })
+            .then(responses => Promise.all(responses.map(response => response.text())))
+            .then(data => {
+                document.getElementById('modalsSection').innerHTML = data.join('');
+                
+                // إعادة تهيئة الرسوم البيانية والمكونات بعد تحميل كل المحتوى
+                if (typeof initializeCharts === 'function') {
+                    initializeCharts();
+                }
+                
+                if (typeof loadReviewsTable === 'function') {
+                    loadReviewsTable();
+                }
+                
+                if (typeof loadTopReviews === 'function') {
+                    loadTopReviews();
+                }
+                
+                if (typeof setupEventListeners === 'function') {
+                    setupEventListeners();
+                }
+            })
+            .catch(error => {
+                console.error('Error loading content:', error);
+            });
+    });
+    
+    // دالة لتصدير كل التقييمات
+    function exportAllReviews() {
+        showNotification('جاري تصدير التقييمات...', 'info');
+        setTimeout(() => {
+            showNotification('تم تصدير التقييمات بنجاح!', 'success');
+        }, 1500);
+    }
+    
+    // دالة لإدخال قوالب الرد
+    function insertTemplate(templateId) {
+        const template = responseTemplates.find(t => t.id === templateId);
+        if (template) {
+            document.getElementById('responseText').value = template.content;
+        }
+    }
+</script>
+{% endblock %}

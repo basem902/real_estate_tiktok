@@ -1,0 +1,623 @@
+{% extends 'marketers/includes/base.html' %}
+
+{% block title %}إدارة التعليقات - لوحة تحكم المسوقين العقاريين{% endblock %}
+
+{% block meta_description %}إدارة التعليقات - تحليل ومتابعة التعليقات على المنشورات في منصات التواصل الاجتماعي{% endblock %}
+
+{% block additional_css %}
+<style>
+    /* تحسينات تصميم الصفحة وتقليل المساحات البيضاء */
+    body {
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+    }
+    
+    .main-layout {
+        display: flex;
+        width: 100%;
+        min-height: 100vh;
+    }
+    
+    #page-content {
+        padding: 0;
+    }
+    
+    .container-fluid {
+        padding: 1.5rem;
+    }
+    
+    /* تصغير المساحات بين الأقسام */
+    .section-spacing {
+        margin-bottom: 1rem;
+    }
+    
+    /* تحسين تصميم البطاقات */
+    .card {
+        border-radius: var(--card-border-radius);
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+        height: 100%;
+        border: none;
+        margin-bottom: 1rem;
+    }
+    
+    .card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .card-body {
+        padding: 1rem;
+    }
+    
+    /* تنسيق عناصر التعليقات */
+    .comment-item {
+        position: relative;
+        transition: all 0.2s ease;
+        border-right: 3px solid transparent;
+    }
+    
+    .comment-item:hover {
+        border-right-color: var(--primary-color);
+        background-color: rgba(0, 123, 255, 0.05);
+    }
+    
+    .user-avatar {
+        width: 48px;
+        height: 48px;
+        object-fit: cover;
+        border-radius: 50%;
+    }
+    
+    .sentiment-badge {
+        padding: 0.25rem 0.5rem;
+        border-radius: 0.25rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+    
+    .sentiment-positive {
+        background-color: rgba(40, 167, 69, 0.1);
+        color: #28a745;
+    }
+    
+    .sentiment-neutral {
+        background-color: rgba(108, 117, 125, 0.1);
+        color: #6c757d;
+    }
+    
+    .sentiment-negative {
+        background-color: rgba(220, 53, 69, 0.1);
+        color: #dc3545;
+    }
+    
+    .platform-icon {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 10px;
+        margin-left: 5px;
+    }
+    
+    .facebook {
+        background-color: #3b5998;
+    }
+    
+    .instagram {
+        background: linear-gradient(45deg, #f09433, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888);
+    }
+    
+    .twitter {
+        background-color: #1da1f2;
+    }
+    
+    .priority-high {
+        color: #dc3545;
+    }
+    
+    .priority-medium {
+        color: #ffc107;
+    }
+    
+    .priority-low {
+        color: #28a745;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- عنوان الصفحة وأزرار الإجراءات -->
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center mb-4">
+        <div>
+            <h2 class="page-title mb-0">إدارة التعليقات</h2>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0 mt-1">
+                    <li class="breadcrumb-item"><a href="../dashboard.html">الرئيسية</a></li>
+                    <li class="breadcrumb-item"><a href="social-hub.html">المنصات الاجتماعية</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">إدارة التعليقات</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="btn-toolbar mb-2 mb-md-0">
+            <button type="button" class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#exportCommentsModal">
+                <i class="fas fa-download me-1"></i>
+                تصدير البيانات
+            </button>
+            <div class="dropdown">
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dateRangeDropdown" data-bs-toggle="dropdown">
+                    آخر 30 يوم
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dateRangeDropdown">
+                    <li><a class="dropdown-item" href="#" data-range="7">آخر 7 أيام</a></li>
+                    <li><a class="dropdown-item active" href="#" data-range="30">آخر 30 يوم</a></li>
+                    <li><a class="dropdown-item" href="#" data-range="90">آخر 3 أشهر</a></li>
+                    <li><a class="dropdown-item" href="#" data-range="365">آخر سنة</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <!-- إضافة قائمة التنقل الفرعية للأقسام -->
+    <div class="sub-nav mb-4">
+        <ul class="nav nav-pills">
+            <li class="nav-item">
+                <a class="nav-link" href="review-manager.html">
+                    <i class="fas fa-star me-1"></i>
+                    إدارة التقييمات
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="followers-manager.html">
+                    <i class="fas fa-users me-1"></i>
+                    إدارة المتابعين
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="likes-manager.html">
+                    <i class="fas fa-thumbs-up me-1"></i>
+                    إدارة الإعجابات
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="comments-manager.html">
+                    <i class="fas fa-comment me-1"></i>
+                    إدارة التعليقات
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="chats-manager.html">
+                    <i class="fas fa-comments me-1"></i>
+                    المحادثات الداخلية
+                </a>
+            </li>
+        </ul>
+    </div>
+    
+    <!-- قسم إحصائيات التعليقات -->
+    <div class="row mb-4">
+        <div class="col-md-3 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-center">
+                    <i class="fas fa-comment fa-2x text-primary mb-3"></i>
+                    <h3 class="counter" id="totalComments">8,642</h3>
+                    <p class="card-text">إجمالي التعليقات</p>
+                    <div class="badge bg-success">
+                        <i class="fas fa-arrow-up"></i> 7.2%
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-center">
+                    <i class="fas fa-chart-line fa-2x text-info mb-3"></i>
+                    <h3 class="counter" id="averageComments">145</h3>
+                    <p class="card-text">متوسط التعليقات لكل منشور</p>
+                    <div class="badge bg-danger">
+                        <i class="fas fa-arrow-down"></i> 2.5%
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-center">
+                    <i class="fas fa-reply fa-2x text-success mb-3"></i>
+                    <h3 class="counter" id="responseRate">92%</h3>
+                    <p class="card-text">نسبة الرد على التعليقات</p>
+                    <div class="badge bg-success">
+                        <i class="fas fa-arrow-up"></i> 5.8%
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-center">
+                    <i class="fas fa-clock fa-2x text-warning mb-3"></i>
+                    <h3 class="counter" id="avgResponseTime">2.5 س</h3>
+                    <p class="card-text">متوسط وقت الرد</p>
+                    <div class="badge bg-success">
+                        <i class="fas fa-arrow-down"></i> 10.2%
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- رسوم بيانية للتعليقات -->
+    <div class="row mb-4">
+        <div class="col-md-8 mb-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0">التعليقات عبر الزمن</h5>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-sm btn-outline-secondary active">يومي</button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary">أسبوعي</button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary">شهري</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="chart-container" style="height: 300px;">
+                        <canvas id="commentsTimeChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-white">
+                    <h5 class="card-title mb-0">تحليل مشاعر التعليقات</h5>
+                </div>
+                <div class="card-body">
+                    <div class="chart-container" style="height: 300px;">
+                        <canvas id="sentimentAnalysisChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- فلترة التعليقات -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-white">
+            <h5 class="card-title mb-0">تصفية التعليقات</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">
+                            <i class="fas fa-search"></i>
+                        </span>
+                        <input type="text" class="form-control" placeholder="البحث في محتوى التعليقات...">
+                        <button class="btn btn-primary" type="button">بحث</button>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="d-flex">
+                        <select class="form-select me-2">
+                            <option selected>المنصة</option>
+                            <option>فيسبوك</option>
+                            <option>انستجرام</option>
+                            <option>تويتر</option>
+                            <option>يوتيوب</option>
+                        </select>
+                        <select class="form-select">
+                            <option selected>المشاعر</option>
+                            <option>إيجابي</option>
+                            <option>محايد</option>
+                            <option>سلبي</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- قائمة التعليقات -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-white d-flex justify-content-between align-items-center">
+            <h5 class="card-title mb-0">أحدث التعليقات</h5>
+            <div class="dropdown">
+                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                    حسب الأحدث
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item active" href="#">حسب الأحدث</a></li>
+                    <li><a class="dropdown-item" href="#">حسب الأقدم</a></li>
+                    <li><a class="dropdown-item" href="#">الأكثر تفاعلاً</a></li>
+                    <li><a class="dropdown-item" href="#">الأولوية</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="card-body p-0">
+            <ul class="list-group list-group-flush">
+                <!-- تعليق 1 -->
+                <li class="list-group-item comment-item py-3">
+                    <div class="d-flex">
+                        <img src="https://via.placeholder.com/48" alt="صورة المستخدم" class="user-avatar me-3">
+                        <div class="flex-grow-1">
+                            <div class="d-flex justify-content-between align-items-start mb-1">
+                                <div>
+                                    <span class="fw-bold">أحمد محمد</span>
+                                    <span class="platform-icon facebook">
+                                        <i class="fab fa-facebook-f"></i>
+                                    </span>
+                                    <span class="text-muted small me-2">منذ 3 ساعات</span>
+                                    <span class="sentiment-badge sentiment-positive">إيجابي</span>
+                                </div>
+                                <div>
+                                    <span class="me-2 priority-high" data-bs-toggle="tooltip" title="أولوية عالية">
+                                        <i class="fas fa-exclamation-circle"></i>
+                                    </span>
+                                    <div class="dropdown d-inline">
+                                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle py-0 px-1" type="button" data-bs-toggle="dropdown">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="#"><i class="fas fa-reply me-2"></i> الرد</a></li>
+                                            <li><a class="dropdown-item" href="#"><i class="fas fa-eye me-2"></i> عرض المنشور</a></li>
+                                            <li><a class="dropdown-item" href="#"><i class="fas fa-flag me-2"></i> تغيير الأولوية</a></li>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-trash-alt me-2"></i> حذف</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="mb-2">الفيلا رائعة جداً! هل يمكنني معرفة المزيد من التفاصيل حول مساحتها والسعر المطلوب؟ أبحث عن فيلا مشابهة في نفس المنطقة.</p>
+                            <div class="d-flex align-items-center">
+                                <small class="text-primary me-3">
+                                    <i class="fas fa-reply me-1"></i> الرد
+                                </small>
+                                <span class="badge bg-light text-dark me-2">
+                                    <i class="fas fa-check-circle text-success me-1"></i> تمت الإجابة
+                                </span>
+                                <small class="text-muted">
+                                    <i class="fas fa-clock me-1"></i> وقت الرد: 25 دقيقة
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                
+                <!-- تعليق 2 -->
+                <li class="list-group-item comment-item py-3">
+                    <div class="d-flex">
+                        <img src="https://via.placeholder.com/48" alt="صورة المستخدم" class="user-avatar me-3">
+                        <div class="flex-grow-1">
+                            <div class="d-flex justify-content-between align-items-start mb-1">
+                                <div>
+                                    <span class="fw-bold">سارة عبدالله</span>
+                                    <span class="platform-icon instagram">
+                                        <i class="fab fa-instagram"></i>
+                                    </span>
+                                    <span class="text-muted small me-2">منذ 8 ساعات</span>
+                                    <span class="sentiment-badge sentiment-neutral">محايد</span>
+                                </div>
+                                <div>
+                                    <span class="me-2 priority-medium" data-bs-toggle="tooltip" title="أولوية متوسطة">
+                                        <i class="fas fa-exclamation-circle"></i>
+                                    </span>
+                                    <div class="dropdown d-inline">
+                                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle py-0 px-1" type="button" data-bs-toggle="dropdown">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="#"><i class="fas fa-reply me-2"></i> الرد</a></li>
+                                            <li><a class="dropdown-item" href="#"><i class="fas fa-eye me-2"></i> عرض المنشور</a></li>
+                                            <li><a class="dropdown-item" href="#"><i class="fas fa-flag me-2"></i> تغيير الأولوية</a></li>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-trash-alt me-2"></i> حذف</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="mb-2">هل يتوفر عقارات مشابهة لكن بمساحة أكبر في نفس المنطقة؟</p>
+                            <div class="d-flex align-items-center">
+                                <small class="text-primary me-3">
+                                    <i class="fas fa-reply me-1"></i> الرد
+                                </small>
+                                <span class="badge bg-warning text-dark me-2">
+                                    <i class="fas fa-hourglass-half me-1"></i> بانتظار الرد
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                
+                <!-- تعليق 3 -->
+                <li class="list-group-item comment-item py-3">
+                    <div class="d-flex">
+                        <img src="https://via.placeholder.com/48" alt="صورة المستخدم" class="user-avatar me-3">
+                        <div class="flex-grow-1">
+                            <div class="d-flex justify-content-between align-items-start mb-1">
+                                <div>
+                                    <span class="fw-bold">محمد علي</span>
+                                    <span class="platform-icon twitter">
+                                        <i class="fab fa-twitter"></i>
+                                    </span>
+                                    <span class="text-muted small me-2">منذ يوم واحد</span>
+                                    <span class="sentiment-badge sentiment-negative">سلبي</span>
+                                </div>
+                                <div>
+                                    <span class="me-2 priority-high" data-bs-toggle="tooltip" title="أولوية عالية">
+                                        <i class="fas fa-exclamation-circle"></i>
+                                    </span>
+                                    <div class="dropdown d-inline">
+                                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle py-0 px-1" type="button" data-bs-toggle="dropdown">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="#"><i class="fas fa-reply me-2"></i> الرد</a></li>
+                                            <li><a class="dropdown-item" href="#"><i class="fas fa-eye me-2"></i> عرض المنشور</a></li>
+                                            <li><a class="dropdown-item" href="#"><i class="fas fa-flag me-2"></i> تغيير الأولوية</a></li>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-trash-alt me-2"></i> حذف</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="mb-2">السعر مرتفع جداً مقارنة بالعقارات المماثلة في المنطقة. هل هناك مجال للتفاوض على السعر؟</p>
+                            <div class="d-flex align-items-center">
+                                <small class="text-primary me-3">
+                                    <i class="fas fa-reply me-1"></i> الرد
+                                </small>
+                                <span class="badge bg-light text-dark me-2">
+                                    <i class="fas fa-check-circle text-success me-1"></i> تمت الإجابة
+                                </span>
+                                <small class="text-muted">
+                                    <i class="fas fa-clock me-1"></i> وقت الرد: 1.5 ساعة
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="card-footer bg-white d-flex justify-content-between align-items-center">
+            <button class="btn btn-sm btn-outline-secondary">
+                <i class="fas fa-download me-1"></i> تصدير القائمة
+            </button>
+            <nav aria-label="صفحات التعليقات">
+                <ul class="pagination pagination-sm mb-0">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#">السابق</a>
+                    </li>
+                    <li class="page-item active">
+                        <a class="page-link" href="#">1</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">2</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">3</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">التالي</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block additional_scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // رسم بياني للتعليقات عبر الزمن
+        const commentsTimeCtx = document.getElementById('commentsTimeChart').getContext('2d');
+        const commentsTimeChart = new Chart(commentsTimeCtx, {
+            type: 'line',
+            data: {
+                labels: ['1 مارس', '5 مارس', '10 مارس', '15 مارس', '20 مارس', '25 مارس', '30 مارس'],
+                datasets: [
+                    {
+                        label: 'التعليقات',
+                        data: [245, 280, 210, 350, 420, 380, 325],
+                        borderColor: '#007bff',
+                        backgroundColor: 'rgba(0, 123, 255, 0.1)',
+                        fill: true,
+                        tension: 0.3
+                    },
+                    {
+                        label: 'نسبة الردود',
+                        data: [85, 88, 82, 90, 95, 93, 91],
+                        borderColor: '#28a745',
+                        backgroundColor: 'transparent',
+                        borderDash: [5, 5],
+                        tension: 0.3,
+                        yAxisID: 'y1'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'عدد التعليقات'
+                        }
+                    },
+                    y1: {
+                        beginAtZero: true,
+                        position: 'right',
+                        max: 100,
+                        title: {
+                            display: true,
+                            text: 'نسبة الردود (%)'
+                        },
+                        grid: {
+                            drawOnChartArea: false
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'top'
+                    }
+                }
+            }
+        });
+        
+        // رسم بياني لتحليل مشاعر التعليقات
+        const sentimentCtx = document.getElementById('sentimentAnalysisChart').getContext('2d');
+        const sentimentChart = new Chart(sentimentCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['إيجابي', 'محايد', 'سلبي'],
+                datasets: [{
+                    data: [4825, 2970, 847],
+                    backgroundColor: [
+                        '#28a745',  // إيجابي
+                        '#6c757d',  // محايد
+                        '#dc3545'   // سلبي
+                    ],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        labels: {
+                            boxWidth: 15,
+                            padding: 15,
+                            font: {
+                                size: 12
+                            }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const label = context.label || '';
+                                const value = context.formattedValue || '';
+                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                const percentage = Math.round((context.raw / total) * 100);
+                                return `${label}: ${value} (${percentage}%)`;
+                            }
+                        }
+                    }
+                },
+                cutout: '60%'
+            }
+        });
+    });
+</script>
+{% endblock %}

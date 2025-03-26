@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#3498db" id="theme-color">
+    <meta name="description" content="لوحة تحكم شركات التطوير العقاري | روابط تك">
+    <title>{% block title %}لوحة تحكم شركات التطوير | روابط تك{% endblock %}</title>
+    
+    <!-- PWA support -->
+    <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='images/logo-192x192.png') }}">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    
+    <!-- إضافة Bootstrap RTL -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css">
+    
+    <!-- إضافة Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- إضافة Chartjs -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- إضافة DataTables -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.bootstrap5.min.css">
+    
+    <!-- FullCalendar -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css">
+    
+    <!-- ملف CSS الخاص بنا -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+    
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="dashboard-body" data-bs-theme="light">
+    <div class="dashboard-container">
+        <div class="dashboard-wrapper">
+            <!-- القائمة الجانبية -->
+            <div class="sidebar shadow-sm" id="sidebar">
+                <div class="sidebar-content">
+                    <div class="sidebar-header mb-4">
+                        <div class="logo-container">
+                            <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="روابط تك" class="sidebar-logo">
+                            <span class="fw-bold fs-5 d-none d-md-inline ms-2">روابط تك</span>
+                        </div>
+                        <button class="btn btn-sm btn-link d-md-none sidebar-toggle" id="sidebarToggle">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="sidebar-menu">
+                        <h6 class="sidebar-heading px-3 mt-4 mb-2 text-muted">
+                            <span>لوحة التحكم</span>
+                        </h6>
+                        <ul class="nav flex-column mb-4">
+                            <li class="nav-item">
+                                <a href="{{ url_for('developers_dashboard') }}" class="nav-link {% if request.endpoint == 'developers_dashboard' %}active{% endif %}">
+                                    <i class="fas fa-home me-2"></i>
+                                    <span>الرئيسية</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ url_for('developers_profile') }}" class="nav-link {% if request.endpoint == 'developers_profile' %}active{% endif %}">
+                                    <i class="fas fa-building me-2"></i>
+                                    <span>الملف الشخصي</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ url_for('developers_projects') }}" class="nav-link {% if request.endpoint == 'developers_projects' %}active{% endif %}">
+                                    <i class="fas fa-city me-2"></i>
+                                    <span>المشاريع العقارية</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ url_for('developers_customers') }}" class="nav-link {% if request.endpoint == 'developers_customers' %}active{% endif %}">
+                                    <i class="fas fa-users me-2"></i>
+                                    <span>العملاء</span>
+                                </a>
+                            </li>
+                        </ul>
+                        
+                        <h6 class="sidebar-heading px-3 mt-4 mb-2 text-muted">
+                            <span>التسويق</span>
+                        </h6>
+                        <ul class="nav flex-column mb-4">
+                            <li class="nav-item">
+                                <a href="{{ url_for('developers_ads') }}" class="nav-link {% if request.endpoint == 'developers_ads' %}active{% endif %}">
+                                    <i class="fas fa-ad me-2"></i>
+                                    <span>الإعلانات</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ url_for('developers_marketers') }}" class="nav-link {% if request.endpoint == 'developers_marketers' %}active{% endif %}">
+                                    <i class="fas fa-user-tie me-2"></i>
+                                    <span>المسوقين العقاريين</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ url_for('developers_scheduler') }}" class="nav-link {% if request.endpoint == 'developers_scheduler' %}active{% endif %}">
+                                    <i class="fas fa-calendar-alt me-2"></i>
+                                    <span>إدارة المواعيد</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ url_for('developers_social') }}" class="nav-link {% if request.endpoint == 'developers_social' %}active{% endif %}">
+                                    <i class="fas fa-comments me-2"></i>
+                                    <span>التفاعل الاجتماعي</span>
+                                </a>
+                            </li>
+                        </ul>
+                        
+                        <h6 class="sidebar-heading px-3 mt-4 mb-2 text-muted">
+                            <span>الإعدادات</span>
+                        </h6>
+                        <ul class="nav flex-column mb-4">
+                            <li class="nav-item">
+                                <a href="{{ url_for('developers_analytics') }}" class="nav-link {% if request.endpoint == 'developers_analytics' %}active{% endif %}">
+                                    <i class="fas fa-chart-line me-2"></i>
+                                    <span>التحليلات</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ url_for('developers_reports') }}" class="nav-link {% if request.endpoint == 'developers_reports' %}active{% endif %}">
+                                    <i class="fas fa-file-alt me-2"></i>
+                                    <span>التقارير</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ url_for('developers_subscription') }}" class="nav-link {% if request.endpoint == 'developers_subscription' %}active{% endif %}">
+                                    <i class="fas fa-gem me-2"></i>
+                                    <span>الاشتراك والباقات</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ url_for('developers_settings') }}" class="nav-link {% if request.endpoint == 'developers_settings' %}active{% endif %}">
+                                    <i class="fas fa-cog me-2"></i>
+                                    <span>الإعدادات</span>
+                                </a>
+                            </li>
+                        </ul>
+                        
+                        <h6 class="sidebar-heading px-3 mt-4 mb-2 text-muted">
+                            <span>التواصل</span>
+                        </h6>
+                        <ul class="nav flex-column mb-4">
+                            <li class="nav-item">
+                                <a href="{{ url_for('developers_followers') }}" class="nav-link {% if request.endpoint == 'developers_followers' %}active{% endif %}">
+                                    <i class="fas fa-users me-2"></i>
+                                    <span>المتابعين</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ url_for('developers_messages') }}" class="nav-link {% if request.endpoint == 'developers_messages' %}active{% endif %}">
+                                    <i class="fas fa-envelope me-2"></i>
+                                    <span>الرسائل</span>
+                                    <span class="badge rounded-pill bg-danger text-white ms-2">5</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ url_for('developers_notifications') }}" class="nav-link {% if request.endpoint == 'developers_notifications' %}active{% endif %}">
+                                    <i class="fas fa-bell me-2"></i>
+                                    <span>الإشعارات</span>
+                                    <span class="badge rounded-pill bg-danger text-white ms-2">3</span>
+                                </a>
+                            </li>
+                        </ul>
+                        
+                        <h6 class="sidebar-heading px-3 mt-4 mb-2 text-muted">
+                            <span>التقارير</span>
+                        </h6>
+                        <ul class="nav flex-column mb-4">
+                            <li class="nav-item">
+                                <a href="{{ url_for('developers_reports') }}" class="nav-link {% if request.endpoint == 'developers_reports' %}active{% endif %}">
+                                    <i class="fas fa-file-alt me-2"></i>
+                                    <span>التقارير</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="sidebar-footer mt-auto">
+                        <div class="user-profile dropdown">
+                            <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img src="{{ url_for('static', filename='img/company-logo.png') }}" alt="شركة التطوير" class="user-avatar me-2">
+                                <div>
+                                    <span class="fw-medium d-none d-md-inline">شركة الإعمار</span>
+                                    <small class="d-block text-muted">مطور عقاري</small>
+                                </div>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="userDropdown">
+                                <li><a class="dropdown-item" href="{{ url_for('developers_profile') }}"><i class="fas fa-user-circle me-2"></i>الملف الشخصي</a></li>
+                                <li><a class="dropdown-item" href="{{ url_for('developers_settings') }}"><i class="fas fa-cog me-2"></i>الإعدادات</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item text-danger" href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt me-2"></i>تسجيل الخروج</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- المحتوى الرئيسي -->
+            <div class="main-content" id="main-content">
+                <!-- شريط التنقل العلوي -->
+                <header class="dashboard-header shadow-sm">
+                    <div class="container-fluid py-2">
+                        <div class="row align-items-center">
+                            <div class="col-auto d-md-none">
+                                <button class="btn btn-link text-dark sidebar-toggle-mobile" id="sidebarToggleMobile">
+                                    <i class="fas fa-bars"></i>
+                                </button>
+                            </div>
+                            
+                            <div class="col">
+                                <nav aria-label="breadcrumb">
+                                    <ol class="breadcrumb mb-0">
+                                        <li class="breadcrumb-item"><a href="{{ url_for('developers_dashboard') }}">لوحة التحكم</a></li>
+                                        {% block breadcrumb %}{% endblock %}
+                                    </ol>
+                                </nav>
+                            </div>
+                            
+                            <div class="col-auto d-flex align-items-center">
+                                <!-- زر البحث -->
+                                <div class="search-trigger me-3">
+                                    <button class="btn btn-sm btn-outline-secondary border-0" type="button" data-bs-toggle="modal" data-bs-target="#searchModal">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
+                                
+                                <!-- الإشعارات -->
+                                <div class="dropdown notifications me-3">
+                                    <button class="btn btn-sm btn-outline-secondary border-0 position-relative" type="button" id="notificationsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="fas fa-bell"></i>
+                                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                            3
+                                            <span class="visually-hidden">إشعارات غير مقروءة</span>
+                                        </span>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end shadow notifications-dropdown" aria-labelledby="notificationsDropdown">
+                                        <li>
+                                            <div class="dropdown-header d-flex justify-content-between align-items-center">
+                                                <h6 class="mb-0">الإشعارات (3)</h6>
+                                                <a href="#" class="text-muted small">تحديد الكل كمقروء</a>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <a href="{{ url_for('developers_notifications') }}" class="dropdown-item notification-item">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="flex-shrink-0 notification-icon text-primary">
+                                                        <i class="fas fa-star-half-alt"></i>
+                                                    </div>
+                                                    <div class="flex-grow-1 ms-3">
+                                                        <h6 class="mb-1">تقييم جديد لمشروعك العقاري</h6>
+                                                        <p class="text-muted small mb-0">قام أحمد محمد بتقييم مشروع الواحة بـ 5 نجوم</p>
+                                                        <span class="text-muted smaller">منذ 20 دقيقة</span>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ url_for('developers_projects') }}" class="dropdown-item notification-item">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="flex-shrink-0 notification-icon text-success">
+                                                        <i class="fas fa-building"></i>
+                                                    </div>
+                                                    <div class="flex-grow-1 ms-3">
+                                                        <h6 class="mb-1">تم الموافقة على المشروع الجديد</h6>
+                                                        <p class="text-muted small mb-0">تمت الموافقة على مشروع "الأفق" الخاص بك</p>
+                                                        <span class="text-muted smaller">منذ ساعتين</span>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ url_for('developers_messages') }}" class="dropdown-item notification-item">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="flex-shrink-0 notification-icon text-info">
+                                                        <i class="fas fa-envelope"></i>
+                                                    </div>
+                                                    <div class="flex-grow-1 ms-3">
+                                                        <h6 class="mb-1">رسالة جديدة</h6>
+                                                        <p class="text-muted small mb-0">لديك رسالة جديدة من المسوق "سارة أحمد"</p>
+                                                        <span class="text-muted smaller">منذ 3 ساعات</span>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <div class="dropdown-divider"></div>
+                                        </li>
+                                        <li>
+                                            <a href="{{ url_for('developers_notifications') }}" class="dropdown-item text-center small">
+                                                عرض جميع الإشعارات
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                
+                                <!-- زر تبديل الوضع المظلم/المضيء -->
+                                <div class="theme-switch me-3">
+                                    <button class="btn btn-sm btn-outline-secondary border-0" id="theme-toggle">
+                                        <i class="fas fa-moon dark-icon"></i>
+                                        <i class="fas fa-sun light-icon d-none"></i>
+                                    </button>
+                                </div>
+                                
+                                <!-- زر الوصول السريع للإعدادات -->
+                                <div class="dropdown">
+                                    <button class="btn btn-sm btn-outline-secondary border-0" type="button" id="quickActionsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="quickActionsDropdown">
+                                        <li><h6 class="dropdown-header">إجراءات سريعة</h6></li>
+                                        <li><a class="dropdown-item" href="#"><i class="fas fa-plus-circle me-2 text-success"></i>إضافة مشروع جديد</a></li>
+                                        <li><a class="dropdown-item" href="#"><i class="fas fa-ad me-2 text-primary"></i>إنشاء إعلان جديد</a></li>
+                                        <li><a class="dropdown-item" href="#"><i class="fas fa-calendar-plus me-2 text-info"></i>إضافة موعد جديد</a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>إعدادات لوحة التحكم</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+                
+                <!-- محتوى الصفحة -->
+                <div class="dashboard-content">
+                    <div class="container-fluid py-4">
+                        {% block content %}{% endblock %}
+                    </div>
+                </div>
+                
+                <!-- تذييل الصفحة -->
+                <footer class="dashboard-footer mt-auto py-3 border-top">
+                    <div class="container-fluid">
+                        <div class="row align-items-center">
+                            <div class="col-md-6 text-center text-md-start">
+                                <span class="text-muted"> 2025 روابط تك. جميع الحقوق محفوظة.</span>
+                            </div>
+                            <div class="col-md-6 text-center text-md-end">
+                                <div class="footer-links">
+                                    <a href="#" class="text-decoration-none text-muted me-3">الدعم الفني</a>
+                                    <a href="#" class="text-decoration-none text-muted me-3">سياسة الخصوصية</a>
+                                    <a href="#" class="text-decoration-none text-muted">الشروط والأحكام</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </div>
+    
+    <!-- موديل البحث -->
+    <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title" id="searchModalLabel">بحث</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="input-group input-group-lg">
+                            <span class="input-group-text bg-transparent border-end-0">
+                                <i class="fas fa-search text-muted"></i>
+                            </span>
+                            <input type="text" class="form-control border-start-0" placeholder="ابحث عن مشاريع، عملاء، مواعيد..." autofocus>
+                        </div>
+                        <div class="mt-3">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="searchType" id="searchProjects" value="projects" checked>
+                                <label class="form-check-label" for="searchProjects">المشاريع</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="searchType" id="searchClients" value="clients">
+                                <label class="form-check-label" for="searchClients">العملاء</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="searchType" id="searchAppointments" value="appointments">
+                                <label class="form-check-label" for="searchAppointments">المواعيد</label>
+                            </div>
+                        </div>
+                    </form>
+                    <hr>
+                    <h6 class="mb-3">آخر عمليات البحث:</h6>
+                    <div class="recent-searches">
+                        <a href="#" class="badge bg-light text-dark mb-1 me-1 p-2">مشروع الواحة السكني</a>
+                        <a href="#" class="badge bg-light text-dark mb-1 me-1 p-2">محمد سعيد</a>
+                        <a href="#" class="badge bg-light text-dark mb-1 me-1 p-2">مواعيد اليوم</a>
+                        <a href="#" class="badge bg-light text-dark mb-1 me-1 p-2">تقارير المبيعات</a>
+                    </div>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="button" class="btn btn-primary">بحث</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- سكربتات JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.5/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
+    
+    <!-- Service Worker for PWA -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('{{ url_for("static", filename="js/service-worker.js") }}')
+                    .then(function(registration) {
+                        console.log('ServiceWorker registration successful');
+                    }).catch(function(err) {
+                        console.log('ServiceWorker registration failed: ', err);
+                    });
+            });
+        }
+    </script>
+    
+    <script>
+        // تبديل الوضع المظلم/المضيء
+        const themeToggle = document.getElementById('theme-toggle');
+        const body = document.body;
+        const themeColor = document.getElementById('theme-color');
+        const darkIcon = document.querySelector('.dark-icon');
+        const lightIcon = document.querySelector('.light-icon');
+        
+        // تحديد الوضع المفضل للمستخدم
+        const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const savedTheme = localStorage.getItem('theme');
+        
+        // تطبيق الوضع المناسب عند تحميل الصفحة
+        if (savedTheme === 'dark' || (!savedTheme && prefersDarkMode)) {
+            body.setAttribute('data-bs-theme', 'dark');
+            themeColor.content = '#212529';
+            darkIcon.classList.add('d-none');
+            lightIcon.classList.remove('d-none');
+        }
+        
+        themeToggle.addEventListener('click', function() {
+            if (body.getAttribute('data-bs-theme') === 'dark') {
+                body.setAttribute('data-bs-theme', 'light');
+                themeColor.content = '#3498db';
+                darkIcon.classList.remove('d-none');
+                lightIcon.classList.add('d-none');
+                localStorage.setItem('theme', 'light');
+            } else {
+                body.setAttribute('data-bs-theme', 'dark');
+                themeColor.content = '#212529';
+                darkIcon.classList.add('d-none');
+                lightIcon.classList.remove('d-none');
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+        
+        // شريط القوائم الجانبي للأجهزة الصغيرة
+        const sidebarToggleMobile = document.getElementById('sidebarToggleMobile');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('main-content');
+        
+        function toggleSidebar() {
+            sidebar.classList.toggle('active');
+            mainContent.classList.toggle('active');
+        }
+        
+        if (sidebarToggleMobile) {
+            sidebarToggleMobile.addEventListener('click', toggleSidebar);
+        }
+        
+        if (sidebarToggle) {
+            sidebarToggle.addEventListener('click', toggleSidebar);
+        }
+        
+        // إعداد DataTables
+        $(document).ready(function() {
+            if ($.fn.DataTable) {
+                $('.datatable').DataTable({
+                    language: {
+                        url: 'https://cdn.datatables.net/plug-ins/1.13.5/i18n/ar.json'
+                    },
+                    responsive: true
+                });
+            }
+        });
+    </script>
+    
+    {% block scripts %}{% endblock %}
+</body>
+</html>

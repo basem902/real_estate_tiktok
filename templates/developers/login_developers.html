@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block title %}تسجيل دخول شركات التطوير | روابط تك{% endblock %}
+
+{% block content %}
+<div class="login-container">
+    <div class="login-card fade-in shadow-lg">
+        <div class="login-header">
+            <div class="logo-container mb-4">
+                <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="شعار روابط تك" class="login-logo">
+            </div>
+            <h2 class="fw-bold mb-2">تسجيل دخول شركات التطوير</h2>
+            <p class="text-dark fw-medium fs-5 mb-4">قم بتسجيل الدخول لإدارة مشاريعك العقارية</p>
+        </div>
+        
+        <form action="/developers/dashboard" method="get">
+            <div class="form-floating mb-4">
+                <input type="email" class="form-control border-primary" id="email" placeholder="البريد الإلكتروني" value="demo@rawabettech.com" required>
+                <label for="email">البريد الإلكتروني</label>
+                <div class="mt-1">
+                    <button type="button" class="btn btn-sm btn-outline-secondary copy-btn" data-copy="demo@rawabettech.com">
+                        <i class="fas fa-copy me-1"></i> نسخ
+                    </button>
+                </div>
+            </div>
+            
+            <div class="form-floating mb-4">
+                <input type="password" class="form-control border-primary" id="password" placeholder="كلمة المرور" value="Demo@2025" required>
+                <label for="password">كلمة المرور</label>
+                <div class="mt-1">
+                    <button type="button" class="btn btn-sm btn-outline-secondary copy-btn" data-copy="Demo@2025">
+                        <i class="fas fa-copy me-1"></i> نسخ
+                    </button>
+                </div>
+            </div>
+            
+            <div class="form-check mb-4">
+                <input class="form-check-input" type="checkbox" value="" id="remember-me" checked>
+                <label class="form-check-label" for="remember-me">
+                    تذكرني
+                </label>
+            </div>
+            
+            <div class="d-grid">
+                <button type="submit" class="btn btn-primary py-3 mb-3 fw-bold fs-5 zoom-on-hover">تسجيل الدخول</button>
+            </div>
+            
+            <div class="text-center mb-4">
+                <a href="#" class="text-decoration-none hover-effect">نسيت كلمة المرور؟</a>
+            </div>
+        </form>
+        
+        <hr class="my-4">
+        
+        <div class="text-center login-footer">
+            <p class="fs-5">ليس لديك حساب؟</p>
+            <a href="#" class="btn btn-outline-primary rounded-pill px-4 py-2 hover-effect">إنشاء حساب جديد</a>
+            <div class="mt-4">
+                <a href="/user_type" class="text-muted hover-effect"><i class="fas fa-arrow-right ml-1"></i> الرجوع لاختيار نوع المستخدم</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block scripts %}
+<script>
+    // إضافة تأثيرات إضافية للصفحة
+    document.addEventListener('DOMContentLoaded', function() {
+        // تطبيق تأثير النسخ على الأزرار
+        const copyButtons = document.querySelectorAll('.copy-btn');
+        copyButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const textToCopy = this.getAttribute('data-copy');
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    // تغيير نص الزر مؤقتاً
+                    const originalText = this.innerHTML;
+                    this.innerHTML = '<i class="fas fa-check me-1"></i> تم النسخ';
+                    this.classList.remove('btn-outline-secondary');
+                    this.classList.add('btn-success');
+                    
+                    // إعادة النص الأصلي بعد ثانيتين
+                    setTimeout(() => {
+                        this.innerHTML = originalText;
+                        this.classList.remove('btn-success');
+                        this.classList.add('btn-outline-secondary');
+                    }, 2000);
+                    
+                    // إضافة القيمة المنسوخة إلى الحقل المناسب
+                    if(textToCopy.includes('@')) {
+                        document.getElementById('email').value = textToCopy;
+                    } else {
+                        document.getElementById('password').value = textToCopy;
+                    }
+                });
+            });
+        });
+    });
+</script>
+{% endblock %}
+{% endblock %}

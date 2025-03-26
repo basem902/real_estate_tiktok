@@ -1,0 +1,1239 @@
+{% extends 'marketers/includes/base.html' %}
+
+{% block title %}محلل السوق العقاري - المساعد الذكي{% endblock %}
+
+{% block meta_description %}أداة تحليل السوق العقاري وتقديم التوصيات الذكية - المساعد الذكي{% endblock %}
+
+{% block additional_css %}
+<style>
+    /* تحسين الهوامش العامة */
+    body {
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+    }
+    
+    .main-layout {
+        display: flex;
+        width: 100%;
+        min-height: 100vh;
+    }
+    
+    #page-content {
+        padding: 0;
+    }
+    
+    .container-fluid {
+        padding: 1.5rem;
+    }
+    
+    /* تعديل الصفوف لتكون متقاربة أكثر */
+    .row {
+        margin-right: -8px;
+        margin-left: -8px;
+    }
+    
+    .row > [class^="col-"] {
+        padding-right: 8px;
+        padding-left: 8px;
+    }
+    
+    /* تصغير المساحات بين الأقسام */
+    .section-spacing {
+        margin-bottom: 1rem;
+    }
+    
+    /* تحسين تصميم البطاقات */
+    .card {
+        border-radius: var(--card-border-radius);
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+        height: 100%;
+        border: none;
+        margin-bottom: 1rem;
+    }
+    
+    .card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .card-body {
+        padding: 1rem;
+    }
+    
+    /* تنسيق العناصر داخل البطاقات */
+    .d-flex {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .badge {
+        font-size: 0.75rem;
+        padding: 0.2rem 0.5rem;
+    }
+    
+    .small {
+        font-size: 0.875rem;
+    }
+    
+    /* تصميم خاص بالتحليلات */
+    .analytics-card {
+        background-color: #fff;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+    
+    .chart-container {
+        position: relative;
+        height: 250px;
+        width: 100%;
+    }
+    
+    .heatmap-container {
+        position: relative;
+        overflow: hidden;
+        border-radius: 8px;
+    }
+    
+    .recommendation-item {
+        border-right: 3px solid var(--primary-color);
+    }
+    
+    .strategy-icon {
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .bg-light-blue {
+        background-color: rgba(13, 110, 253, 0.1);
+    }
+    
+    .bg-light-green {
+        background-color: rgba(25, 135, 84, 0.1);
+    }
+    
+    .bg-light-orange {
+        background-color: rgba(255, 193, 7, 0.1);
+    }
+    
+    .bg-light-purple {
+        background-color: rgba(111, 66, 193, 0.1);
+    }
+    
+    .forecast-container {
+        background-color: rgba(248, 249, 250, 0.6);
+    }
+    
+    .metric-card {
+        padding: 1.25rem;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+    }
+    
+    .metric-card:hover {
+        transform: translateY(-5px);
+    }
+    
+    .metric-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+    
+    .tab-analytics .nav-link {
+        border: none;
+        border-radius: 0;
+        padding: 0.75rem 1.25rem;
+        color: var(--dark-color);
+        position: relative;
+    }
+    
+    .tab-analytics .nav-link.active {
+        color: var(--primary-color);
+        background-color: transparent;
+        font-weight: 600;
+    }
+    
+    .tab-analytics .nav-link.active:after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background-color: var(--primary-color);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div id="page-content" class="fade-in">
+    <div class="container-fluid">
+        <!-- عنوان الصفحة -->
+        <div class="page-header d-flex flex-wrap justify-content-between align-items-center mb-4">
+            <div>
+                <h2 class="page-title mb-1">محلل السوق العقاري</h2>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item"><a href="{{ url_for('marketers_dashboard_overview') }}">لوحة التحكم</a></li>
+                        <li class="breadcrumb-item"><a href="{{ url_for('marketers_ai_assistant') }}">المساعد الذكي</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">محلل السوق</li>
+                    </ol>
+                </nav>
+            </div>
+            <div>
+                <button class="btn btn-outline-primary me-2">
+                    <i class="fas fa-file-export me-1"></i> تصدير التقرير
+                </button>
+                <button class="btn btn-primary">
+                    <i class="fas fa-sync-alt me-1"></i> تحديث البيانات
+                </button>
+            </div>
+        </div>
+        
+        <!-- لوحة المؤشرات الرئيسية -->
+        <div class="row mb-4">
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="card h-100 metric-card bg-light-blue">
+                    <div class="card-body">
+                        <div class="metric-icon bg-primary text-white">
+                            <i class="fas fa-building"></i>
+                        </div>
+                        <h6 class="text-muted mb-1">إجمالي العقارات</h6>
+                        <h3 class="mb-1">1,253</h3>
+                        <div class="d-flex align-items-center">
+                            <span class="badge bg-success me-1">
+                                <i class="fas fa-arrow-up me-1"></i>12%
+                            </span>
+                            <small class="text-muted">مقارنة بالشهر الماضي</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="card h-100 metric-card bg-light-green">
+                    <div class="card-body">
+                        <div class="metric-icon bg-success text-white">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h6 class="text-muted mb-1">متوسط سعر المتر</h6>
+                        <h3 class="mb-1">4,850 ر.س</h3>
+                        <div class="d-flex align-items-center">
+                            <span class="badge bg-success me-1">
+                                <i class="fas fa-arrow-up me-1"></i>5.3%
+                            </span>
+                            <small class="text-muted">مقارنة بالربع الماضي</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="card h-100 metric-card bg-light-orange">
+                    <div class="card-body">
+                        <div class="metric-icon bg-warning text-white">
+                            <i class="fas fa-handshake"></i>
+                        </div>
+                        <h6 class="text-muted mb-1">صفقات مكتملة</h6>
+                        <h3 class="mb-1">286</h3>
+                        <div class="d-flex align-items-center">
+                            <span class="badge bg-danger me-1">
+                                <i class="fas fa-arrow-down me-1"></i>2.1%
+                            </span>
+                            <small class="text-muted">مقارنة بالشهر الماضي</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="card h-100 metric-card bg-light-purple">
+                    <div class="card-body">
+                        <div class="metric-icon bg-info text-white">
+                            <i class="fas fa-search-dollar"></i>
+                        </div>
+                        <h6 class="text-muted mb-1">معدل الطلب</h6>
+                        <h3 class="mb-1">75.4%</h3>
+                        <div class="d-flex align-items-center">
+                            <span class="badge bg-success me-1">
+                                <i class="fas fa-arrow-up me-1"></i>8.7%
+                            </span>
+                            <small class="text-muted">مقارنة بالربع الماضي</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- قسم التبويبات -->
+        <ul class="nav nav-tabs tab-analytics mb-4" id="analyticsTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="data-tab" data-bs-toggle="tab" data-bs-target="#dataAnalysis" type="button" role="tab" aria-controls="dataAnalysis" aria-selected="true">
+                    <i class="fas fa-chart-pie me-1"></i> تحليل البيانات
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="strategy-tab" data-bs-toggle="tab" data-bs-target="#marketingStrategy" type="button" role="tab" aria-controls="marketingStrategy" aria-selected="false">
+                    <i class="fas fa-bullseye me-1"></i> استراتيجيات التسويق
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="reports-tab" data-bs-toggle="tab" data-bs-target="#smartReports" type="button" role="tab" aria-controls="smartReports" aria-selected="false">
+                    <i class="fas fa-file-chart-line me-1"></i> التقارير الذكية
+                </button>
+            </li>
+        </ul>
+        
+        <!-- محتوى التبويبات -->
+        <div class="tab-content" id="analyticsTabContent">
+            <!-- تبويب تحليل البيانات -->
+            <div class="tab-pane fade show active" id="dataAnalysis" role="tabpanel" aria-labelledby="data-tab">
+                <!-- تحليل البيانات والخريطة الحرارية -->
+                <div class="card mb-4">
+                    <div class="card-header bg-transparent d-flex justify-content-between align-items-center">
+                        <h5 class="card-title mb-0">تحليل بيانات العقارات حسب المنطقة</h5>
+                        <div class="dropdown">
+                            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="filterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                تصفية البيانات
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="filterDropdown">
+                                <li><a class="dropdown-item" href="#">جميع المناطق</a></li>
+                                <li><a class="dropdown-item" href="#">المنطقة الشرقية</a></li>
+                                <li><a class="dropdown-item" href="#">المنطقة الغربية</a></li>
+                                <li><a class="dropdown-item" href="#">المنطقة الشمالية</a></li>
+                                <li><a class="dropdown-item" href="#">المنطقة الجنوبية</a></li>
+                                <li><a class="dropdown-item" href="#">المنطقة الوسطى</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-8 mb-4 mb-lg-0">
+                                <!-- خريطة حرارية للمناطق -->
+                                <div class="heatmap-container">
+                                    <div class="alert alert-info mb-3">
+                                        <i class="fas fa-info-circle me-2"></i>
+                                        تظهر الخريطة الحرارية المناطق ذات الإقبال الأعلى باللون الأحمر والأقل إقبالاً باللون الأزرق.
+                                    </div>
+                                    <div class="bg-light rounded p-2 text-center" style="height: 300px;">
+                                        <div class="d-flex h-100 align-items-center justify-content-center">
+                                            <div>
+                                                <i class="fas fa-map-marked-alt text-muted mb-2" style="font-size: 3rem;"></i>
+                                                <p class="mb-2">الخريطة الحرارية للمناطق العقارية</p>
+                                                <button class="btn btn-sm btn-primary">تحميل الخريطة</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <!-- توصيات ذكية -->
+                                <div class="recommendations-list">
+                                    <h6 class="mb-3">التوصيات الذكية بناءً على تحليل البيانات</h6>
+                                    <div class="recommendation-item p-3 bg-light-blue rounded mb-3">
+                                        <strong>الشقق الصغيرة</strong>
+                                        <p class="mb-0">تستهدف المستثمرين الشباب في منطقة وسط المدينة. معدل الطلب مرتفع بنسبة 35% عن العام السابق.</p>
+                                    </div>
+                                    <div class="recommendation-item p-3 bg-light-green rounded mb-3">
+                                        <strong>الفلل السكنية</strong>
+                                        <p class="mb-0">تستهدف العائلات في الضواحي الشمالية. أسعارها في ارتفاع مستمر بمعدل 12% سنوياً.</p>
+                                    </div>
+                                    <div class="recommendation-item p-3 bg-light-orange rounded mb-3">
+                                        <strong>الأراضي الاستثمارية</strong>
+                                        <p class="mb-0">فرص استثمارية واعدة في المنطقة الشرقية بسبب المشاريع التطويرية الجديدة.</p>
+                                    </div>
+                                    <div class="recommendation-item p-3 bg-light-purple rounded">
+                                        <strong>العقارات التجارية</strong>
+                                        <p class="mb-0">مكاتب ومحلات في المناطق المركزية تحقق عائد إيجار سنوي بنسبة 8-10%.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- قسم تحليل البيانات التفصيلي -->
+                <div class="row">
+                    <!-- تحليل أسعار العقارات -->
+                    <div class="col-lg-6 mb-4">
+                        <div class="card h-100">
+                            <div class="card-header bg-transparent">
+                                <h5 class="card-title mb-0">متوسط أسعار العقارات</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-container">
+                                    <canvas id="propertyPriceChart"></canvas>
+                                </div>
+                                <div class="mt-3">
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span class="d-flex align-items-center">
+                                            <span class="dot bg-primary me-2"></span>
+                                            <span>المنطقة الشرقية</span>
+                                        </span>
+                                        <span>4,250 ر.س/م²</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span class="d-flex align-items-center">
+                                            <span class="dot bg-success me-2"></span>
+                                            <span>المنطقة الغربية</span>
+                                        </span>
+                                        <span>5,750 ر.س/م²</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span class="d-flex align-items-center">
+                                            <span class="dot bg-warning me-2"></span>
+                                            <span>المنطقة الشمالية</span>
+                                        </span>
+                                        <span>3,850 ر.س/م²</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- توزيع أنواع العقارات -->
+                    <div class="col-lg-6 mb-4">
+                        <div class="card h-100">
+                            <div class="card-header bg-transparent">
+                                <h5 class="card-title mb-0">توزيع أنواع العقارات</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-container">
+                                    <canvas id="propertyTypeChart"></canvas>
+                                </div>
+                                <div class="mt-3">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="d-flex align-items-center mb-2">
+                                                <span class="dot bg-primary me-2"></span>
+                                                <span>شقق (45%)</span>
+                                            </div>
+                                            <div class="d-flex align-items-center mb-2">
+                                                <span class="dot bg-success me-2"></span>
+                                                <span>فلل (28%)</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="d-flex align-items-center mb-2">
+                                                <span class="dot bg-warning me-2"></span>
+                                                <span>أراضي (15%)</span>
+                                            </div>
+                                            <div class="d-flex align-items-center mb-2">
+                                                <span class="dot bg-danger me-2"></span>
+                                                <span>تجاري (12%)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- مؤشر نشاط السوق -->
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header bg-transparent">
+                                <h5 class="card-title mb-0">مؤشر نشاط السوق على مدار العام</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-container" style="height: 300px;">
+                                    <canvas id="marketActivityChart"></canvas>
+                                </div>
+                                <div class="mt-3">
+                                    <div class="alert alert-success">
+                                        <i class="fas fa-lightbulb me-2"></i>
+                                        <strong>تحليل ذكي:</strong> أظهرت البيانات أن أفضل وقت للبيع هو خلال الربع الثاني من العام حيث يزداد النشاط بنسبة 28% عن المتوسط السنوي. استغل هذه الفترة لتسويق العقارات ذات الأولوية.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- تبويب استراتيجيات التسويق -->
+            <div class="tab-pane fade" id="marketingStrategy" role="tabpanel" aria-labelledby="strategy-tab">
+                <div class="row">
+                    <!-- استراتيجيات ذكية مبنية على تحليل سلوك المستخدم -->
+                    <div class="col-lg-8 mb-4">
+                        <div class="card h-100">
+                            <div class="card-header bg-transparent d-flex justify-content-between align-items-center">
+                                <h5 class="card-title mb-0">استراتيجيات تسويق ذكية</h5>
+                                <div class="dropdown">
+                                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="strategyFilterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                        تصفية حسب الفئة
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="strategyFilterDropdown">
+                                        <li><a class="dropdown-item" href="#">جميع الاستراتيجيات</a></li>
+                                        <li><a class="dropdown-item" href="#">وسائل التواصل الاجتماعي</a></li>
+                                        <li><a class="dropdown-item" href="#">التسويق بالمحتوى</a></li>
+                                        <li><a class="dropdown-item" href="#">الإعلانات المدفوعة</a></li>
+                                        <li><a class="dropdown-item" href="#">تسويق البريد الإلكتروني</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <!-- استراتيجية 1 -->
+                                <div class="card mb-3 border-0">
+                                    <div class="row g-0">
+                                        <div class="col-auto">
+                                            <div class="strategy-icon bg-light-blue rounded p-3 text-primary">
+                                                <i class="fas fa-hashtag"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="card-body py-2">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <h6 class="card-title mb-1">استراتيجية وسائل التواصل الاجتماعي</h6>
+                                                    <span class="badge bg-primary">موصى بها</span>
+                                                </div>
+                                                <p class="card-text mb-1">استخدم هاشتاجات محددة لاستهداف المستثمرين في الشرقية. تحليل البيانات يشير إلى زيادة التفاعل بنسبة 45% عند استخدام استراتيجية المحتوى المخصص.</p>
+                                                <div class="mt-2">
+                                                    <span class="badge bg-light text-primary me-1">تيك توك</span>
+                                                    <span class="badge bg-light text-primary me-1">انستجرام</span>
+                                                    <span class="badge bg-light text-primary">سناب شات</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- استراتيجية 2 -->
+                                <div class="card mb-3 border-0">
+                                    <div class="row g-0">
+                                        <div class="col-auto">
+                                            <div class="strategy-icon bg-light-green rounded p-3 text-success">
+                                                <i class="fas fa-newspaper"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="card-body py-2">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <h6 class="card-title mb-1">استراتيجية المحتوى</h6>
+                                                    <span class="badge bg-success">فعّالة</span>
+                                                </div>
+                                                <p class="card-text mb-1">إنشاء مقاطع فيديو قصيرة تبرز المناطق الجديدة في المنطقة الغربية. تحليل البيانات يظهر أن 78% من المشترين يبحثون عن معلومات تفصيلية حول الخدمات القريبة.</p>
+                                                <div class="mt-2">
+                                                    <span class="badge bg-light text-success me-1">فيديو</span>
+                                                    <span class="badge bg-light text-success me-1">مدونة</span>
+                                                    <span class="badge bg-light text-success">انفوجرافيك</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- استراتيجية 3 -->
+                                <div class="card mb-3 border-0">
+                                    <div class="row g-0">
+                                        <div class="col-auto">
+                                            <div class="strategy-icon bg-light-orange rounded p-3 text-warning">
+                                                <i class="fas fa-ad"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="card-body py-2">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <h6 class="card-title mb-1">استراتيجية الإعلانات المدفوعة</h6>
+                                                    <span class="badge bg-warning text-dark">متوسطة</span>
+                                                </div>
+                                                <p class="card-text mb-1">توجيه ميزانية الإعلان نحو منصات جوجل وفيسبوك لاستهداف الباحثين عن فلل في المنطقة الشمالية. معدل التحويل يزيد بنسبة 15% باستخدام الكلمات المفتاحية المخصصة.</p>
+                                                <div class="mt-2">
+                                                    <span class="badge bg-light text-warning me-1">جوجل</span>
+                                                    <span class="badge bg-light text-warning me-1">فيسبوك</span>
+                                                    <span class="badge bg-light text-warning">تويتر</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- استراتيجية 4 -->
+                                <div class="card border-0">
+                                    <div class="row g-0">
+                                        <div class="col-auto">
+                                            <div class="strategy-icon bg-light-purple rounded p-3 text-info">
+                                                <i class="fas fa-envelope"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="card-body py-2">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <h6 class="card-title mb-1">استراتيجية البريد الإلكتروني</h6>
+                                                    <span class="badge bg-info">مستمرة</span>
+                                                </div>
+                                                <p class="card-text mb-1">إنشاء حملات بريدية مخصصة للمستثمرين المحتملين في الشقق السكنية. تحسين معدل الفتح بنسبة 23% من خلال استخدام عناوين مخصصة وتقسيم المستهدفين بدقة.</p>
+                                                <div class="mt-2">
+                                                    <span class="badge bg-light text-info me-1">تقسيم الجمهور</span>
+                                                    <span class="badge bg-light text-info me-1">أتمتة</span>
+                                                    <span class="badge bg-light text-info">شخصنة</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- تحليل سلوك المستخدم -->
+                    <div class="col-lg-4 mb-4">
+                        <div class="card h-100">
+                            <div class="card-header bg-transparent">
+                                <h5 class="card-title mb-0">تحليل سلوك المستخدم</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-container mb-4">
+                                    <canvas id="userBehaviorChart"></canvas>
+                                </div>
+                                
+                                <h6 class="mb-3">نقاط القوة في سلوك المستخدم</h6>
+                                
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span>اهتمام بالموقع</span>
+                                        <span>85%</span>
+                                    </div>
+                                    <div class="progress" style="height: 6px;">
+                                        <div class="progress-bar bg-primary" role="progressbar" style="width: 85%;" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span>اهتمام بالمساحة</span>
+                                        <span>68%</span>
+                                    </div>
+                                    <div class="progress" style="height: 6px;">
+                                        <div class="progress-bar bg-success" role="progressbar" style="width: 68%;" aria-valuenow="68" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span>اهتمام بالسعر</span>
+                                        <span>93%</span>
+                                    </div>
+                                    <div class="progress" style="height: 6px;">
+                                        <div class="progress-bar bg-warning" role="progressbar" style="width: 93%;" aria-valuenow="93" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span>اهتمام بالتشطيبات</span>
+                                        <span>72%</span>
+                                    </div>
+                                    <div class="progress" style="height: 6px;">
+                                        <div class="progress-bar bg-info" role="progressbar" style="width: 72%;" aria-valuenow="72" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="alert alert-info mt-4 mb-0">
+                                    <i class="fas fa-info-circle me-2"></i>
+                                    <strong>تحليل ذكي:</strong> تم اكتشاف أن 67% من المستخدمين يهتمون بالمناطق ذات الخدمات المميزة حتى لو كانت بأسعار أعلى. ركز على إبراز مميزات المنطقة المحيطة في استراتيجيات التسويق.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- الوقت الأمثل للتسويق -->
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header bg-transparent">
+                                <h5 class="card-title mb-0">توقيت الحملات التسويقية الأمثل</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-lg-8">
+                                        <div class="chart-container" style="height: 250px;">
+                                            <canvas id="marketingTimingChart"></canvas>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="d-flex flex-column justify-content-center h-100">
+                                            <div class="alert alert-success mb-3">
+                                                <i class="fas fa-bullseye me-2"></i>
+                                                <strong>الوقت الأمثل للإعلانات المدفوعة:</strong>
+                                                <p class="mb-0">أيام الأحد والإثنين، بين الساعة 8-10 مساءً. معدل النقر أعلى بنسبة 34%.</p>
+                                            </div>
+                                            <div class="alert alert-primary mb-0">
+                                                <i class="fas fa-lightbulb me-2"></i>
+                                                <strong>الوقت الأمثل لمنشورات المحتوى:</strong>
+                                                <p class="mb-0">أيام الخميس والجمعة، بين الساعة 2-5 مساءً. مشاركة أعلى بنسبة 28%.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- تبويب التقارير الذكية -->
+            <div class="tab-pane fade" id="smartReports" role="tabpanel" aria-labelledby="reports-tab">
+                <div class="row mb-4">
+                    <div class="col-12 mb-4">
+                        <div class="card">
+                            <div class="card-header bg-transparent d-flex justify-content-between align-items-center">
+                                <h5 class="card-title mb-0">لوحة مؤشرات الأداء الرئيسية</h5>
+                                <div>
+                                    <button class="btn btn-sm btn-outline-secondary me-2">
+                                        <i class="fas fa-calendar-alt me-1"></i> الربع الحالي
+                                    </button>
+                                    <button class="btn btn-sm btn-primary">
+                                        <i class="fas fa-file-export me-1"></i> تصدير كـ PDF
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-6 mb-4">
+                                        <div class="p-3 rounded bg-light-blue">
+                                            <h6 class="text-muted mb-3">إجمالي قيمة المبيعات</h6>
+                                            <h3 class="mb-1">12.7 مليون ر.س</h3>
+                                            <div class="d-flex align-items-center">
+                                                <span class="badge bg-success me-1">
+                                                    <i class="fas fa-arrow-up me-1"></i>18.5%
+                                                </span>
+                                                <small class="text-muted">نمو سنوي</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-md-6 mb-4">
+                                        <div class="p-3 rounded bg-light-green">
+                                            <h6 class="text-muted mb-3">متوسط مدة العرض</h6>
+                                            <h3 class="mb-1">45 يوم</h3>
+                                            <div class="d-flex align-items-center">
+                                                <span class="badge bg-success me-1">
+                                                    <i class="fas fa-arrow-down me-1"></i>12.3%
+                                                </span>
+                                                <small class="text-muted">تحسن عن الربع السابق</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-md-6 mb-4">
+                                        <div class="p-3 rounded bg-light-orange">
+                                            <h6 class="text-muted mb-3">نسبة التحويل</h6>
+                                            <h3 class="mb-1">7.8%</h3>
+                                            <div class="d-flex align-items-center">
+                                                <span class="badge bg-success me-1">
+                                                    <i class="fas fa-arrow-up me-1"></i>2.1%
+                                                </span>
+                                                <small class="text-muted">تحسن عن الربع السابق</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3 col-md-6 mb-4">
+                                        <div class="p-3 rounded bg-light-purple">
+                                            <h6 class="text-muted mb-3">رضا العملاء</h6>
+                                            <h3 class="mb-1">92.7%</h3>
+                                            <div class="d-flex align-items-center">
+                                                <span class="badge bg-success me-1">
+                                                    <i class="fas fa-arrow-up me-1"></i>4.5%
+                                                </span>
+                                                <small class="text-muted">تحسن عن الربع السابق</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="chart-container mt-4" style="height: 300px;">
+                                    <canvas id="performanceChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- تقارير توقعات المبيعات -->
+                    <div class="col-lg-6 mb-4">
+                        <div class="card h-100">
+                            <div class="card-header bg-transparent">
+                                <h5 class="card-title mb-0">توقعات المبيعات للربع القادم</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-container" style="height: 250px;">
+                                    <canvas id="salesForecastChart"></canvas>
+                                </div>
+                                <div class="forecast-container p-3 rounded mt-3">
+                                    <h6 class="mb-3">توقعات ذكية بناءً على تحليل البيانات</h6>
+                                    <div class="mb-3">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <div>
+                                                <i class="fas fa-chart-line text-success me-2"></i>
+                                                <span>شقق سكنية</span>
+                                            </div>
+                                            <span class="badge bg-success">+22% متوقع</span>
+                                        </div>
+                                        <p class="text-muted small mb-0">زيادة متوقعة في مبيعات الشقق السكنية بسبب المشاريع الجديدة في المناطق الشرقية والغربية.</p>
+                                    </div>
+                                    <div class="mb-3">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <div>
+                                                <i class="fas fa-home text-primary me-2"></i>
+                                                <span>فلل سكنية</span>
+                                            </div>
+                                            <span class="badge bg-primary">+15% متوقع</span>
+                                        </div>
+                                        <p class="text-muted small mb-0">تحسن متوقع معتدل بسبب زيادة الطلب في المناطق الشمالية والمخططات الجديدة.</p>
+                                    </div>
+                                    <div>
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <div>
+                                                <i class="fas fa-building text-warning me-2"></i>
+                                                <span>عقارات تجارية</span>
+                                            </div>
+                                            <span class="badge bg-warning text-dark">+8% متوقع</span>
+                                        </div>
+                                        <p class="text-muted small mb-0">تحسن طفيف متوقع مع استقرار القطاع التجاري وزيادة الاستثمارات في المناطق المركزية.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- تقرير الأداء التسويقي -->
+                    <div class="col-lg-6 mb-4">
+                        <div class="card h-100">
+                            <div class="card-header bg-transparent">
+                                <h5 class="card-title mb-0">تقرير الأداء التسويقي</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6 mb-4">
+                                        <div class="p-3 rounded bg-light text-center">
+                                            <div class="d-inline-flex justify-content-center align-items-center mb-3 p-3 rounded-circle bg-primary text-white">
+                                                <i class="fas fa-users"></i>
+                                            </div>
+                                            <h4>12,580</h4>
+                                            <p class="text-muted mb-0">عدد الزيارات</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-4">
+                                        <div class="p-3 rounded bg-light text-center">
+                                            <div class="d-inline-flex justify-content-center align-items-center mb-3 p-3 rounded-circle bg-success text-white">
+                                                <i class="fas fa-hand-pointer"></i>
+                                            </div>
+                                            <h4>3,245</h4>
+                                            <p class="text-muted mb-0">عدد النقرات</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-4">
+                                        <div class="p-3 rounded bg-light text-center">
+                                            <div class="d-inline-flex justify-content-center align-items-center mb-3 p-3 rounded-circle bg-warning text-white">
+                                                <i class="fas fa-phone-alt"></i>
+                                            </div>
+                                            <h4>725</h4>
+                                            <p class="text-muted mb-0">طلبات التواصل</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-4">
+                                        <div class="p-3 rounded bg-light text-center">
+                                            <div class="d-inline-flex justify-content-center align-items-center mb-3 p-3 rounded-circle bg-info text-white">
+                                                <i class="fas fa-handshake"></i>
+                                            </div>
+                                            <h4>143</h4>
+                                            <p class="text-muted mb-0">صفقات مكتملة</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="alert alert-primary mt-3 mb-0">
+                                    <i class="fas fa-lightbulb me-2"></i>
+                                    <strong>تحليل الأداء:</strong> أظهرت البيانات أن معدل التحويل من الزيارات إلى المبيعات يبلغ 1.14%، وهو أعلى من متوسط السوق بنسبة 0.32%. يمكن تحسين هذا المعدل من خلال التركيز على تحسين تجربة المستخدم وتطوير محتوى أكثر تخصيصاً للشرائح المستهدفة.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- تقرير مقارنة المناطق -->
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header bg-transparent">
+                                <h5 class="card-title mb-0">تقرير مقارنة أداء المناطق</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>المنطقة</th>
+                                                <th>متوسط سعر المتر</th>
+                                                <th>عدد العقارات المباعة</th>
+                                                <th>متوسط مدة العرض</th>
+                                                <th>معدل النمو السنوي</th>
+                                                <th>مؤشر الأداء</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>المنطقة الشرقية</td>
+                                                <td>4,250 ر.س</td>
+                                                <td>78</td>
+                                                <td>38 يوم</td>
+                                                <td>12.5%</td>
+                                                <td>
+                                                    <div class="progress" style="height: 6px;">
+                                                        <div class="progress-bar bg-success" role="progressbar" style="width: 85%;" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>المنطقة الغربية</td>
+                                                <td>5,750 ر.س</td>
+                                                <td>105</td>
+                                                <td>42 يوم</td>
+                                                <td>18.3%</td>
+                                                <td>
+                                                    <div class="progress" style="height: 6px;">
+                                                        <div class="progress-bar bg-success" role="progressbar" style="width: 92%;" aria-valuenow="92" aria-valuemin="0" aria-valuemax="100"></div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>المنطقة الشمالية</td>
+                                                <td>3,850 ر.س</td>
+                                                <td>64</td>
+                                                <td>51 يوم</td>
+                                                <td>8.7%</td>
+                                                <td>
+                                                    <div class="progress" style="height: 6px;">
+                                                        <div class="progress-bar bg-primary" role="progressbar" style="width: 75%;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>المنطقة الجنوبية</td>
+                                                <td>4,150 ر.س</td>
+                                                <td>42</td>
+                                                <td>62 يوم</td>
+                                                <td>5.2%</td>
+                                                <td>
+                                                    <div class="progress" style="height: 6px;">
+                                                        <div class="progress-bar bg-warning" role="progressbar" style="width: 65%;" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>المنطقة الوسطى</td>
+                                                <td>6,350 ر.س</td>
+                                                <td>81</td>
+                                                <td>35 يوم</td>
+                                                <td>14.8%</td>
+                                                <td>
+                                                    <div class="progress" style="height: 6px;">
+                                                        <div class="progress-bar bg-success" role="progressbar" style="width: 88%;" aria-valuenow="88" aria-valuemin="0" aria-valuemax="100"></div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="alert alert-success mt-4 mb-0">
+                                    <i class="fas fa-chart-pie me-2"></i>
+                                    <strong>التوصية الذكية:</strong> بناءً على البيانات، يفضل التركيز على المناطق الغربية والوسطى لتحقيق أعلى عائد استثماري وأقصر مدة عرض. ينصح بتكثيف الحملات التسويقية في المنطقة الشمالية لتحسين معدل النمو وتقليل فترة العرض.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // تهيئة الرسوم البيانية عند تحميل الصفحة
+        
+        // رسم بياني لمتوسط أسعار العقارات
+        if(document.getElementById('propertyPriceChart')) {
+            const propertyPriceCtx = document.getElementById('propertyPriceChart').getContext('2d');
+            new Chart(propertyPriceCtx, {
+                type: 'line',
+                data: {
+                    labels: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو'],
+                    datasets: [
+                        {
+                            label: 'المنطقة الشرقية',
+                            data: [4100, 4150, 4200, 4220, 4240, 4250],
+                            borderColor: '#0d6efd',
+                            backgroundColor: 'rgba(13, 110, 253, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        },
+                        {
+                            label: 'المنطقة الغربية',
+                            data: [5600, 5650, 5680, 5700, 5730, 5750],
+                            borderColor: '#198754',
+                            backgroundColor: 'rgba(25, 135, 84, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        },
+                        {
+                            label: 'المنطقة الشمالية',
+                            data: [3750, 3780, 3800, 3820, 3840, 3850],
+                            borderColor: '#ffc107',
+                            backgroundColor: 'rgba(255, 193, 7, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            min: 3500
+                        }
+                    }
+                }
+            });
+        }
+        
+        // رسم بياني لتوزيع أنواع العقارات
+        if(document.getElementById('propertyTypeChart')) {
+            const propertyTypeCtx = document.getElementById('propertyTypeChart').getContext('2d');
+            new Chart(propertyTypeCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['شقق', 'فلل', 'أراضي', 'تجاري'],
+                    datasets: [{
+                        data: [45, 28, 15, 12],
+                        backgroundColor: [
+                            '#0d6efd',
+                            '#198754',
+                            '#ffc107',
+                            '#dc3545'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                        }
+                    },
+                    cutout: '65%'
+                }
+            });
+        }
+        
+        // رسم بياني لنشاط السوق
+        if(document.getElementById('marketActivityChart')) {
+            const marketActivityCtx = document.getElementById('marketActivityChart').getContext('2d');
+            new Chart(marketActivityCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'],
+                    datasets: [{
+                        label: 'مؤشر نشاط السوق',
+                        data: [65, 70, 85, 95, 105, 110, 100, 90, 80, 75, 80, 90],
+                        backgroundColor: 'rgba(13, 110, 253, 0.7)',
+                        borderWidth: 0,
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+        
+        // رسم بياني لسلوك المستخدم
+        if(document.getElementById('userBehaviorChart')) {
+            const userBehaviorCtx = document.getElementById('userBehaviorChart').getContext('2d');
+            new Chart(userBehaviorCtx, {
+                type: 'radar',
+                data: {
+                    labels: ['الموقع', 'المساحة', 'السعر', 'التشطيبات', 'الخدمات', 'التصميم'],
+                    datasets: [{
+                        label: 'نسبة الاهتمام',
+                        data: [85, 68, 93, 72, 67, 58],
+                        fill: true,
+                        backgroundColor: 'rgba(13, 110, 253, 0.2)',
+                        borderColor: '#0d6efd',
+                        pointBackgroundColor: '#0d6efd',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: '#0d6efd'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: {
+                                display: true
+                            },
+                            suggestedMin: 0,
+                            suggestedMax: 100
+                        }
+                    }
+                }
+            });
+        }
+        
+        // رسم بياني لتوقيت الحملات التسويقية
+        if(document.getElementById('marketingTimingChart')) {
+            const marketingTimingCtx = document.getElementById('marketingTimingChart').getContext('2d');
+            new Chart(marketingTimingCtx, {
+                type: 'line',
+                data: {
+                    labels: ['السبت', 'الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة'],
+                    datasets: [
+                        {
+                            label: 'نسبة التفاعل - صباحاً',
+                            data: [32, 40, 45, 35, 30, 45, 50],
+                            borderColor: '#0d6efd',
+                            backgroundColor: 'rgba(13, 110, 253, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        },
+                        {
+                            label: 'نسبة التفاعل - مساءً',
+                            data: [55, 75, 70, 50, 45, 65, 68],
+                            borderColor: '#198754',
+                            backgroundColor: 'rgba(25, 135, 84, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        }
+                    }
+                }
+            });
+        }
+        
+        // رسم بياني للأداء
+        if(document.getElementById('performanceChart')) {
+            const performanceCtx = document.getElementById('performanceChart').getContext('2d');
+            new Chart(performanceCtx, {
+                type: 'line',
+                data: {
+                    labels: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'],
+                    datasets: [
+                        {
+                            label: 'مبيعات 2024',
+                            data: [9.2, 9.5, 10.1, 10.8, 11.5, 12.0, 12.3, 12.7, null, null, null, null],
+                            borderColor: '#0d6efd',
+                            backgroundColor: 'rgba(13, 110, 253, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        },
+                        {
+                            label: 'مبيعات 2023',
+                            data: [7.5, 7.8, 8.0, 8.3, 8.7, 9.1, 9.5, 9.8, 10.2, 10.5, 10.8, 11.0],
+                            borderColor: '#198754',
+                            backgroundColor: 'rgba(25, 135, 84, 0.1)',
+                            borderDash: [5, 5],
+                            tension: 0.4,
+                            fill: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        }
+                    },
+                    scales: {
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'المبيعات (مليون ر.س)'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // رسم بياني لتوقعات المبيعات
+        if(document.getElementById('salesForecastChart')) {
+            const salesForecastCtx = document.getElementById('salesForecastChart').getContext('2d');
+            new Chart(salesForecastCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['شقق', 'فلل', 'أراضي', 'تجاري'],
+                    datasets: [
+                        {
+                            label: 'الربع الحالي',
+                            data: [3.5, 4.2, 1.8, 1.5],
+                            backgroundColor: 'rgba(13, 110, 253, 0.7)',
+                            borderRadius: 4
+                        },
+                        {
+                            label: 'الربع القادم (متوقع)',
+                            data: [4.27, 4.83, 1.98, 1.62],
+                            backgroundColor: 'rgba(25, 135, 84, 0.7)',
+                            borderRadius: 4
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        }
+                    },
+                    scales: {
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'المبيعات (مليون ر.س)'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    });
+</script>
+{% endblock %}

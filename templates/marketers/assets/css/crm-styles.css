@@ -1,0 +1,267 @@
+/**
+ * crm-styles.css
+ * أنماط مخصصة لشاشة إدارة العملاء للمسوقين العقاريين
+ * تاريخ الإنشاء: 23 مارس 2025
+ */
+
+/* ===== أنماط عامة لإدارة العملاء ===== */
+.customer-stats .card {
+    border-radius: 10px;
+    box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+    transition: all 0.3s ease;
+}
+
+.customer-stats .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 0.5rem 2rem 0 rgba(58, 59, 69, 0.2);
+}
+
+.customer-stats .card .card-icon {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+}
+
+/* ===== أنماط قائمة العملاء ===== */
+.customer-table th {
+    font-weight: 600;
+    white-space: nowrap;
+    padding: 12px 10px;
+}
+
+.customer-table td {
+    vertical-align: middle;
+    padding: 12px 10px;
+}
+
+.customer-table tr {
+    transition: background-color 0.3s ease;
+}
+
+.customer-table tr:hover {
+    background-color: rgba(0, 0, 0, 0.01);
+}
+
+.customer-profile-link {
+    font-weight: 500;
+    text-decoration: none;
+    color: var(--bs-primary);
+}
+
+.customer-profile-link:hover {
+    text-decoration: underline;
+    color: var(--bs-primary);
+}
+
+.avatar-circle {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    color: #fff;
+    font-size: 16px;
+    transition: all 0.3s;
+}
+
+.avatar-circle:hover {
+    transform: scale(1.08);
+}
+
+.rating .fa-star {
+    font-size: 12px;
+}
+
+/* ===== أنماط الفلاتر والبحث ===== */
+.filter-section {
+    background-color: rgba(248, 249, 250, 0.9);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.085);
+}
+
+.filter-section label {
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.filter-control {
+    margin-bottom: 10px;
+}
+
+.filter-control .form-select,
+.filter-control .form-control {
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+/* ===== أنماط الوسوم والشارات ===== */
+.tags-container .badge {
+    font-size: 11px;
+    font-weight: 500;
+    padding: 5px 8px;
+    text-transform: capitalize;
+}
+
+.bg-info-light {
+    background-color: rgba(52, 152, 219, 0.1);
+    color: #3498db;
+}
+
+.bg-success-light {
+    background-color: rgba(46, 204, 113, 0.1);
+    color: #2ecc71;
+}
+
+.bg-warning-light {
+    background-color: rgba(241, 196, 15, 0.1);
+    color: #f1c40f;
+}
+
+.bg-danger-light {
+    background-color: rgba(231, 76, 60, 0.1);
+    color: #e74c3c;
+}
+
+.bg-secondary-light {
+    background-color: rgba(149, 165, 166, 0.1);
+    color: #95a5a6;
+}
+
+.bg-primary-light {
+    background-color: rgba(52, 152, 219, 0.1);
+    color: #3498db;
+}
+
+/* ===== أنماط نافذة إضافة/تعديل العميل ===== */
+.modal-content {
+    border-radius: 10px;
+    border: none;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.modal-header {
+    border-radius: 10px 10px 0 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.modal-footer {
+    border-radius: 0 0 10px 10px;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+#customer-form .form-control,
+#customer-form .form-select {
+    border-radius: 8px;
+    padding: 10px 12px;
+}
+
+#customer-form .form-label {
+    font-weight: 500;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+/* ===== أنماط قسم الإجراءات المجمعة ===== */
+.bulk-actions {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 12px 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.1);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+.bulk-actions.visible {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+/* ===== أنماط الإشعارات ===== */
+.toast {
+    border-radius: 8px;
+    font-weight: 500;
+    box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.2);
+}
+
+/* ===== أنماط الإحصائيات والرسوم البيانية ===== */
+.stats-chart-container {
+    position: relative;
+    height: 250px;
+}
+
+/* ===== تخصيصات للشاشات الصغيرة ===== */
+@media (max-width: 767.98px) {
+    .customer-stats .card {
+        margin-bottom: 15px;
+    }
+    
+    .filter-section {
+        padding: 15px;
+    }
+    
+    .customer-stats .card .card-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+    
+    .stats-chart-container {
+        height: 200px;
+    }
+    
+    .customer-table {
+        font-size: 0.9rem;
+    }
+}
+
+/* ===== تحسينات الوضع الداكن ===== */
+[data-bs-theme="dark"] .filter-section {
+    background-color: rgba(30, 32, 40, 0.9);
+    border-color: rgba(255, 255, 255, 0.05);
+}
+
+[data-bs-theme="dark"] .bulk-actions {
+    background-color: rgba(30, 32, 40, 0.9);
+    border-color: rgba(255, 255, 255, 0.05);
+}
+
+[data-bs-theme="dark"] .rating .far.fa-star {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+[data-bs-theme="dark"] .tags-container .badge {
+    color: #fff;
+}
+
+[data-bs-theme="dark"] .bg-info-light {
+    background-color: rgba(52, 152, 219, 0.25);
+}
+
+[data-bs-theme="dark"] .bg-success-light {
+    background-color: rgba(46, 204, 113, 0.25);
+}
+
+[data-bs-theme="dark"] .bg-warning-light {
+    background-color: rgba(241, 196, 15, 0.25);
+}
+
+[data-bs-theme="dark"] .bg-danger-light {
+    background-color: rgba(231, 76, 60, 0.25);
+}
+
+[data-bs-theme="dark"] .bg-secondary-light {
+    background-color: rgba(149, 165, 166, 0.25);
+}
+
+[data-bs-theme="dark"] .bg-primary-light {
+    background-color: rgba(52, 152, 219, 0.25);
+}

@@ -1,0 +1,218 @@
+{% extends 'developers/dashboard/base_dashboard.html' %}
+
+{% block title %}المسوقين العقاريين | لوحة تحكم المطورين{% endblock %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item active" aria-current="page">المسوقين العقاريين</li>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <!-- عنوان الصفحة والأزرار -->
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center mb-4">
+        <h1 class="h2">المسوقين العقاريين</h1>
+        <div class="btn-toolbar mb-2 mb-md-0">
+            <button type="button" class="btn btn-sm btn-primary me-2" data-bs-toggle="modal" data-bs-target="#addMarketerModal">
+                <i class="fas fa-plus me-1"></i>
+                إضافة مسوق جديد
+            </button>
+            <div class="btn-group me-2">
+                <button type="button" class="btn btn-sm btn-outline-secondary">تصدير</button>
+                <button type="button" class="btn btn-sm btn-outline-secondary">فلترة</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- بطاقات الإحصائيات -->
+    <div class="row">
+        <div class="col-md-6 col-lg-3">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">إجمالي المسوقين</h5>
+                    <h1 class="card-text">100</h1>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">المسوقين النشطين</h5>
+                    <h1 class="card-text">50</h1>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">المسوقين غير النشطين</h5>
+                    <h1 class="card-text">50</h1>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">إجمالي المبيعات</h5>
+                    <h1 class="card-text">1000000</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- جدول المسوقين -->
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-header bg-white py-3">
+            <h5 class="card-title mb-0">قائمة المسوقين العقاريين</h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">المسوق</th>
+                            <th scope="col">المشاريع</th>
+                            <th scope="col">المبيعات</th>
+                            <th scope="col">التقييم</th>
+                            <th scope="col">الحالة</th>
+                            <th scope="col">الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <img src="{{ url_for('static', filename='img/avatar1.jpg') }}" alt="صورة المسوق" class="rounded-circle me-2" width="40" height="40">
+                                    <div>
+                                        <h6 class="mb-0">محمد أحمد</h6>
+                                        <small class="text-muted">مسوق متميز</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>8</td>
+                            <td>42 وحدة</td>
+                            <td>
+                                <div class="text-warning">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star-half-alt"></i>
+                                    <span class="ms-1">4.8</span>
+                                </div>
+                            </td>
+                            <td><span class="badge bg-success rounded-pill">نشط</span></td>
+                            <td>
+                                <div class="dropdown">
+                                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="#"><i class="fas fa-eye me-2"></i>عرض</a></li>
+                                        <li><a class="dropdown-item" href="#"><i class="fas fa-edit me-2"></i>تعديل</a></li>
+                                        <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-ban me-2"></i>تعليق</a></li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <img src="{{ url_for('static', filename='img/avatar2.jpg') }}" alt="صورة المسوق" class="rounded-circle me-2" width="40" height="40">
+                                    <div>
+                                        <h6 class="mb-0">سارة خالد</h6>
+                                        <small class="text-muted">مسوق ذهبي</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>12</td>
+                            <td>56 وحدة</td>
+                            <td>
+                                <div class="text-warning">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <span class="ms-1">4.9</span>
+                                </div>
+                            </td>
+                            <td><span class="badge bg-success rounded-pill">نشط</span></td>
+                            <td>
+                                <div class="dropdown">
+                                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="#"><i class="fas fa-eye me-2"></i>عرض</a></li>
+                                        <li><a class="dropdown-item" href="#"><i class="fas fa-edit me-2"></i>تعديل</a></li>
+                                        <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-ban me-2"></i>تعليق</a></li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center mt-4">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true"><i class="fas fa-chevron-right"></i></a>
+                    </li>
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="#"><i class="fas fa-chevron-left"></i></a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+</div>
+
+<!-- هنا سيتم إضافة محتوى الجزء الرابع (النافذة المنبثقة) -->
+<div class="modal fade" id="addMarketerModal" tabindex="-1" aria-labelledby="addMarketerModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addMarketerModalLabel">إضافة مسوق جديد</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="name" class="col-form-label">اسم المسوق:</label>
+                        <input type="text" class="form-control" id="name" placeholder="اسم المسوق">
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="col-form-label">البريد الإلكتروني:</label>
+                        <input type="email" class="form-control" id="email" placeholder="البريد الإلكتروني">
+                    </div>
+                    <div class="mb-3">
+                        <label for="phone" class="col-form-label">رقم الهاتف:</label>
+                        <input type="tel" class="form-control" id="phone" placeholder="رقم الهاتف">
+                    </div>
+                    <div class="mb-3">
+                        <label for="project" class="col-form-label">المشروع:</label>
+                        <select class="form-select" id="project" aria-label="المشروع">
+                            <option selected>اختر مشروع</option>
+                            <option value="1">مشروع 1</option>
+                            <option value="2">مشروع 2</option>
+                            <option value="3">مشروع 3</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                <button type="button" class="btn btn-primary">إضافة</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

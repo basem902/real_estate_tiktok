@@ -1,0 +1,517 @@
+{% extends 'marketers/includes/base.html' %}
+
+{% block title %}مركز التواصل الاجتماعي - لوحة تحكم المسوقين العقاريين{% endblock %}
+
+{% block meta_description %}مركز التواصل الاجتماعي - إدارة حضورك على مواقع التواصل الاجتماعي من مكان واحد{% endblock %}
+
+{% block additional_css %}
+<style>
+    /* تحسينات تصميم الصفحة وتقليل المساحات البيضاء */
+    .card {
+        border-radius: var(--card-border-radius);
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+        height: 100%;
+        border: none;
+        margin-bottom: 1rem;
+    }
+    
+    .card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .row {
+        margin-right: -8px;
+        margin-left: -8px;
+    }
+    
+    .row > [class^="col-"] {
+        padding-right: 8px;
+        padding-left: 8px;
+    }
+    
+    .chart-container {
+        position: relative;
+        height: 220px;
+        margin-bottom: 1rem;
+    }
+    
+    .counter {
+        font-weight: 600;
+        color: var(--primary-color);
+    }
+    
+    .upcoming-posts {
+        max-height: 400px;
+        overflow-y: auto;
+    }
+
+    .social-account-icon {
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+    }
+    
+    .nav-tabs .nav-link {
+        border: none;
+        border-bottom: 2px solid transparent;
+        padding: 0.75rem 1rem;
+    }
+    
+    .nav-tabs .nav-link.active {
+        border-bottom: 2px solid var(--primary-color);
+        background-color: transparent;
+        color: var(--primary-color);
+    }
+    
+    /* ستايل خاص ببطاقات الأدوات */
+    .tool-card {
+        position: relative;
+        overflow: hidden;
+        border-radius: var(--card-border-radius);
+    }
+    
+    .tool-card .card-body {
+        padding: 1.5rem;
+        z-index: 2;
+        position: relative;
+    }
+    
+    .tool-card .card-icon {
+        font-size: 2.5rem;
+        margin-bottom: 1.25rem;
+        display: inline-block;
+    }
+    
+    .tool-card .card-bg-icon {
+        position: absolute;
+        bottom: -20px;
+        right: -20px;
+        font-size: 8rem;
+        opacity: 0.05;
+        transform: rotate(-15deg);
+        z-index: 1;
+    }
+    
+    .tool-card h5 {
+        font-weight: 600;
+        margin-bottom: 0.75rem;
+    }
+    
+    .tool-card p {
+        color: var(--bs-gray-600);
+    }
+    
+    .tool-card .btn {
+        transition: all 0.3s ease;
+        border-radius: 20px;
+        font-weight: 500;
+    }
+    
+    /* تعريف فئة مخصصة لتقسيم البطاقات على 5 أعمدة متساوية */
+    @media (min-width: 992px) {
+        .col-lg-1-5 {
+            flex: 0 0 20%;
+            max-width: 20%;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- عنوان الصفحة والإجراءات -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="page-title mb-0">مركز التواصل الاجتماعي</h2>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addAccountModal">
+            <i class="fas fa-plus-circle me-2"></i>ربط حساب جديد
+        </button>
+    </div>
+
+    <!-- أدوات التفاعل الاجتماعي -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-white">
+            <h5 class="mb-0">أدوات التفاعل الاجتماعي</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <!-- بطاقة إدارة التقييمات -->
+                <div class="col-md-4 col-lg-1-5 mb-4">
+                    <div class="card tool-card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center">
+                            <i class="fas fa-star card-icon text-warning"></i>
+                            <i class="fas fa-star card-bg-icon"></i>
+                            <h5>إدارة التقييمات</h5>
+                            <p class="mb-4">تحليل وإدارة تقييمات العملاء والرد عليها بكفاءة</p>
+                            <a href="/marketers/social/review-manager" class="btn btn-sm btn-outline-warning w-100">
+                                <i class="fas fa-external-link-alt me-1"></i>فتح الأداة
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- بطاقة إدارة المتابعين -->
+                <div class="col-md-4 col-lg-1-5 mb-4">
+                    <div class="card tool-card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center">
+                            <i class="fas fa-users card-icon text-primary"></i>
+                            <i class="fas fa-users card-bg-icon"></i>
+                            <h5>إدارة المتابعين</h5>
+                            <p class="mb-4">متابعة وتحليل جمهورك على منصات التواصل الاجتماعي</p>
+                            <a href="/marketers/social/followers-manager" class="btn btn-sm btn-outline-primary w-100">
+                                <i class="fas fa-external-link-alt me-1"></i>فتح الأداة
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- بطاقة إدارة الإعجابات -->
+                <div class="col-md-4 col-lg-1-5 mb-4">
+                    <div class="card tool-card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center">
+                            <i class="fas fa-thumbs-up card-icon text-danger"></i>
+                            <i class="fas fa-thumbs-up card-bg-icon"></i>
+                            <h5>إدارة الإعجابات</h5>
+                            <p class="mb-4">تحليل ومتابعة إعجابات المنشورات وقياس مستوى التفاعل</p>
+                            <a href="/marketers/social/likes-manager" class="btn btn-sm btn-outline-danger w-100">
+                                <i class="fas fa-external-link-alt me-1"></i>فتح الأداة
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- بطاقة إدارة التعليقات -->
+                <div class="col-md-4 col-lg-1-5 mb-4">
+                    <div class="card tool-card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center">
+                            <i class="fas fa-comment card-icon text-success"></i>
+                            <i class="fas fa-comment card-bg-icon"></i>
+                            <h5>إدارة التعليقات</h5>
+                            <p class="mb-4">الرد على تعليقات المتابعين وتحليل اتجاهات آرائهم</p>
+                            <a href="/marketers/social/comments-manager" class="btn btn-sm btn-outline-success w-100">
+                                <i class="fas fa-external-link-alt me-1"></i>فتح الأداة
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- بطاقة المحادثات الداخلية -->
+                <div class="col-md-4 col-lg-1-5 mb-4">
+                    <div class="card tool-card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center">
+                            <i class="fas fa-comments card-icon text-info"></i>
+                            <i class="fas fa-comments card-bg-icon"></i>
+                            <h5>المحادثات الداخلية</h5>
+                            <p class="mb-4">إدارة المحادثات مع العملاء والمهتمين بشكل مركزي</p>
+                            <a href="/marketers/social/chats-manager" class="btn btn-sm btn-outline-info w-100">
+                                <i class="fas fa-external-link-alt me-1"></i>فتح الأداة
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- لوحة الإحصائيات العامة -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-users fa-2x text-primary mb-3"></i>
+                    <h3 class="counter" id="totalFollowers">0</h3>
+                    <p class="card-text">إجمالي المتابعين</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-comment fa-2x text-success mb-3"></i>
+                    <h3 class="counter" id="totalEngagements">0</h3>
+                    <p class="card-text">التفاعلات (7 أيام)</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-chart-line fa-2x text-info mb-3"></i>
+                    <h3 class="counter" id="growthRate">0%</h3>
+                    <p class="card-text">معدل النمو الشهري</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-bullhorn fa-2x text-warning mb-3"></i>
+                    <h3 class="counter" id="scheduledPosts">0</h3>
+                    <p class="card-text">منشورات مجدولة</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- الحسابات المرتبطة والإحصائيات -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-white">
+            <h5 class="mb-0">الحسابات المرتبطة</h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle" id="socialAccountsTable">
+                    <thead class="table-light">
+                        <tr>
+                            <th>المنصة</th>
+                            <th>اسم الحساب</th>
+                            <th>المتابعين</th>
+                            <th>منشورات</th>
+                            <th>تفاعل</th>
+                            <th>حالة الربط</th>
+                            <th>خيارات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- سيتم ملء هذا الجدول بواسطة JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- جدولة المنشورات -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-white d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">جدولة المنشورات</h5>
+            <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#schedulePostModal">
+                <i class="fas fa-calendar-plus me-1"></i>جدولة منشور جديد
+            </button>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-lg-8">
+                    <!-- التقويم -->
+                    <div id="contentCalendar" class="content-calendar"></div>
+                </div>
+                <div class="col-lg-4">
+                    <!-- قائمة المنشورات المجدولة القادمة -->
+                    <div class="upcoming-posts">
+                        <h6 class="mb-3">المنشورات القادمة</h6>
+                        <div id="upcomingPostsList">
+                            <!-- سيتم ملء هذه القائمة بواسطة JavaScript -->
+                            <div class="text-center text-muted py-4">
+                                <i class="fas fa-calendar-day fa-2x mb-2"></i>
+                                <p class="mb-0">لا توجد منشورات مجدولة قادمة</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- تحليلات المنصات -->
+    <div class="card shadow-sm">
+        <div class="card-header bg-white">
+            <ul class="nav nav-tabs card-header-tabs" id="platformTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="facebook-tab" data-bs-toggle="tab" data-bs-target="#facebook" type="button" role="tab" aria-controls="facebook" aria-selected="true">
+                        <i class="fab fa-facebook text-primary me-1"></i>فيسبوك
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="instagram-tab" data-bs-toggle="tab" data-bs-target="#instagram" type="button" role="tab" aria-controls="instagram" aria-selected="false">
+                        <i class="fab fa-instagram text-danger me-1"></i>انستجرام
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="twitter-tab" data-bs-toggle="tab" data-bs-target="#twitter" type="button" role="tab" aria-controls="twitter" aria-selected="false">
+                        <i class="fab fa-twitter text-info me-1"></i>تويتر
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="tiktok-tab" data-bs-toggle="tab" data-bs-target="#tiktok" type="button" role="tab" aria-controls="tiktok" aria-selected="false">
+                        <i class="fab fa-tiktok me-1"></i>تيك توك
+                    </button>
+                </li>
+            </ul>
+        </div>
+        <div class="card-body">
+            <div class="tab-content" id="platformTabContent">
+                <!-- تحليلات فيسبوك -->
+                <div class="tab-pane fade show active" id="facebook" role="tabpanel" aria-labelledby="facebook-tab">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>نمو المتابعين</h6>
+                            <div class="chart-container">
+                                <canvas id="facebookFollowersChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>تفاعل المنشورات</h6>
+                            <div class="chart-container">
+                                <canvas id="facebookEngagementChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- تحليلات انستجرام -->
+                <div class="tab-pane fade" id="instagram" role="tabpanel" aria-labelledby="instagram-tab">
+                    <div class="placeholder-content text-center py-5">
+                        <i class="fab fa-instagram fa-3x text-muted mb-3"></i>
+                        <p class="mb-0">قم بربط حساب انستجرام لعرض التحليلات</p>
+                    </div>
+                </div>
+                
+                <!-- تحليلات تويتر -->
+                <div class="tab-pane fade" id="twitter" role="tabpanel" aria-labelledby="twitter-tab">
+                    <div class="placeholder-content text-center py-5">
+                        <i class="fab fa-twitter fa-3x text-muted mb-3"></i>
+                        <p class="mb-0">قم بربط حساب تويتر لعرض التحليلات</p>
+                    </div>
+                </div>
+                
+                <!-- تحليلات تيك توك -->
+                <div class="tab-pane fade" id="tiktok" role="tabpanel" aria-labelledby="tiktok-tab">
+                    <div class="placeholder-content text-center py-5">
+                        <i class="fab fa-tiktok fa-3x text-muted mb-3"></i>
+                        <p class="mb-0">قم بربط حساب تيك توك لعرض التحليلات</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- النوافذ المنبثقة -->
+<!-- نافذة إضافة حساب جديد -->
+<div class="modal fade" id="addAccountModal" tabindex="-1" aria-labelledby="addAccountModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addAccountModalLabel">ربط حساب جديد</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label">اختر المنصة</label>
+                    <div class="d-flex justify-content-between">
+                        <button class="btn btn-outline-primary flex-grow-1 me-2 platform-btn" data-platform="facebook">
+                            <i class="fab fa-facebook-f me-2"></i>فيسبوك
+                        </button>
+                        <button class="btn btn-outline-danger flex-grow-1 me-2 platform-btn" data-platform="instagram">
+                            <i class="fab fa-instagram me-2"></i>انستجرام
+                        </button>
+                        <button class="btn btn-outline-info flex-grow-1 me-2 platform-btn" data-platform="twitter">
+                            <i class="fab fa-twitter me-2"></i>تويتر
+                        </button>
+                        <button class="btn btn-outline-dark flex-grow-1 platform-btn" data-platform="tiktok">
+                            <i class="fab fa-tiktok me-2"></i>تيك توك
+                        </button>
+                    </div>
+                </div>
+                <div class="connection-instructions" id="connectionInstructions">
+                    <p class="text-center text-muted my-4">اختر منصة للحصول على تعليمات الربط</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                <button type="button" class="btn btn-primary" id="connectAccountBtn" disabled>ربط الحساب</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- نافذة جدولة منشور جديد -->
+<div class="modal fade" id="schedulePostModal" tabindex="-1" aria-labelledby="schedulePostModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="schedulePostModalLabel">جدولة منشور جديد</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+            </div>
+            <div class="modal-body">
+                <form id="schedulePostForm">
+                    <div class="mb-3">
+                        <label class="form-label">المنصات</label>
+                        <div class="platform-selection">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="facebookPlatform" value="facebook">
+                                <label class="form-check-label" for="facebookPlatform"><i class="fab fa-facebook text-primary me-1"></i>فيسبوك</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="instagramPlatform" value="instagram">
+                                <label class="form-check-label" for="instagramPlatform"><i class="fab fa-instagram text-danger me-1"></i>انستجرام</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="twitterPlatform" value="twitter">
+                                <label class="form-check-label" for="twitterPlatform"><i class="fab fa-twitter text-info me-1"></i>تويتر</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="tiktokPlatform" value="tiktok">
+                                <label class="form-check-label" for="tiktokPlatform"><i class="fab fa-tiktok me-1"></i>تيك توك</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="postContent" class="form-label">محتوى المنشور</label>
+                        <textarea class="form-control" id="postContent" rows="4" placeholder="اكتب محتوى المنشور هنا..."></textarea>
+                        <div class="form-text">عدد الأحرف المتبقية: <span id="charCount">280</span></div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">الوسائط</label>
+                        <div class="dropzone-upload p-3 text-center border rounded">
+                            <i class="fas fa-upload fa-2x mb-2 text-muted"></i>
+                            <p class="mb-1">اسحب الصور أو الفيديوهات هنا</p>
+                            <p class="text-muted small mb-2">أو</p>
+                            <button type="button" class="btn btn-sm btn-outline-secondary">اختر الملفات</button>
+                            <input type="file" id="mediaUpload" multiple class="d-none">
+                        </div>
+                        <div id="mediaPreview" class="row mt-2">
+                            <!-- سيتم عرض معاينة للوسائط هنا -->
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="scheduleDate" class="form-label">تاريخ النشر</label>
+                            <input type="date" class="form-control" id="scheduleDate">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="scheduleTime" class="form-label">وقت النشر</label>
+                            <input type="time" class="form-control" id="scheduleTime">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="postTags" class="form-label">الوسوم</label>
+                        <input type="text" class="form-control" id="postTags" placeholder="أضف الوسوم مفصولة بفواصل (مثال: عقارات, استثمار, فلل)">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                <button type="button" class="btn btn-primary" id="saveScheduleBtn">حفظ وجدولة</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- مكتبات JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+
+<!-- ملفات JavaScript المخصصة -->
+<script src="../assets/js/dashboard-common.js"></script>
+<script src="../assets/js/components/navigation-loader.js"></script>
+<script src="../social/js/social-accounts.js"></script>
+<script src="../social/js/social-analytics.js"></script>
+<script src="../social/js/content-scheduler.js"></script>
+<script src="../notifications/assets/js/notifications-manager.js"></script>
+{% endblock %}

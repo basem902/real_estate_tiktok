@@ -1,0 +1,1501 @@
+{% extends 'developers/dashboard/base_dashboard.html' %}
+
+{% block title %}التحليلات والإحصائيات | لوحة التحكم{% endblock %}
+
+{% block content %}
+<!-- رأس الصفحة -->
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-4 border-bottom">
+    <h1 class="h2">التحليلات والإحصائيات</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group me-2">
+            <button type="button" class="btn btn-sm btn-outline-primary">
+                <i class="fas fa-file-export"></i> تصدير البيانات
+            </button>
+            <button type="button" class="btn btn-sm btn-outline-success">
+                <i class="fas fa-print"></i> طباعة التقرير
+            </button>
+        </div>
+        <div class="dropdown">
+            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="timeFilterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fas fa-calendar"></i> آخر 30 يوم
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="timeFilterDropdown">
+                <li><a class="dropdown-item" href="#">آخر 7 أيام</a></li>
+                <li><a class="dropdown-item active" href="#">آخر 30 يوم</a></li>
+                <li><a class="dropdown-item" href="#">ربع السنة الحالي</a></li>
+                <li><a class="dropdown-item" href="#">السنة الحالية</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="#">تحديد فترة مخصصة</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- بطاقات النظرة العامة للإحصائيات -->
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body d-flex align-items-center">
+                <div class="rounded-circle bg-primary bg-opacity-10 p-3 me-3">
+                    <i class="fas fa-eye text-primary fa-2x"></i>
+                </div>
+                <div>
+                    <div class="fs-4 fw-bold">45,248</div>
+                    <div class="text-muted">عدد المشاهدات</div>
+                </div>
+            </div>
+            <div class="card-footer bg-white border-0">
+                <small class="d-flex align-items-center text-success">
+                    <i class="fas fa-arrow-up me-1"></i>
+                    <span>12.5% زيادة</span>
+                    <span class="ms-auto text-muted">مقارنة بالشهر السابق</span>
+                </small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body d-flex align-items-center">
+                <div class="rounded-circle bg-success bg-opacity-10 p-3 me-3">
+                    <i class="fas fa-users text-success fa-2x"></i>
+                </div>
+                <div>
+                    <div class="fs-4 fw-bold">1,248</div>
+                    <div class="text-muted">زيارات الصفحة</div>
+                </div>
+            </div>
+            <div class="card-footer bg-white border-0">
+                <small class="d-flex align-items-center text-success">
+                    <i class="fas fa-arrow-up me-1"></i>
+                    <span>8.3% زيادة</span>
+                    <span class="ms-auto text-muted">مقارنة بالشهر السابق</span>
+                </small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body d-flex align-items-center">
+                <div class="rounded-circle bg-info bg-opacity-10 p-3 me-3">
+                    <i class="fas fa-chart-line text-info fa-2x"></i>
+                </div>
+                <div>
+                    <div class="fs-4 fw-bold">3.2%</div>
+                    <div class="text-muted">معدل التحويل</div>
+                </div>
+            </div>
+            <div class="card-footer bg-white border-0">
+                <small class="d-flex align-items-center text-danger">
+                    <i class="fas fa-arrow-down me-1"></i>
+                    <span>0.5% انخفاض</span>
+                    <span class="ms-auto text-muted">مقارنة بالشهر السابق</span>
+                </small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body d-flex align-items-center">
+                <div class="rounded-circle bg-warning bg-opacity-10 p-3 me-3">
+                    <i class="fas fa-clock text-warning fa-2x"></i>
+                </div>
+                <div>
+                    <div class="fs-4 fw-bold">3:24</div>
+                    <div class="text-muted">متوسط وقت التصفح</div>
+                </div>
+            </div>
+            <div class="card-footer bg-white border-0">
+                <small class="d-flex align-items-center text-success">
+                    <i class="fas fa-arrow-up me-1"></i>
+                    <span>0:42 زيادة</span>
+                    <span class="ms-auto text-muted">مقارنة بالشهر السابق</span>
+                </small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- الرسوم البيانية الرئيسية للتحليلات -->
+<div class="row mb-4">
+    <div class="col-lg-8">
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+                <h5 class="card-title mb-0">أداء المشاريع</h5>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-sm btn-outline-secondary">المشاهدات</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary active">الزيارات</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary">التحويلات</button>
+                </div>
+            </div>
+            <div class="card-body">
+                <canvas id="projectPerformanceChart" height="300"></canvas>
+            </div>
+        </div>
+        
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+                <h5 class="card-title mb-0">توزيع مصادر الزيارات</h5>
+                <div class="dropdown">
+                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-filter"></i> المشاريع
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item active" href="#">جميع المشاريع</a></li>
+                        <li><a class="dropdown-item" href="#">الواحة السكني</a></li>
+                        <li><a class="dropdown-item" href="#">برج الأفق</a></li>
+                        <li><a class="dropdown-item" href="#">فلل الفخامة</a></li>
+                        <li><a class="dropdown-item" href="#">مشروع النخيل</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card-body">
+                <canvas id="trafficSourcesChart" height="250"></canvas>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header bg-white py-3">
+                <h5 class="card-title mb-0">توزيع المشاهدات حسب المشروع</h5>
+            </div>
+            <div class="card-body">
+                <canvas id="projectViewsDistributionChart" height="200"></canvas>
+                <div class="mt-4">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <div class="d-flex align-items-center">
+                            <div style="width: 12px; height: 12px; background-color: #4e73df; border-radius: 50%; margin-left: 8px;"></div>
+                            <span>الواحة السكني</span>
+                        </div>
+                        <span class="badge bg-light text-dark">38%</span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <div class="d-flex align-items-center">
+                            <div style="width: 12px; height: 12px; background-color: #1cc88a; border-radius: 50%; margin-left: 8px;"></div>
+                            <span>برج الأفق</span>
+                        </div>
+                        <span class="badge bg-light text-dark">24%</span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <div class="d-flex align-items-center">
+                            <div style="width: 12px; height: 12px; background-color: #36b9cc; border-radius: 50%; margin-left: 8px;"></div>
+                            <span>فلل الفخامة</span>
+                        </div>
+                        <span class="badge bg-light text-dark">20%</span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center">
+                            <div style="width: 12px; height: 12px; background-color: #f6c23e; border-radius: 50%; margin-left: 8px;"></div>
+                            <span>مشروع النخيل</span>
+                        </div>
+                        <span class="badge bg-light text-dark">18%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white py-3">
+                <h5 class="card-title mb-0">أداء حملات التسويق</h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="list-group list-group-flush">
+                    <div class="list-group-item border-0 px-3 py-3">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="fw-bold">حملة تسويق برج الأفق</span>
+                            <span class="badge bg-success rounded-pill">نشطة</span>
+                        </div>
+                        <div class="mb-2 small text-muted">نسبة التحويل: 4.2%</div>
+                        <div class="progress" style="height: 5px;">
+                            <div class="progress-bar bg-success" role="progressbar" style="width: 75%;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                    <div class="list-group-item border-0 px-3 py-3">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="fw-bold">حملة تسويق الواحة السكني</span>
+                            <span class="badge bg-success rounded-pill">نشطة</span>
+                        </div>
+                        <div class="mb-2 small text-muted">نسبة التحويل: 3.8%</div>
+                        <div class="progress" style="height: 5px;">
+                            <div class="progress-bar bg-primary" role="progressbar" style="width: 68%;" aria-valuenow="68" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                    <div class="list-group-item border-0 px-3 py-3">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="fw-bold">حملة تسويق فلل الفخامة</span>
+                            <span class="badge bg-secondary rounded-pill">متوقفة</span>
+                        </div>
+                        <div class="mb-2 small text-muted">نسبة التحويل: 2.5%</div>
+                        <div class="progress" style="height: 5px;">
+                            <div class="progress-bar bg-danger" role="progressbar" style="width: 45%;" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                    <div class="list-group-item border-0 px-3 py-3">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="fw-bold">حملة تسويق مشروع النخيل</span>
+                            <span class="badge bg-warning rounded-pill">مجدولة</span>
+                        </div>
+                        <div class="mb-2 small text-muted">تاريخ البدء: 01 أبريل 2025</div>
+                        <div class="progress" style="height: 5px;">
+                            <div class="progress-bar bg-warning" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- تحليلات الزوار والبيانات الديموغرافية -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+                <h5 class="card-title mb-0">تحليلات الزوار</h5>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-sm btn-outline-secondary active">الأجهزة</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary">المتصفحات</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary">المدن</button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <h6 class="mb-3 fw-bold">توزيع الأجهزة</h6>
+                        <canvas id="devicesChart" height="220"></canvas>
+                    </div>
+                    <div class="col-md-8">
+                        <h6 class="mb-3 fw-bold">الزوار حسب الوقت</h6>
+                        <canvas id="visitsByTimeChart" height="220"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- جدول التحليلات المفصلة -->
+<div class="card border-0 shadow-sm mb-4">
+    <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center flex-wrap">
+        <h5 class="card-title mb-2 mb-md-0">التحليلات المفصلة حسب المشروع</h5>
+        <div class="d-flex gap-2 flex-wrap">
+            <div class="input-group" style="width: 250px;">
+                <input type="text" class="form-control form-control-sm" placeholder="بحث...">
+                <button class="btn btn-sm btn-outline-secondary" type="button"><i class="fas fa-search"></i></button>
+            </div>
+            <div class="dropdown ms-2">
+                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fas fa-filter me-1"></i>تصفية
+                </button>
+                <div class="dropdown-menu p-3" style="width: 280px;">
+                    <h6 class="dropdown-header px-0 fw-bold">خيارات التصفية</h6>
+                    <div class="mb-3">
+                        <label class="form-label small">حالة المشروع</label>
+                        <select class="form-select form-select-sm">
+                            <option selected>الكل</option>
+                            <option>نشط</option>
+                            <option>متوقف</option>
+                            <option>جديد</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small">نوع المشروع</label>
+                        <select class="form-select form-select-sm">
+                            <option selected>الكل</option>
+                            <option>مجمع سكني</option>
+                            <option>برج سكني</option>
+                            <option>فلل سكنية</option>
+                            <option>شقق سكنية</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small">حسب الأداء</label>
+                        <select class="form-select form-select-sm">
+                            <option selected>الكل</option>
+                            <option>أداء مرتفع</option>
+                            <option>أداء متوسط</option>
+                            <option>أداء منخفض</option>
+                        </select>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <button class="btn btn-sm btn-outline-secondary">إعادة ضبط</button>
+                        <button class="btn btn-sm btn-primary">تطبيق التصفية</button>
+                    </div>
+                </div>
+            </div>
+            <div class="dropdown ms-2">
+                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fas fa-sort me-1"></i>ترتيب
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item active" href="#"><i class="fas fa-sort-amount-down me-2"></i>المشاهدات (تنازلي)</a></li>
+                    <li><a class="dropdown-item" href="#"><i class="fas fa-sort-amount-up me-2"></i>المشاهدات (تصاعدي)</a></li>
+                    <li><a class="dropdown-item" href="#"><i class="fas fa-sort-amount-down me-2"></i>معدل التحويل (تنازلي)</a></li>
+                    <li><a class="dropdown-item" href="#"><i class="fas fa-sort-amount-up me-2"></i>معدل التحويل (تصاعدي)</a></li>
+                    <li><a class="dropdown-item" href="#"><i class="fas fa-sort-alpha-down me-2"></i>اسم المشروع (أبجدي)</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="bg-light">
+                    <tr>
+                        <th class="border-0 py-3 ps-4">المشروع</th>
+                        <th class="border-0 py-3">المشاهدات</th>
+                        <th class="border-0 py-3">الزيارات</th>
+                        <th class="border-0 py-3">معدل التحويل</th>
+                        <th class="border-0 py-3">متوسط وقت التصفح</th>
+                        <th class="border-0 py-3">الحالة</th>
+                        <th class="border-0 py-3 pe-4">إجراءات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="ps-4">
+                            <div class="d-flex align-items-center">
+                                <img src="https://via.placeholder.com/40x40" class="rounded me-3" alt="صورة المشروع">
+                                <div>
+                                    <h6 class="mb-0">الواحة السكني</h6>
+                                    <span class="text-muted small">مجمع سكني</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td>17,248</td>
+                        <td>4,532</td>
+                        <td>3.8%</td>
+                        <td>4:12</td>
+                        <td><span class="badge bg-success rounded-pill">نشط</span></td>
+                        <td class="pe-4">
+                            <div class="dropdown">
+                                <button class="btn btn-sm px-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-chart-line me-2 text-primary"></i>تفاصيل التحليلات</a></li>
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-file-export me-2 text-success"></i>تصدير البيانات</a></li>
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-print me-2 text-info"></i>طباعة التقرير</a></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="ps-4">
+                            <div class="d-flex align-items-center">
+                                <img src="https://via.placeholder.com/40x40" class="rounded me-3" alt="صورة المشروع">
+                                <div>
+                                    <h6 class="mb-0">برج الأفق</h6>
+                                    <span class="text-muted small">برج سكني</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td>10,865</td>
+                        <td>3,248</td>
+                        <td>4.2%</td>
+                        <td>3:45</td>
+                        <td><span class="badge bg-success rounded-pill">نشط</span></td>
+                        <td class="pe-4">
+                            <div class="dropdown">
+                                <button class="btn btn-sm px-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-chart-line me-2 text-primary"></i>تفاصيل التحليلات</a></li>
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-file-export me-2 text-success"></i>تصدير البيانات</a></li>
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-print me-2 text-info"></i>طباعة التقرير</a></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="ps-4">
+                            <div class="d-flex align-items-center">
+                                <img src="https://via.placeholder.com/40x40" class="rounded me-3" alt="صورة المشروع">
+                                <div>
+                                    <h6 class="mb-0">فلل الفخامة</h6>
+                                    <span class="text-muted small">فلل سكنية</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td>9,052</td>
+                        <td>2,148</td>
+                        <td>2.5%</td>
+                        <td>2:38</td>
+                        <td><span class="badge bg-secondary rounded-pill">متوقف</span></td>
+                        <td class="pe-4">
+                            <div class="dropdown">
+                                <button class="btn btn-sm px-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-chart-line me-2 text-primary"></i>تفاصيل التحليلات</a></li>
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-file-export me-2 text-success"></i>تصدير البيانات</a></li>
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-print me-2 text-info"></i>طباعة التقرير</a></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="ps-4">
+                            <div class="d-flex align-items-center">
+                                <img src="https://via.placeholder.com/40x40" class="rounded me-3" alt="صورة المشروع">
+                                <div>
+                                    <h6 class="mb-0">مشروع النخيل</h6>
+                                    <span class="text-muted small">شقق سكنية</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td>8,083</td>
+                        <td>1,842</td>
+                        <td>2.2%</td>
+                        <td>2:15</td>
+                        <td><span class="badge bg-warning rounded-pill">جديد</span></td>
+                        <td class="pe-4">
+                            <div class="dropdown">
+                                <button class="btn btn-sm px-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-chart-line me-2 text-primary"></i>تفاصيل التحليلات</a></li>
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-file-export me-2 text-success"></i>تصدير البيانات</a></li>
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-print me-2 text-info"></i>طباعة التقرير</a></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="card-footer bg-white py-3">
+        <div class="d-flex justify-content-between align-items-center">
+            <p class="text-muted mb-0 small">عرض 1-4 من 4 مشاريع</p>
+            <nav aria-label="Page navigation">
+                <ul class="pagination pagination-sm mb-0">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<!-- قسم التقارير المخصصة -->
+<div class="card border-0 shadow-sm mb-4">
+    <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+        <h5 class="card-title mb-0">التقارير المخصصة</h5>
+        <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#createReportModal"><i class="fas fa-plus me-2"></i>إنشاء تقرير جديد</button>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-lg-4 mb-4">
+                <div class="card h-100 border">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h6 class="fw-bold mb-0">تقرير الأداء الشهري</h6>
+                            <span class="badge bg-light text-dark">شهري</span>
+                        </div>
+                        <p class="text-muted small mb-3">يحتوي على ملخص أداء جميع المشاريع والإعلانات خلال فترة الشهر الماضي</p>
+                        <div class="d-flex align-items-center text-muted small mb-3">
+                            <i class="far fa-calendar-alt me-1"></i>
+                            <span>آخر تحديث: ١٥ مارس ٢٠٢٣</span>
+                        </div>
+                        <div class="d-flex">
+                            <button class="btn btn-sm btn-outline-primary me-2"><i class="fas fa-download me-1"></i>تنزيل</button>
+                            <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-eye me-1"></i>عرض</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-4">
+                <div class="card h-100 border">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h6 class="fw-bold mb-0">تحليل سلوك المستخدمين</h6>
+                            <span class="badge bg-light text-dark">أسبوعي</span>
+                        </div>
+                        <p class="text-muted small mb-3">يحلل سلوك المستخدمين وتفاعلهم مع المشاريع المعروضة</p>
+                        <div class="d-flex align-items-center text-muted small mb-3">
+                            <i class="far fa-calendar-alt me-1"></i>
+                            <span>آخر تحديث: ١٠ مارس ٢٠٢٣</span>
+                        </div>
+                        <div class="d-flex">
+                            <button class="btn btn-sm btn-outline-primary me-2"><i class="fas fa-download me-1"></i>تنزيل</button>
+                            <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-eye me-1"></i>عرض</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-4">
+                <div class="card h-100 border">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h6 class="fw-bold mb-0">تقرير فعالية الحملات</h6>
+                            <span class="badge bg-light text-dark">ربع سنوي</span>
+                        </div>
+                        <p class="text-muted small mb-3">يقيس فعالية الحملات التسويقية وتأثيرها على المبيعات</p>
+                        <div class="d-flex align-items-center text-muted small mb-3">
+                            <i class="far fa-calendar-alt me-1"></i>
+                            <span>آخر تحديث: ١ مارس ٢٠٢٣</span>
+                        </div>
+                        <div class="d-flex">
+                            <button class="btn btn-sm btn-outline-primary me-2"><i class="fas fa-download me-1"></i>تنزيل</button>
+                            <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-eye me-1"></i>عرض</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- أدوات التصدير -->
+<div class="card border-0 shadow-sm mb-4">
+    <div class="card-header bg-white py-3">
+        <h5 class="card-title mb-0">خيارات التصدير</h5>
+    </div>
+    <div class="card-body">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <p class="text-muted mb-3">يمكنك تصدير البيانات التحليلية بتنسيقات مختلفة للاستخدام في برامج أخرى أو لمشاركتها مع فريقك.</p>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">اختر نطاق البيانات</label>
+                    <select class="form-select mb-3">
+                        <option selected>جميع البيانات</option>
+                        <option>بيانات الشهر الحالي</option>
+                        <option>بيانات الربع الحالي</option>
+                        <option>بيانات العام الحالي</option>
+                        <option>تخصيص النطاق</option>
+                    </select>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-6">
+                        <label class="form-label">من تاريخ</label>
+                        <input type="date" class="form-control">
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label">إلى تاريخ</label>
+                        <input type="date" class="form-control">
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">اختر تنسيق التصدير</label>
+                    <div class="d-flex flex-wrap gap-2">
+                        <button class="btn btn-outline-primary"><i class="far fa-file-excel me-2"></i>Excel</button>
+                        <button class="btn btn-outline-primary"><i class="far fa-file-pdf me-2"></i>PDF</button>
+                        <button class="btn btn-outline-primary"><i class="far fa-file-csv me-2"></i>CSV</button>
+                        <button class="btn btn-outline-primary"><i class="far fa-file-image me-2"></i>صور الرسوم البيانية</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 text-center">
+                <img src="https://via.placeholder.com/400x200" class="img-fluid rounded" alt="صورة التصدير">
+                <p class="text-muted mt-3">احصل على تقارير جاهزة للطباعة ومشاركة النتائج مع فريقك أو المستثمرين المحتملين.</p>
+                <button class="btn btn-primary mt-2"><i class="fas fa-cog me-2"></i>إعدادات التصدير المتقدمة</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- شريط التنبيهات والإشعارات -->
+<div class="card border-0 shadow-sm mb-4">
+    <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+        <h5 class="card-title mb-0">التنبيهات والإشعارات</h5>
+        <div>
+            <button class="btn btn-sm btn-outline-secondary me-2" data-bs-toggle="modal" data-bs-target="#alertSettingsModal"><i class="fas fa-cog me-1"></i>الإعدادات</button>
+            <div class="btn-group">
+                <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fas fa-bell me-1"></i>التنبيهات <span class="badge bg-danger rounded-pill">3</span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end notifications-dropdown" style="width: 320px;">
+                    <li><h6 class="dropdown-header">آخر التنبيهات</h6></li>
+                    <li>
+                        <a class="dropdown-item notification-item py-2" href="#">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0">
+                                    <span class="notification-icon bg-warning text-white">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                    </span>
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <h6 class="mb-1 fw-bold small">انخفاض في معدل التحويل</h6>
+                                    <p class="text-muted small mb-1">معدل التحويل لمشروع "برج الأفق" انخفض بنسبة 5% خلال الأسبوع الماضي</p>
+                                    <span class="text-muted small">منذ ساعتين</span>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item notification-item py-2" href="#">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0">
+                                    <span class="notification-icon bg-success text-white">
+                                        <i class="fas fa-arrow-up"></i>
+                                    </span>
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <h6 class="mb-1 fw-bold small">ارتفاع في معدل المشاهدات</h6>
+                                    <p class="text-muted small mb-1">ارتفعت مشاهدات مشروع "الواحة السكني" بنسبة 20% هذا الأسبوع</p>
+                                    <span class="text-muted small">منذ 8 ساعات</span>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item notification-item py-2" href="#">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0">
+                                    <span class="notification-icon bg-danger text-white">
+                                        <i class="fas fa-arrow-down"></i>
+                                    </span>
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <h6 class="mb-1 fw-bold small">انخفاض في عدد الزيارات</h6>
+                                    <p class="text-muted small mb-1">انخفضت عدد الزيارات من محركات البحث بنسبة 12% في الأسبوع الماضي</p>
+                                    <span class="text-muted small">منذ يوم</span>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item text-center" href="#">عرض جميع التنبيهات</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="alert alert-warning d-flex alert-dismissible fade show mb-3" role="alert">
+            <div class="flex-shrink-0 me-3">
+                <i class="fas fa-exclamation-triangle fa-2x"></i>
+            </div>
+            <div>
+                <h5 class="alert-heading fw-bold">انخفاض معدل التحويل!</h5>
+                <p class="mb-0">لوحظ انخفاض في معدل التحويل لمشروع "برج الأفق" بنسبة 5% مقارنة بالشهر الماضي. قد تحتاج إلى مراجعة استراتيجية التسويق والمحتوى.</p>
+                <button type="button" class="btn btn-sm btn-outline-dark mt-2">تحليل المشكلة</button>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div class="alert alert-success d-flex alert-dismissible fade show" role="alert">
+            <div class="flex-shrink-0 me-3">
+                <i class="fas fa-check-circle fa-2x"></i>
+            </div>
+            <div>
+                <h5 class="alert-heading fw-bold">أداء ممتاز!</h5>
+                <p class="mb-0">زاد عدد مشاهدات مشروع "الواحة السكني" بنسبة 20% هذا الأسبوع. استمر بالعمل الجيد وتحديث المحتوى بانتظام.</p>
+                <button type="button" class="btn btn-sm btn-outline-dark mt-2">عرض التفاصيل</button>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+
+<!-- نافذة منبثقة لإعدادات التنبيهات -->
+<div class="modal fade" id="alertSettingsModal" tabindex="-1" aria-labelledby="alertSettingsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="alertSettingsModalLabel">إعدادات التنبيهات</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label fw-bold">تفعيل التنبيهات</label>
+                    <div class="form-check form-switch mb-2">
+                        <input class="form-check-input" type="checkbox" id="enableNotifications" checked>
+                        <label class="form-check-label" for="enableNotifications">تفعيل جميع التنبيهات</label>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">أنواع التنبيهات</label>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="performanceAlerts" checked>
+                        <label class="form-check-label" for="performanceAlerts">تنبيهات الأداء</label>
+                    </div>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="conversionAlerts" checked>
+                        <label class="form-check-label" for="conversionAlerts">تنبيهات معدل التحويل</label>
+                    </div>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="trafficAlerts" checked>
+                        <label class="form-check-label" for="trafficAlerts">تنبيهات حركة المرور</label>
+                    </div>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="campaignAlerts" checked>
+                        <label class="form-check-label" for="campaignAlerts">تنبيهات الحملات الإعلانية</label>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="alertFrequency" class="form-label fw-bold">تكرار التنبيهات</label>
+                    <select class="form-select" id="alertFrequency">
+                        <option selected>يومياً</option>
+                        <option>أسبوعياً</option>
+                        <option>فقط عند حدوث تغييرات مهمة</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">طرق استلام التنبيهات</label>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="inAppNotifications" checked>
+                        <label class="form-check-label" for="inAppNotifications">إشعارات داخل التطبيق</label>
+                    </div>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="emailNotifications" checked>
+                        <label class="form-check-label" for="emailNotifications">بريد إلكتروني</label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                <button type="button" class="btn btn-primary">حفظ الإعدادات</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- نافذة منبثقة لإنشاء تقرير مخصص -->
+<div class="modal fade" id="createReportModal" tabindex="-1" aria-labelledby="createReportModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createReportModalLabel">إنشاء تقرير مخصص</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label fw-bold">اسم التقرير</label>
+                    <input type="text" class="form-control" placeholder="أدخل اسم التقرير">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">وصف التقرير</label>
+                    <textarea class="form-control" rows="3" placeholder="أدخل وصفاً موجزاً للتقرير"></textarea>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">تكرار التقرير</label>
+                        <select class="form-select">
+                            <option selected>لمرة واحدة</option>
+                            <option>يومي</option>
+                            <option>أسبوعي</option>
+                            <option>شهري</option>
+                            <option>ربع سنوي</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">تنسيق التقرير</label>
+                        <select class="form-select">
+                            <option selected>PDF</option>
+                            <option>Excel</option>
+                            <option>CSV</option>
+                            <option>لوحة تحكم تفاعلية</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">مكونات التقرير</label>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="includeOverview" checked>
+                        <label class="form-check-label" for="includeOverview">نظرة عامة على الأداء</label>
+                    </div>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="includeProjectPerformance" checked>
+                        <label class="form-check-label" for="includeProjectPerformance">أداء المشاريع</label>
+                    </div>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="includeTrafficSources" checked>
+                        <label class="form-check-label" for="includeTrafficSources">مصادر الزيارات</label>
+                    </div>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="includeDevicesAnalysis">
+                        <label class="form-check-label" for="includeDevicesAnalysis">تحليل الأجهزة</label>
+                    </div>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="includeCampaignsPerformance">
+                        <label class="form-check-label" for="includeCampaignsPerformance">أداء الحملات التسويقية</label>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">خيارات إضافية</label>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="includeComparison">
+                        <label class="form-check-label" for="includeComparison">مقارنة مع الفترة السابقة</label>
+                    </div>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="emailDelivery">
+                        <label class="form-check-label" for="emailDelivery">إرسال نسخة بالبريد الإلكتروني</label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                <button type="button" class="btn btn-primary">إنشاء التقرير</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<!-- اضافة النصوص البرمجية الخاصة بالصفحة -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // رسم بياني لأداء المشاريع
+        const projectPerformanceCtx = document.getElementById('projectPerformanceChart').getContext('2d');
+        const projectPerformanceChart = new Chart(projectPerformanceCtx, {
+            type: 'line',
+            data: {
+                labels: ['١ مارس', '٥ مارس', '١٠ مارس', '١٥ مارس', '٢٠ مارس', '٢٥ مارس', '٣٠ مارس'],
+                datasets: [
+                    {
+                        label: 'الواحة السكني',
+                        data: [820, 932, 901, 934, 1290, 1330, 1520],
+                        borderColor: '#4e73df',
+                        backgroundColor: 'transparent',
+                        borderWidth: 2,
+                        pointBackgroundColor: '#4e73df',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: 4,
+                        tension: 0.3
+                    },
+                    {
+                        label: 'برج الأفق',
+                        data: [620, 732, 701, 834, 1090, 1130, 1120],
+                        borderColor: '#1cc88a',
+                        backgroundColor: 'transparent',
+                        borderWidth: 2,
+                        pointBackgroundColor: '#1cc88a',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: 4,
+                        tension: 0.3
+                    },
+                    {
+                        label: 'فلل الفخامة',
+                        data: [520, 632, 701, 534, 690, 830, 720],
+                        borderColor: '#36b9cc',
+                        backgroundColor: 'transparent',
+                        borderWidth: 2,
+                        pointBackgroundColor: '#36b9cc',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: 4,
+                        tension: 0.3
+                    },
+                    {
+                        label: 'مشروع النخيل',
+                        data: [420, 532, 501, 634, 790, 730, 820],
+                        borderColor: '#f6c23e',
+                        backgroundColor: 'transparent',
+                        borderWidth: 2,
+                        pointBackgroundColor: '#f6c23e',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: 4,
+                        tension: 0.3
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        align: 'end',
+                        labels: {
+                            boxWidth: 12,
+                            usePointStyle: true,
+                            pointStyle: 'circle',
+                            padding: 20,
+                            font: {
+                                family: 'Cairo, sans-serif'
+                            }
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: '#fff',
+                        titleColor: '#333',
+                        bodyColor: '#666',
+                        titleFont: {
+                            size: 14,
+                            family: 'Cairo, sans-serif'
+                        },
+                        bodyFont: {
+                            size: 13,
+                            family: 'Cairo, sans-serif'
+                        },
+                        padding: 10,
+                        borderColor: '#ddd',
+                        borderWidth: 1,
+                        displayColors: true,
+                        callbacks: {
+                            title: function(tooltipItem) {
+                                return tooltipItem[0].label;
+                            },
+                            label: function(context) {
+                                return context.dataset.label + ': ' + context.parsed.y + ' زيارة';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            font: {
+                                family: 'Cairo, sans-serif'
+                            }
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.05)'
+                        },
+                        ticks: {
+                            font: {
+                                family: 'Cairo, sans-serif'
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // رسم بياني لمصادر الزيارات
+        const trafficSourcesCtx = document.getElementById('trafficSourcesChart').getContext('2d');
+        const trafficSourcesChart = new Chart(trafficSourcesCtx, {
+            type: 'bar',
+            data: {
+                labels: ['محركات البحث', 'إحالات', 'وسائل التواصل', 'الزيارات المباشرة', 'تطبيق الجوال'],
+                datasets: [{
+                    label: 'عدد الزيارات',
+                    data: [2340, 1896, 3428, 1254, 984],
+                    backgroundColor: [
+                        '#4e73df',
+                        '#1cc88a',
+                        '#36b9cc',
+                        '#f6c23e',
+                        '#e74a3b'
+                    ],
+                    borderWidth: 0,
+                    borderRadius: 5,
+                    maxBarThickness: 40
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        backgroundColor: '#fff',
+                        titleColor: '#333',
+                        bodyColor: '#666',
+                        titleFont: {
+                            size: 14,
+                            family: 'Cairo, sans-serif'
+                        },
+                        bodyFont: {
+                            size: 13,
+                            family: 'Cairo, sans-serif'
+                        },
+                        padding: 10,
+                        borderColor: '#ddd',
+                        borderWidth: 1,
+                        displayColors: true,
+                        callbacks: {
+                            label: function(context) {
+                                return 'الزيارات: ' + context.parsed.y;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            font: {
+                                family: 'Cairo, sans-serif'
+                            }
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.05)'
+                        },
+                        ticks: {
+                            font: {
+                                family: 'Cairo, sans-serif'
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // رسم بياني لتوزيع المشاهدات حسب المشروع
+        const projectViewsDistributionCtx = document.getElementById('projectViewsDistributionChart').getContext('2d');
+        const projectViewsDistributionChart = new Chart(projectViewsDistributionCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['الواحة السكني', 'برج الأفق', 'فلل الفخامة', 'مشروع النخيل'],
+                datasets: [{
+                    data: [38, 24, 20, 18],
+                    backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc', '#f6c23e'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '70%',
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        backgroundColor: '#fff',
+                        titleColor: '#333',
+                        bodyColor: '#666',
+                        titleFont: {
+                            size: 14,
+                            family: 'Cairo, sans-serif'
+                        },
+                        bodyFont: {
+                            size: 13,
+                            family: 'Cairo, sans-serif'
+                        },
+                        padding: 10,
+                        borderColor: '#ddd',
+                        borderWidth: 1,
+                        displayColors: true,
+                        callbacks: {
+                            label: function(context) {
+                                return context.label + ': ' + context.parsed + '%';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // رسم بياني لتوزيع الأجهزة
+        const devicesCtx = document.getElementById('devicesChart').getContext('2d');
+        const devicesChart = new Chart(devicesCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['الهاتف', 'الحاسوب', 'اللوحي'],
+                datasets: [{
+                    data: [65, 25, 10],
+                    backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '65%',
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            boxWidth: 12,
+                            usePointStyle: true,
+                            pointStyle: 'circle',
+                            padding: 15,
+                            font: {
+                                family: 'Cairo, sans-serif'
+                            }
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: '#fff',
+                        titleColor: '#333',
+                        bodyColor: '#666',
+                        titleFont: {
+                            size: 14,
+                            family: 'Cairo, sans-serif'
+                        },
+                        bodyFont: {
+                            size: 13,
+                            family: 'Cairo, sans-serif'
+                        },
+                        padding: 10,
+                        borderColor: '#ddd',
+                        borderWidth: 1,
+                        displayColors: true,
+                        callbacks: {
+                            label: function(context) {
+                                return context.label + ': ' + context.parsed + '%';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // رسم بياني للزوار حسب الوقت
+        const visitsByTimeCtx = document.getElementById('visitsByTimeChart').getContext('2d');
+        const visitsByTimeChart = new Chart(visitsByTimeCtx, {
+            type: 'line',
+            data: {
+                labels: ['٦ص', '٨ص', '١٠ص', '١٢م', '٢م', '٤م', '٦م', '٨م', '١٠م', '١٢ص'],
+                datasets: [{
+                    label: 'متوسط عدد الزوار',
+                    data: [120, 210, 380, 420, 460, 490, 540, 580, 460, 320],
+                    borderColor: '#4e73df',
+                    backgroundColor: 'rgba(78, 115, 223, 0.05)',
+                    borderWidth: 2,
+                    pointBackgroundColor: '#4e73df',
+                    pointBorderColor: '#fff',
+                    pointBorderWidth: 2,
+                    pointRadius: 4,
+                    tension: 0.3,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        backgroundColor: '#fff',
+                        titleColor: '#333',
+                        bodyColor: '#666',
+                        titleFont: {
+                            size: 14,
+                            family: 'Cairo, sans-serif'
+                        },
+                        bodyFont: {
+                            size: 13,
+                            family: 'Cairo, sans-serif'
+                        },
+                        padding: 10,
+                        borderColor: '#ddd',
+                        borderWidth: 1,
+                        displayColors: false,
+                        callbacks: {
+                            title: function(tooltipItem) {
+                                return 'الساعة: ' + tooltipItem[0].label;
+                            },
+                            label: function(context) {
+                                return 'عدد الزوار: ' + context.parsed.y;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            font: {
+                                family: 'Cairo, sans-serif'
+                            }
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.05)'
+                        },
+                        ticks: {
+                            font: {
+                                family: 'Cairo, sans-serif'
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    });
+</script>
+
+<!-- سكريبت التفاعل مع العناصر المختلفة -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // تفعيل التنبيهات القابلة للإزالة
+        const alertButtons = document.querySelectorAll('.alert .btn-close');
+        alertButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const alert = this.closest('.alert');
+                const alertInstance = new bootstrap.Alert(alert);
+                alertInstance.close();
+            });
+        });
+
+        // تفعيل نافذة إنشاء التقرير
+        const createReportButton = document.querySelector('[data-bs-target="#createReportModal"]');
+        if (createReportButton) {
+            createReportButton.addEventListener('click', function() {
+                const modal = new bootstrap.Modal(document.getElementById('createReportModal'));
+                modal.show();
+            });
+        }
+
+        // تفعيل نافذة إعدادات التنبيهات
+        const alertSettingsButton = document.querySelector('[data-bs-target="#alertSettingsModal"]');
+        if (alertSettingsButton) {
+            alertSettingsButton.addEventListener('click', function() {
+                const modal = new bootstrap.Modal(document.getElementById('alertSettingsModal'));
+                modal.show();
+            });
+        }
+
+        // تفعيل خاصية التصفية المتقدمة
+        const filterButton = document.querySelector('.dropdown [data-bs-toggle="dropdown"]');
+        if (filterButton) {
+            filterButton.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const dropdown = this.closest('.dropdown');
+                const menu = dropdown.querySelector('.dropdown-menu');
+                if (menu.classList.contains('show')) {
+                    menu.classList.remove('show');
+                } else {
+                    menu.classList.add('show');
+                }
+            });
+        }
+
+        // وظيفة البحث في الجدول
+        const searchInput = document.querySelector('.input-group input[placeholder="بحث..."]');
+        if (searchInput) {
+            searchInput.addEventListener('keyup', function() {
+                const searchTerm = this.value.toLowerCase();
+                const tableRows = document.querySelectorAll('.table tbody tr');
+                
+                tableRows.forEach(row => {
+                    const projectName = row.querySelector('h6').textContent.toLowerCase();
+                    const projectType = row.querySelector('.text-muted').textContent.toLowerCase();
+                    
+                    if (projectName.includes(searchTerm) || projectType.includes(searchTerm)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            });
+        }
+
+        // تطبيق التصفية
+        const applyFilterButton = document.querySelector('.dropdown-menu .btn-primary');
+        if (applyFilterButton) {
+            applyFilterButton.addEventListener('click', function() {
+                // الحصول على قيم التصفية
+                const statusFilter = this.closest('.dropdown-menu').querySelector('select:nth-of-type(1)').value;
+                const typeFilter = this.closest('.dropdown-menu').querySelector('select:nth-of-type(2)').value;
+                const performanceFilter = this.closest('.dropdown-menu').querySelector('select:nth-of-type(3)').value;
+                
+                // تطبيق التصفية على الجدول
+                const tableRows = document.querySelectorAll('.table tbody tr');
+                
+                tableRows.forEach(row => {
+                    let showRow = true;
+                    
+                    // تصفية حسب الحالة
+                    if (statusFilter !== 'الكل') {
+                        const status = row.querySelector('.badge').textContent;
+                        if (status !== statusFilter) {
+                            showRow = false;
+                        }
+                    }
+                    
+                    // تصفية حسب النوع
+                    if (typeFilter !== 'الكل' && showRow) {
+                        const type = row.querySelector('.text-muted').textContent;
+                        if (type !== typeFilter) {
+                            showRow = false;
+                        }
+                    }
+                    
+                    // عرض أو إخفاء الصف بناءً على نتيجة التصفية
+                    if (showRow) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+                
+                // إغلاق القائمة المنسدلة بعد التطبيق
+                this.closest('.dropdown-menu').classList.remove('show');
+            });
+        }
+
+        // إعادة تعيين التصفية
+        const resetFilterButton = document.querySelector('.dropdown-menu .btn-outline-secondary');
+        if (resetFilterButton) {
+            resetFilterButton.addEventListener('click', function() {
+                // إعادة تعيين جميع قوائم الاختيار
+                const selects = this.closest('.dropdown-menu').querySelectorAll('select');
+                selects.forEach(select => {
+                    select.selectedIndex = 0;
+                });
+                
+                // عرض جميع الصفوف
+                const tableRows = document.querySelectorAll('.table tbody tr');
+                tableRows.forEach(row => {
+                    row.style.display = '';
+                });
+            });
+        }
+
+        // تبديل أزرار التصفية في تحليلات الزوار
+        const visitorAnalyticsButtons = document.querySelectorAll('.card-header .btn-group .btn');
+        visitorAnalyticsButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                // إزالة الحالة النشطة من جميع الأزرار
+                visitorAnalyticsButtons.forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                
+                // إضافة الحالة النشطة للزر المضغوط
+                this.classList.add('active');
+                
+                // هنا يمكن إضافة منطق لتحديث الرسوم البيانية وفقًا للتصفية المحددة
+            });
+        });
+
+        // التكيف مع أحجام الشاشات المختلفة
+        function handleResponsiveness() {
+            const windowWidth = window.innerWidth;
+            
+            // تعديل أحجام الرسوم البيانية
+            const charts = document.querySelectorAll('canvas');
+            charts.forEach(chart => {
+                // الحصول على مثيل الرسم البياني
+                const chartInstance = Chart.getChart(chart.id);
+                if (chartInstance) {
+                    // إعادة تهيئة الرسم البياني
+                    chartInstance.resize();
+                }
+            });
+            
+            // تعديل عرض شريط البحث
+            const searchGroup = document.querySelector('.input-group');
+            if (searchGroup) {
+                if (windowWidth < 576) {
+                    searchGroup.style.width = '100%';
+                } else {
+                    searchGroup.style.width = '250px';
+                }
+            }
+            
+            // تعديل عناصر الجدول للشاشات الصغيرة
+            if (windowWidth < 768) {
+                // إخفاء بعض الأعمدة في الجدول للشاشات الصغيرة
+                const nonEssentialColumns = document.querySelectorAll('.table th:nth-child(4), .table td:nth-child(4), .table th:nth-child(5), .table td:nth-child(5)');
+                nonEssentialColumns.forEach(col => {
+                    col.style.display = 'none';
+                });
+            } else {
+                // إظهار جميع الأعمدة للشاشات الكبيرة
+                const allColumns = document.querySelectorAll('.table th, .table td');
+                allColumns.forEach(col => {
+                    col.style.display = '';
+                });
+            }
+        }
+        
+        // تنفيذ التكيف عند تحميل الصفحة وتغيير حجم النافذة
+        handleResponsiveness();
+        window.addEventListener('resize', handleResponsiveness);
+    });
+</script>
+
+<!-- إضافة ستايل خاص للتجاوب -->
+<style>
+    /* ستايل خاص بالتنبيهات */
+    .notification-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .notification-item:hover {
+        background-color: #f8f9fa;
+    }
+    
+    /* تحسين تجاوب الشاشات الصغيرة */
+    @media (max-width: 768px) {
+        .overview-card {
+            margin-bottom: 1rem;
+        }
+        
+        .chart-container {
+            margin-bottom: 2rem;
+        }
+        
+        .custom-report-card {
+            margin-bottom: 1rem;
+        }
+        
+        /* تعديل الترتيب على الشاشات الصغيرة */
+        .flex-wrap-reverse {
+            flex-wrap: wrap-reverse !important;
+        }
+        
+        /* تعديل حجم الخط للعناوين على الشاشات الصغيرة */
+        h5.card-title {
+            font-size: 1.1rem;
+        }
+        
+        /* تعديل المسافات في الجدول */
+        .table td, .table th {
+            padding: 0.5rem 0.25rem;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        /* تحسينات إضافية للهواتف */
+        .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+        }
+        
+        .card-header {
+            padding: 0.75rem;
+        }
+        
+        .card-body {
+            padding: 0.75rem;
+        }
+        
+        /* تغيير مظهر القوائم المنسدلة للشاشات الصغيرة جدًا */
+        .dropdown-menu {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90% !important;
+            max-width: 320px;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        }
+    }
+</style>
+{% endblock %}

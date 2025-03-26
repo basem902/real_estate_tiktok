@@ -1,0 +1,464 @@
+{% extends 'developers/dashboard/base_dashboard.html' %}
+
+{% block title %}إدارة المتابعين | لوحة التحكم{% endblock %}
+
+{% block content %}
+<!-- رأس الصفحة -->
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-4 border-bottom">
+    <h1 class="h2">إدارة المتابعين</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group me-2">
+            <button type="button" class="btn btn-sm btn-outline-primary">
+                <i class="fas fa-file-export"></i> تصدير البيانات
+            </button>
+            <button type="button" class="btn btn-sm btn-outline-success">
+                <i class="fas fa-envelope"></i> رسالة جماعية
+            </button>
+        </div>
+        <div class="dropdown">
+            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="followerFilterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fas fa-filter"></i> تصفية
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="followerFilterDropdown">
+                <li><a class="dropdown-item" href="#">كل المتابعين</a></li>
+                <li><a class="dropdown-item" href="#">متابعين نشطين</a></li>
+                <li><a class="dropdown-item" href="#">متابعين جدد</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="#">تصفية متقدمة</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- لوحة الإحصائيات -->
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body d-flex align-items-center">
+                <div class="rounded-circle bg-primary bg-opacity-10 p-3 me-3">
+                    <i class="fas fa-users text-primary fa-2x"></i>
+                </div>
+                <div>
+                    <div class="fs-4 fw-bold">4,328</div>
+                    <div class="text-muted">إجمالي المتابعين</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body d-flex align-items-center">
+                <div class="rounded-circle bg-success bg-opacity-10 p-3 me-3">
+                    <i class="fas fa-user-plus text-success fa-2x"></i>
+                </div>
+                <div>
+                    <div class="fs-4 fw-bold">128</div>
+                    <div class="text-muted">متابعين جدد هذا الشهر</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body d-flex align-items-center">
+                <div class="rounded-circle bg-info bg-opacity-10 p-3 me-3">
+                    <i class="fas fa-chart-line text-info fa-2x"></i>
+                </div>
+                <div>
+                    <div class="fs-4 fw-bold">3.2%</div>
+                    <div class="text-muted">معدل النمو الشهري</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body d-flex align-items-center">
+                <div class="rounded-circle bg-warning bg-opacity-10 p-3 me-3">
+                    <i class="fas fa-heart text-warning fa-2x"></i>
+                </div>
+                <div>
+                    <div class="fs-4 fw-bold">76%</div>
+                    <div class="text-muted">معدل التفاعل</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- تحليلات وتصور البيانات -->
+<div class="row mb-4">
+    <div class="col-md-8">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+                <h5 class="card-title mb-0">نمو المتابعين</h5>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-sm btn-outline-secondary">الأسبوع</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary active">الشهر</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary">السنة</button>
+                </div>
+            </div>
+            <div class="card-body">
+                <canvas id="followersGrowthChart" height="300"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-white py-3">
+                <h5 class="card-title mb-0">التوزيع الديموغرافي</h5>
+            </div>
+            <div class="card-body d-flex flex-column">
+                <canvas id="demographicChart" height="200" class="mb-3"></canvas>
+                <ul class="list-group list-group-flush mt-auto">
+                    <li class="list-group-item d-flex justify-content-between align-items-center px-0 border-0">
+                        <div>
+                            <span class="badge bg-primary rounded-pill me-2">ذكر</span> الرجال
+                        </div>
+                        <span class="badge bg-light text-dark rounded-pill">65%</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center px-0 border-0">
+                        <div>
+                            <span class="badge bg-danger rounded-pill me-2">أنثى</span> النساء
+                        </div>
+                        <span class="badge bg-light text-dark rounded-pill">35%</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center px-0 border-0">
+                        <div>
+                            <span class="badge bg-success rounded-pill me-2">18-34</span> شباب
+                        </div>
+                        <span class="badge bg-light text-dark rounded-pill">42%</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center px-0 border-0">
+                        <div>
+                            <span class="badge bg-info rounded-pill me-2">35-50</span> متوسطي العمر
+                        </div>
+                        <span class="badge bg-light text-dark rounded-pill">38%</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center px-0 border-0">
+                        <div>
+                            <span class="badge bg-warning rounded-pill me-2">+50</span> كبار
+                        </div>
+                        <span class="badge bg-light text-dark rounded-pill">20%</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- قائمة المتابعين -->
+<div class="card border-0 shadow-sm mb-4">
+    <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+        <h5 class="card-title mb-0">المتابعين</h5>
+        <div class="input-group" style="width: 250px;">
+            <input type="text" class="form-control form-control-sm" placeholder="بحث عن متابع...">
+            <button class="btn btn-sm btn-outline-secondary" type="button"><i class="fas fa-search"></i></button>
+        </div>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="bg-light">
+                    <tr>
+                        <th class="border-0 py-3 ps-4"><input class="form-check-input" type="checkbox"></th>
+                        <th class="border-0 py-3">المتابع</th>
+                        <th class="border-0 py-3">تاريخ المتابعة</th>
+                        <th class="border-0 py-3">المشاريع المهتم بها</th>
+                        <th class="border-0 py-3">التفاعل</th>
+                        <th class="border-0 py-3">الحالة</th>
+                        <th class="border-0 py-3 pe-4">إجراءات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- متابع 1 -->
+                    <tr>
+                        <td class="ps-4"><input class="form-check-input" type="checkbox"></td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <img src="https://via.placeholder.com/40x40" class="rounded-circle me-3" alt="صورة المتابع">
+                                <div>
+                                    <h6 class="mb-0">محمد أحمد</h6>
+                                    <span class="text-muted small">@mohamed_ahmed</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td>15 مارس 2025</td>
+                        <td>
+                            <span class="badge bg-light text-dark me-1">الواحة السكني</span>
+                            <span class="badge bg-light text-dark">برج الأفق</span>
+                        </td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="me-2">
+                                    <i class="fas fa-heart text-danger"></i> 23
+                                </div>
+                                <div class="me-2">
+                                    <i class="fas fa-comment text-primary"></i> 7
+                                </div>
+                            </div>
+                        </td>
+                        <td><span class="badge bg-success rounded-pill px-3">نشط</span></td>
+                        <td class="pe-4">
+                            <div class="dropdown">
+                                <button class="btn btn-sm px-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-eye me-2 text-primary"></i>عرض</a></li>
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-envelope me-2 text-success"></i>مراسلة</a></li>
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-chart-line me-2 text-info"></i>تحليل النشاط</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-user-times me-2"></i>حظر</a></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                    
+                    <!-- متابع 2 -->
+                    <tr>
+                        <td class="ps-4"><input class="form-check-input" type="checkbox"></td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <img src="https://via.placeholder.com/40x40" class="rounded-circle me-3" alt="صورة المتابع">
+                                <div>
+                                    <h6 class="mb-0">نورة خالد</h6>
+                                    <span class="text-muted small">@nora_k</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td>20 مارس 2025</td>
+                        <td>
+                            <span class="badge bg-light text-dark">فلل الفخامة</span>
+                        </td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="me-2">
+                                    <i class="fas fa-heart text-danger"></i> 15
+                                </div>
+                                <div class="me-2">
+                                    <i class="fas fa-comment text-primary"></i> 3
+                                </div>
+                            </div>
+                        </td>
+                        <td><span class="badge bg-success rounded-pill px-3">نشط</span></td>
+                        <td class="pe-4">
+                            <div class="dropdown">
+                                <button class="btn btn-sm px-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-eye me-2 text-primary"></i>عرض</a></li>
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-envelope me-2 text-success"></i>مراسلة</a></li>
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-chart-line me-2 text-info"></i>تحليل النشاط</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-user-times me-2"></i>حظر</a></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                    
+                    <!-- متابع 3 -->
+                    <tr>
+                        <td class="ps-4"><input class="form-check-input" type="checkbox"></td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <img src="https://via.placeholder.com/40x40" class="rounded-circle me-3" alt="صورة المتابع">
+                                <div>
+                                    <h6 class="mb-0">عبدالله سعيد</h6>
+                                    <span class="text-muted small">@abs_2000</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td>18 مارس 2025</td>
+                        <td>
+                            <span class="badge bg-light text-dark me-1">مشروع النخيل</span>
+                            <span class="badge bg-light text-dark">برج الأفق</span>
+                        </td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="me-2">
+                                    <i class="fas fa-heart text-danger"></i> 8
+                                </div>
+                                <div class="me-2">
+                                    <i class="fas fa-comment text-primary"></i> 2
+                                </div>
+                            </div>
+                        </td>
+                        <td><span class="badge bg-secondary rounded-pill px-3">غير نشط</span></td>
+                        <td class="pe-4">
+                            <div class="dropdown">
+                                <button class="btn btn-sm px-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-eye me-2 text-primary"></i>عرض</a></li>
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-envelope me-2 text-success"></i>مراسلة</a></li>
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-chart-line me-2 text-info"></i>تحليل النشاط</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-user-times me-2"></i>حظر</a></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="card-footer bg-white py-3">
+        <div class="d-flex justify-content-between align-items-center">
+            <p class="text-muted mb-0 small">عرض 1-3 من 4,328 متابع</p>
+            <nav aria-label="Page navigation">
+                <ul class="pagination pagination-sm mb-0">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<!-- اضافة النصوص البرمجية الخاصة بالصفحة -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // رسم بياني لنمو المتابعين
+        const followersGrowthCtx = document.getElementById('followersGrowthChart').getContext('2d');
+        const followersGrowthChart = new Chart(followersGrowthCtx, {
+            type: 'line',
+            data: {
+                labels: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'],
+                datasets: [{
+                    label: 'عدد المتابعين',
+                    data: [2100, 2340, 2450, 2780, 3020, 3240, 3450, 3670, 3900, 4100, 4250, 4328],
+                    borderColor: '#4e73df',
+                    backgroundColor: 'rgba(78, 115, 223, 0.05)',
+                    borderWidth: 2,
+                    pointBackgroundColor: '#4e73df',
+                    pointBorderColor: '#fff',
+                    pointBorderWidth: 2,
+                    pointRadius: 4,
+                    tension: 0.3,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        backgroundColor: '#fff',
+                        titleColor: '#333',
+                        bodyColor: '#666',
+                        titleFont: {
+                            size: 14,
+                            family: 'Cairo, sans-serif'
+                        },
+                        bodyFont: {
+                            size: 13,
+                            family: 'Cairo, sans-serif'
+                        },
+                        padding: 10,
+                        borderColor: '#ddd',
+                        borderWidth: 1,
+                        displayColors: false,
+                        callbacks: {
+                            title: function(tooltipItem) {
+                                return tooltipItem[0].label;
+                            },
+                            label: function(context) {
+                                return 'عدد المتابعين: ' + context.parsed.y;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            font: {
+                                family: 'Cairo, sans-serif'
+                            }
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.05)'
+                        },
+                        ticks: {
+                            font: {
+                                family: 'Cairo, sans-serif'
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // رسم بياني للتوزيع الديموغرافي
+        const demographicCtx = document.getElementById('demographicChart').getContext('2d');
+        const demographicChart = new Chart(demographicCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['الرجال', 'النساء'],
+                datasets: [{
+                    data: [65, 35],
+                    backgroundColor: ['#4e73df', '#e74a3b'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '70%',
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        backgroundColor: '#fff',
+                        titleColor: '#333',
+                        bodyColor: '#666',
+                        titleFont: {
+                            size: 14,
+                            family: 'Cairo, sans-serif'
+                        },
+                        bodyFont: {
+                            size: 13,
+                            family: 'Cairo, sans-serif'
+                        },
+                        padding: 10,
+                        borderColor: '#ddd',
+                        borderWidth: 1,
+                        displayColors: true,
+                        callbacks: {
+                            label: function(context) {
+                                return context.label + ': ' + context.parsed + '%';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}

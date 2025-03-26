@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="لوحة تحكم المسوقين العقاريين - منصة العقارات على تيك توك">
+    <meta name="theme-color" content="#2c3e50">
+    
+    <title>لوحة تحكم المسوقين العقاريين</title>
+    
+    <!-- روابط الخطوط -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- أيقونات Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    
+    <!-- بوتستراب 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- أوراق الأنماط المخصصة -->
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <link rel="stylesheet" href="../assets/css/dark-theme.css">
+    
+    <!-- ملف مظهر التطبيق (PWA) -->
+    <link rel="manifest" href="../manifest.json">
+    
+    <!-- أيقونات التطبيق -->
+    <link rel="icon" href="../assets/img/icons/favicon.ico">
+    <link rel="apple-touch-icon" href="../assets/img/icons/apple-touch-icon.png">
+</head>
+<body>
+    <div class="main-layout">
+        <!-- القائمة الجانبية -->
+        <aside class="sidebar" id="main-sidebar">
+            <div class="sidebar-header p-3">
+                <div class="logo text-center mb-4">
+                    <img src="../assets/img/logos/real-estate-logo.png" alt="شعار منصة العقارات" class="img-fluid" style="max-height: 60px;">
+                </div>
+                <div class="user-info d-flex align-items-center mb-4">
+                    <img src="../assets/img/logos/user-avatar.png" alt="صورة المستخدم" class="rounded-circle me-2" style="width: 40px; height: 40px;">
+                    <div>
+                        <h6 class="mb-0">أهلاً، <span id="user-name">أحمد</span></h6>
+                        <small class="text-muted">مسوق عقاري</small>
+                    </div>
+                </div>
+            </div>
+            
+            <nav class="sidebar-nav p-3">
+                <ul class="nav flex-column">
+                    <li class="nav-item mb-2">
+                        <a href="/marketers/dashboard/overview" class="nav-link">
+                            <i class="fas fa-home me-2"></i>
+                            <span>لوحة التحكم</span>
+                        </a>
+                    </li>
+                    <li class="nav-item mb-2">
+                        <a href="/marketers/crm/customers" class="nav-link">
+                            <i class="fas fa-users me-2"></i>
+                            <span>إدارة العملاء</span>
+                        </a>
+                    </li>
+                    <li class="nav-item mb-2">
+                        <a href="/marketers/scheduler" class="nav-link">
+                            <i class="fa-solid fa-calendar-days me-2"></i>
+                            <span>المواعيد</span>
+                        </a>
+                    </li>
+                    <li class="nav-item mb-2">
+                        <a href="/marketers/ads" class="nav-link">
+                            <i class="fas fa-ad me-2"></i>
+                            <span>إدارة الإعلانات</span>
+                        </a>
+                    </li>
+                    <li class="nav-item mb-2">
+                        <a href="/marketers/video-gallery" class="nav-link">
+                            <i class="fas fa-video me-2"></i>
+                            <span>معرض الفيديوهات</span>
+                        </a>
+                    </li>
+                    <li class="nav-item mb-2">
+                        <a href="/marketers/commissions" class="nav-link">
+                            <i class="fas fa-money-bill-alt me-2"></i>
+                            <span>العمولات والمدفوعات</span>
+                        </a>
+                    </li>
+                    <li class="nav-item mb-2">
+                        <a href="/marketers/social" class="nav-link">
+                            <i class="fas fa-share-alt me-2"></i>
+                            <span>التفاعل الاجتماعي</span>
+                        </a>
+                    </li>
+                    <li class="nav-item mb-2">
+                        <a href="/marketers/ai-assistant" class="nav-link">
+                            <i class="fas fa-robot me-2"></i>
+                            <span>المساعد الذكي</span>
+                        </a>
+                    </li>
+                    <li class="nav-item mb-2">
+                        <a href="/marketers/settings" class="nav-link">
+                            <i class="fas fa-cog me-2"></i>
+                            <span>الإعدادات</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer p-3 mt-auto">
+                <div class="d-flex justify-content-between align-items-center">
+                    <a href="#" id="theme-toggle" class="btn btn-sm text-light" title="تبديل الوضع الداكن">
+                        <i class="fas fa-moon"></i>
+                    </a>
+                    <span id="connection-status" class="online">متصل</span>
+                    <a href="#" id="logout-btn" class="btn btn-sm text-light" title="تسجيل الخروج">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </a>
+                </div>
+            </div>
+        </aside>
+        
+        <!-- المحتوى الرئيسي -->
+        <main class="main-content">
+            <!-- الرأس العلوي -->
+            <header class="top-header">
+                <div class="menu-toggle d-block d-lg-none">
+                    <button class="btn" id="sidebar-toggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+                
+                <div class="search-bar">
+                    <form class="d-flex">
+                        <input class="form-control me-2" type="search" placeholder="البحث..." aria-label="بحث">
+                        <button class="btn btn-outline" type="submit">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </form>
+                </div>
+                
+                <div class="header-actions d-flex align-items-center">
+                    <div class="notifications me-3 dropdown">
+                        <a href="#" class="dropdown-toggle position-relative" id="notificationsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-bell"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                3
+                                <span class="visually-hidden">إشعارات جديدة</span>
+                            </span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationsDropdown">
+                            <li><h6 class="dropdown-header">الإشعارات الجديدة</h6></li>
+                            <li><a class="dropdown-item" href="#">عميل جديد مهتم بالعقار #1234</a></li>
+                            <li><a class="dropdown-item" href="#">موعد مع عميل بعد ساعتين</a></li>
+                            <li><a class="dropdown-item" href="#">تم تأكيد عمولة جديدة</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item text-center" href="#">عرض الكل</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="messages me-3 dropdown">
+                        <a href="#" class="dropdown-toggle position-relative" id="messagesDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-envelope"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
+                                2
+                                <span class="visually-hidden">رسائل جديدة</span>
+                            </span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="messagesDropdown">
+                            <li><h6 class="dropdown-header">الرسائل الجديدة</h6></li>
+                            <li><a class="dropdown-item" href="#">محمد: استفسار عن العقار</a></li>
+                            <li><a class="dropdown-item" href="#">نورة: تأكيد موعد المعاينة</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item text-center" href="#">عرض الكل</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="install-app">
+                        <button id="install-button" class="btn btn-sm btn-primary" style="display: none;">
+                            <i class="fas fa-download me-1"></i> تثبيت التطبيق
+                        </button>
+                    </div>
+                </div>
+            </header>
+            
+            <!-- محتوى الصفحة - سيتم استبداله في كل صفحة -->
+            <div id="page-content">
+                <!-- هنا سيتم وضع محتوى الصفحة المحددة -->
+            </div>
+            
+            <!-- تذييل الصفحة -->
+            <footer class="page-footer p-3 text-center text-muted mt-5">
+                <p>جميع الحقوق محفوظة &copy; منصة العقارات على تيك توك 2025</p>
+            </footer>
+        </main>
+    </div>
+    
+    <!-- Bootstrap JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Alpine.js -->
+    <script src="https://unpkg.com/alpinejs@3.10.2/dist/cdn.min.js" defer></script>
+    
+    <!-- ملفات JavaScript المخصصة -->
+    <script src="../assets/js/theme-switcher.js"></script>
+    <script src="../assets/js/pwa-setup.js"></script>
+    <script src="../assets/js/dashboard-logic.js"></script>
+    
+    <script>
+        // كود جافاسكريبت لإدارة شريط التنقل الجانبي على الأجهزة المحمولة
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebarToggle = document.getElementById('sidebar-toggle');
+            const sidebar = document.getElementById('main-sidebar');
+            
+            if (sidebarToggle && sidebar) {
+                sidebarToggle.addEventListener('click', function() {
+                    sidebar.classList.toggle('active');
+                });
+                
+                // إغلاق الشريط الجانبي عند النقر خارجه في الأجهزة المحمولة
+                document.addEventListener('click', function(event) {
+                    const isClickInsideSidebar = sidebar.contains(event.target);
+                    const isClickOnToggle = sidebarToggle.contains(event.target);
+                    
+                    if (!isClickInsideSidebar && !isClickOnToggle && sidebar.classList.contains('active')) {
+                        sidebar.classList.remove('active');
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

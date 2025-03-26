@@ -1,0 +1,268 @@
+{% extends 'marketers/includes/base.html' %}
+
+{% block title %}إعدادات الحساب - لوحة تحكم المسوقين العقاريين{% endblock %}
+
+{% block meta_description %}إعدادات الحساب - تحكم في تفضيلات حسابك وخيارات الأمان والإشعارات{% endblock %}
+
+{% block additional_css %}
+<style>
+    /* تحسينات تصميم الصفحة وتقليل المساحات البيضاء */
+    body {
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+    }
+    
+    .settings-sidebar {
+        background-color: #fff;
+        border-radius: var(--card-border-radius);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+        height: 100%;
+    }
+    
+    .settings-sidebar .nav-link {
+        color: #495057;
+        padding: 0.8rem 1rem;
+        border-radius: 5px;
+        margin-bottom: 5px;
+        transition: all 0.2s ease;
+    }
+    
+    .settings-sidebar .nav-link.active {
+        background-color: rgba(var(--primary-rgb), 0.1);
+        color: var(--primary-color);
+        font-weight: 600;
+    }
+    
+    .settings-sidebar .nav-link:hover:not(.active) {
+        background-color: rgba(0, 0, 0, 0.03);
+        transform: translateX(-3px);
+    }
+    
+    .settings-sidebar .nav-link i {
+        width: 24px;
+        text-align: center;
+        margin-left: 10px;
+    }
+    
+    .settings-content {
+        background-color: #fff;
+        border-radius: var(--card-border-radius);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+    }
+    
+    .profile-image-upload {
+        position: relative;
+        width: 120px;
+        height: 120px;
+        margin: 0 auto;
+    }
+    
+    .profile-image-upload img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 3px solid #fff;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .profile-image-upload .upload-overlay {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        background-color: var(--primary-color);
+        color: white;
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+    
+    /* تصغير المساحات بين الأقسام */
+    .section-spacing {
+        margin-bottom: 1rem;
+    }
+    
+    /* تعديل الصفوف لتكون متقاربة أكثر */
+    .row {
+        margin-right: -8px;
+        margin-left: -8px;
+    }
+    
+    .row > [class^="col-"] {
+        padding-right: 8px;
+        padding-left: 8px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- عنوان الصفحة ومسار التنقل -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="page-title mb-0">إعدادات الحساب</h2>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0 mt-1">
+                    <li class="breadcrumb-item"><a href="../dashboard.html">الرئيسية</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">الإعدادات والأمان</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-lg-3 col-md-4 mb-4">
+            <div class="settings-sidebar p-3">
+                <h5 class="mb-3 fw-bold">الإعدادات</h5>
+                <nav class="nav flex-column">
+                    <a class="nav-link active" href="#profile" data-bs-toggle="tab">
+                        <i class="fas fa-user"></i>
+                        الملف الشخصي
+                    </a>
+                    <a class="nav-link" href="#notifications" data-bs-toggle="tab">
+                        <i class="fas fa-bell"></i>
+                        الإشعارات
+                    </a>
+                    <a class="nav-link" href="#security" data-bs-toggle="tab">
+                        <i class="fas fa-shield-alt"></i>
+                        الأمان والخصوصية
+                    </a>
+                    <a class="nav-link" href="#integrations" data-bs-toggle="tab">
+                        <i class="fas fa-link"></i>
+                        التكاملات
+                    </a>
+                </nav>
+                
+                <hr class="my-3">
+                
+                <div class="d-grid gap-2">
+                    <button class="btn btn-outline-danger">
+                        <i class="fas fa-sign-out-alt me-1"></i>
+                        تسجيل الخروج
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Content -->
+        <div class="col-lg-9 col-md-8">
+            <div class="settings-content p-4">
+                <div class="tab-content">
+                    <!-- Profile Settings -->
+                    <div class="tab-pane fade show active" id="profile">
+                        <h4 class="mb-4">إدارة الملف الشخصي</h4>
+                        
+                        <div class="row">
+                            <div class="col-md-3 text-center mb-4">
+                                <div class="profile-image-upload">
+                                    <img src="https://via.placeholder.com/150" alt="صورة الملف الشخصي">
+                                    <div class="upload-overlay">
+                                        <i class="fas fa-camera"></i>
+                                    </div>
+                                    <input type="file" id="profileImageUpload" class="d-none">
+                                </div>
+                                <p class="small text-muted mt-2">انقر لتغيير الصورة</p>
+                            </div>
+                            
+                            <div class="col-md-9">
+                                <form>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="firstName" class="form-label">الاسم الأول</label>
+                                            <input type="text" class="form-control" id="firstName" value="محمد">
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="lastName" class="form-label">الاسم الأخير</label>
+                                            <input type="text" class="form-control" id="lastName" value="العبدالله">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="email" class="form-label">البريد الإلكتروني</label>
+                                        <input type="email" class="form-control" id="email" value="m.abdullah@example.com">
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="phone" class="form-label">رقم الهاتف</label>
+                                        <input type="tel" class="form-control" id="phone" value="+966 50 123 4567">
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="bio" class="form-label">نبذة تعريفية</label>
+                                        <textarea class="form-control" id="bio" rows="3">مسوق عقاري متخصص في المناطق السكنية الفاخرة بالرياض، خبرة أكثر من 5 سنوات في التسويق العقاري وتطوير الحملات الإعلانية.</textarea>
+                                    </div>
+                                    
+                                    <button type="submit" class="btn btn-primary">حفظ التغييرات</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Notifications Settings -->
+                    <div class="tab-pane fade" id="notifications">
+                        {% include 'marketers/settings/notifications-settings.html' %}
+                    </div>
+                    
+                    <!-- Security Settings -->
+                    <div class="tab-pane fade" id="security">
+                        {% include 'marketers/settings/security-settings.html' %}
+                    </div>
+                    
+                    <!-- Integrations Settings -->
+                    <div class="tab-pane fade" id="integrations">
+                        {% include 'marketers/settings/integrations-settings.html' %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block additional_scripts %}
+<script>
+    // تفعيل تغيير صورة الملف الشخصي
+    document.querySelector('.profile-image-upload').addEventListener('click', function() {
+        document.getElementById('profileImageUpload').click();
+    });
+    
+    // معاينة الصورة المختارة
+    document.getElementById('profileImageUpload').addEventListener('change', function(e) {
+        if (e.target.files.length > 0) {
+            let src = URL.createObjectURL(e.target.files[0]);
+            document.querySelector('.profile-image-upload img').src = src;
+        }
+    });
+    
+    // تفعيل التبويبات
+    document.querySelectorAll('.settings-sidebar .nav-link').forEach(function(navLink) {
+        navLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // إزالة الكلاس active من جميع الروابط
+            document.querySelectorAll('.settings-sidebar .nav-link').forEach(function(link) {
+                link.classList.remove('active');
+            });
+            
+            // إضافة الكلاس active للرابط المضغوط
+            this.classList.add('active');
+            
+            // إظهار التبويب المقابل
+            let target = this.getAttribute('href');
+            document.querySelectorAll('.tab-pane').forEach(function(pane) {
+                pane.classList.remove('show', 'active');
+            });
+            document.querySelector(target).classList.add('show', 'active');
+        });
+    });
+</script>
+{% endblock %}

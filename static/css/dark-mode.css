@@ -1,0 +1,343 @@
+/* وضع الدارك مود - نمط داكن للتطبيق */
+
+:root.dark-mode {
+    --primary-color: #3b82f6;
+    --secondary-color: #10b981;
+    --accent-color: #f59e0b;
+    --danger-color: #ef4444;
+    --warning-color: #f59e0b;
+    --info-color: #3b82f6;
+    --success-color: #10b981;
+    --purple-color: #8b5cf6;
+    --light-color: #1e293b;
+    --dark-color: #f1f5f9;
+    --gray-color: #334155;
+    --gray-dark-color: #94a3b8;
+    --sidebar-bg: #0f172a;
+    --card-bg: #1e293b;
+    --body-bg: #111827;
+    --text-color: #e2e8f0;
+    --text-muted: #94a3b8;
+    --border-color: #334155;
+}
+
+body.dark-mode {
+    background-color: var(--body-bg);
+    color: var(--text-color);
+}
+
+/* تعديلات القائمة الجانبية */
+.dark-mode .sidebar {
+    background: var(--sidebar-bg);
+}
+
+.dark-mode .sidebar-nav .nav-link {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.dark-mode .sidebar-nav .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: white;
+}
+
+.dark-mode .sidebar-nav .nav-link.active {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* تعديلات البطاقات */
+.dark-mode .card,
+.dark-mode .stats-card,
+.dark-mode .chart-card,
+.dark-mode .sales-chart-card {
+    background-color: var(--card-bg);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    border-color: var(--border-color);
+}
+
+.dark-mode .card-header {
+    background-color: var(--card-bg);
+    border-bottom-color: var(--border-color);
+}
+
+/* تعديلات النصوص */
+.dark-mode .section-title,
+.dark-mode .card-title,
+.dark-mode .stats-number,
+.dark-mode h1, .dark-mode h2, .dark-mode h3, .dark-mode h4, .dark-mode h5, .dark-mode h6 {
+    color: var(--text-color);
+}
+
+.dark-mode .text-muted,
+.dark-mode .stats-label,
+.dark-mode .small,
+.dark-mode .text-secondary {
+    color: var(--text-muted) !important;
+}
+
+/* تعديلات الرأس العلوي */
+.dark-mode .top-header {
+    background-color: var(--card-bg);
+    border-color: var(--border-color);
+}
+
+/* تعديلات المهام والتفاعلات */
+.dark-mode .task-item,
+.dark-mode .interaction-item,
+.dark-mode .customer-interaction {
+    background-color: var(--card-bg);
+    border-color: var(--border-color);
+}
+
+.dark-mode .task-description,
+.dark-mode .interaction-message,
+.dark-mode .customer-message {
+    color: var(--text-muted);
+}
+
+/* تعديلات الإشعارات والقوائم المنسدلة */
+.dark-mode .dropdown-menu,
+.dark-mode .dropdown-notification {
+    background-color: var(--card-bg);
+    border-color: var(--border-color);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+.dark-mode .dropdown-item {
+    color: var(--text-color);
+}
+
+.dark-mode .dropdown-item:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: white;
+}
+
+.dark-mode .dropdown-divider {
+    border-color: var(--border-color);
+}
+
+/* تعديلات الرسوم البيانية */
+.dark-mode .sales-chart-filter button {
+    background-color: var(--card-bg);
+    border-color: var(--border-color);
+    color: var(--text-color);
+}
+
+.dark-mode .sales-chart-filter button.active {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.dark-mode .modern-chart-area {
+    background-color: rgba(59, 130, 246, 0.05);
+}
+
+/* تعديلات عناصر الإدخال */
+.dark-mode .form-control,
+.dark-mode .form-select {
+    background-color: #2d3748;
+    border-color: var(--border-color);
+    color: var(--text-color);
+}
+
+.dark-mode .form-control:focus,
+.dark-mode .form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.25rem rgba(59, 130, 246, 0.25);
+}
+
+.dark-mode .form-control::placeholder {
+    color: var(--text-muted);
+}
+
+/* تعديلات الجداول */
+.dark-mode .table {
+    color: var(--text-color);
+}
+
+.dark-mode .table th {
+    background-color: var(--card-bg);
+    color: var(--text-muted);
+}
+
+.dark-mode .table td {
+    background-color: var(--card-bg);
+    border-color: var(--border-color);
+}
+
+/* تعديلات الحدود */
+.dark-mode .border,
+.dark-mode .border-top,
+.dark-mode .border-end,
+.dark-mode .border-bottom,
+.dark-mode .border-start {
+    border-color: var(--border-color) !important;
+}
+
+/* تعديلات الأزرار */
+.dark-mode .btn-outline-secondary {
+    color: var(--text-color);
+    border-color: var(--border-color);
+}
+
+.dark-mode .btn-outline-secondary:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    border-color: var(--border-color);
+}
+
+/* تعديل الموديلات */
+.dark-mode .modal-content {
+    background-color: var(--card-bg);
+    border-color: var(--border-color);
+}
+
+.dark-mode .modal-header,
+.dark-mode .modal-footer {
+    border-color: var(--border-color);
+}
+
+/* تعديل شكل التقويم */
+.dark-mode .fc-theme-standard .fc-scrollgrid,
+.dark-mode .fc-theme-standard td,
+.dark-mode .fc-theme-standard th {
+    border-color: var(--border-color);
+}
+
+.dark-mode .fc .fc-col-header-cell-cushion,
+.dark-mode .fc .fc-daygrid-day-number {
+    color: var(--text-color);
+}
+
+.dark-mode .fc-day-today {
+    background-color: rgba(59, 130, 246, 0.1) !important;
+}
+
+.dark-mode .fc-button-primary {
+    background-color: #2d3748;
+    border-color: var(--border-color);
+}
+
+.dark-mode .fc-button-primary:hover {
+    background-color: #4a5568;
+}
+
+.dark-mode .fc-button-primary:not(:disabled).fc-button-active,
+.dark-mode .fc-button-primary:not(:disabled):active {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+/* تعديل زر تبديل الوضع */
+.theme-switch {
+    position: relative;
+    width: 60px;
+    height: 30px;
+    margin: 0 10px;
+}
+
+.theme-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 30px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 22px;
+    width: 22px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: var(--primary-color);
+}
+
+input:checked + .slider:before {
+    transform: translateX(30px);
+}
+
+.theme-icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 14px;
+    transition: .4s;
+}
+
+.sun-icon {
+    left: 8px;
+    color: #f59e0b;
+    opacity: 1;
+}
+
+.moon-icon {
+    right: 8px;
+    color: #f1f5f9;
+    opacity: 0;
+}
+
+input:checked + .slider .sun-icon {
+    opacity: 0;
+}
+
+input:checked + .slider .moon-icon {
+    opacity: 1;
+}
+
+/* تعديلات خاصة لشكل جميل في الوضع الداكن */
+.dark-mode .highlight-section {
+    background-color: rgba(59, 130, 246, 0.05);
+}
+
+.dark-mode .stats-icon-yellow,
+.dark-mode .stats-icon-purple,
+.dark-mode .stats-icon-green,
+.dark-mode .stats-icon-blue {
+    opacity: 0.8;
+}
+
+.dark-mode .notification-icon-primary,
+.dark-mode .notification-icon-success,
+.dark-mode .notification-icon-warning,
+.dark-mode .notification-icon-danger {
+    opacity: 0.8;
+}
+
+/* تعديلات إضافية لتحسين المظهر في الوضع الداكن */
+.dark-mode .customers-table tr td {
+    background-color: var(--card-bg);
+}
+
+.dark-mode ::-webkit-scrollbar {
+    width: 10px;
+}
+
+.dark-mode ::-webkit-scrollbar-track {
+    background: var(--card-bg);
+}
+
+.dark-mode ::-webkit-scrollbar-thumb {
+    background: #4a5568;
+    border-radius: 5px;
+}
+
+.dark-mode ::-webkit-scrollbar-thumb:hover {
+    background: #5a6778;
+}

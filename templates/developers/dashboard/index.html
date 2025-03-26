@@ -1,0 +1,537 @@
+{% extends 'developers/dashboard/base_dashboard.html' %}
+
+{% block title %}لوحة المعلومات - شركة التطوير العقاري{% endblock %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item active" aria-current="page">لوحة المعلومات</li>
+{% endblock %}
+
+{% block content %}
+<!-- عنوان الصفحة والأزرار -->
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center mb-4">
+    <h1 class="h2">لوحة المعلومات</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group me-2">
+            <button type="button" class="btn btn-sm btn-outline-secondary">تصدير</button>
+            <button type="button" class="btn btn-sm btn-outline-secondary">مشاركة</button>
+        </div>
+        <div class="dropdown">
+            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="timeFilterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fas fa-calendar me-1"></i>
+                هذا الشهر
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="timeFilterDropdown">
+                <li><a class="dropdown-item" href="#">اليوم</a></li>
+                <li><a class="dropdown-item" href="#">هذا الأسبوع</a></li>
+                <li><a class="dropdown-item" href="#">هذا الشهر</a></li>
+                <li><a class="dropdown-item" href="#">هذه السنة</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- بطاقات الإحصائيات -->
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 mb-4">
+    <!-- إجمالي المتابعين -->
+    <div class="col">
+        <div class="card h-100 border-0 shadow-sm">
+            <div class="card-body">
+                <div class="d-flex align-items-start justify-content-between">
+                    <div>
+                        <h6 class="card-title text-muted mb-0">إجمالي المتابعين</h6>
+                        <h2 class="mt-2 mb-0">2,845</h2>
+                        <p class="text-success mb-0"><i class="fas fa-arrow-up me-1"></i>12.5% <small class="text-muted">منذ الشهر الماضي</small></p>
+                    </div>
+                    <div class="bg-primary bg-opacity-10 p-2 rounded">
+                        <i class="fas fa-users fa-2x text-primary"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- العملاء المحتملين -->
+    <div class="col">
+        <div class="card h-100 border-0 shadow-sm">
+            <div class="card-body">
+                <div class="d-flex align-items-start justify-content-between">
+                    <div>
+                        <h6 class="card-title text-muted mb-0">العملاء المحتملين</h6>
+                        <h2 class="mt-2 mb-0">136</h2>
+                        <p class="text-success mb-0"><i class="fas fa-arrow-up me-1"></i>8.3% <small class="text-muted">منذ الشهر الماضي</small></p>
+                    </div>
+                    <div class="bg-success bg-opacity-10 p-2 rounded">
+                        <i class="fas fa-user-tie fa-2x text-success"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- المشاريع النشطة -->
+    <div class="col">
+        <div class="card h-100 border-0 shadow-sm">
+            <div class="card-body">
+                <div class="d-flex align-items-start justify-content-between">
+                    <div>
+                        <h6 class="card-title text-muted mb-0">المشاريع النشطة</h6>
+                        <h2 class="mt-2 mb-0">8</h2>
+                        <p class="text-success mb-0"><i class="fas fa-arrow-up me-1"></i>2 <small class="text-muted">منذ الشهر الماضي</small></p>
+                    </div>
+                    <div class="bg-info bg-opacity-10 p-2 rounded">
+                        <i class="fas fa-building fa-2x text-info"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- الإعلانات النشطة -->
+    <div class="col">
+        <div class="card h-100 border-0 shadow-sm">
+            <div class="card-body">
+                <div class="d-flex align-items-start justify-content-between">
+                    <div>
+                        <h6 class="card-title text-muted mb-0">الإعلانات النشطة</h6>
+                        <h2 class="mt-2 mb-0">12</h2>
+                        <p class="text-danger mb-0"><i class="fas fa-arrow-down me-1"></i>3 <small class="text-muted">منذ الشهر الماضي</small></p>
+                    </div>
+                    <div class="bg-warning bg-opacity-10 p-2 rounded">
+                        <i class="fas fa-ad fa-2x text-warning"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- مخطط النشاط والتفاعل -->
+<div class="row mb-4">
+    <div class="col-lg-8">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-white">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">نشاط المشاهدات والتفاعلات</h5>
+                    <div class="dropdown">
+                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="chartFilterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            آخر 30 يوم
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="chartFilterDropdown">
+                            <li><a class="dropdown-item" href="#">آخر 7 أيام</a></li>
+                            <li><a class="dropdown-item" href="#">آخر 30 يوم</a></li>
+                            <li><a class="dropdown-item" href="#">آخر 90 يوم</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <canvas id="activityChart" height="300"></canvas>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-white">
+                <h5 class="mb-0">توزيع التفاعلات</h5>
+            </div>
+            <div class="card-body d-flex flex-column justify-content-center">
+                <canvas id="interactionsChart" height="250"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- المواعيد القادمة والمشاريع الأخيرة -->
+<div class="row g-4 mb-4">
+    <!-- المواعيد القادمة -->
+    <div class="col-lg-6">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">المواعيد القادمة</h5>
+                <a href="{{ url_for('developers_scheduler') }}" class="btn btn-sm btn-outline-primary">عرض الكل</a>
+            </div>
+            <div class="card-body p-0">
+                <div class="list-group list-group-flush">
+                    <div class="list-group-item py-3">
+                        <div class="d-flex w-100 justify-content-between">
+                            <div>
+                                <h6 class="mb-1">اجتماع مع العميل أحمد محمد</h6>
+                                <small class="text-muted"><i class="fas fa-map-marker-alt me-1"></i>مقر الشركة</small>
+                            </div>
+                            <small class="text-primary">اليوم 14:30</small>
+                        </div>
+                    </div>
+                    <div class="list-group-item py-3">
+                        <div class="d-flex w-100 justify-content-between">
+                            <div>
+                                <h6 class="mb-1">عرض مشروع الأفق الجديد</h6>
+                                <small class="text-muted"><i class="fas fa-video me-1"></i>اجتماع افتراضي</small>
+                            </div>
+                            <small class="text-primary">غداً 10:00</small>
+                        </div>
+                    </div>
+                    <div class="list-group-item py-3">
+                        <div class="d-flex w-100 justify-content-between">
+                            <div>
+                                <h6 class="mb-1">زيارة موقع مشروع الواحة</h6>
+                                <small class="text-muted"><i class="fas fa-map-marker-alt me-1"></i>موقع المشروع</small>
+                            </div>
+                            <small class="text-primary">بعد غد 09:30</small>
+                        </div>
+                    </div>
+                    <div class="list-group-item py-3">
+                        <div class="d-flex w-100 justify-content-between">
+                            <div>
+                                <h6 class="mb-1">متابعة مع المستثمر سعيد</h6>
+                                <small class="text-muted"><i class="fas fa-phone me-1"></i>مكالمة هاتفية</small>
+                            </div>
+                            <small class="text-primary">الأربعاء 11:00</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- المشاريع الأخيرة -->
+    <div class="col-lg-6">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">المشاريع الأخيرة</h5>
+                <a href="{{ url_for('developers_projects') }}" class="btn btn-sm btn-outline-primary">عرض الكل</a>
+            </div>
+            <div class="card-body p-0">
+                <div class="list-group list-group-flush">
+                    <div class="list-group-item py-3">
+                        <div class="d-flex w-100 justify-content-between">
+                            <div>
+                                <h6 class="mb-1">برج الأفق</h6>
+                                <div class="d-flex align-items-center">
+                                    <div class="me-2">
+                                        <span class="badge bg-success">مكتمل</span>
+                                    </div>
+                                    <small class="text-muted">120 وحدة سكنية</small>
+                                </div>
+                            </div>
+                            <div class="text-end">
+                                <small class="d-block text-muted">المشاهدات: 1.2k</small>
+                                <small class="d-block text-muted">التفاعلات: 450</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-group-item py-3">
+                        <div class="d-flex w-100 justify-content-between">
+                            <div>
+                                <h6 class="mb-1">مجمع الواحة السكني</h6>
+                                <div class="d-flex align-items-center">
+                                    <div class="me-2">
+                                        <span class="badge bg-warning text-dark">قيد الإنشاء</span>
+                                    </div>
+                                    <small class="text-muted">85 وحدة سكنية</small>
+                                </div>
+                            </div>
+                            <div class="text-end">
+                                <small class="d-block text-muted">المشاهدات: 3.7k</small>
+                                <small class="d-block text-muted">التفاعلات: 890</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-group-item py-3">
+                        <div class="d-flex w-100 justify-content-between">
+                            <div>
+                                <h6 class="mb-1">بوابة الشرق</h6>
+                                <div class="d-flex align-items-center">
+                                    <div class="me-2">
+                                        <span class="badge bg-primary">تسويق</span>
+                                    </div>
+                                    <small class="text-muted">65 وحدة تجارية</small>
+                                </div>
+                            </div>
+                            <div class="text-end">
+                                <small class="d-block text-muted">المشاهدات: 2.5k</small>
+                                <small class="d-block text-muted">التفاعلات: 630</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-group-item py-3">
+                        <div class="d-flex w-100 justify-content-between">
+                            <div>
+                                <h6 class="mb-1">حدائق الربيع</h6>
+                                <div class="d-flex align-items-center">
+                                    <div class="me-2">
+                                        <span class="badge bg-info text-dark">تصميم</span>
+                                    </div>
+                                    <small class="text-muted">45 فيلا فاخرة</small>
+                                </div>
+                            </div>
+                            <div class="text-end">
+                                <small class="d-block text-muted">المشاهدات: 1.8k</small>
+                                <small class="d-block text-muted">التفاعلات: 320</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- آخر التفاعلات -->
+<div class="row">
+    <div class="col-12">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">آخر التفاعلات</h5>
+                <a href="{{ url_for('developers_social') }}" class="btn btn-sm btn-outline-primary">عرض الكل</a>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th scope="col">المستخدم</th>
+                                <th scope="col">نوع التفاعل</th>
+                                <th scope="col">المحتوى</th>
+                                <th scope="col">الوقت</th>
+                                <th scope="col">الإجراء</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <img src="https://via.placeholder.com/36" class="rounded-circle me-2" alt="">
+                                        <div>
+                                            <h6 class="mb-0">أحمد محمد</h6>
+                                            <small class="text-muted">@ahmed</small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span class="badge bg-success">إعجاب</span></td>
+                                <td>مشروع برج الأفق</td>
+                                <td>منذ 10 دقائق</td>
+                                <td>
+                                    <div class="dropdown">
+                                        <button class="btn btn-sm btn-link" type="button" id="dropdownInteraction1" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownInteraction1">
+                                            <li><a class="dropdown-item" href="#">عرض البروفايل</a></li>
+                                            <li><a class="dropdown-item" href="#">إرسال رسالة</a></li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <img src="https://via.placeholder.com/36" class="rounded-circle me-2" alt="">
+                                        <div>
+                                            <h6 class="mb-0">سارة أحمد</h6>
+                                            <small class="text-muted">@sara</small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span class="badge bg-info">تعليق</span></td>
+                                <td>مشروع مجمع الواحة السكني</td>
+                                <td>منذ 25 دقيقة</td>
+                                <td>
+                                    <div class="dropdown">
+                                        <button class="btn btn-sm btn-link" type="button" id="dropdownInteraction2" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownInteraction2">
+                                            <li><a class="dropdown-item" href="#">عرض البروفايل</a></li>
+                                            <li><a class="dropdown-item" href="#">إرسال رسالة</a></li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <img src="https://via.placeholder.com/36" class="rounded-circle me-2" alt="">
+                                        <div>
+                                            <h6 class="mb-0">محمد علي</h6>
+                                            <small class="text-muted">@mohamed</small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span class="badge bg-warning text-dark">مشاركة</span></td>
+                                <td>مشروع بوابة الشرق</td>
+                                <td>منذ ساعة</td>
+                                <td>
+                                    <div class="dropdown">
+                                        <button class="btn btn-sm btn-link" type="button" id="dropdownInteraction3" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownInteraction3">
+                                            <li><a class="dropdown-item" href="#">عرض البروفايل</a></li>
+                                            <li><a class="dropdown-item" href="#">إرسال رسالة</a></li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <img src="https://via.placeholder.com/36" class="rounded-circle me-2" alt="">
+                                        <div>
+                                            <h6 class="mb-0">نورا سامي</h6>
+                                            <small class="text-muted">@nora</small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span class="badge bg-danger">استفسار</span></td>
+                                <td>مشروع حدائق الربيع</td>
+                                <td>منذ ساعتين</td>
+                                <td>
+                                    <div class="dropdown">
+                                        <button class="btn btn-sm btn-link" type="button" id="dropdownInteraction4" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownInteraction4">
+                                            <li><a class="dropdown-item" href="#">عرض البروفايل</a></li>
+                                            <li><a class="dropdown-item" href="#">إرسال رسالة</a></li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // مخطط النشاط والتفاعل
+        var activityCtx = document.getElementById('activityChart').getContext('2d');
+        var activityChart = new Chart(activityCtx, {
+            type: 'line',
+            data: {
+                labels: ['1 مارس', '5 مارس', '10 مارس', '15 مارس', '20 مارس', '25 مارس', '30 مارس'],
+                datasets: [{
+                    label: 'المشاهدات',
+                    data: [1200, 1900, 1700, 2700, 2300, 2900, 3500],
+                    borderColor: '#4e73df',
+                    backgroundColor: 'rgba(78, 115, 223, 0.05)',
+                    borderWidth: 2,
+                    pointBackgroundColor: '#4e73df',
+                    pointBorderColor: '#ffffff',
+                    pointBorderWidth: 2,
+                    pointRadius: 4,
+                    fill: true,
+                    tension: 0.3
+                }, {
+                    label: 'التفاعلات',
+                    data: [500, 700, 600, 1000, 950, 1200, 1500],
+                    borderColor: '#1cc88a',
+                    backgroundColor: 'rgba(28, 200, 138, 0.05)',
+                    borderWidth: 2,
+                    pointBackgroundColor: '#1cc88a',
+                    pointBorderColor: '#ffffff',
+                    pointBorderWidth: 2,
+                    pointRadius: 4,
+                    fill: true,
+                    tension: 0.3
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            font: {
+                                family: "'Tajawal', sans-serif"
+                            }
+                        }
+                    },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false,
+                        bodyFont: {
+                            family: "'Tajawal', sans-serif"
+                        },
+                        titleFont: {
+                            family: "'Tajawal', sans-serif"
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            drawBorder: false,
+                            display: false
+                        },
+                        ticks: {
+                            font: {
+                                family: "'Tajawal', sans-serif"
+                            }
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            drawBorder: false,
+                            borderDash: [2],
+                            borderDashOffset: [2]
+                        },
+                        ticks: {
+                            font: {
+                                family: "'Tajawal', sans-serif"
+                            }
+                        }
+                    }
+                }
+            }
+        });
+        
+        // مخطط التفاعلات
+        var interactionsCtx = document.getElementById('interactionsChart').getContext('2d');
+        var interactionsChart = new Chart(interactionsCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['إعجابات', 'تعليقات', 'مشاركات', 'استفسارات', 'حفظ'],
+                datasets: [{
+                    data: [45, 25, 15, 10, 5],
+                    backgroundColor: ['#4e73df', '#1cc88a', '#f6c23e', '#e74a3b', '#36b9cc'],
+                    borderWidth: 0,
+                    hoverOffset: 5
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '70%',
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            padding: 20,
+                            font: {
+                                family: "'Tajawal', sans-serif"
+                            }
+                        }
+                    },
+                    tooltip: {
+                        bodyFont: {
+                            family: "'Tajawal', sans-serif"
+                        },
+                        titleFont: {
+                            family: "'Tajawal', sans-serif"
+                        }
+                    }
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}

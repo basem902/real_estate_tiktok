@@ -1,0 +1,495 @@
+{% extends "shared/layouts/base.html" %}
+
+{% block title %}تيك توك العقاري - الفيديوهات{% endblock %}
+
+{% block extra_css %}
+<style>
+    body {
+        background-color: var(--background-color);
+        color: var(--text-color);
+        padding-bottom: 0 !important;
+        margin-bottom: 0;
+        transition: background-color 0.3s ease, color 0.3s ease;
+        overflow: hidden;
+    }
+    
+    .video-feed {
+        position: relative;
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+    }
+    
+    .video-container {
+        position: relative;
+        display: flex;
+        width: 100%;
+        height: 100vh;
+        overflow: hidden;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .property-video {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: 1;
+    }
+    
+    .video-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 50%;
+        background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0) 100%);
+        z-index: 2;
+        pointer-events: none;
+    }
+    
+    .property-info {
+        position: absolute;
+        bottom: 50px;
+        right: 30px;
+        width: calc(100% - 120px);
+        max-width: 600px;
+        padding: 25px;
+        background-color: rgba(255, 255, 255, 0);
+        backdrop-filter: blur(0);
+        -webkit-backdrop-filter: blur(0);
+        border-radius: 0;
+        border: none;
+        color: #fff;
+        z-index: 5;
+        box-shadow: none;
+        overflow: hidden;
+    }
+    
+    .property-info::before {
+        display: none;
+    }
+    
+    .property-info:hover {
+        background-color: rgba(255, 255, 255, 0);
+    }
+    
+    .property-title {
+        font-family: 'Cairo', sans-serif;
+        font-size: 28px;
+        font-weight: 700;
+        margin-bottom: 15px;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 1);
+    }
+    
+    .property-details {
+        font-size: 18px;
+        margin-bottom: 12px;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 1);
+    }
+    
+    .property-price {
+        font-family: 'Roboto', sans-serif;
+        font-size: 24px;
+        font-weight: 700;
+        color: #D4AF37;
+        margin-bottom: 15px;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 1);
+    }
+    
+    .agent-info {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+        width: 100%;
+    }
+    
+    .agent-details {
+        display: flex;
+        align-items: center;
+    }
+    
+    .agent-pic {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid #D4AF37;
+        margin-left: 10px;
+    }
+    
+    .agent-name {
+        font-size: 14px;
+        color: #fff;
+    }
+    
+    .login-btn {
+        background-color: var(--primary-color, #D4AF37);
+        color: #000;
+        font-weight: bold;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 25px;
+        text-decoration: none;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: inline-block;
+        font-size: 13px;
+        white-space: nowrap;
+    }
+    
+    .login-btn:hover {
+        background-color: #f4cc4d;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+    
+    .bottom-right-login {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        z-index: 1000;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        padding: 10px 20px;
+        font-size: 16px;
+    }
+    
+    .top-left-login {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        z-index: 1000;
+    }
+    
+    .property-info-actions {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 20px;
+        position: relative;
+        z-index: 10;
+    }
+    
+    .book-button {
+        background-color: var(--primary-color, #D4AF37);
+        color: #000;
+        font-weight: bold;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 25px;
+        text-decoration: none;
+        text-align: center;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.3s;
+        display: inline-block;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        min-width: 120px;
+        position: relative;
+        z-index: 10;
+    }
+    
+    .book-button:hover {
+        background-color: #f4cc4d;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    }
+    
+    .action-buttons {
+        position: absolute;
+        bottom: 80px;
+        left: 15px;
+        z-index: 6;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .action-button {
+        width: 40px;
+        height: 40px;
+        background-color: rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 15px;
+        color: white;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.3s;
+        position: relative;
+        z-index: 6;
+    }
+    
+    .action-button.active {
+        background-color: var(--primary-color, #D4AF37);
+    }
+    
+    .action-button:hover {
+        background-color: rgba(255, 255, 255, 0.5);
+        transform: scale(1.1);
+    }
+    
+    .count {
+        font-size: 12px;
+        position: absolute;
+        bottom: -20px;
+        width: 100%;
+        text-align: center;
+    }
+    
+    .mute-button {
+        position: absolute;
+        bottom: 15px;
+        left: 15px;
+        z-index: 3;
+        background-color: rgba(0, 0, 0, 0.6);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+    
+    .mute-button:hover {
+        background-color: rgba(0, 0, 0, 0.8);
+    }
+    
+    .mute-button i {
+        font-size: 20px;
+    }
+    
+    .nav-icons {
+        display: flex;
+    }
+    
+    .nav-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-right: 10px;
+        color: #fff;
+        font-size: 18px;
+        cursor: pointer;
+    }
+    
+    .nav-icon:hover {
+        background-color: #D4AF37;
+    }
+    
+    .click-toggle {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 2;
+    }
+    
+    /* أنماط وضع الزائر */
+    .guest-mode-banner {
+        position: fixed;
+        top: 50px;
+        left: 0;
+        width: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        color: white;
+        text-align: center;
+        padding: 5px 0;
+        z-index: 1000;
+        font-size: 14px;
+    }
+    
+    .login-prompt {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: var(--background-color, #fff);
+        border: 1px solid var(--border-color, #ddd);
+        border-radius: 10px;
+        padding: 20px;
+        width: 300px;
+        max-width: 90%;
+        z-index: 1001;
+        text-align: center;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        display: none;
+    }
+    
+    .login-prompt h3 {
+        margin-top: 0;
+        color: var(--text-color, #333);
+    }
+    
+    .login-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+    }
+    
+    .login-buttons a {
+        padding: 8px 15px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: bold;
+    }
+    
+    .login-button {
+        background-color: #007bff;
+        color: white;
+    }
+    
+    .cancel-button {
+        background-color: #6c757d;
+        color: white;
+    }
+    
+    /* وضع مظلم */
+    :root {
+        --primary-color: #D4AF37;
+        --background-color: #ffffff;
+        --text-color: #333333;
+        --border-color: #dddddd;
+    }
+    
+    body.dark-mode {
+        --background-color: #121212;
+        --text-color: #f0f0f0;
+        --border-color: #444444;
+    }
+    
+    /* الاستجابة للشاشات الصغيرة */
+    @media (max-width: 768px) {
+        .property-info {
+            right: 15px;
+            width: calc(100% - 80px);
+            padding: 15px;
+        }
+        
+        .property-title {
+            font-size: 22px;
+        }
+        
+        .property-details {
+            font-size: 14px;
+        }
+        
+        .property-price {
+            font-size: 20px;
+        }
+        
+        .book-button {
+            padding: 8px 15px;
+            min-width: 100px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="guest-mode-banner">
+    أنت في وضع الزائر. يرجى تسجيل الدخول للحصول على المزيد من المزايا.
+</div>
+
+<!-- زر تسجيل الدخول في الزاوية السفلية اليمنى -->
+<a href="{{ url_for('user_type') }}" class="login-btn bottom-right-login">
+    <i class="fas fa-user-plus ml-1"></i> سجل دخول
+</a>
+
+<div class="video-feed" id="videoFeed">
+    {% for property in properties %}
+    <div class="video-container" data-property-id="{{ property.id }}">
+        <div style="position: relative; width: 100%; height: 100%;">
+            <iframe 
+                class="property-video"
+                {% if loop.index0 == 0 %}
+                    src="https://player.vimeo.com/video/1052566570?h=60a627009b&autoplay=1&loop=1&transparent=0&autopause=0&muted=0" 
+                {% elif loop.index0 == 1 %}
+                    src="https://player.vimeo.com/video/1052566651?h=6b1774aec0&autoplay=1&loop=1&transparent=0&autopause=0&muted=0" 
+                {% elif loop.index0 == 2 %}
+                    src="https://player.vimeo.com/video/1052566689?h=e7339c8b31&autoplay=1&loop=1&transparent=0&autopause=0&muted=0" 
+                {% elif loop.index0 == 3 %}
+                    src="https://player.vimeo.com/video/1052566714?h=2ec45d0872&autoplay=1&loop=1&transparent=0&autopause=0&muted=0" 
+                {% else %}
+                    src="https://player.vimeo.com/video/1052566570?h=60a627009b&autoplay=1&loop=1&transparent=0&autopause=0&muted=0" 
+                {% endif %}
+                frameborder="0" 
+                allow="autoplay; fullscreen; picture-in-picture; encrypted-media" 
+                allowfullscreen
+                data-property-id="{{ property.id }}"
+            ></iframe>
+            <div class="click-toggle"></div>
+            <button class="mute-button" title="كتم/تشغيل الصوت">
+                <i class="fas fa-volume-up"></i>
+            </button>
+        </div>
+        <div class="video-overlay"></div>
+        
+        <div class="property-info">
+            <div class="property-title">{{ property.title }}</div>
+            <div class="property-details">{{ property.location }} | {{ property.area }} متر مربع | {{ property.bedrooms }} غرف</div>
+            <div class="property-price">{{ format_price(property.price) }} ريال</div>
+            
+            <div class="property-info-actions">
+                <div class="agent-info">
+                    <div class="agent-details">
+                        {% for agent in agents %}
+                            {% if agent.id == property.agent_id %}
+                                <img src="{{ agent.image }}" alt="{{ agent.name }}" class="agent-pic">
+                                <div class="agent-name">{{ agent.name }}</div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="action-buttons">
+            <div class="action-button like-button">
+                <i class="fas fa-heart"></i>
+                <div class="count">{{ property.likes }}</div>
+            </div>
+            <div class="action-button comment-button">
+                <i class="fas fa-comment"></i>
+                <div class="count">{{ property.comments | length }}</div>
+            </div>
+            <div class="action-button share-button">
+                <i class="fas fa-share"></i>
+            </div>
+            <div class="action-button save-button">
+                <i class="fas fa-bookmark"></i>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<!-- نافذة تسجيل الدخول المنبثقة -->
+<div id="loginPrompt" class="login-prompt">
+    <h3>تسجيل الدخول مطلوب</h3>
+    <p>يرجى تسجيل الدخول للوصول إلى هذه الميزة (<span id="featureName"></span>)</p>
+    <div class="login-buttons">
+        <a href="{{ url_for('user_type') }}" class="login-button">تسجيل الدخول</a>
+        <a href="#" class="cancel-button" onclick="hideLoginPrompt()">إلغاء</a>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://player.vimeo.com/api/player.js"></script>
+<script src="{{ url_for('static', filename='js/video-feed.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,104 @@
+/* 
+* Real Estate TikTok - Marketers Dashboard
+* Dark Theme Stylesheet
+* Version: 1.0.0
+*/
+
+/* Dark Theme Variables */
+[data-theme="dark"] {
+  /* Dark Theme Colors */
+  --primary-color: #3498db;
+  --secondary-color: #2ecc71;
+  --accent-color: #e74c3c;
+  
+  --light-bg: #1a1a1a;
+  --light-surface: #252525;
+  --light-text-primary: #f5f5f5;
+  --light-text-secondary: #b3b3b3;
+  --light-border: #444444;
+  
+  /* Shadows for Dark Mode */
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.3), 0 1px 2px rgba(0,0,0,0.4);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.3);
+  --shadow-lg: 0 10px 15px rgba(0,0,0,0.3);
+}
+
+/* Apply Dark Theme Overrides */
+[data-theme="dark"] body {
+  background-color: var(--light-bg);
+  color: var(--light-text-primary);
+}
+
+[data-theme="dark"] .card,
+[data-theme="dark"] .top-header,
+[data-theme="dark"] .modal-content {
+  background-color: var(--light-surface);
+  color: var(--light-text-primary);
+}
+
+[data-theme="dark"] .card-content {
+  color: var(--light-text-secondary);
+}
+
+[data-theme="dark"] .sidebar {
+  background-color: #0c1620; /* Darker variant of primary color */
+}
+
+[data-theme="dark"] .table th {
+  background-color: rgba(255,255,255,0.05);
+}
+
+[data-theme="dark"] .table tr:hover {
+  background-color: rgba(255,255,255,0.03);
+}
+
+[data-theme="dark"] .form-control {
+  background-color: var(--light-surface);
+  color: var(--light-text-primary);
+  border-color: var(--light-border);
+}
+
+[data-theme="dark"] .form-control:focus {
+  border-color: var(--primary-color);
+}
+
+[data-theme="dark"] .btn-outline {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+[data-theme="dark"] .btn-outline:hover {
+  background-color: var(--primary-color);
+  color: var(--light-text-primary);
+}
+
+/* Dark Theme Specific Elements */
+[data-theme="dark"] .chart-area canvas {
+  filter: invert(0.9) hue-rotate(180deg);
+}
+
+[data-theme="dark"] .theme-toggle {
+  color: #f1c40f; /* Yellow color for theme toggle icon */
+}
+
+[data-theme="dark"] ::placeholder {
+  color: #777777;
+}
+
+/* Dark Theme Scrollbar */
+[data-theme="dark"] ::-webkit-scrollbar {
+  width: 10px;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-track {
+  background: #333333;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background: #666666;
+  border-radius: 5px;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+  background: #888888;
+}

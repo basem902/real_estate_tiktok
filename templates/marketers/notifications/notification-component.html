@@ -1,0 +1,51 @@
+<!-- 
+    مكون الإشعارات المنسدل للاستخدام في شريط التنقل
+    قم بتضمين هذا الملف في شريط التنقل العلوي للصفحات
+-->
+
+<!-- زر الإشعارات -->
+<li class="nav-item">
+    <a class="nav-link position-relative" href="#" id="notificationsBell">
+        <div class="notifications-bell">
+            <i class="fas fa-bell"></i>
+            <div class="notifications-counter" id="notificationsCounter">0</div>
+        </div>
+    </a>
+
+    <!-- قائمة الإشعارات المنسدلة -->
+    <div class="notifications-dropdown" id="notificationsDropdown">
+        <div class="notifications-dropdown-header">
+            <h6>الإشعارات</h6>
+            <div class="header-actions">
+                <a href="../notifications/notifications-panel.html">إدارة الإشعارات</a>
+            </div>
+        </div>
+        <div class="notifications-dropdown-container">
+            <!-- سيتم تحميل الإشعارات هنا بواسطة JavaScript -->
+        </div>
+    </div>
+</li>
+
+<!-- يجب تضمين ملفات JavaScript الخاصة بالإشعارات في نهاية الصفحة -->
+<!-- 
+<script src="../notifications/assets/js/notifications-data.js"></script>
+<script src="../notifications/assets/js/notifications-manager.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // تهيئة نظام الإشعارات
+        window.notificationsManager.initialize();
+        
+        // إغلاق قائمة الإشعارات عند النقر في أي مكان آخر
+        document.addEventListener('click', function(event) {
+            const dropdown = document.getElementById('notificationsDropdown');
+            const bell = document.getElementById('notificationsBell');
+            
+            if (dropdown && dropdown.classList.contains('show') && 
+                !dropdown.contains(event.target) && 
+                !bell.contains(event.target)) {
+                dropdown.classList.remove('show');
+            }
+        });
+    });
+</script>
+-->

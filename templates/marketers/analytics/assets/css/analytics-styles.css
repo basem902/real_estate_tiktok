@@ -1,0 +1,424 @@
+/**
+ * analytics-styles.css
+ * أنماط مخصصة لنظام التحليلات المتقدم
+ */
+
+/* قسم المؤشرات */
+.analytics-card {
+    background-color: var(--light-surface);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.06);
+    transition: all 0.3s ease;
+    border: 1px solid var(--border-color);
+}
+
+.dark-theme .analytics-card {
+    background-color: var(--dark-surface);
+    border-color: var(--dark-border);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+}
+
+.analytics-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.dark-theme .analytics-card:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.kpi-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    min-height: 150px;
+}
+
+.kpi-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+    transition: all 0.3s ease;
+}
+
+.kpi-icon i {
+    font-size: 24px;
+    color: white;
+}
+
+.kpi-value {
+    font-size: 28px;
+    font-weight: 700;
+    margin: 5px 0;
+    color: var(--primary-text);
+}
+
+.dark-theme .kpi-value {
+    color: var(--light-text);
+}
+
+.kpi-title {
+    font-size: 14px;
+    color: var(--secondary-text);
+    margin-bottom: 8px;
+}
+
+.dark-theme .kpi-title {
+    color: var(--light-secondary);
+}
+
+.kpi-trend {
+    display: flex;
+    align-items: center;
+    font-size: 13px;
+    margin-top: auto;
+}
+
+.kpi-trend.positive {
+    color: var(--success-color);
+}
+
+.kpi-trend.negative {
+    color: var(--danger-color);
+}
+
+.kpi-trend i {
+    margin-left: 5px;
+}
+
+/* بطاقات الرسوم البيانية */
+.chart-card {
+    position: relative;
+}
+
+.chart-card .card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 15px;
+}
+
+.dark-theme .chart-card .card-header {
+    border-color: var(--dark-border);
+}
+
+.chart-card .card-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0;
+    color: var(--primary-text);
+}
+
+.dark-theme .chart-card .card-title {
+    color: var(--light-text);
+}
+
+.chart-card .card-toolbar .btn {
+    padding: 4px 8px;
+    font-size: 12px;
+    border-radius: 6px;
+}
+
+.chart-container {
+    position: relative;
+    height: 300px;
+    margin-top: 10px;
+}
+
+.small-chart-container {
+    height: 200px;
+}
+
+.large-chart-container {
+    height: 400px;
+}
+
+/* الفلاتر */
+.analytics-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+    align-items: center;
+}
+
+.analytics-filters .filter-item {
+    flex: 1;
+    min-width: 200px;
+}
+
+.analytics-filters .filter-label {
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 5px;
+    color: var(--primary-text);
+}
+
+.dark-theme .analytics-filters .filter-label {
+    color: var(--light-text);
+}
+
+.analytics-filters .form-select,
+.analytics-filters .form-control {
+    border-radius: 8px;
+    padding: 8px 12px;
+    background-color: var(--light-input);
+    border: 1px solid var(--border-color);
+}
+
+.dark-theme .analytics-filters .form-select,
+.dark-theme .analytics-filters .form-control {
+    background-color: var(--dark-input);
+    border-color: var(--dark-border);
+    color: var(--light-text);
+}
+
+.date-range-picker {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.date-range-picker .form-control {
+    flex: 1;
+}
+
+/* البطاقات المعلوماتية */
+.info-card {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+.info-card .info-title {
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 5px;
+    color: var(--primary-text);
+}
+
+.dark-theme .info-card .info-title {
+    color: var(--light-text);
+}
+
+.info-card .info-value {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: var(--primary-color);
+}
+
+.info-card .info-description {
+    font-size: 13px;
+    color: var(--secondary-text);
+    margin-top: auto;
+}
+
+.dark-theme .info-card .info-description {
+    color: var(--light-secondary);
+}
+
+/* الجدول التحليلي */
+.analytics-table {
+    width: 100%;
+    margin-top: 10px;
+}
+
+.analytics-table th {
+    padding: 12px 15px;
+    font-weight: 600;
+    color: var(--primary-text);
+    background-color: var(--light-background);
+    border-bottom: 1px solid var(--border-color);
+    text-align: right;
+}
+
+.dark-theme .analytics-table th {
+    color: var(--light-text);
+    background-color: var(--dark-background);
+    border-color: var(--dark-border);
+}
+
+.analytics-table td {
+    padding: 12px 15px;
+    vertical-align: middle;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--primary-text);
+}
+
+.dark-theme .analytics-table td {
+    color: var(--light-text);
+    border-color: var(--dark-border);
+}
+
+.analytics-table tr:hover td {
+    background-color: var(--light-hover);
+}
+
+.dark-theme .analytics-table tr:hover td {
+    background-color: var(--dark-hover);
+}
+
+.analytics-table .trend-indicator {
+    display: inline-flex;
+    align-items: center;
+    font-weight: 500;
+}
+
+.analytics-table .trend-indicator.positive {
+    color: var(--success-color);
+}
+
+.analytics-table .trend-indicator.negative {
+    color: var(--danger-color);
+}
+
+.analytics-table .trend-indicator i {
+    margin-left: 5px;
+    font-size: 14px;
+}
+
+/* بطاقات التوقعات */
+.forecast-card {
+    padding: 15px;
+}
+
+.forecast-card .forecast-title {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--primary-text);
+}
+
+.dark-theme .forecast-card .forecast-title {
+    color: var(--light-text);
+}
+
+.forecast-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.dark-theme .forecast-item {
+    border-color: var(--dark-border);
+}
+
+.forecast-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--primary-text);
+}
+
+.dark-theme .forecast-label {
+    color: var(--light-text);
+}
+
+.forecast-value {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.forecast-impact {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    color: white;
+}
+
+.forecast-impact.positive {
+    background-color: var(--success-color);
+}
+
+.forecast-impact.negative {
+    background-color: var(--danger-color);
+}
+
+.forecast-impact.neutral {
+    background-color: var(--warning-color);
+}
+
+.confidence-bar {
+    height: 6px;
+    width: 100%;
+    background-color: var(--light-input);
+    border-radius: 3px;
+    margin-top: 5px;
+}
+
+.dark-theme .confidence-bar {
+    background-color: var(--dark-input);
+}
+
+.confidence-value {
+    height: 100%;
+    border-radius: 3px;
+    background-color: var(--primary-color);
+}
+
+/* تنسيقات أخرى */
+.section-header {
+    margin-bottom: 20px;
+}
+
+.section-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--primary-text);
+    margin-bottom: 5px;
+}
+
+.dark-theme .section-title {
+    color: var(--light-text);
+}
+
+.section-subtitle {
+    font-size: 14px;
+    color: var(--secondary-text);
+}
+
+.dark-theme .section-subtitle {
+    color: var(--light-secondary);
+}
+
+/* تخصيص حسب حجم الشاشة */
+@media (max-width: 992px) {
+    .kpi-card {
+        min-height: auto;
+    }
+    
+    .chart-container {
+        height: 250px;
+    }
+    
+    .large-chart-container {
+        height: 350px;
+    }
+}
+
+@media (max-width: 768px) {
+    .analytics-filters {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .analytics-filters .filter-item {
+        min-width: 100%;
+    }
+    
+    .date-range-picker {
+        flex-direction: column;
+    }
+}

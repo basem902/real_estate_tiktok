@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>محلل المحادثات - لوحة تحكم المسوقين</title>
+    <!-- Bootstrap RTL CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts (Cairo) -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap">
+    <!-- Chart.js -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../assets/css/dashboard-styles.css">
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+        }
+        .nav-pills .nav-link.active {
+            background-color: #0d6efd;
+        }
+        .analysis-card {
+            transition: all 0.3s ease;
+        }
+        .analysis-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+        }
+        .sentiment-positive {
+            color: #198754;
+        }
+        .sentiment-negative {
+            color: #dc3545;
+        }
+        .sentiment-neutral {
+            color: #6c757d;
+        }
+        .highlight-text {
+            background-color: #fffacd;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+        .conversation-container {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        .tip-card {
+            border-right: 4px solid transparent;
+            transition: all 0.2s ease;
+        }
+        .tip-card:hover {
+            border-right-color: #0d6efd;
+            background-color: #f8f9fa;
+        }
+    </style>
+</head>
+<body>
+    <!-- شريط التنقل العلوي -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">لوحة التحكم</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../dashboard.html">الرئيسية</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../social/social-hub.html">المنصات الاجتماعية</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../analytics/analytics-dashboard.html">التحليلات</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../settings/profile.html">الإعدادات</a>
+                    </li>
+                </ul>
+                <div class="d-flex">
+                    <div class="dropdown">
+                        <button class="btn btn-light dropdown-toggle" type="button" id="notificationsDropdown" data-bs-toggle="dropdown">
+                            <i class="fas fa-bell"></i>
+                            <span class="badge bg-danger rounded-pill">3</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationsDropdown">
+                            <li><h6 class="dropdown-header">الإشعارات</h6></li>
+                            <li><a class="dropdown-item" href="#">تقييم جديد على جوجل</a></li>
+                            <li><a class="dropdown-item" href="#">استفسار جديد من عميل</a></li>
+                            <li><a class="dropdown-item" href="#">تذكير: الاجتماع القادم</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="../notifications/notification-center.html">عرض كل الإشعارات</a></li>
+                        </ul>
+                    </div>
+                    <div class="dropdown ms-2">
+                        <button class="btn btn-light dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown">
+                            <i class="fas fa-user"></i>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                            <li><a class="dropdown-item" href="../settings/profile.html">الملف الشخصي</a></li>
+                            <li><a class="dropdown-item" href="../settings/account.html">إعدادات الحساب</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="../logout.html">تسجيل الخروج</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- القائمة الجانبية -->
+            <nav class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse" id="sidebarMenu">
+                <div class="position-sticky pt-3">
+                    <h6 class="sidebar-heading px-3 mt-1 mb-2 text-muted">
+                        المساعد الذكي
+                    </h6>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="ai-assistant.html">
+                                <i class="fas fa-robot"></i>
+                                المساعد الذكي
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="content-writer.html">
+                                <i class="fas fa-pen-fancy"></i>
+                                كاتب المحتوى
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="conversation-analyzer.html">
+                                <i class="fas fa-chart-line"></i>
+                                محلل المحادثات
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="ai-settings.html">
+                                <i class="fas fa-cog"></i>
+                                إعدادات الذكاء الاصطناعي
+                            </a>
+                        </li>
+                    </ul>
+                    
+                    <h6 class="sidebar-heading px-3 mt-4 mb-2 text-muted">
+                        أدوات مساعدة
+                    </h6>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="../tools/calculator.html">
+                                <i class="fas fa-calculator"></i>
+                                حاسبة العقارات
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../tools/templates.html">
+                                <i class="fas fa-file-alt"></i>
+                                قوالب المستندات
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <!-- المحتوى الرئيسي -->
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 main-content">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">محلل المحادثات الذكي</h1>
+                    <div class="btn-toolbar mb-2 mb-md-0">
+                        <div class="btn-group me-2">
+                            <button type="button" class="btn btn-sm btn-outline-secondary" id="exportReportBtn">
+                                <i class="fas fa-file-export me-1"></i>
+                                تصدير التقرير
+                            </button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary" id="shareAnalysisBtn">
+                                <i class="fas fa-share-alt me-1"></i>
+                                مشاركة التحليل
+                            </button>
+                        </div>
+                        <button type="button" class="btn btn-sm btn-outline-primary">
+                            <i class="fas fa-upload me-1"></i>
+                            تحميل محادثة جديدة
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- شريط التبويبات -->
+                <ul class="nav nav-pills mb-4" id="conversationTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="analysis-tab" data-bs-toggle="tab" data-bs-target="#analysis" type="button" role="tab" aria-selected="true">
+                            <i class="fas fa-chart-pie me-1"></i> تحليل المحادثات
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="tips-tab" data-bs-toggle="tab" data-bs-target="#tips" type="button" role="tab" aria-selected="false">
+                            <i class="fas fa-lightbulb me-1"></i> نصائح لتحسين الإقناع
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="simulation-tab" data-bs-toggle="tab" data-bs-target="#simulation" type="button" role="tab" aria-selected="false">
+                            <i class="fas fa-comments me-1"></i> محاكاة المحادثات
+                        </button>
+                    </li>
+                </ul>
+                
+                <!-- محتوى التبويبات -->
+                <div class="tab-content" id="conversationTabsContent">
+                    <!-- قسم تحليل المحادثات -->
+                    <div class="tab-pane fade show active" id="analysis" role="tabpanel" aria-labelledby="analysis-tab">
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header bg-white">
+                                        <h5 class="card-title mb-0">تحميل المحادثات للتحليل</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="mb-3">
+                                            <label for="conversationSource" class="form-label">مصدر المحادثات</label>
+                                            <select class="form-select" id="conversationSource">
+                                                <option value="whatsapp">واتساب</option>
+                                                <option value="email">البريد الإلكتروني</option>
+                                                <option value="live_chat">المحادثات المباشرة</option>
+                                                <option value="messenger">فيسبوك ماسنجر</option>
+                                                <option value="custom">مصدر مخصص</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="conversationDateRange" class="form-label">الفترة الزمنية</label>
+                                            <select class="form-select" id="conversationDateRange">
+                                                <option value="last_week">الأسبوع الماضي</option>
+                                                <option value="last_month">الشهر الماضي</option>
+                                                <option value="last_3_months">آخر 3 أشهر</option>
+                                                <option value="custom">فترة مخصصة</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="conversationFile" class="form-label">أو تحميل ملف محادثة</label>
+                                            <input class="form-control" type="file" id="conversationFile">
+                                        </div>
+                                        <button type="button" class="btn btn-primary" id="analyzeBtn">
+                                            <i class="fas fa-chart-line me-2"></i>تحليل المحادثات
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header bg-white">
+                                        <h5 class="card-title mb-0">ملخص التحليل</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between mb-3">
+                                            <h6>إجمالي المحادثات:</h6>
+                                            <span class="badge bg-primary">24 محادثة</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between mb-3">
+                                            <h6>متوسط مدة المحادثة:</h6>
+                                            <span class="badge bg-info">12 دقيقة</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between mb-3">
+                                            <h6>معدل التحويل:</h6>
+                                            <span class="badge bg-success">32%</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between mb-3">
+                                            <h6>التقييم العام:</h6>
+                                            <div>
+                                                <i class="fas fa-star text-warning"></i>
+                                                <i class="fas fa-star text-warning"></i>
+                                                <i class="fas fa-star text-warning"></i>
+                                                <i class="fas fa-star text-warning"></i>
+                                                <i class="fas fa-star-half-alt text-warning"></i>
+                                                <span class="ms-2">4.5/5</span>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="mb-3">
+                                            <h6>تقييم مهارات الإقناع:</h6>
+                                            <div class="progress mb-2" style="height: 10px;">
+                                                <div class="progress-bar bg-success" role="progressbar" style="width: 75%;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">75%</div>
+                                            </div>
+                                            <small class="text-muted">أداء جيد جداً، مع مجال للتحسين</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-4">
+                            <div class="col-md-7">
+                                <div class="card">
+                                    <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                                        <h5 class="card-title mb-0">اتجاهات المحادثات</h5>
+                                        <div class="btn-group btn-group-sm">
+                                            <button type="button" class="btn btn-outline-secondary active" data-chart-period="week">أسبوعي</button>
+                                            <button type="button" class="btn btn-outline-secondary" data-chart-period="month">شهري</button>
+                                            <button type="button" class="btn btn-outline-secondary" data-chart-period="year">سنوي</button>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <canvas id="conversationTrendsChart" height="250"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="card">
+                                    <div class="card-header bg-white">
+                                        <h5 class="card-title mb-0">تحليل العاطفة</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <canvas id="sentimentChart" height="250"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card mb-4">
+                            <div class="card-header bg-white">
+                                <h5 class="card-title mb-0">تحليل محادثة مختارة</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <div>
+                                        <select class="form-select form-select-sm" id="selectedConversation">
+                                            <option value="conv1">محادثة #1 - أحمد محمد (واتساب) - 15 مارس 2025</option>
+                                            <option value="conv2">محادثة #2 - سارة خالد (بريد إلكتروني) - 10 مارس 2025</option>
+                                            <option value="conv3">محادثة #3 - محمد علي (فيسبوك) - 5 مارس 2025</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <span class="badge bg-primary me-2">استفسار عن فيلا</span>
+                                        <span class="badge bg-success">تم التحويل</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="conversation-container border rounded p-3 bg-light mb-3">
+                                    <div class="d-flex mb-3">
+                                        <div class="flex-shrink-0">
+                                            <div class="avatar bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                                <i class="fas fa-user"></i>
+                                            </div>
+                                        </div>
+                                        <div class="flex-grow-1 ms-3">
+                                            <div class="bg-white p-3 rounded shadow-sm">
+                                                <div class="mb-1 small text-muted">العميل (أحمد) - 10:15 ص</div>
+                                                السلام عليكم، أنا مهتم بالفيلا المعروضة في حي النرجس، هل ما زالت متاحة؟
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="d-flex mb-3 flex-row-reverse">
+                                        <div class="flex-shrink-0">
+                                            <div class="avatar bg-success text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                                <i class="fas fa-headset"></i>
+                                            </div>
+                                        </div>
+                                        <div class="flex-grow-1 me-3">
+                                            <div class="bg-primary text-white p-3 rounded shadow-sm">
+                                                <div class="mb-1 small text-light">أنت - 10:17 ص</div>
+                                                وعليكم السلام ورحمة الله وبركاته أستاذ أحمد، <span class="highlight-text text-dark">نعم الفيلا ما زالت متاحة</span> وهي من أفضل الخيارات المتوفرة حالياً في حي النرجس! هل تبحث عن سكن شخصي أم استثمار؟
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="d-flex mb-3">
+                                        <div class="flex-shrink-0">
+                                            <div class="avatar bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                                <i class="fas fa-user"></i>
+                                            </div>
+                                        </div>
+                                        <div class="flex-grow-1 ms-3">
+                                            <div class="bg-white p-3 rounded shadow-sm">
+                                                <div class="mb-1 small text-muted">العميل (أحمد) - 10:20 ص</div>
+                                                أبحث عن سكن لعائلتي، نحن 5 أفراد. هل ممكن تخبرني عن مساحة الفيلا وعدد الغرف؟
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="d-flex flex-row-reverse">
+                                        <div class="flex-shrink-0">
+                                            <div class="avatar bg-success text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                                <i class="fas fa-headset"></i>
+                                            </div>
+                                        </div>
+                                        <div class="flex-grow-1 me-3">
+                                            <div class="bg-primary text-white p-3 rounded shadow-sm">
+                                                <div class="mb-1 small text-light">أنت - 10:22 ص</div>
+                                                <span class="highlight-text text-dark">الفيلا مثالية لعائلة من 5 أفراد!</span> مساحتها 450 متر مربع وتتكون من 5 غرف نوم و4 حمامات، بالإضافة إلى مجلس رجال ومجلس نساء ومطبخ واسع. كما يوجد حديقة خارجية ومسبح. <span class="highlight-text text-dark">هل تفضل زيارة الفيلا لمشاهدتها؟</span> يمكنني ترتيب موعد مناسب لكم.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="card border-0 bg-light">
+                                    <div class="card-header bg-light">
+                                        <h6 class="mb-0">تحليل النقاط الرئيسية</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="mb-3">
+                                            <h6>نقاط القوة:</h6>
+                                            <ul class="small">
+                                                <li>الاستجابة السريعة للاستفسار الأولي (2 دقيقة)</li>
+                                                <li>طرح سؤال عن الغرض من الشراء (سكن أم استثمار)</li>
+                                                <li>تقديم تفاصيل كاملة عن العقار</li>
+                                                <li>عرض ترتيب زيارة للموقع</li>
+                                            </ul>
+                                        </div>
+                                        <div class="mb-3">
+                                            <h6>فرص التحسين:</h6>
+                                            <ul class="small">
+                                                <li>لم يتم ذكر السعر أو التفاصيل المالية</li>
+                                                <li>لم يتم التركيز على مميزات الحي والخدمات المحيطة</li>
+                                                <li>يمكن استخدام المزيد من الكلمات التحفيزية</li>
+                                            </ul>
+                                        </div>
+                                        <div>
+                                            <span class="badge bg-success me-2">نبرة إيجابية</span>
+                                            <span class="badge bg-info me-2">معدل استجابة سريع</span>
+                                            <span class="badge bg-warning">فرصة تحويل عالية</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <div class="card analysis-card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            <i class="fas fa-star text-warning me-2"></i>
+                                            الكلمات المفتاحية الأكثر فعالية
+                                        </h5>
+                                        <div class="table-responsive">
+                                            <table class="table table-sm">
+                                                <thead>
+                                                    <tr>
+                                                        <th>الكلمة أو العبارة</th>
+                                                        <th>معدل التحويل</th>
+                                                        <th>التكرار</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><span class="text-primary">"فرصة استثنائية"</span></td>
+                                                        <td>45%</td>
+                                                        <td>12</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><span class="text-primary">"موقع استراتيجي"</span></td>
+                                                        <td>42%</td>
+                                                        <td>15</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><span class="text-primary">"عائد استثماري مضمون"</span></td>
+                                                        <td>40%</td>
+                                                        <td>8</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><span class="text-primary">"خيار مثالي للعائلات"</span></td>
+                                                        <td>36%</td>
+                                                        <td>10</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><span class="text-primary">"أسعار تنافسية"</span></td>
+                                                        <td>35%</td>
+                                                        <td>18</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card analysis-card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            <i class="fas fa-times-circle text-danger me-2"></i>
+                                            العبارات التي تقلل من فرص التحويل
+                                        </h5>
+                                        <div class="table-responsive">
+                                            <table class="table table-sm">
+                                                <thead>
+                                                    <tr>
+                                                        <th>الكلمة أو العبارة</th>
+                                                        <th>تأثير سلبي</th>
+                                                        <th>التكرار</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><span class="text-danger">"للأسف غير متاح"</span></td>
+                                                        <td>-35%</td>
+                                                        <td>5</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><span class="text-danger">"سيتم الرد عليك لاحقاً"</span></td>
+                                                        <td>-30%</td>
+                                                        <td>7</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><span class="text-danger">"هذا خارج نطاق خدماتنا"</span></td>
+                                                        <td>-28%</td>
+                                                        <td>3</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><span class="text-danger">"لا أعرف بالضبط"</span></td>
+                                                        <td>-25%</td>
+                                                        <td>6</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><span class="text-danger">"الأسعار قابلة للتغيير"</span></td>
+                                                        <td>-20%</td>
+                                                        <td>11</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- قسم نصائح تحسين الإقناع -->
+                    <div class="tab-pane fade" id="tips" role="tabpanel" aria-labelledby="tips-tab">
+                        <div class="alert alert-primary mb-4">
+                            <div class="d-flex">
+                                <div class="me-3">
+                                    <i class="fas fa-lightbulb fa-2x text-warning"></i>
+                                </div>
+                                <div>
+                                    <h5 class="alert-heading">نصائح مخصصة لك</h5>
+                                    <p class="mb-0">بناءً على تحليل محادثاتك السابقة، إليك بعض النصائح الخاصة لتحسين مهارات الإقناع والتواصل مع العملاء المحتملين.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-4">
+                            <div class="col-md-8">
+                                <div class="card mb-4">
+                                    <div class="card-header bg-white">
+                                        <h5 class="card-title mb-0">نصائح مخصصة بناءً على أدائك</h5>
+                                    </div>
+                                    <div class="card-body p-0">
+                                        <div class="list-group list-group-flush">
+                                            <div class="list-group-item p-3 tip-card">
+                                                <div class="d-flex">
+                                                    <div class="flex-shrink-0 me-3">
+                                                        <span class="badge bg-danger rounded-circle p-2"><i class="fas fa-arrow-up"></i></span>
+                                                    </div>
+                                                    <div>
+                                                        <h6 class="mb-1">تحسين وقت الاستجابة</h6>
+                                                        <p class="mb-1 small">متوسط وقت استجابتك الحالي هو 15 دقيقة. حاول تقليله إلى أقل من 5 دقائق لزيادة فرص التحويل بنسبة 30%.</p>
+                                                        <span class="badge bg-light text-dark">أولوية عالية</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="list-group-item p-3 tip-card">
+                                                <div class="d-flex">
+                                                    <div class="flex-shrink-0 me-3">
+                                                        <span class="badge bg-warning rounded-circle p-2"><i class="fas fa-star"></i></span>
+                                                    </div>
+                                                    <div>
+                                                        <h6 class="mb-1">استخدام كلمات تحفيزية أكثر</h6>
+                                                        <p class="mb-1 small">أضف المزيد من الكلمات التحفيزية مثل "فرصة رائعة"، "قيمة استثنائية"، "عرض محدود". هذه الكلمات تزيد معدل التحويل بنسبة 25%.</p>
+                                                        <span class="badge bg-light text-dark">أولوية متوسطة</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="list-group-item p-3 tip-card">
+                                                <div class="d-flex">
+                                                    <div class="flex-shrink-0 me-3">
+                                                        <span class="badge bg-success rounded-circle p-2"><i class="fas fa-check"></i></span>
+                                                    </div>
+                                                    <div>
+                                                        <h6 class="mb-1">طرح أسئلة مفتوحة</h6>
+                                                        <p class="mb-1 small">أنت تميل إلى طرح أسئلة مغلقة (نعم/لا). حاول استخدام أسئلة مفتوحة تبدأ بـ "كيف" أو "ماذا" لفهم احتياجات العميل بشكل أفضل.</p>
+                                                        <span class="badge bg-light text-dark">أولوية متوسطة</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="list-group-item p-3 tip-card">
+                                                <div class="d-flex">
+                                                    <div class="flex-shrink-0 me-3">
+                                                        <span class="badge bg-info rounded-circle p-2"><i class="fas fa-info"></i></span>
+                                                    </div>
+                                                    <div>
+                                                        <h6 class="mb-1">التركيز على الفوائد لا المميزات</h6>
+                                                        <p class="mb-1 small">بدلاً من ذكر مميزات العقار فقط، اشرح كيف ستفيد هذه المميزات العميل. مثلاً: "مسبح خاص يمنحك خصوصية وراحة للاستمتاع مع العائلة".</p>
+                                                        <span class="badge bg-light text-dark">أولوية منخفضة</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="list-group-item p-3 tip-card">
+                                                <div class="d-flex">
+                                                    <div class="flex-shrink-0 me-3">
+                                                        <span class="badge bg-secondary rounded-circle p-2"><i class="fas fa-sync-alt"></i></span>
+                                                    </div>
+                                                    <div>
+                                                        <h6 class="mb-1">المتابعة بعد المحادثة</h6>
+                                                        <p class="mb-1 small">70% من محادثاتك تنتهي دون متابعة. قم بإرسال رسالة متابعة بعد 24-48 ساعة من المحادثة الأولية لزيادة فرص التحويل بنسبة 50%.</p>
+                                                        <span class="badge bg-light text-dark">أولوية عالية</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="card">
+                                    <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                                        <h5 class="card-title mb-0">قواعد ذهبية للإقناع في التسويق العقاري</h5>
+                                        <button class="btn btn-sm btn-outline-primary">تحميل كدليل PDF</button>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row mb-4">
+                                            <div class="col-md-6">
+                                                <div class="d-flex mb-3">
+                                                    <div class="flex-shrink-0 me-2">
+                                                        <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" style="width: 30px; height: 30px;">1</div>
+                                                    </div>
+                                                    <div>
+                                                        <h6 class="mb-1">الاستماع النشط</h6>
+                                                        <p class="small mb-0">90% من المسوقين الناجحين يستمعون أكثر مما يتحدثون. الاستماع بعناية يساعدك على فهم احتياجات العميل الحقيقية.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="d-flex mb-3">
+                                                    <div class="flex-shrink-0 me-2">
+                                                        <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" style="width: 30px; height: 30px;">2</div>
+                                                    </div>
+                                                    <div>
+                                                        <h6 class="mb-1">مبدأ الندرة</h6>
+                                                        <p class="small mb-0">الناس يقدرون ما هو محدود أو نادر. استخدم عبارات مثل "فرصة محدودة" و"متاح لفترة محدودة" لتحفيز القرار.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="d-flex mb-3">
+                                                    <div class="flex-shrink-0 me-2">
+                                                        <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" style="width: 30px; height: 30px;">3</div>
+                                                    </div>
+                                                    <div>
+                                                        <h6 class="mb-1">التوافق الاجتماعي</h6>
+                                                        <p class="small mb-0">الناس يميلون للتأثر بما يفعله الآخرون. استخدم قصص النجاح والشهادات لإثبات شعبية وموثوقية عروضك.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="d-flex mb-3">
+                                                    <div class="flex-shrink-0 me-2">
+                                                        <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" style="width: 30px; height: 30px;">4</div>
+                                                    </div>
+                                                    <div>
+                                                        <h6 class="mb-1">قاعدة المعاملة بالمثل</h6>
+                                                        <p class="small mb-0">قدم شيئًا ذا قيمة أولاً (معلومات، نصائح، عروض) لزيادة احتمالية استجابة العميل بالإيجاب لاحقًا.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="d-flex mb-0">
+                                                    <div class="flex-shrink-0 me-2">
+                                                        <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" style="width: 30px; height: 30px;">5</div>
+                                                    </div>
+                                                    <div>
+                                                        <h6 class="mb-1">التصور المسبق</h6>
+                                                        <p class="small mb-0">ساعد العميل على تخيل نفسه في العقار. استخدم لغة حسية غنية لوصف التجربة المستقبلية.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="d-flex mb-0">
+                                                    <div class="flex-shrink-0 me-2">
+                                                        <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" style="width: 30px; height: 30px;">6</div>
+                                                    </div>
+                                                    <div>
+                                                        <h6 class="mb-1">استخدام الصمت الاستراتيجي</h6>
+                                                        <p class="small mb-0">بعد تقديم عرض، استخدم الصمت. هذا يمنح العميل وقتًا للتفكير ويزيد من احتمالية قبولهم للعرض.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card sticky-top" style="top: 10px;">
+                                    <div class="card-header bg-white">
+                                        <h5 class="card-title mb-0">مؤشر مهارات الإقناع</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="mb-4">
+                                            <canvas id="persuasionSkillsRadar" height="250"></canvas>
+                                        </div>
+                                        <hr>
+                                        <h6 class="mb-3">المهارات الأكثر احتياجًا للتطوير</h6>
+                                        <div class="mb-3">
+                                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                                <span class="small">الاستجابة السريعة</span>
+                                                <span class="small text-danger">55%</span>
+                                            </div>
+                                            <div class="progress" style="height: 6px;">
+                                                <div class="progress-bar bg-danger" role="progressbar" style="width: 55%;" aria-valuenow="55" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                                <span class="small">تخصيص العروض</span>
+                                                <span class="small text-warning">65%</span>
+                                            </div>
+                                            <div class="progress" style="height: 6px;">
+                                                <div class="progress-bar bg-warning" role="progressbar" style="width: 65%;" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                                <span class="small">التعامل مع الاعتراضات</span>
+                                                <span class="small text-warning">68%</span>
+                                            </div>
+                                            <div class="progress" style="height: 6px;">
+                                                <div class="progress-bar bg-warning" role="progressbar" style="width: 68%;" aria-valuenow="68" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <button class="btn btn-primary btn-sm w-100 mb-2">
+                                            <i class="fas fa-graduation-cap me-1"></i>
+                                            بدء تدريب مهارات الإقناع
+                                        </button>
+                                        <button class="btn btn-outline-primary btn-sm w-100">
+                                            <i class="fas fa-download me-1"></i>
+                                            تحميل خطة تطوير شخصية
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- قسم محاكاة المحادثات -->
+                    <div class="tab-pane fade" id="simulation" role="tabpanel" aria-labelledby="simulation-tab">
+                        <div class="alert alert-primary mb-4">
+                            <div class="d-flex">
+                                <div class="me-3">
+                                    <i class="fas fa-comments fa-2x text-primary"></i>
+                                </div>
+                                <div>
+                                    <h5 class="alert-heading">ممارسة مهارات الإقناع</h5>
+                                    <p class="mb-0">تدرب على سيناريوهات مختلفة مع العملاء المحتملين. ستحصل على تقييم فوري لردودك واقتراحات للتحسين.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-4">
+                            <div class="col-md-4">
+                                <div class="card mb-4">
+                                    <div class="card-header bg-white">
+                                        <h5 class="card-title mb-0">اختر سيناريو للتدريب</h5>
+                                    </div>
+                                    <div class="card-body p-0">
+                                        <div class="list-group list-group-flush">
+                                            <button class="list-group-item list-group-item-action p-3 active" data-scenario="scenario1">
+                                                <div class="d-flex">
+                                                    <div class="flex-shrink-0 me-3">
+                                                        <span class="badge bg-primary rounded-circle p-2"><i class="fas fa-user-tie"></i></span>
+                                                    </div>
+                                                    <div>
+                                                        <h6 class="mb-1">المشتري المتردد</h6>
+                                                        <p class="mb-1 small">سيناريو للتعامل مع عميل مهتم ولكنه متردد في اتخاذ قرار الشراء النهائي.</p>
+                                                        <span class="badge bg-success">مستوى أساسي</span>
+                                                    </div>
+                                                </div>
+                                            </button>
+                                            <button class="list-group-item list-group-item-action p-3" data-scenario="scenario2">
+                                                <div class="d-flex">
+                                                    <div class="flex-shrink-0 me-3">
+                                                        <span class="badge bg-info rounded-circle p-2"><i class="fas fa-search-dollar"></i></span>
+                                                    </div>
+                                                    <div>
+                                                        <h6 class="mb-1">المفاوض الصعب</h6>
+                                                        <p class="mb-1 small">عميل يريد تخفيض السعر بشكل كبير ويستخدم أساليب تفاوض متقدمة.</p>
+                                                        <span class="badge bg-warning">مستوى متوسط</span>
+                                                    </div>
+                                                </div>
+                                            </button>
+                                            <button class="list-group-item list-group-item-action p-3" data-scenario="scenario3">
+                                                <div class="d-flex">
+                                                    <div class="flex-shrink-0 me-3">
+                                                        <span class="badge bg-danger rounded-circle p-2"><i class="fas fa-thumbs-down"></i></span>
+                                                    </div>
+                                                    <div>
+                                                        <h6 class="mb-1">مع العميل المستاء</h6>
+                                                        <p class="mb-1 small">التعامل مع عميل غاضب أو مستاء بسبب تجربة سابقة سلبية مع الشركة.</p>
+                                                        <span class="badge bg-danger">مستوى متقدم</span>
+                                                    </div>
+                                                </div>
+                                            </button>
+                                            <button class="list-group-item list-group-item-action p-3" data-scenario="scenario4">
+                                                <div class="d-flex">
+                                                    <div class="flex-shrink-0 me-3">
+                                                        <span class="badge bg-success rounded-circle p-2"><i class="fas fa-building"></i></span>
+                                                    </div>
+                                                    <div>
+                                                        <h6 class="mb-1">عميل الاستثمار العقاري</h6>
+                                                        <p class="mb-1 small">التعامل مع مستثمر يبحث عن فرص استثمارية عقارية ويركز على العائد المالي.</p>
+                                                        <span class="badge bg-warning">مستوى متوسط</span>
+                                                    </div>
+                                                </div>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="card mb-4">
+                                    <div class="card-header bg-white">
+                                        <h5 class="card-title mb-0">إعدادات التدريب</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="mb-3">
+                                            <label class="form-label">مستوى صعوبة العميل</label>
+                                            <select class="form-select form-select-sm">
+                                                <option>سهل - للمبتدئين</option>
+                                                <option selected>متوسط - مناسب للجميع</option>
+                                                <option>صعب - للمتقدمين</option>
+                                                <option>خبير - تحدي حقيقي</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">نوع العقار</label>
+                                            <select class="form-select form-select-sm">
+                                                <option>شقة سكنية</option>
+                                                <option selected>فيلا</option>
+                                                <option>أرض</option>
+                                                <option>عقار تجاري</option>
+                                                <option>مكتب</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3 form-check">
+                                            <input type="checkbox" class="form-check-input" id="realTimeAnalysis" checked>
+                                            <label class="form-check-label small" for="realTimeAnalysis">تحليل فوري للردود</label>
+                                        </div>
+                                        <div class="mb-0 form-check">
+                                            <input type="checkbox" class="form-check-input" id="timedResponses">
+                                            <label class="form-check-label small" for="timedResponses">تفعيل مؤقت الاستجابة</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="card">
+                                    <div class="card-header bg-white">
+                                        <h5 class="card-title mb-0">تقدم التدريب</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <span class="small">إكمال السيناريوهات:</span>
+                                            <span class="small">3/12</span>
+                                        </div>
+                                        <div class="progress mb-3" style="height: 8px;">
+                                            <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <span class="small">مهارات الإقناع:</span>
+                                            <span class="small">
+                                                <i class="fas fa-star text-warning"></i>
+                                                <i class="fas fa-star text-warning"></i>
+                                                <i class="fas fa-star text-warning"></i>
+                                                <i class="far fa-star text-warning"></i>
+                                                <i class="far fa-star text-warning"></i>
+                                            </span>
+                                        </div>
+                                        <div class="small mb-0">
+                                            <i class="fas fa-medal text-primary me-1"></i>
+                                            إنجازات: 4 من 12
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-8">
+                                <div class="card mb-4">
+                                    <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                                        <h5 class="card-title mb-0">محاكاة المحادثة: المشتري المتردد</h5>
+                                        <button class="btn btn-sm btn-outline-secondary">
+                                            <i class="fas fa-redo me-1"></i>إعادة بدء
+                                        </button>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center mb-4">
+                                            <div class="me-3">
+                                                <img src="https://via.placeholder.com/50" class="rounded-circle" alt="Customer Avatar">
+                                            </div>
+                                            <div>
+                                                <h6 class="mb-1">خالد العمري</h6>
+                                                <p class="mb-0 text-muted small">
+                                                    <i class="fas fa-info-circle me-1"></i>
+                                                    رجل أعمال، عمره 42 سنة، يبحث عن منزل عائلي في حي النرجس
+                                                </p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="conversation-container border rounded p-3 bg-light mb-3">
+                                            <div class="d-flex mb-3">
+                                                <div class="flex-shrink-0">
+                                                    <div class="avatar bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                                        <i class="fas fa-user"></i>
+                                                    </div>
+                                                </div>
+                                                <div class="flex-grow-1 ms-3">
+                                                    <div class="bg-white p-3 rounded shadow-sm">
+                                                        <div class="mb-1 small text-muted">خالد (العميل) - 11:00 ص</div>
+                                                        السلام عليكم، أنا مهتم بالفيلا التي عرضتها علي الأسبوع الماضي في حي النرجس، لكنني ما زلت متردد قليلاً بسبب السعر، هل يمكن مناقشة هذا الأمر؟
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="d-flex mb-3 flex-row-reverse">
+                                                <div class="flex-shrink-0">
+                                                    <div class="avatar bg-success text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                                        <i class="fas fa-headset"></i>
+                                                    </div>
+                                                </div>
+                                                <div class="flex-grow-1 me-3">
+                                                    <div class="bg-primary text-white p-3 rounded shadow-sm">
+                                                        <div class="mb-1 small text-light">أنت - 11:05 ص</div>
+                                                        وعليكم السلام ورحمة الله وبركاته أستاذ خالد، بالتأكيد يمكننا مناقشة السعر. أقدر اهتمامك بالفيلا وأتفهم حرصك على الحصول على أفضل قيمة مقابل استثمارك. هل هناك جوانب محددة في الفيلا تعتقد أنها لا تتناسب مع السعر المعروض؟
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="d-flex mb-3">
+                                                <div class="flex-shrink-0">
+                                                    <div class="avatar bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                                        <i class="fas fa-user"></i>
+                                                    </div>
+                                                </div>
+                                                <div class="flex-grow-1 ms-3">
+                                                    <div class="bg-white p-3 rounded shadow-sm">
+                                                        <div class="mb-1 small text-muted">خالد (العميل) - 11:10 ص</div>
+                                                        الفيلا بشكل عام رائعة، لكنني وجدت عقارات مشابهة في المنطقة بسعر أقل بحوالي 10%. بالإضافة إلى ذلك، أعتقد أن المطبخ يحتاج إلى تحديث وكذلك نظام التكييف قديم نسبياً. هذه الأمور ستكلفني مصاريف إضافية.
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="card bg-light border mb-3">
+                                            <div class="card-header bg-light border-bottom">
+                                                <h6 class="mb-0">كيف سترد؟</h6>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="mb-3">
+                                                    <label class="form-label small">اكتب ردك هنا:</label>
+                                                    <textarea class="form-control" rows="4" placeholder="مرحباً أستاذ خالد، شكراً لملاحظاتك..."></textarea>
+                                                </div>
+                                                <div class="btn-toolbar">
+                                                    <button class="btn btn-primary me-2">
+                                                        <i class="fas fa-paper-plane me-1"></i>إرسال الرد
+                                                    </button>
+                                                    <button class="btn btn-outline-secondary me-2">
+                                                        <i class="fas fa-lightbulb me-1"></i>اقتراحات للرد
+                                                    </button>
+                                                    <button class="btn btn-outline-secondary">
+                                                        <i class="fas fa-question-circle me-1"></i>الحصول على مساعدة
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="card border-warning">
+                                            <div class="card-header bg-warning bg-opacity-10 d-flex align-items-center">
+                                                <i class="fas fa-lightbulb text-warning me-2"></i>
+                                                <h6 class="mb-0">نصائح لهذا الموقف</h6>
+                                            </div>
+                                            <div class="card-body p-3">
+                                                <ul class="small mb-0">
+                                                    <li class="mb-2">استمع إلى مخاوف العميل وتعامل معها بجدية واحترام.</li>
+                                                    <li class="mb-2">سلط الضوء على المزايا الفريدة للعقار التي تبرر السعر المعروض.</li>
+                                                    <li class="mb-2">استخدم أسلوب مقارنة القيمة بدلاً من مجرد مقارنة الأسعار.</li>
+                                                    <li class="mb-2">اقترح حلولاً وسطية مثل المساعدة في تقديم تمويل مناسب أو خصم على الأثاث.</li>
+                                                    <li>تجنب تخفيض السعر مباشرة؛ حاول إظهار القيمة المضافة أولاً.</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="card">
+                                    <div class="card-header bg-white">
+                                        <h5 class="card-title mb-0">تقييم أدائك في هذا السيناريو</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-4 mb-3">
+                                                <div class="card h-100 border-0 bg-light">
+                                                    <div class="card-body text-center">
+                                                        <h6 class="mb-1">سرعة الاستجابة</h6>
+                                                        <div class="display-5 mb-2 text-success">85%</div>
+                                                        <div class="small text-muted">ممتاز</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 mb-3">
+                                                <div class="card h-100 border-0 bg-light">
+                                                    <div class="card-body text-center">
+                                                        <h6 class="mb-1">مهارات الإقناع</h6>
+                                                        <div class="display-5 mb-2 text-warning">70%</div>
+                                                        <div class="small text-muted">جيد</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 mb-3">
+                                                <div class="card h-100 border-0 bg-light">
+                                                    <div class="card-body text-center">
+                                                        <h6 class="mb-1">حل المشكلات</h6>
+                                                        <div class="display-5 mb-2 text-primary">78%</div>
+                                                        <div class="small text-muted">جيد جداً</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="mb-0">
+                                            <h6>النقاط المكتسبة: <span class="text-primary">135</span></h6>
+                                            <div class="d-flex justify-content-end">
+                                                <button class="btn btn-primary">متابعة التدريب</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+    
+    <!-- Custom JavaScript Files -->
+    <script src="js/conversation-analyzer.js"></script>
+    
+    <!-- سكريبت Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- الجافاسكريبت الخاص بصفحة محلل المحادثات -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // تهيئة مخطط اتجاهات المحادثات
+            const conversationTrendsChart = new Chart(
+                document.getElementById('conversationTrendsChart'),
+                {
+                    type: 'line',
+                    data: {
+                        labels: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو'],
+                        datasets: [
+                            {
+                                label: 'عدد المحادثات',
+                                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                                borderColor: 'rgba(54, 162, 235, 1)',
+                                data: [12, 19, 15, 20, 25, 30],
+                                fill: true,
+                                tension: 0.4
+                            },
+                            {
+                                label: 'معدل التحويل (%)',
+                                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                                borderColor: 'rgba(255, 99, 132, 1)',
+                                data: [15, 20, 18, 25, 28, 35],
+                                fill: true,
+                                tension: 0.4
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'اتجاهات المحادثات والتحويلات',
+                                font: {
+                                    size: 16
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                }
+            );
+            
+            // تهيئة مخطط تحليل المشاعر
+            const sentimentAnalysisChart = new Chart(
+                document.getElementById('sentimentAnalysisChart'),
+                {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['إيجابية', 'محايدة', 'سلبية'],
+                        datasets: [
+                            {
+                                label: 'تحليل المشاعر',
+                                backgroundColor: ['#4caf50', '#2196f3', '#f44336'],
+                                data: [65, 25, 10]
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'توزيع المشاعر في المحادثات',
+                                font: {
+                                    size: 16
+                                }
+                            }
+                        }
+                    }
+                }
+            );
+            
+            // تهيئة مخطط الرادار لمهارات الإقناع
+            const persuasionSkillsRadar = new Chart(
+                document.getElementById('persuasionSkillsRadar'),
+                {
+                    type: 'radar',
+                    data: {
+                        labels: [
+                            'الاستماع النشط',
+                            'طرح الأسئلة المفتوحة',
+                            'التعامل مع الاعتراضات',
+                            'الاستجابة السريعة',
+                            'تخصيص العروض',
+                            'إتمام الصفقات'
+                        ],
+                        datasets: [
+                            {
+                                label: 'مهاراتك الحالية',
+                                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                                borderColor: 'rgba(54, 162, 235, 1)',
+                                data: [85, 75, 68, 55, 65, 72]
+                            },
+                            {
+                                label: 'متوسط الفريق',
+                                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                                borderColor: 'rgba(255, 99, 132, 1)',
+                                data: [75, 70, 65, 80, 70, 75]
+                            }
+                        ]
+                    },
+                    options: {
+                        elements: {
+                            line: {
+                                borderWidth: 3
+                            }
+                        },
+                        scales: {
+                            r: {
+                                angleLines: {
+                                    display: true
+                                },
+                                suggestedMin: 0,
+                                suggestedMax: 100
+                            }
+                        }
+                    }
+                }
+            );
+            
+            // تبديل التبويبات
+            document.querySelectorAll('.nav-link').forEach(function(navLink) {
+                navLink.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    
+                    // إزالة الكلاس active من جميع الأزرار
+                    document.querySelectorAll('.nav-link').forEach(function(link) {
+                        link.classList.remove('active');
+                    });
+                    
+                    // إزالة الكلاس show و active من جميع التبويبات
+                    document.querySelectorAll('.tab-pane').forEach(function(pane) {
+                        pane.classList.remove('show', 'active');
+                    });
+                    
+                    // إضافة الكلاس active للزر المضغوط
+                    this.classList.add('active');
+                    
+                    // الحصول على معرف التبويب
+                    const tabId = this.getAttribute('data-bs-target').replace('#', '');
+                    
+                    // إضافة الكلاس show و active للتبويب المختار
+                    document.getElementById(tabId).classList.add('show', 'active');
+                });
+            });
+            
+            // تفعيل أزرار اختيار السيناريو في محاكاة المحادثات
+            document.querySelectorAll('[data-scenario]').forEach(function(button) {
+                button.addEventListener('click', function() {
+                    // إزالة الكلاس active من جميع الأزرار
+                    document.querySelectorAll('[data-scenario]').forEach(function(btn) {
+                        btn.classList.remove('active');
+                    });
+                    
+                    // إضافة الكلاس active للزر المضغوط
+                    this.classList.add('active');
+                    
+                    // يمكن هنا إضافة منطق لتحميل السيناريو المحدد
+                    const scenarioId = this.getAttribute('data-scenario');
+                    console.log('تم اختيار السيناريو:', scenarioId);
+                    
+                    // هنا يمكن استدعاء دالة لتحميل محتوى السيناريو المحدد
+                    // loadScenario(scenarioId);
+                });
+            });
+            
+            // محاكاة تحميل المحادثات عند اختيار مصدر المحادثات
+            document.querySelectorAll('.source-option').forEach(function(option) {
+                option.addEventListener('click', function() {
+                    // إزالة الكلاس active من جميع الخيارات
+                    document.querySelectorAll('.source-option').forEach(function(opt) {
+                        opt.classList.remove('selected-source');
+                    });
+                    
+                    // إضافة الكلاس selected-source للخيار المحدد
+                    this.classList.add('selected-source');
+                    
+                    // تحديث عنوان مصدر المحادثات
+                    document.getElementById('selectedSourceTitle').textContent = this.querySelector('h6').textContent;
+                    
+                    // عرض قسم التحميل
+                    document.getElementById('sourceConfig').classList.remove('d-none');
+                });
+            });
+            
+            // معالجة النقر على زر تحليل المحادثات
+            document.getElementById('analyzeConversationsBtn').addEventListener('click', function() {
+                // إظهار قسم النتائج بعد وقت قصير (محاكاة التحليل)
+                document.getElementById('loadingAnalysis').classList.remove('d-none');
+                
+                setTimeout(function() {
+                    document.getElementById('loadingAnalysis').classList.add('d-none');
+                    document.getElementById('analysisResults').classList.remove('d-none');
+                    
+                    // تحديث الرسوم البيانية إذا كانت موجودة
+                    if (conversationTrendsChart) conversationTrendsChart.update();
+                    if (sentimentAnalysisChart) sentimentAnalysisChart.update();
+                }, 2000);
+            });
+            
+            // إضافة معالجة للنقر على المحادثة في قائمة المحادثات
+            document.querySelectorAll('.conversation-list-item').forEach(function(item) {
+                item.addEventListener('click', function() {
+                    // إزالة الكلاس active من جميع العناصر
+                    document.querySelectorAll('.conversation-list-item').forEach(function(i) {
+                        i.classList.remove('active');
+                    });
+                    
+                    // إضافة الكلاس active للعنصر المحدد
+                    this.classList.add('active');
+                    
+                    // إظهار تحليل المحادثة المحددة
+                    document.getElementById('selectedConversationAnalysis').classList.remove('d-none');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

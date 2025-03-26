@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تفاصيل الإشعار - نظام التسويق العقاري</title>
+    
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- نمط النظام -->
+    <link rel="stylesheet" href="../../assets/css/main-styles.css">
+    <!-- أنماط الإشعارات -->
+    <link rel="stylesheet" href="assets/css/notifications-styles.css">
+</head>
+<body>
+    <!-- شريط التنقل -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="../dashboard/home.html">
+                <i class="fas fa-building me-2"></i>
+                نظام التسويق العقاري
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../dashboard/home.html">
+                            <i class="fas fa-home me-1"></i> الرئيسية
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../schedule/calendar-view.html">
+                            <i class="fas fa-calendar me-1"></i> المواعيد
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../analytics/analytics-dashboard.html">
+                            <i class="fas fa-chart-line me-1"></i> التحليلات
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="notifications-panel.html">
+                            <i class="fas fa-bell me-1"></i> الإشعارات
+                        </a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../settings/profile.html">
+                            <i class="fas fa-user-cog me-1"></i> الإعدادات
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../../index.html">
+                            <i class="fas fa-sign-out-alt me-1"></i> تسجيل الخروج
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- المحتوى الرئيسي -->
+    <div class="container mt-5 pt-5">
+        <div class="row">
+            <div class="col-12">
+                <!-- بطاقة تفاصيل الإشعار -->
+                <div class="card shadow-sm mb-4" id="notificationDetails">
+                    <div class="card-header bg-transparent d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center">
+                            <a href="notifications-panel.html" class="btn btn-sm btn-outline-secondary me-2">
+                                <i class="fas fa-arrow-right"></i> العودة
+                            </a>
+                            <h5 class="mb-0">تفاصيل الإشعار</h5>
+                        </div>
+                        <div class="dropdown">
+                            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="actionDropdown" data-bs-toggle="dropdown">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="actionDropdown">
+                                <li><button class="dropdown-item" id="markAsReadBtn"><i class="fas fa-check me-2"></i> تعيين كمقروء</button></li>
+                                <li><button class="dropdown-item" id="archiveBtn"><i class="fas fa-archive me-2"></i> أرشفة</button></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><button class="dropdown-item text-danger" id="deleteBtn"><i class="fas fa-trash me-2"></i> حذف</button></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="notification-detail-header d-flex align-items-center mb-3">
+                            <div class="notification-icon-wrapper me-3">
+                                <div class="notification-icon" id="notificationIcon">
+                                    <i class="fas fa-bell"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="mb-1" id="notificationTitle">عنوان الإشعار</h4>
+                                <div class="notification-meta">
+                                    <span class="badge me-2" id="notificationType">نوع الإشعار</span>
+                                    <span class="badge me-2" id="notificationPriority">الأولوية</span>
+                                    <span class="text-muted me-2" id="notificationDate">التاريخ</span>
+                                    <span class="text-muted" id="notificationSource">المصدر</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="notification-detail-content p-3 mb-4 rounded border">
+                            <p class="mb-0" id="notificationContent">محتوى الإشعار...</p>
+                        </div>
+                        <div class="notification-detail-actions" id="notificationActions">
+                            <!-- سيتم إضافة الإجراءات ديناميكيًا بناءً على نوع الإشعار -->
+                        </div>
+                    </div>
+                    <div class="card-footer bg-transparent">
+                        <div class="notification-detail-footer d-flex justify-content-between">
+                            <div>
+                                <span class="text-muted" id="notificationId">معرف الإشعار: </span>
+                            </div>
+                            <div>
+                                <span class="text-muted" id="notificationStatus">الحالة: </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- الإشعارات ذات الصلة -->
+                <div class="card shadow-sm">
+                    <div class="card-header bg-transparent">
+                        <h5 class="mb-0">إشعارات متعلقة</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="related-notifications" id="relatedNotifications">
+                            <!-- سيتم تحميل الإشعارات ذات الصلة هنا بواسطة JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- تذييل الصفحة -->
+    <footer class="footer mt-5 py-3 bg-light">
+        <div class="container text-center">
+            <span class="text-muted">© 2025 نظام التسويق العقاري. جميع الحقوق محفوظة.</span>
+        </div>
+    </footer>
+
+    <!-- Modal تأكيد الحذف -->
+    <div class="modal fade" id="deleteConfirmModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">تأكيد الحذف</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+                </div>
+                <div class="modal-body">
+                    <p>هل أنت متأكد من رغبتك في حذف هذا الإشعار؟ لا يمكن التراجع عن هذا الإجراء.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">تأكيد الحذف</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/notifications-data.js"></script>
+    <script src="assets/js/notifications-manager.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // الحصول على معرف الإشعار من الرابط
+            const urlParams = new URLSearchParams(window.location.search);
+            const notificationId = urlParams.get('id');
+            
+            if (!notificationId) {
+                // إذا لم يتم تحديد معرف الإشعار، يتم التوجيه إلى صفحة الإشعارات
+                window.location.href = 'notifications-panel.html';
+                return;
+            }
+            
+            // الحصول على بيانات الإشعار
+            const notification = window.notificationsData.getNotificationById(parseInt(notificationId));
+            
+            if (!notification) {
+                // إذا لم يتم العثور على الإشعار، يتم التوجيه إلى صفحة الإشعارات
+                window.location.href = 'notifications-panel.html';
+                return;
+            }
+            
+            // عرض بيانات الإشعار
+            displayNotificationDetails(notification);
+            
+            // عرض الإشعارات ذات الصلة
+            displayRelatedNotifications(notification);
+            
+            // تعيين الإشعار كمقروء إذا لم يكن مقروءًا بالفعل
+            if (notification.status === window.notificationsData.STATUS.UNREAD) {
+                window.notificationsData.updateNotificationStatus(
+                    notification.id, 
+                    window.notificationsData.STATUS.READ
+                );
+                
+                // تحديث عداد الإشعارات
+                window.notificationsManager.updateNotificationsCounter();
+            }
+            
+            // إضافة مستمعات الأحداث للأزرار
+            setupEventListeners(notification);
+        });
+        
+        // عرض تفاصيل الإشعار
+        function displayNotificationDetails(notification) {
+            // تعيين العنوان
+            document.getElementById('notificationTitle').textContent = notification.title;
+            
+            // تعيين النوع
+            const typeElement = document.getElementById('notificationType');
+            typeElement.textContent = getTypeName(notification.type);
+            typeElement.className = `badge text-bg-${getTypeClass(notification.type)} me-2`;
+            
+            // تعيين الأولوية
+            const priorityElement = document.getElementById('notificationPriority');
+            priorityElement.textContent = getPriorityName(notification.priority);
+            priorityElement.className = `badge text-bg-${getPriorityClass(notification.priority)} me-2`;
+            
+            // تعيين التاريخ
+            document.getElementById('notificationDate').textContent = formatDate(new Date(notification.dateCreated));
+            
+            // تعيين المصدر
+            document.getElementById('notificationSource').textContent = getSourceName(notification.source);
+            
+            // تعيين المحتوى
+            document.getElementById('notificationContent').textContent = notification.content;
+            
+            // تعيين الرمز
+            const iconElement = document.getElementById('notificationIcon');
+            iconElement.innerHTML = `<i class="${notification.icon || 'fas fa-bell'}"></i>`;
+            iconElement.className = `notification-icon notification-${notification.type}`;
+            
+            // تعيين الحالة
+            document.getElementById('notificationStatus').textContent = `الحالة: ${getStatusName(notification.status)}`;
+            
+            // تعيين المعرف
+            document.getElementById('notificationId').textContent = `معرف الإشعار: ${notification.id}`;
+            
+            // إضافة الإجراءات المناسبة بناءً على نوع الإشعار
+            addNotificationActions(notification);
+        }
+        
+        // إضافة إجراءات مخصصة بناءً على نوع الإشعار
+        function addNotificationActions(notification) {
+            const actionsContainer = document.getElementById('notificationActions');
+            actionsContainer.innerHTML = '';
+            
+            // إضافة زر الانتقال إلى الرابط إذا كان موجودًا
+            if (notification.link) {
+                const linkButton = document.createElement('a');
+                linkButton.href = notification.link;
+                linkButton.className = 'btn btn-primary me-2';
+                linkButton.innerHTML = `<i class="fas fa-external-link-alt me-1"></i> فتح التفاصيل`;
+                actionsContainer.appendChild(linkButton);
+            }
+            
+            // إضافة إجراءات إضافية بناءً على نوع الإشعار
+            switch (notification.type) {
+                case window.notificationsData.TYPES.MEETING:
+                    const confirmButton = document.createElement('button');
+                    confirmButton.className = 'btn btn-success me-2';
+                    confirmButton.innerHTML = `<i class="fas fa-check-circle me-1"></i> تأكيد الموعد`;
+                    confirmButton.addEventListener('click', function() {
+                        alert('تم تأكيد الموعد');
+                        // هنا يمكن إضافة منطق تأكيد الموعد
+                    });
+                    actionsContainer.appendChild(confirmButton);
+                    
+                    const rescheduleButton = document.createElement('button');
+                    rescheduleButton.className = 'btn btn-warning me-2';
+                    rescheduleButton.innerHTML = `<i class="fas fa-calendar-alt me-1"></i> إعادة الجدولة`;
+                    rescheduleButton.addEventListener('click', function() {
+                        alert('الرجاء استخدام تقويم المواعيد لإعادة الجدولة');
+                        window.location.href = '../schedule/calendar-view.html';
+                    });
+                    actionsContainer.appendChild(rescheduleButton);
+                    break;
+                    
+                case window.notificationsData.TYPES.TASK:
+                    const completeButton = document.createElement('button');
+                    completeButton.className = 'btn btn-success me-2';
+                    completeButton.innerHTML = `<i class="fas fa-check me-1"></i> إكمال المهمة`;
+                    completeButton.addEventListener('click', function() {
+                        alert('تم تحديث حالة المهمة إلى مكتملة');
+                        // هنا يمكن إضافة منطق إكمال المهمة
+                    });
+                    actionsContainer.appendChild(completeButton);
+                    break;
+                    
+                case window.notificationsData.TYPES.ALERT:
+                    const acknowledgeButton = document.createElement('button');
+                    acknowledgeButton.className = 'btn btn-info me-2';
+                    acknowledgeButton.innerHTML = `<i class="fas fa-exclamation-circle me-1"></i> تأكيد الاستلام`;
+                    acknowledgeButton.addEventListener('click', function() {
+                        alert('تم تأكيد استلام التنبيه');
+                        // هنا يمكن إضافة منطق تأكيد استلام التنبيه
+                    });
+                    actionsContainer.appendChild(acknowledgeButton);
+                    break;
+            }
+        }
+        
+        // عرض الإشعارات ذات الصلة
+        function displayRelatedNotifications(notification) {
+            const relatedContainer = document.getElementById('relatedNotifications');
+            relatedContainer.innerHTML = '';
+            
+            // الحصول على الإشعارات ذات الصلة (من نفس المصدر)
+            const relatedNotifications = window.notificationsData.getNotifications()
+                .filter(n => n.source === notification.source && n.id !== notification.id)
+                .sort((a, b) => new Date(b.dateCreated) - new Date(a.dateCreated))
+                .slice(0, 5); // أظهر أحدث 5 إشعارات فقط
+            
+            if (relatedNotifications.length === 0) {
+                relatedContainer.innerHTML = '<p class="text-muted text-center">لا توجد إشعارات متعلقة</p>';
+                return;
+            }
+            
+            // إنشاء قائمة الإشعارات ذات الصلة
+            const listGroup = document.createElement('div');
+            listGroup.className = 'list-group';
+            
+            relatedNotifications.forEach(relatedNotification => {
+                const listItem = document.createElement('a');
+                listItem.href = `notification-details.html?id=${relatedNotification.id}`;
+                listItem.className = 'list-group-item list-group-item-action d-flex align-items-center';
+                
+                // رمز الإشعار
+                const iconDiv = document.createElement('div');
+                iconDiv.className = `notification-icon notification-${relatedNotification.type} me-3`;
+                iconDiv.style.width = '30px';
+                iconDiv.style.height = '30px';
+                iconDiv.innerHTML = `<i class="${relatedNotification.icon || 'fas fa-bell'}"></i>`;
+                
+                // معلومات الإشعار
+                const contentDiv = document.createElement('div');
+                contentDiv.className = 'flex-grow-1';
+                
+                const title = document.createElement('h6');
+                title.className = 'mb-0';
+                title.textContent = relatedNotification.title;
+                
+                const meta = document.createElement('small');
+                meta.className = 'text-muted';
+                meta.textContent = formatDate(new Date(relatedNotification.dateCreated));
+                
+                contentDiv.appendChild(title);
+                contentDiv.appendChild(meta);
+                
+                // إضافة العناصر إلى عنصر القائمة
+                listItem.appendChild(iconDiv);
+                listItem.appendChild(contentDiv);
+                
+                // إضافة عنصر القائمة إلى المجموعة
+                listGroup.appendChild(listItem);
+            });
+            
+            relatedContainer.appendChild(listGroup);
+        }
+        
+        // إعداد مستمعات الأحداث للأزرار
+        function setupEventListeners(notification) {
+            // زر تعيين كمقروء
+            document.getElementById('markAsReadBtn').addEventListener('click', function() {
+                window.notificationsData.updateNotificationStatus(
+                    notification.id, 
+                    window.notificationsData.STATUS.READ
+                );
+                
+                // تحديث العرض
+                document.getElementById('notificationStatus').textContent = `الحالة: ${getStatusName(window.notificationsData.STATUS.READ)}`;
+                window.notificationsManager.updateNotificationsCounter();
+                
+                alert('تم تعيين الإشعار كمقروء');
+            });
+            
+            // زر الأرشفة
+            document.getElementById('archiveBtn').addEventListener('click', function() {
+                window.notificationsData.updateNotificationStatus(
+                    notification.id, 
+                    window.notificationsData.STATUS.ARCHIVED
+                );
+                
+                // تحديث العرض
+                document.getElementById('notificationStatus').textContent = `الحالة: ${getStatusName(window.notificationsData.STATUS.ARCHIVED)}`;
+                window.notificationsManager.updateNotificationsCounter();
+                
+                alert('تم أرشفة الإشعار');
+            });
+            
+            // زر الحذف
+            document.getElementById('deleteBtn').addEventListener('click', function() {
+                // إظهار نافذة التأكيد
+                const deleteModal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
+                deleteModal.show();
+            });
+            
+            // زر تأكيد الحذف
+            document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
+                // حذف الإشعار
+                window.notificationsData.deleteNotification(notification.id);
+                
+                // إخفاء النافذة المنبثقة
+                const deleteModal = bootstrap.Modal.getInstance(document.getElementById('deleteConfirmModal'));
+                deleteModal.hide();
+                
+                // تحديث عداد الإشعارات
+                window.notificationsManager.updateNotificationsCounter();
+                
+                // التوجيه إلى صفحة الإشعارات
+                alert('تم حذف الإشعار بنجاح');
+                window.location.href = 'notifications-panel.html';
+            });
+        }
+        
+        // وظائف مساعدة
+        function getTypeName(type) {
+            const typeNames = {
+                [window.notificationsData.TYPES.INFO]: 'معلومات',
+                [window.notificationsData.TYPES.SUCCESS]: 'نجاح',
+                [window.notificationsData.TYPES.WARNING]: 'تحذير',
+                [window.notificationsData.TYPES.DANGER]: 'خطر',
+                [window.notificationsData.TYPES.TASK]: 'مهمة',
+                [window.notificationsData.TYPES.MEETING]: 'موعد',
+                [window.notificationsData.TYPES.ALERT]: 'تنبيه'
+            };
+            
+            return typeNames[type] || 'غير معروف';
+        }
+        
+        function getTypeClass(type) {
+            const typeClasses = {
+                [window.notificationsData.TYPES.INFO]: 'info',
+                [window.notificationsData.TYPES.SUCCESS]: 'success',
+                [window.notificationsData.TYPES.WARNING]: 'warning',
+                [window.notificationsData.TYPES.DANGER]: 'danger',
+                [window.notificationsData.TYPES.TASK]: 'primary',
+                [window.notificationsData.TYPES.MEETING]: 'secondary',
+                [window.notificationsData.TYPES.ALERT]: 'dark'
+            };
+            
+            return typeClasses[type] || 'secondary';
+        }
+        
+        function getPriorityName(priority) {
+            const priorityNames = {
+                [window.notificationsData.PRIORITIES.LOW]: 'منخفضة',
+                [window.notificationsData.PRIORITIES.MEDIUM]: 'متوسطة',
+                [window.notificationsData.PRIORITIES.HIGH]: 'عالية',
+                [window.notificationsData.PRIORITIES.URGENT]: 'عاجلة'
+            };
+            
+            return priorityNames[priority] || 'غير معروف';
+        }
+        
+        function getPriorityClass(priority) {
+            const priorityClasses = {
+                [window.notificationsData.PRIORITIES.LOW]: 'secondary',
+                [window.notificationsData.PRIORITIES.MEDIUM]: 'info',
+                [window.notificationsData.PRIORITIES.HIGH]: 'warning',
+                [window.notificationsData.PRIORITIES.URGENT]: 'danger'
+            };
+            
+            return priorityClasses[priority] || 'secondary';
+        }
+        
+        function getStatusName(status) {
+            const statusNames = {
+                [window.notificationsData.STATUS.UNREAD]: 'غير مقروء',
+                [window.notificationsData.STATUS.READ]: 'مقروء',
+                [window.notificationsData.STATUS.ACTED]: 'تم الإجراء',
+                [window.notificationsData.STATUS.ARCHIVED]: 'مؤرشف'
+            };
+            
+            return statusNames[status] || 'غير معروف';
+        }
+        
+        function getSourceName(source) {
+            const sourceNames = {
+                [window.notificationsData.SOURCES.CRM]: 'نظام العملاء',
+                [window.notificationsData.SOURCES.SALES]: 'المبيعات',
+                [window.notificationsData.SOURCES.MARKETING]: 'التسويق',
+                [window.notificationsData.SOURCES.TASK]: 'المهام',
+                [window.notificationsData.SOURCES.APPOINTMENT]: 'المواعيد',
+                [window.notificationsData.SOURCES.SYSTEM]: 'النظام'
+            };
+            
+            return sourceNames[source] || 'غير معروف';
+        }
+        
+        function formatDate(date) {
+            return new Intl.DateTimeFormat('ar-SA', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            }).format(date);
+        }
+    </script>
+</body>
+</html>

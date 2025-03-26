@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>كاتب المحتوى - لوحة تحكم المسوقين</title>
+    <!-- Bootstrap RTL CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts (Cairo) -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../assets/css/dashboard-styles.css">
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+        }
+        .content-tool-card {
+            transition: all 0.3s ease;
+            border-right: 4px solid transparent;
+        }
+        .content-tool-card:hover {
+            border-right-color: var(--bs-primary);
+            background-color: #f8f9fa;
+        }
+        .template-card {
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        .template-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+        }
+        .editor-container {
+            min-height: 300px;
+            border-radius: 0.25rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- شريط التنقل العلوي -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">لوحة التحكم</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../dashboard.html">الرئيسية</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../social/social-hub.html">المنصات الاجتماعية</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../analytics/analytics-dashboard.html">التحليلات</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../settings/profile.html">الإعدادات</a>
+                    </li>
+                </ul>
+                <div class="d-flex">
+                    <div class="dropdown">
+                        <button class="btn btn-light dropdown-toggle" type="button" id="notificationsDropdown" data-bs-toggle="dropdown">
+                            <i class="fas fa-bell"></i>
+                            <span class="badge bg-danger rounded-pill">3</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationsDropdown">
+                            <li><h6 class="dropdown-header">الإشعارات</h6></li>
+                            <li><a class="dropdown-item" href="#">تقييم جديد على جوجل</a></li>
+                            <li><a class="dropdown-item" href="#">استفسار جديد من عميل</a></li>
+                            <li><a class="dropdown-item" href="#">تذكير: الاجتماع القادم</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="../notifications/notification-center.html">عرض كل الإشعارات</a></li>
+                        </ul>
+                    </div>
+                    <div class="dropdown ms-2">
+                        <button class="btn btn-light dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown">
+                            <i class="fas fa-user"></i>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                            <li><a class="dropdown-item" href="../settings/profile.html">الملف الشخصي</a></li>
+                            <li><a class="dropdown-item" href="../settings/account.html">إعدادات الحساب</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="../logout.html">تسجيل الخروج</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- القائمة الجانبية -->
+            <nav class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse" id="sidebarMenu">
+                <div class="position-sticky pt-3">
+                    <h6 class="sidebar-heading px-3 mt-1 mb-2 text-muted">
+                        المساعد الذكي
+                    </h6>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="ai-assistant.html">
+                                <i class="fas fa-robot"></i>
+                                المساعد الذكي
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="content-writer.html">
+                                <i class="fas fa-pen-fancy"></i>
+                                كاتب المحتوى
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="conversation-analyzer.html">
+                                <i class="fas fa-chart-line"></i>
+                                محلل المحادثات
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="ai-settings.html">
+                                <i class="fas fa-cog"></i>
+                                إعدادات الذكاء الاصطناعي
+                            </a>
+                        </li>
+                    </ul>
+                    
+                    <h6 class="sidebar-heading px-3 mt-4 mb-2 text-muted">
+                        أدوات مساعدة
+                    </h6>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="../tools/calculator.html">
+                                <i class="fas fa-calculator"></i>
+                                حاسبة العقارات
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../tools/templates.html">
+                                <i class="fas fa-file-alt"></i>
+                                قوالب المستندات
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <!-- المحتوى الرئيسي -->
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 main-content">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">كاتب المحتوى الذكي</h1>
+                    <div class="btn-toolbar mb-2 mb-md-0">
+                        <div class="btn-group me-2">
+                            <button type="button" class="btn btn-sm btn-outline-secondary" id="saveContentBtn">
+                                <i class="fas fa-save me-1"></i>
+                                حفظ المحتوى
+                            </button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary" id="historyBtn">
+                                <i class="fas fa-history me-1"></i>
+                                المحتوى السابق
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row mb-4">
+                    <div class="col-lg-4">
+                        <div class="card shadow-sm mb-4">
+                            <div class="card-header bg-white">
+                                <h5 class="mb-0">أدوات صياغة المحتوى</h5>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="list-group list-group-flush">
+                                    <div class="list-group-item content-tool-card p-3" data-tool="property-description">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h6 class="mb-1"><i class="fas fa-home text-primary me-2"></i> وصف عقار</h6>
+                                        </div>
+                                        <p class="mb-1 text-muted small">إنشاء وصف جذاب للعقارات بناءً على المميزات والمواصفات</p>
+                                    </div>
+                                    <div class="list-group-item content-tool-card p-3" data-tool="social-post">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h6 class="mb-1"><i class="fas fa-hashtag text-success me-2"></i> منشور اجتماعي</h6>
+                                        </div>
+                                        <p class="mb-1 text-muted small">إنشاء منشورات جذابة للشبكات الاجتماعية</p>
+                                    </div>
+                                    <div class="list-group-item content-tool-card p-3" data-tool="email-template">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h6 class="mb-1"><i class="fas fa-envelope text-info me-2"></i> قالب بريد إلكتروني</h6>
+                                        </div>
+                                        <p class="mb-1 text-muted small">إنشاء رسائل بريد إلكتروني احترافية للتواصل مع العملاء</p>
+                                    </div>
+                                    <div class="list-group-item content-tool-card p-3" data-tool="ad-copy">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h6 class="mb-1"><i class="fas fa-ad text-warning me-2"></i> نص إعلاني</h6>
+                                        </div>
+                                        <p class="mb-1 text-muted small">إنشاء نصوص إعلانية مقنعة للإعلانات المدفوعة</p>
+                                    </div>
+                                    <div class="list-group-item content-tool-card p-3" data-tool="seo-content">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h6 class="mb-1"><i class="fas fa-search text-danger me-2"></i> محتوى SEO</h6>
+                                        </div>
+                                        <p class="mb-1 text-muted small">إنشاء محتوى متوافق مع محركات البحث</p>
+                                    </div>
+                                    <div class="list-group-item content-tool-card p-3" data-tool="headline-generator">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h6 class="mb-1"><i class="fas fa-heading text-primary me-2"></i> منشئ العناوين</h6>
+                                        </div>
+                                        <p class="mb-1 text-muted small">إنشاء عناوين جذابة للمقالات والإعلانات</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card shadow-sm mb-4">
+                            <div class="card-header bg-white">
+                                <h5 class="mb-0">المحتوى المحفوظ</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="list-group">
+                                    <a href="#" class="list-group-item list-group-item-action" data-saved-id="1">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h6 class="mb-1">وصف شقة فاخرة بإطلالة بحرية</h6>
+                                            <small class="text-muted">منذ 3 أيام</small>
+                                        </div>
+                                        <p class="mb-1 text-truncate small">شقة فاخرة بإطلالة بحرية خلابة، تتميز بتصميم عصري وديكورات راقية...</p>
+                                    </a>
+                                    <a href="#" class="list-group-item list-group-item-action" data-saved-id="2">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h6 class="mb-1">منشور ترويجي لعرض خاص</h6>
+                                            <small class="text-muted">منذ أسبوع</small>
+                                        </div>
+                                        <p class="mb-1 text-truncate small">فرصة لا تعوض! عرض محدود لفترة محدودة فقط، خصم 10% على جميع الفلل...</p>
+                                    </a>
+                                    <a href="#" class="list-group-item list-group-item-action" data-saved-id="3">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h6 class="mb-1">رسالة متابعة للعملاء</h6>
+                                            <small class="text-muted">منذ أسبوعين</small>
+                                        </div>
+                                        <p class="mb-1 text-truncate small">عزيزي العميل، نشكرك على اهتمامك بخدماتنا العقارية...</p>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-8">
+                        <!-- بطاقة منشئ المحتوى -->
+                        <div class="card shadow-sm mb-4">
+                            <div class="card-header bg-white">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h5 class="mb-0" id="toolTitle">اختر أداة من القائمة</h5>
+                                    <div class="d-flex">
+                                        <button class="btn btn-sm btn-outline-secondary me-2" id="copyBtn">
+                                            <i class="fas fa-copy me-1"></i> نسخ
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-primary" id="regenerateBtn">
+                                            <i class="fas fa-sync-alt me-1"></i> إعادة إنشاء
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <!-- نموذج المدخلات لوصف العقار -->
+                                <div id="property-description-form" class="tool-form" style="display: none;">
+                                    <form>
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <label for="propertyType" class="form-label">نوع العقار</label>
+                                                <select class="form-select" id="propertyType">
+                                                    <option value="apartment">شقة</option>
+                                                    <option value="villa">فيلا</option>
+                                                    <option value="office">مكتب</option>
+                                                    <option value="land">أرض</option>
+                                                    <option value="commercial">عقار تجاري</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="propertyLocation" class="form-label">الموقع</label>
+                                                <input type="text" class="form-control" id="propertyLocation" placeholder="المدينة، الحي، المنطقة">
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-md-4">
+                                                <label for="bedrooms" class="form-label">عدد غرف النوم</label>
+                                                <input type="number" class="form-control" id="bedrooms" min="0" max="20">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="bathrooms" class="form-label">عدد الحمامات</label>
+                                                <input type="number" class="form-control" id="bathrooms" min="0" max="10">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="area" class="form-label">المساحة (م²)</label>
+                                                <input type="number" class="form-control" id="area" min="1">
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="features" class="form-label">المميزات الخاصة</label>
+                                            <input type="text" class="form-control" id="features" placeholder="مسبح، حديقة، إطلالة بحرية، الخ">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="price" class="form-label">السعر</label>
+                                            <input type="text" class="form-control" id="price" placeholder="سعر البيع أو الإيجار">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="tone" class="form-label">نبرة الوصف</label>
+                                            <select class="form-select" id="tone">
+                                                <option value="professional">مهنية</option>
+                                                <option value="luxurious">فاخرة</option>
+                                                <option value="friendly">ودية</option>
+                                                <option value="persuasive">مقنعة</option>
+                                            </select>
+                                        </div>
+                                        <div class="d-grid gap-2">
+                                            <button type="button" class="btn btn-primary" id="generatePropertyDescription">إنشاء الوصف</button>
+                                        </div>
+                                    </form>
+                                </div>
+                                
+                                <!-- نموذج المدخلات للمنشور الاجتماعي -->
+                                <div id="social-post-form" class="tool-form" style="display: none;">
+                                    <form>
+                                        <div class="mb-3">
+                                            <label for="socialPlatform" class="form-label">المنصة</label>
+                                            <select class="form-select" id="socialPlatform">
+                                                <option value="facebook">فيسبوك</option>
+                                                <option value="instagram">انستجرام</option>
+                                                <option value="twitter">تويتر</option>
+                                                <option value="linkedin">لينكد إن</option>
+                                                <option value="tiktok">تيك توك</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="postTopic" class="form-label">موضوع المنشور</label>
+                                            <input type="text" class="form-control" id="postTopic" placeholder="الموضوع الرئيسي للمنشور">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="postGoal" class="form-label">هدف المنشور</label>
+                                            <select class="form-select" id="postGoal">
+                                                <option value="awareness">زيادة الوعي بالعلامة التجارية</option>
+                                                <option value="engagement">زيادة التفاعل</option>
+                                                <option value="lead-generation">جمع العملاء المحتملين</option>
+                                                <option value="sales">زيادة المبيعات</option>
+                                                <option value="education">تثقيف الجمهور</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="targetAudience" class="form-label">الجمهور المستهدف</label>
+                                            <input type="text" class="form-control" id="targetAudience" placeholder="خصائص الجمهور المستهدف">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="callToAction" class="form-label">دعوة للعمل</label>
+                                            <input type="text" class="form-control" id="callToAction" placeholder="ماذا تريد من المتابعين أن يفعلوا؟">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="postLength" class="form-label">طول المنشور</label>
+                                            <select class="form-select" id="postLength">
+                                                <option value="short">قصير (2-3 أسطر)</option>
+                                                <option value="medium">متوسط (4-5 أسطر)</option>
+                                                <option value="long">طويل (6-8 أسطر)</option>
+                                            </select>
+                                        </div>
+                                        <div class="d-grid gap-2">
+                                            <button type="button" class="btn btn-primary" id="generateSocialPost">إنشاء المنشور</button>
+                                        </div>
+                                    </form>
+                                </div>
+                                
+                                <!-- النماذج الأخرى سيتم إضافتها بنفس التنسيق -->
+                                
+                                <!-- منطقة عرض المحتوى المنشأ -->
+                                <div id="content-output" class="mt-4">
+                                    <div class="alert alert-info">
+                                        <i class="fas fa-info-circle me-2"></i>
+                                        اختر أداة من القائمة على اليمين لإنشاء المحتوى
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- قسم القوالب الجاهزة -->
+                        <div class="card shadow-sm">
+                            <div class="card-header bg-white">
+                                <h5 class="mb-0">قوالب محتوى جاهزة</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row row-cols-1 row-cols-md-2 g-4">
+                                    <div class="col">
+                                        <div class="card h-100 template-card">
+                                            <div class="card-body">
+                                                <h6 class="card-title"><i class="fas fa-star text-warning me-2"></i> وصف عقار فاخر</h6>
+                                                <p class="card-text small">قالب وصف للعقارات الفاخرة يبرز المميزات والفخامة</p>
+                                            </div>
+                                            <div class="card-footer bg-transparent border-0">
+                                                <button class="btn btn-sm btn-outline-primary">استخدام القالب</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="card h-100 template-card">
+                                            <div class="card-body">
+                                                <h6 class="card-title"><i class="fas fa-percent text-success me-2"></i> عرض ترويجي محدود</h6>
+                                                <p class="card-text small">قالب لإنشاء عروض ترويجية محدودة الوقت لإثارة عنصر الإلحاح</p>
+                                            </div>
+                                            <div class="card-footer bg-transparent border-0">
+                                                <button class="btn btn-sm btn-outline-primary">استخدام القالب</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="card h-100 template-card">
+                                            <div class="card-body">
+                                                <h6 class="card-title"><i class="fas fa-envelope-open-text text-info me-2"></i> متابعة العملاء</h6>
+                                                <p class="card-text small">قالب لرسائل متابعة العملاء المحتملين بعد المعاينة</p>
+                                            </div>
+                                            <div class="card-footer bg-transparent border-0">
+                                                <button class="btn btn-sm btn-outline-primary">استخدام القالب</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="card h-100 template-card">
+                                            <div class="card-body">
+                                                <h6 class="card-title"><i class="fas fa-bullhorn text-danger me-2"></i> إطلاق مشروع جديد</h6>
+                                                <p class="card-text small">قالب للإعلان عن إطلاق مشروع عقاري جديد وجذب الاهتمام</p>
+                                            </div>
+                                            <div class="card-footer bg-transparent border-0">
+                                                <button class="btn btn-sm btn-outline-primary">استخدام القالب</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JavaScript Files -->
+    <script src="js/content-writer.js"></script>
+</body>
+</html>

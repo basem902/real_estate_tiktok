@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="240" height="240" viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg">
+  <!-- خلفية دائرية -->
+  <circle cx="120" cy="120" r="110" fill="#3498db" />
+  <circle cx="120" cy="120" r="100" fill="#ffffff" />
+  <circle cx="120" cy="120" r="90" fill="#3498db" />
+  
+  <!-- رمز العقار -->
+  <path d="M120 40 L190 100 L190 180 L50 180 L50 100 Z" fill="#ffffff" />
+  <rect x="90" y="130" width="25" height="50" fill="#3498db" />
+  <rect x="125" y="100" width="25" height="80" fill="#3498db" />
+  
+  <!-- النص -->
+  <g transform="translate(70, 205)">
+    <text font-family="Arial, sans-serif" font-weight="bold" font-size="24" fill="#ffffff" text-anchor="middle">
+      روابط تك
+    </text>
+  </g>
+</svg>

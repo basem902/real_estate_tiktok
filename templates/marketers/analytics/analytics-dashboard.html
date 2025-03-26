@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم التحليلية | نظام إدارة المسوقين العقاريين</title>
+    
+    <!-- فونت Tajawal -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- مكتبة FontAwesome للأيقونات -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- البوتستراب - الإطار الأساسي -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- مكتبة Chart.js للرسوم البيانية -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.css">
+    
+    <!-- أوراق الأنماط المخصصة -->
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <link rel="stylesheet" href="../assets/css/dark-theme.css">
+    <link rel="stylesheet" href="assets/css/analytics-styles.css">
+</head>
+<body>
+    <div class="wrapper">
+        <!-- شريط التنقل الجانبي -->
+        <nav id="sidebar" class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <img src="../assets/images/logo.png" alt="شعار النظام" class="logo-img">
+                    <h3 class="logo-text">عقارك</h3>
+                </div>
+                <button class="d-md-none toggle-sidebar" id="closeSidebar"><i class="fa fa-times"></i></button>
+            </div>
+            
+            <div class="sidebar-menu">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../dashboard.html">
+                            <i class="fas fa-tachometer-alt menu-icon"></i>
+                            <span class="menu-text">الرئيسية</span>
+                        </a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="analytics-dashboard.html">
+                            <i class="fas fa-chart-line menu-icon"></i>
+                            <span class="menu-text">التحليلات</span>
+                        </a>
+                        <ul class="submenu">
+                            <li><a href="analytics-dashboard.html" class="active">لوحة التحكم التحليلية</a></li>
+                            <li><a href="performance-reports.html">تقارير الأداء</a></li>
+                            <li><a href="kpi-monitoring.html">مؤشرات الأداء</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../ads/ads-management.html">
+                            <i class="fas fa-ad menu-icon"></i>
+                            <span class="menu-text">إدارة الإعلانات</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../videos/videos-gallery.html">
+                            <i class="fas fa-video menu-icon"></i>
+                            <span class="menu-text">معرض الفيديوهات</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../crm/customer-list.html">
+                            <i class="fas fa-users menu-icon"></i>
+                            <span class="menu-text">إدارة العملاء</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../schedule/calendar-view.html">
+                            <i class="fas fa-calendar-alt menu-icon"></i>
+                            <span class="menu-text">جدولة المواعيد</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../commissions/commission-dashboard.html">
+                            <i class="fas fa-money-bill-wave menu-icon"></i>
+                            <span class="menu-text">العمولات والمدفوعات</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        
+        <!-- المحتوى الرئيسي -->
+        <div id="content" class="content">
+            <!-- شريط التنقل العلوي -->
+            <nav class="navbar navbar-expand-lg">
+                <div class="container-fluid">
+                    <button id="sidebarToggle" class="navbar-toggler d-lg-none" type="button">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    
+                    <div class="d-flex align-items-center ms-auto">
+                        <div class="theme-switch-wrapper">
+                            <label class="theme-switch" for="themeToggle">
+                                <input type="checkbox" id="themeToggle">
+                                <div class="slider round">
+                                    <i class="fas fa-sun light-icon"></i>
+                                    <i class="fas fa-moon dark-icon"></i>
+                                </div>
+                            </label>
+                        </div>
+                        
+                        <div class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img src="../assets/images/avatar.png" class="user-avatar" alt="صورة المستخدم">
+                                <span class="d-none d-lg-inline ms-1">أحمد محمد</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="../profile.html"><i class="fas fa-user me-2"></i> الملف الشخصي</a></li>
+                                <li><a class="dropdown-item" href="../settings.html"><i class="fas fa-cog me-2"></i> الإعدادات</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="../login.html"><i class="fas fa-sign-out-alt me-2"></i> تسجيل الخروج</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+            
+            <!-- محتوى الصفحة -->
+            <div class="container-fluid">
+                <div class="page-header">
+                    <h1 class="page-title">لوحة التحكم التحليلية</h1>
+                    <p class="page-subtitle">تحليلات وإحصائيات شاملة لأداء المبيعات والعملاء</p>
+                </div>
+                
+                <!-- فلاتر التحليلات -->
+                <div class="analytics-card">
+                    <div class="analytics-filters">
+                        <div class="filter-item">
+                            <label class="filter-label">الفترة الزمنية</label>
+                            <select class="form-select" id="periodFilter">
+                                <option value="month">هذا الشهر</option>
+                                <option value="quarter">الربع الحالي</option>
+                                <option value="year" selected>السنة الحالية</option>
+                                <option value="custom">فترة مخصصة</option>
+                            </select>
+                        </div>
+                        <div class="filter-item" id="customDateContainer" style="display: none;">
+                            <label class="filter-label">نطاق التاريخ</label>
+                            <div class="date-range-picker">
+                                <input type="date" class="form-control" id="startDate">
+                                <input type="date" class="form-control" id="endDate">
+                            </div>
+                        </div>
+                        <div class="filter-item">
+                            <label class="filter-label">المنطقة</label>
+                            <select class="form-select" id="regionFilter">
+                                <option value="all">جميع المناطق</option>
+                                <option value="riyadh">الرياض</option>
+                                <option value="jeddah">جدة</option>
+                                <option value="dammam">الدمام</option>
+                                <option value="makkah">مكة</option>
+                                <option value="madinah">المدينة</option>
+                                <option value="other">أخرى</option>
+                            </select>
+                        </div>
+                        <div class="filter-item">
+                            <label class="filter-label">نوع العقار</label>
+                            <select class="form-select" id="propertyTypeFilter">
+                                <option value="all">جميع الأنواع</option>
+                                <option value="apartments">شقق</option>
+                                <option value="villas">فلل</option>
+                                <option value="lands">أراضي</option>
+                                <option value="commercial">عقارات تجارية</option>
+                                <option value="offices">مكاتب</option>
+                            </select>
+                        </div>
+                        <div class="filter-item ms-auto">
+                            <button class="btn btn-primary" id="applyFilters">
+                                <i class="fas fa-filter"></i> تطبيق الفلاتر
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- مؤشرات الأداء الرئيسية -->
+                <div class="section-header">
+                    <h2 class="section-title">مؤشرات الأداء الرئيسية</h2>
+                    <p class="section-subtitle">نظرة عامة على أهم مؤشرات الأداء لفترة التحليل المحددة</p>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6 col-lg-3">
+                        <div class="analytics-card kpi-card">
+                            <div class="kpi-icon" style="background-color: var(--primary-color);">
+                                <i class="fas fa-money-bill-wave"></i>
+                            </div>
+                            <div class="kpi-title">إجمالي المبيعات</div>
+                            <div class="kpi-value">10,500,000 ريال</div>
+                            <div class="kpi-trend positive">
+                                <i class="fas fa-arrow-up"></i> 15.2% من الشهر الماضي
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="analytics-card kpi-card">
+                            <div class="kpi-icon" style="background-color: var(--success-color);">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="kpi-title">عدد الصفقات</div>
+                            <div class="kpi-value">110</div>
+                            <div class="kpi-trend positive">
+                                <i class="fas fa-arrow-up"></i> 8.5% من الشهر الماضي
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="analytics-card kpi-card">
+                            <div class="kpi-icon" style="background-color: var(--warning-color);">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="kpi-title">عملاء جدد</div>
+                            <div class="kpi-value">75</div>
+                            <div class="kpi-trend positive">
+                                <i class="fas fa-arrow-up"></i> 12.3% من الشهر الماضي
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="analytics-card kpi-card">
+                            <div class="kpi-icon" style="background-color: var(--info-color);">
+                                <i class="fas fa-percentage"></i>
+                            </div>
+                            <div class="kpi-title">معدل التحويل</div>
+                            <div class="kpi-value">4.2%</div>
+                            <div class="kpi-trend negative">
+                                <i class="fas fa-arrow-down"></i> 0.3% من الشهر الماضي
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- المبيعات الشهرية -->
+                <div class="row mt-4">
+                    <div class="col-lg-8">
+                        <div class="analytics-card chart-card">
+                            <div class="card-header">
+                                <h3 class="card-title">تحليل المبيعات الشهرية</h3>
+                                <div class="card-toolbar">
+                                    <div class="btn-group">
+                                        <button class="btn btn-outline-secondary active" data-chart-view="value">القيمة</button>
+                                        <button class="btn btn-outline-secondary" data-chart-view="count">العدد</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="chart-container large-chart-container">
+                                <canvas id="monthlySalesChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-4">
+                        <div class="analytics-card chart-card">
+                            <div class="card-header">
+                                <h3 class="card-title">توزيع المبيعات حسب نوع العقار</h3>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="propertyTypeChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- تحليل المناطق والزيارات -->
+                <div class="row mt-4">
+                    <div class="col-lg-6">
+                        <div class="analytics-card chart-card">
+                            <div class="card-header">
+                                <h3 class="card-title">المبيعات حسب المنطقة</h3>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="regionSalesChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-6">
+                        <div class="analytics-card chart-card">
+                            <div class="card-header">
+                                <h3 class="card-title">تحليل الزيارات والتفاعلات</h3>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="visitsChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- تحليل العملاء -->
+                <div class="section-header mt-4">
+                    <h2 class="section-title">تحليل العملاء</h2>
+                    <p class="section-subtitle">معلومات تفصيلية عن العملاء ومصادرهم وسلوكهم</p>
+                </div>
+                
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="analytics-card chart-card">
+                            <div class="card-header">
+                                <h3 class="card-title">تحليل العملاء الشهري</h3>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="customerAnalyticsChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-4">
+                        <div class="analytics-card chart-card">
+                            <div class="card-header">
+                                <h3 class="card-title">توزيع العملاء حسب المصدر</h3>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="customerSourceChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- توقعات المبيعات -->
+                <div class="section-header mt-4">
+                    <h2 class="section-title">توقعات وتحليلات مستقبلية</h2>
+                    <p class="section-subtitle">توقعات المبيعات واتجاهات السوق المتوقعة للفترة القادمة</p>
+                </div>
+                
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="analytics-card forecast-card">
+                            <h3 class="forecast-title">توقعات المبيعات للأشهر الستة القادمة</h3>
+                            <div class="chart-container">
+                                <canvas id="forecastChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-6">
+                        <div class="analytics-card forecast-card">
+                            <h3 class="forecast-title">اتجاهات السوق المتوقعة</h3>
+                            
+                            <div class="forecast-item">
+                                <div>
+                                    <div class="forecast-label">ارتفاع الطلب على الشقق الصغيرة</div>
+                                    <div class="confidence-bar">
+                                        <div class="confidence-value" style="width: 85%;"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <span class="forecast-impact positive">إيجابي</span>
+                                </div>
+                            </div>
+                            
+                            <div class="forecast-item">
+                                <div>
+                                    <div class="forecast-label">زيادة أسعار العقارات التجارية</div>
+                                    <div class="confidence-bar">
+                                        <div class="confidence-value" style="width: 70%;"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <span class="forecast-impact neutral">محايد</span>
+                                </div>
+                            </div>
+                            
+                            <div class="forecast-item">
+                                <div>
+                                    <div class="forecast-label">تباطؤ سوق الفلل الفاخرة</div>
+                                    <div class="confidence-bar">
+                                        <div class="confidence-value" style="width: 65%;"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <span class="forecast-impact negative">سلبي</span>
+                                </div>
+                            </div>
+                            
+                            <div class="forecast-item">
+                                <div>
+                                    <div class="forecast-label">نمو الاستثمار في المناطق النامية</div>
+                                    <div class="confidence-bar">
+                                        <div class="confidence-value" style="width: 80%;"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <span class="forecast-impact positive">إيجابي</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- تحليل المنافسين -->
+                <div class="section-header mt-4">
+                    <h2 class="section-title">تحليل المنافسين</h2>
+                    <p class="section-subtitle">تحليل مقارن لأداء المنافسين في السوق</p>
+                </div>
+                
+                <div class="row">
+                    <div class="col-12">
+                        <div class="analytics-card">
+                            <div class="table-responsive">
+                                <table class="analytics-table">
+                                    <thead>
+                                        <tr>
+                                            <th>الشركة</th>
+                                            <th>حصة السوق</th>
+                                            <th>نقاط القوة</th>
+                                            <th>نقاط الضعف</th>
+                                            <th>اتجاه الأداء</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>شركة العقارات المتحدة</td>
+                                            <td>15%</td>
+                                            <td>تنوع المحفظة</td>
+                                            <td>ارتفاع الأسعار</td>
+                                            <td>
+                                                <span class="trend-indicator positive">
+                                                    <i class="fas fa-arrow-up"></i> متصاعد
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>مجموعة الدار العقارية</td>
+                                            <td>12%</td>
+                                            <td>جودة المشاريع</td>
+                                            <td>نطاق جغرافي محدود</td>
+                                            <td>
+                                                <span class="trend-indicator positive">
+                                                    <i class="fas fa-arrow-up"></i> متصاعد
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>عقارات الخليج</td>
+                                            <td>10%</td>
+                                            <td>قوة التسويق</td>
+                                            <td>خدمة العملاء</td>
+                                            <td>
+                                                <span class="trend-indicator neutral">
+                                                    <i class="fas fa-minus"></i> مستقر
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>دار الإسكان</td>
+                                            <td>8%</td>
+                                            <td>الأسعار التنافسية</td>
+                                            <td>قلة المشاريع الجديدة</td>
+                                            <td>
+                                                <span class="trend-indicator negative">
+                                                    <i class="fas fa-arrow-down"></i> متراجع
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>العقارات الذكية</td>
+                                            <td>7%</td>
+                                            <td>التكنولوجيا المتقدمة</td>
+                                            <td>ارتفاع تكاليف التشغيل</td>
+                                            <td>
+                                                <span class="trend-indicator positive">
+                                                    <i class="fas fa-arrow-up"></i> متصاعد
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <!-- تذييل الصفحة -->
+            <footer class="footer">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p class="copyright">جميع الحقوق محفوظة &copy; 2025</p>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="footer-links">
+                                <a href="#">سياسة الخصوصية</a>
+                                <a href="#">شروط الاستخدام</a>
+                                <a href="#">اتصل بنا</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+    
+    <!-- سكريبت جافاسكريبت -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+    
+    <!-- السكريبتات المخصصة -->
+    <script src="../assets/js/theme-toggle.js"></script>
+    <script src="../assets/js/sidebar-toggle.js"></script>
+    <script src="assets/js/analytics-data.js"></script>
+    <script src="assets/js/analytics-charts.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // تهيئة الرسوم البيانية
+            const charts = window.analyticsCharts.initializeAllCharts();
+            
+            // عرض/إخفاء خيار التاريخ المخصص
+            document.getElementById('periodFilter').addEventListener('change', function() {
+                const customDateContainer = document.getElementById('customDateContainer');
+                customDateContainer.style.display = this.value === 'custom' ? 'block' : 'none';
+            });
+            
+            // إنشاء مخطط التوقعات
+            if (document.getElementById('forecastChart')) {
+                const forecastData = window.analyticsData.getForecastData();
+                const ctx = document.getElementById('forecastChart').getContext('2d');
+                
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: ['شهر 1', 'شهر 2', 'شهر 3', 'شهر 4', 'شهر 5', 'شهر 6'],
+                        datasets: [{
+                            label: 'المبيعات المتوقعة (ريال)',
+                            data: forecastData.futureSales,
+                            backgroundColor: 'rgba(94, 114, 228, 0.2)',
+                            borderColor: 'rgba(94, 114, 228, 1)',
+                            borderWidth: 2,
+                            borderDash: [5, 5],
+                            pointBackgroundColor: 'rgba(94, 114, 228, 1)',
+                            tension: 0.3
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                                labels: {
+                                    font: {
+                                        family: "'Tajawal', sans-serif"
+                                    }
+                                }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return `${context.dataset.label}: ${context.raw.toLocaleString()} ريال`;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    font: {
+                                        family: "'Tajawal', sans-serif"
+                                    },
+                                    callback: function(value) {
+                                        return value.toLocaleString() + ' ريال';
+                                    }
+                                }
+                            },
+                            x: {
+                                ticks: {
+                                    font: {
+                                        family: "'Tajawal', sans-serif"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+            
+            // معالجة الفلاتر
+            document.getElementById('applyFilters').addEventListener('click', function() {
+                // في الإصدار الحقيقي، سيتم إرسال طلب AJAX هنا للحصول على البيانات المفلترة
+                // ولكن في هذا الإصدار التجريبي، سنقوم فقط بإظهار تنبيه
+                alert('تم تطبيق الفلاتر بنجاح!');
+                
+                // هنا يمكننا تحديث الرسوم البيانية بناءً على الفلاتر المحددة
+                // window.analyticsCharts.updateCharts(charts);
+            });
+        });
+    </script>
+</body>
+</html>

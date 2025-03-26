@@ -1,0 +1,1413 @@
+{% extends 'developers/dashboard/base_dashboard.html' %}
+
+{% block title %}الملف الشخصي - شركة التطوير العقاري{% endblock %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item active" aria-current="page">الملف الشخصي</li>
+{% endblock %}
+
+{% block content %}
+<!-- عنوان الصفحة وأزرار الإجراءات -->
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center mb-4">
+    <h1 class="h2">الملف الشخصي</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <button type="button" class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+            <i class="fas fa-edit me-1"></i> تعديل الملف الشخصي
+        </button>
+        <div class="dropdown">
+            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="profileActionsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fas fa-ellipsis-v"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileActionsDropdown">
+                <li><a class="dropdown-item" href="#"><i class="fas fa-download me-2"></i>تصدير البيانات</a></li>
+                <li><a class="dropdown-item" href="#"><i class="fas fa-share-alt me-2"></i>مشاركة الملف</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-trash-alt me-2"></i>إيقاف الحساب مؤقتاً</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- بطاقة معلومات الشركة الأساسية -->
+<div class="card border-0 shadow-sm mb-4">
+    <div class="card-body p-0">
+        <!-- صورة الغلاف -->
+        <div class="profile-cover position-relative rounded-top" style="background-image: url('https://via.placeholder.com/1200x300'); height: 200px; background-size: cover; background-position: center;">
+            <button class="btn btn-sm btn-light position-absolute bottom-0 end-0 m-3" data-bs-toggle="modal" data-bs-target="#editCoverModal">
+                <i class="fas fa-camera"></i> تغيير الصورة
+            </button>
+        </div>
+        
+        <!-- معلومات الشركة -->
+        <div class="px-4 pt-0 pb-4">
+            <div class="d-flex flex-wrap align-items-end">
+                <div class="profile-avatar-wrapper me-3">
+                    <div class="profile-avatar position-relative" style="margin-top: -40px;">
+                        <img src="https://via.placeholder.com/120" class="rounded-circle border border-4 border-white shadow-sm" width="120" height="120" alt="شركة الإعمار">
+                        <button class="btn btn-sm btn-light rounded-circle position-absolute bottom-0 end-0" data-bs-toggle="modal" data-bs-target="#editAvatarModal">
+                            <i class="fas fa-camera"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="py-4 flex-grow-1">
+                    <div class="d-flex align-items-center flex-wrap">
+                        <h2 class="mb-0 me-auto">شركة الإعمار للتطوير العقاري</h2>
+                        <div class="ms-auto d-flex align-items-center mt-3 mt-md-0">
+                            <span class="badge bg-primary-subtle text-primary me-2">مطور معتمد</span>
+                            <div class="d-flex align-items-center ms-3">
+                                <span class="me-1">4.8</span>
+                                <div class="text-warning">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star-half-alt"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-muted mt-2">شركة رائدة في مجال التطوير العقاري بالمملكة، متخصصون في إنشاء مجمعات سكنية فاخرة ومشاريع تجارية مبتكرة منذ عام 2010</p>
+                    <div class="d-flex flex-wrap mt-3">
+                        <div class="me-4 mb-2">
+                            <i class="fas fa-map-marker-alt text-muted me-1"></i>
+                            <span>الرياض، المملكة العربية السعودية</span>
+                        </div>
+                        <div class="me-4 mb-2">
+                            <i class="fas fa-globe text-muted me-1"></i>
+                            <a href="#" class="text-decoration-none">www.alemar-dev.com</a>
+                        </div>
+                        <div class="me-4 mb-2">
+                            <i class="fas fa-envelope text-muted me-1"></i>
+                            <a href="mailto:info@alemar-dev.com" class="text-decoration-none">info@alemar-dev.com</a>
+                        </div>
+                        <div class="mb-2">
+                            <i class="fas fa-phone text-muted me-1"></i>
+                            <a href="tel:+966500000000" class="text-decoration-none">+966 50 000 0000</a>
+                        </div>
+                    </div>
+                    <div class="d-flex mt-3">
+                        <a href="#" class="btn btn-sm btn-outline-primary me-2">
+                            <i class="fab fa-twitter me-1"></i>
+                            تويتر
+                        </a>
+                        <a href="#" class="btn btn-sm btn-outline-primary me-2">
+                            <i class="fab fa-instagram me-1"></i>
+                            انستغرام
+                        </a>
+                        <a href="#" class="btn btn-sm btn-outline-primary me-2">
+                            <i class="fab fa-linkedin me-1"></i>
+                            لينكد إن
+                        </a>
+                        <a href="#" class="btn btn-sm btn-outline-primary">
+                            <i class="fab fa-youtube me-1"></i>
+                            يوتيوب
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- قسم إحصائيات الشركة -->
+<div class="row mb-4">
+    <div class="col-lg-8">
+        <!-- بطاقات الإحصائيات -->
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-transparent border-0">
+                <h5 class="card-title mb-0">إحصائيات الشركة</h5>
+            </div>
+            <div class="card-body">
+                <div class="row g-4">
+                    <!-- إحصائية المتابعين -->
+                    <div class="col-md-6 col-lg-3">
+                        <div class="d-flex flex-column align-items-center">
+                            <div class="stat-circle bg-info bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center mb-2" style="width: 70px; height: 70px;">
+                                <i class="fas fa-chart-line fa-2x text-info"></i>
+                            </div>
+                            <h5 class="mb-0">76.8%</h5>
+                            <p class="text-muted mb-0">نمو المتابعين</p>
+                            <div class="text-success small mt-2">
+                                <i class="fas fa-arrow-up me-1"></i>
+                                15.2% هذا الشهر
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- إحصائية المشاريع -->
+                    <div class="col-md-6 col-lg-3">
+                        <div class="d-flex flex-column align-items-center">
+                            <div class="stat-circle bg-success bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center mb-2" style="width: 70px; height: 70px;">
+                                <i class="fas fa-building fa-2x text-success"></i>
+                            </div>
+                            <h5 class="mb-0">26</h5>
+                            <p class="text-muted mb-0">مشروع</p>
+                            <div class="text-success small mt-2">
+                                <i class="fas fa-arrow-up me-1"></i>
+                                3 جديد
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- إحصائية الإعلانات -->
+                    <div class="col-md-6 col-lg-3">
+                        <div class="d-flex flex-column align-items-center">
+                            <div class="stat-circle bg-warning bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center mb-2" style="width: 70px; height: 70px;">
+                                <i class="fas fa-ad fa-2x text-warning"></i>
+                            </div>
+                            <h5 class="mb-0">37</h5>
+                            <p class="text-muted mb-0">إعلان</p>
+                            <div class="text-success small mt-2">
+                                <i class="fas fa-arrow-up me-1"></i>
+                                5 نشط
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- إحصائية المبيعات -->
+                    <div class="col-md-6 col-lg-3">
+                        <div class="d-flex flex-column align-items-center">
+                            <div class="stat-circle bg-info bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center mb-2" style="width: 70px; height: 70px;">
+                                <i class="fas fa-chart-line fa-2x text-info"></i>
+                            </div>
+                            <h5 class="mb-0">142</h5>
+                            <p class="text-muted mb-0">مبيعات</p>
+                            <div class="text-success small mt-2">
+                                <i class="fas fa-arrow-up me-1"></i>
+                                8.5%
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- مخطط نمو المتابعين -->
+                <div class="mt-5">
+                    <h6 class="card-subtitle mb-3">نمو المتابعين خلال الستة أشهر الماضية</h6>
+                    <div style="height: 200px;">
+                        <canvas id="followersGrowthChart" height="150"></canvas>
+                    </div>
+                    <div class="d-flex justify-content-between mt-2">
+                        <span class="badge bg-success py-1 px-2 rounded">
+                            <i class="fas fa-arrow-up me-1"></i>
+                            زيادة بنسبة 76.8%
+                        </span>
+                        <span class="small text-muted">يناير - يونيو 2025</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <!-- توزيع التفاعل على المنصات -->
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-transparent border-0">
+                <h5 class="card-title mb-0">توزيع التفاعل</h5>
+            </div>
+            <div class="card-body">
+                <canvas id="interactionDistributionChart" height="260"></canvas>
+            </div>
+            <div class="card-footer bg-transparent border-0">
+                <div class="row text-center">
+                    <div class="col">
+                        <div class="d-flex flex-column">
+                            <span class="text-primary">52%</span>
+                            <small class="text-muted">انستغرام</small>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="d-flex flex-column">
+                            <span class="text-success">28%</span>
+                            <small class="text-muted">تويتر</small>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="d-flex flex-column">
+                            <span class="text-warning">16%</span>
+                            <small class="text-muted">يوتيوب</small>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="d-flex flex-column">
+                            <span class="text-info">4%</span>
+                            <small class="text-muted">أخرى</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- المشاريع الحالية والإعلانات النشطة -->
+<div class="row g-4 mb-4">
+    <!-- المشاريع الحالية -->
+    <div class="col-lg-8">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
+                <h5 class="card-title mb-0">المشاريع الحالية</h5>
+                <a href="{{ url_for('developers_projects') }}" class="btn btn-sm btn-outline-primary">عرض كل المشاريع</a>
+            </div>
+            <div class="card-body">
+                <div class="row g-4">
+                    <!-- مشروع 1 -->
+                    <div class="col-md-6">
+                        <div class="project-card rounded overflow-hidden position-relative">
+                            <div class="position-relative">
+                                <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OHx8bHV4dXJ5JTIwcmVhbCUyMGVzdGF0ZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=600&q=60" class="img-fluid w-100" alt="مشروع الواحة">
+                                <div class="project-overlay bg-dark bg-opacity-25 d-flex align-items-center justify-content-center">
+                                    <a href="#" class="btn btn-light btn-sm me-2"><i class="fas fa-eye"></i></a>
+                                    <a href="#" class="btn btn-light btn-sm"><i class="fas fa-edit"></i></a>
+                                </div>
+                                <span class="badge bg-success position-absolute top-0 end-0 m-2">مكتمل</span>
+                            </div>
+                            <div class="project-info p-3">
+                                <h6 class="mb-1">مشروع الواحة السكني</h6>
+                                <p class="text-muted small mb-2">الرياض، حي النرجس</p>
+                                <div class="d-flex align-items-center justify-content-between mb-2">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-building text-muted me-1 small"></i>
+                                        <span class="small">48 وحدة</span>
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-chart-pie text-muted me-1 small"></i>
+                                        <span class="small">100%</span>
+                                    </div>
+                                </div>
+                                <div class="progress rounded-pill" style="height: 6px;">
+                                    <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- مشروع 2 -->
+                    <div class="col-md-6">
+                        <div class="project-card rounded overflow-hidden position-relative">
+                            <div class="position-relative">
+                                <img src="https://images.unsplash.com/photo-1577415124269-fc1140a69e91?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bHV4dXJ5JTIwc2hvcHBpbmclMjBtYWxlfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=600&q=60" class="img-fluid w-100" alt="مشروع النخيل">
+                                <div class="project-overlay bg-dark bg-opacity-25 d-flex align-items-center justify-content-center">
+                                    <a href="#" class="btn btn-light btn-sm me-2"><i class="fas fa-eye"></i></a>
+                                    <a href="#" class="btn btn-light btn-sm"><i class="fas fa-edit"></i></a>
+                                </div>
+                                <span class="badge bg-warning text-dark position-absolute top-0 end-0 m-2">قيد الإنشاء</span>
+                            </div>
+                            <div class="project-info p-3">
+                                <h6 class="mb-1">مشروع النخيل التجاري</h6>
+                                <p class="text-muted small mb-2">جدة، حي الشاطئ</p>
+                                <div class="d-flex align-items-center justify-content-between mb-2">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-store text-muted me-1 small"></i>
+                                        <span class="small">24 متجر</span>
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-chart-pie text-muted me-1 small"></i>
+                                        <span class="small">75%</span>
+                                    </div>
+                                </div>
+                                <div class="progress rounded-pill" style="height: 6px;">
+                                    <div class="progress-bar bg-warning" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- مشروع 3 -->
+                    <div class="col-md-6">
+                        <div class="project-card rounded overflow-hidden position-relative">
+                            <div class="position-relative">
+                                <img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OXx8bHV4dXJ5JTIwYXBhcnRtZW50JTIwYnVpbGRpbmd8ZW58MHx8MHx8&auto=format&fit=crop&w=600&q=60" class="img-fluid w-100" alt="مشروع الأفق">
+                                <div class="project-overlay bg-dark bg-opacity-25 d-flex align-items-center justify-content-center">
+                                    <a href="#" class="btn btn-light btn-sm me-2"><i class="fas fa-eye"></i></a>
+                                    <a href="#" class="btn btn-light btn-sm"><i class="fas fa-edit"></i></a>
+                                </div>
+                                <span class="badge bg-primary position-absolute top-0 end-0 m-2">للبيع</span>
+                            </div>
+                            <div class="project-info p-3">
+                                <h6 class="mb-1">برج الأفق</h6>
+                                <p class="text-muted small mb-2">الرياض، طريق الملك فهد</p>
+                                <div class="d-flex align-items-center justify-content-between mb-2">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-home text-muted me-1 small"></i>
+                                        <span class="small">120 شقة</span>
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-chart-pie text-muted me-1 small"></i>
+                                        <span class="small">100%</span>
+                                    </div>
+                                </div>
+                                <div class="progress rounded-pill" style="height: 6px;">
+                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- مشروع 4 -->
+                    <div class="col-md-6">
+                        <div class="project-card rounded overflow-hidden position-relative">
+                            <div class="position-relative">
+                                <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8bHV4dXJ5JTIwaG91c2V8ZW58MHx8MHx8&auto=format&fit=crop&w=600&q=60" class="img-fluid w-100" alt="مشروع الفخامة">
+                                <div class="project-overlay bg-dark bg-opacity-25 d-flex align-items-center justify-content-center">
+                                    <a href="#" class="btn btn-light btn-sm me-2"><i class="fas fa-eye"></i></a>
+                                    <a href="#" class="btn btn-light btn-sm"><i class="fas fa-edit"></i></a>
+                                </div>
+                                <span class="badge bg-info position-absolute top-0 end-0 m-2">تحت التخطيط</span>
+                            </div>
+                            <div class="project-info p-3">
+                                <h6 class="mb-1">فلل الفخامة</h6>
+                                <p class="text-muted small mb-2">الدمام، حي الشاطئ</p>
+                                <div class="d-flex align-items-center justify-content-between mb-2">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-home text-muted me-1 small"></i>
+                                        <span class="small">32 فيلا</span>
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-chart-pie text-muted me-1 small"></i>
+                                        <span class="small">30%</span>
+                                    </div>
+                                </div>
+                                <div class="progress rounded-pill" style="height: 6px;">
+                                    <div class="progress-bar bg-info" role="progressbar" style="width: 30%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- الإعلانات النشطة -->
+    <div class="col-lg-4">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
+                <h5 class="card-title mb-0">الإعلانات النشطة</h5>
+                <a href="{{ url_for('developers_ads') }}" class="btn btn-sm btn-outline-primary">عرض كل الإعلانات</a>
+            </div>
+            <div class="card-body p-0">
+                <div class="list-group list-group-flush">
+                    <div class="list-group-item p-3">
+                        <div class="d-flex">
+                            <img src="https://images.pexels.com/photos/3288102/pexels-photo-3288102.png?auto=compress&cs=tinysrgb&dpr=2&h=80&w=120" class="rounded me-3 flex-shrink-0" alt="إعلان">
+                            <div>
+                                <h6 class="mb-1">عروض خاصة على شقق برج الأفق</h6>
+                                <p class="text-muted small mb-1">ينتهي في: 25 أبريل 2025</p>
+                                <div class="d-flex align-items-center">
+                                    <div class="me-3">
+                                        <i class="fas fa-eye text-muted small me-1"></i>
+                                        <span class="small">2,456</span>
+                                    </div>
+                                    <div class="me-3">
+                                        <i class="fas fa-thumbs-up text-muted small me-1"></i>
+                                        <span class="small">342</span>
+                                    </div>
+                                    <div>
+                                        <i class="fas fa-comment text-muted small me-1"></i>
+                                        <span class="small">48</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-group-item p-3">
+                        <div class="d-flex">
+                            <img src="https://images.pexels.com/photos/3288104/pexels-photo-3288104.png?auto=compress&cs=tinysrgb&dpr=2&h=80&w=120" class="rounded me-3 flex-shrink-0" alt="إعلان">
+                            <div>
+                                <h6 class="mb-1">احجز الآن في مشروع النخيل التجاري</h6>
+                                <p class="text-muted small mb-1">ينتهي في: 10 مايو 2025</p>
+                                <div class="d-flex align-items-center">
+                                    <div class="me-3">
+                                        <i class="fas fa-eye text-muted small me-1"></i>
+                                        <span class="small">1,892</span>
+                                    </div>
+                                    <div class="me-3">
+                                        <i class="fas fa-thumbs-up text-muted small me-1"></i>
+                                        <span class="small">274</span>
+                                    </div>
+                                    <div>
+                                        <i class="fas fa-comment text-muted small me-1"></i>
+                                        <span class="small">32</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-group-item p-3">
+                        <div class="d-flex">
+                            <img src="https://images.pexels.com/photos/7031413/pexels-photo-7031413.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=80&w=120" class="rounded me-3 flex-shrink-0" alt="إعلان">
+                            <div>
+                                <h6 class="mb-1">فرصة للاستثمار في فلل الفخامة</h6>
+                                <p class="text-muted small mb-1">ينتهي في: 15 يونيو 2025</p>
+                                <div class="d-flex align-items-center">
+                                    <div class="me-3">
+                                        <i class="fas fa-eye text-muted small me-1"></i>
+                                        <span class="small">1,245</span>
+                                    </div>
+                                    <div class="me-3">
+                                        <i class="fas fa-thumbs-up text-muted small me-1"></i>
+                                        <span class="small">186</span>
+                                    </div>
+                                    <div>
+                                        <i class="fas fa-comment text-muted small me-1"></i>
+                                        <span class="small">24</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-group-item p-3">
+                        <div class="d-flex">
+                            <img src="https://via.placeholder.com/120x80" class="rounded me-3 flex-shrink-0" alt="إعلان">
+                            <div>
+                                <h6 class="mb-1">آخر الوحدات المتبقية في مشروع الواحة</h6>
+                                <p class="text-muted small mb-1">ينتهي في: 30 يونيو 2025</p>
+                                <div class="d-flex align-items-center">
+                                    <div class="me-3">
+                                        <i class="fas fa-eye text-muted small me-1"></i>
+                                        <span class="small">987</span>
+                                    </div>
+                                    <div class="me-3">
+                                        <i class="fas fa-thumbs-up text-muted small me-1"></i>
+                                        <span class="small">132</span>
+                                    </div>
+                                    <div>
+                                        <i class="fas fa-comment text-muted small me-1"></i>
+                                        <span class="small">18</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- قسم المتابعين -->
+<div class="row g-4 mb-4">
+    <div class="col-12">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
+                <h5 class="card-title mb-0">المتابعين</h5>
+                <a href="#" class="btn btn-sm btn-outline-primary">عرض كل المتابعين</a>
+            </div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-lg-4">
+                        <div class="followers-stats p-3 border rounded h-100">
+                            <h6 class="mb-3">تحليل المتابعين</h6>
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span class="small text-muted">حسب الجنس</span>
+                                </div>
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="progress flex-grow-1 rounded-pill" style="height: 8px;">
+                                        <div class="progress-bar bg-primary" role="progressbar" style="width: 60%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                                        <div class="progress-bar bg-info" role="progressbar" style="width: 40%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                    <div class="ms-3 small" style="min-width: 80px;">
+                                        <div class="d-flex align-items-center">
+                                            <span class="badge bg-primary me-1" style="width: 10px; height: 10px;"></span>
+                                            <span>ذكور 60%</span>
+                                        </div>
+                                        <div class="d-flex align-items-center">
+                                            <span class="badge bg-info me-1" style="width: 10px; height: 10px;"></span>
+                                            <span>إناث 40%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span class="small text-muted">حسب العمر</span>
+                                </div>
+                                <div class="row gx-2 mb-2">
+                                    <div class="col">
+                                        <div class="small mb-1 text-center">18-24</div>
+                                        <div class="progress" style="height: 50px;">
+                                            <div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                        <div class="small mt-1 text-center">25%</div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="small mb-1 text-center">25-34</div>
+                                        <div class="progress" style="height: 50px;">
+                                            <div class="progress-bar bg-success" role="progressbar" style="width: 40%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                        <div class="small mt-1 text-center">40%</div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="small mb-1 text-center">35-44</div>
+                                        <div class="progress" style="height: 50px;">
+                                            <div class="progress-bar bg-success" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                        <div class="small mt-1 text-center">20%</div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="small mb-1 text-center">45+</div>
+                                        <div class="progress" style="height: 50px;">
+                                            <div class="progress-bar bg-success" role="progressbar" style="width: 15%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                        <div class="small mt-1 text-center">15%</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span class="small text-muted">حسب المنطقة</span>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-8">
+                                        <div class="small mb-1">الرياض</div>
+                                        <div class="progress rounded-pill mb-2" style="height: 6px;">
+                                            <div class="progress-bar bg-primary" role="progressbar" style="width: 45%" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4 small text-end">45%</div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-8">
+                                        <div class="small mb-1">جدة</div>
+                                        <div class="progress rounded-pill mb-2" style="height: 6px;">
+                                            <div class="progress-bar bg-primary" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4 small text-end">25%</div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-8">
+                                        <div class="small mb-1">الدمام</div>
+                                        <div class="progress rounded-pill mb-2" style="height: 6px;">
+                                            <div class="progress-bar bg-primary" role="progressbar" style="width: 15%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4 small text-end">15%</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-8">
+                                        <div class="small mb-1">أخرى</div>
+                                        <div class="progress rounded-pill mb-2" style="height: 6px;">
+                                            <div class="progress-bar bg-primary" role="progressbar" style="width: 15%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4 small text-end">15%</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-8">
+                        <div class="followers-list p-3 border rounded h-100">
+                            <h6 class="mb-3">آخر المتابعين</h6>
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th scope="col">المتابع</th>
+                                            <th scope="col">تاريخ المتابعة</th>
+                                            <th scope="col">التفاعل</th>
+                                            <th scope="col">المنطقة</th>
+                                            <th scope="col" class="text-center">إجراءات</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <img src="https://randomuser.me/api/portraits/men/32.jpg" class="rounded-circle me-2" alt="Avatar">
+                                                    <div>
+                                                        <div class="fw-bold">أحمد محمد</div>
+                                                        <div class="small text-muted">@ahmed_m</div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>22 مارس 2025</td>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <i class="fas fa-star text-warning"></i>
+                                                    <i class="fas fa-star text-warning"></i>
+                                                    <i class="fas fa-star text-warning"></i>
+                                                    <i class="fas fa-star text-warning"></i>
+                                                    <i class="fas fa-star-half-alt"></i>
+                                                </div>
+                                            </td>
+                                            <td>الرياض</td>
+                                            <td class="text-center">
+                                                <button class="btn btn-sm btn-outline-primary">رسالة</button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <img src="https://randomuser.me/api/portraits/women/65.jpg" class="rounded-circle me-2" alt="Avatar">
+                                                    <div>
+                                                        <div class="fw-bold">سارة عبدالله</div>
+                                                        <div class="small text-muted">@sara_a</div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>20 مارس 2025</td>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <i class="fas fa-star text-warning"></i>
+                                                    <i class="fas fa-star text-warning"></i>
+                                                    <i class="fas fa-star text-warning"></i>
+                                                    <i class="fas fa-star text-warning"></i>
+                                                    <i class="fas fa-star-half-alt text-warning"></i>
+                                                </div>
+                                            </td>
+                                            <td>جدة</td>
+                                            <td class="text-center">
+                                                <button class="btn btn-sm btn-outline-primary">رسالة</button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <img src="https://randomuser.me/api/portraits/men/41.jpg" class="rounded-circle me-2" alt="Avatar">
+                                                    <div>
+                                                        <div class="fw-bold">خالد العمري</div>
+                                                        <div class="small text-muted">@khalid_om</div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>19 مارس 2025</td>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <i class="fas fa-star text-warning"></i>
+                                                    <i class="fas fa-star text-warning"></i>
+                                                    <i class="fas fa-star text-warning"></i>
+                                                    <i class="fas fa-star text-warning"></i>
+                                                    <i class="far fa-star text-warning"></i>
+                                                </div>
+                                            </td>
+                                            <td>الرياض</td>
+                                            <td class="text-center">
+                                                <button class="btn btn-sm btn-outline-primary">رسالة</button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <img src="https://randomuser.me/api/portraits/women/28.jpg" class="rounded-circle me-2" alt="Avatar">
+                                                    <div>
+                                                        <div class="fw-bold">نورة الشمري</div>
+                                                        <div class="small text-muted">@nora_sh</div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>17 مارس 2025</td>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <i class="fas fa-star text-warning"></i>
+                                                    <i class="fas fa-star text-warning"></i>
+                                                    <i class="fas fa-star text-warning"></i>
+                                                    <i class="far fa-star text-warning"></i>
+                                                    <i class="far fa-star text-warning"></i>
+                                                </div>
+                                            </td>
+                                            <td>الدمام</td>
+                                            <td class="text-center">
+                                                <button class="btn btn-sm btn-outline-primary">رسالة</button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <img src="https://randomuser.me/api/portraits/men/19.jpg" class="rounded-circle me-2" alt="Avatar">
+                                                    <div>
+                                                        <div class="fw-bold">فهد الدوسري</div>
+                                                        <div class="small text-muted">@fahad_d</div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>15 مارس 2025</td>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <i class="fas fa-star text-warning"></i>
+                                                    <i class="fas fa-star text-warning"></i>
+                                                    <i class="fas fa-star text-warning"></i>
+                                                    <i class="fas fa-star text-warning"></i>
+                                                    <i class="fas fa-star text-warning"></i>
+                                                </div>
+                                            </td>
+                                            <td>جدة</td>
+                                            <td class="text-center">
+                                                <button class="btn btn-sm btn-outline-primary">رسالة</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- معارض الصور والفيديو -->
+<div class="row g-4 mb-4">
+    <!-- معرض الصور -->
+    <div class="col-lg-6">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
+                <h5 class="card-title mb-0">معرض الصور</h5>
+                <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addPhotoModal">إضافة صور</button>
+            </div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-4 col-sm-6">
+                        <div class="gallery-item position-relative rounded overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bHV4dXJ5JTIwYXBhcnRtZW50JTIwaW50ZXJpb3J8ZW58MHx8MHx8&auto=format&fit=crop&w=300&q=60" class="img-fluid w-100" alt="صورة معرض">
+                            <div class="gallery-overlay bg-dark bg-opacity-25 d-flex align-items-center justify-content-center">
+                                <a href="#" class="btn btn-sm btn-light me-2" data-bs-toggle="modal" data-bs-target="#viewPhotoModal"><i class="fas fa-eye"></i></a>
+                                <a href="#" class="btn btn-sm btn-light me-2"><i class="fas fa-link"></i></a>
+                                <a href="#" class="btn btn-sm btn-light"><i class="fas fa-trash"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-6">
+                        <div class="gallery-item position-relative rounded overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1560184897-ae75f418493e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8bHV4dXJ5JTIwa2l0Y2hlbnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=300&q=60" class="img-fluid w-100" alt="صورة معرض">
+                            <div class="gallery-overlay bg-dark bg-opacity-25 d-flex align-items-center justify-content-center">
+                                <a href="#" class="btn btn-sm btn-light me-2" data-bs-toggle="modal" data-bs-target="#viewPhotoModal"><i class="fas fa-eye"></i></a>
+                                <a href="#" class="btn btn-sm btn-light me-2"><i class="fas fa-link"></i></a>
+                                <a href="#" class="btn btn-sm btn-light"><i class="fas fa-trash"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-6">
+                        <div class="gallery-item position-relative rounded overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1600210491892-03d54c0aaf87?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8bHV4dXJ5JTIwcG9vbHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=300&q=60" class="img-fluid w-100" alt="صورة معرض">
+                            <div class="gallery-overlay bg-dark bg-opacity-25 d-flex align-items-center justify-content-center">
+                                <a href="#" class="btn btn-sm btn-light me-2" data-bs-toggle="modal" data-bs-target="#viewPhotoModal"><i class="fas fa-eye"></i></a>
+                                <a href="#" class="btn btn-sm btn-light me-2"><i class="fas fa-link"></i></a>
+                                <a href="#" class="btn btn-sm btn-light"><i class="fas fa-trash"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-6">
+                        <div class="gallery-item position-relative rounded overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1617103996702-96ff29b1c467?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MjB8fGx1eHVyeSUyMGJlZHJvb218ZW58MHx8MHx8&auto=format&fit=crop&w=300&q=60" class="img-fluid w-100" alt="صورة معرض">
+                            <div class="gallery-overlay bg-dark bg-opacity-25 d-flex align-items-center justify-content-center">
+                                <a href="#" class="btn btn-sm btn-light me-2" data-bs-toggle="modal" data-bs-target="#viewPhotoModal"><i class="fas fa-eye"></i></a>
+                                <a href="#" class="btn btn-sm btn-light me-2"><i class="fas fa-link"></i></a>
+                                <a href="#" class="btn btn-sm btn-light"><i class="fas fa-trash"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-6">
+                        <div class="gallery-item position-relative rounded overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1594484208280-efa00f96fc21?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTF8fGx1eHVyeSUyMGJhdGhyb29tfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=300&q=60" class="img-fluid w-100" alt="صورة معرض">
+                            <div class="gallery-overlay bg-dark bg-opacity-25 d-flex align-items-center justify-content-center">
+                                <a href="#" class="btn btn-sm btn-light me-2" data-bs-toggle="modal" data-bs-target="#viewPhotoModal"><i class="fas fa-eye"></i></a>
+                                <a href="#" class="btn btn-sm btn-light me-2"><i class="fas fa-link"></i></a>
+                                <a href="#" class="btn btn-sm btn-light"><i class="fas fa-trash"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-6">
+                        <div class="gallery-item position-relative rounded overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1560517961-efaf7da95222?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8bHV4dXJ5JTIwbGl2aW5nJTIwcm9vbXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=300&q=60" class="img-fluid w-100" alt="صورة معرض">
+                            <div class="gallery-overlay bg-dark bg-opacity-25 d-flex align-items-center justify-content-center">
+                                <a href="#" class="btn btn-sm btn-light me-2" data-bs-toggle="modal" data-bs-target="#viewPhotoModal"><i class="fas fa-eye"></i></a>
+                                <a href="#" class="btn btn-sm btn-light me-2"><i class="fas fa-link"></i></a>
+                                <a href="#" class="btn btn-sm btn-light"><i class="fas fa-trash"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer bg-white d-flex justify-content-center">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination pagination-sm mb-0">
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
+                                <i class="fas fa-chevron-right"></i>
+                            </a>
+                        </li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">
+                                <i class="fas fa-chevron-left"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+    
+    <!-- معرض الفيديو -->
+    <div class="col-lg-6">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
+                <h5 class="card-title mb-0">معرض الفيديو</h5>
+                <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addVideoModal">إضافة فيديو</button>
+            </div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="video-item position-relative rounded overflow-hidden">
+                            <img src="https://images.pexels.com/photos/323780/pexels-photo-323780.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=250&w=400" class="img-fluid w-100" alt="صورة فيديو">
+                            <div class="video-play-icon">
+                                <i class="fas fa-play-circle fa-3x text-white"></i>
+                            </div>
+                            <div class="video-overlay d-flex align-items-center justify-content-center">
+                                <a href="#" class="btn btn-sm btn-light me-2" data-bs-toggle="modal" data-bs-target="#viewVideoModal"><i class="fas fa-eye"></i></a>
+                                <a href="#" class="btn btn-sm btn-light me-2"><i class="fas fa-link"></i></a>
+                                <a href="#" class="btn btn-sm btn-light"><i class="fas fa-trash"></i></a>
+                            </div>
+                            <div class="video-duration bg-dark bg-opacity-75 text-white px-2 py-1 position-absolute bottom-0 end-0 m-2 small">
+                                04:20
+                            </div>
+                        </div>
+                        <div class="mt-2">
+                            <h6 class="mb-1">جولة في مشروع الواحة السكني</h6>
+                            <p class="text-muted small mb-0">تم الإضافة: 15 مارس 2025</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="video-item position-relative rounded overflow-hidden">
+                            <img src="https://images.pexels.com/photos/4819821/pexels-photo-4819821.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=250&w=400" class="img-fluid w-100" alt="صورة فيديو">
+                            <div class="video-play-icon">
+                                <i class="fas fa-play-circle fa-3x text-white"></i>
+                            </div>
+                            <div class="video-overlay d-flex align-items-center justify-content-center">
+                                <a href="#" class="btn btn-sm btn-light me-2" data-bs-toggle="modal" data-bs-target="#viewVideoModal"><i class="fas fa-eye"></i></a>
+                                <a href="#" class="btn btn-sm btn-light me-2"><i class="fas fa-link"></i></a>
+                                <a href="#" class="btn btn-sm btn-light"><i class="fas fa-trash"></i></a>
+                            </div>
+                            <div class="video-duration bg-dark bg-opacity-75 text-white px-2 py-1 position-absolute bottom-0 end-0 m-2 small">
+                                02:30
+                            </div>
+                        </div>
+                        <div class="mt-2">
+                            <h6 class="mb-1">تقديم مشروع النخيل التجاري</h6>
+                            <p class="text-muted small mb-0">تم الإضافة: 10 مارس 2025</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="video-item position-relative rounded overflow-hidden">
+                            <img src="https://images.pexels.com/photos/5137752/pexels-photo-5137752.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=250&w=400" class="img-fluid w-100" alt="صورة فيديو">
+                            <div class="video-play-icon">
+                                <i class="fas fa-play-circle fa-3x text-white"></i>
+                            </div>
+                            <div class="video-overlay d-flex align-items-center justify-content-center">
+                                <a href="#" class="btn btn-sm btn-light me-2" data-bs-toggle="modal" data-bs-target="#viewVideoModal"><i class="fas fa-eye"></i></a>
+                                <a href="#" class="btn btn-sm btn-light me-2"><i class="fas fa-link"></i></a>
+                                <a href="#" class="btn btn-sm btn-light"><i class="fas fa-trash"></i></a>
+                            </div>
+                            <div class="video-duration bg-dark bg-opacity-75 text-white px-2 py-1 position-absolute bottom-0 end-0 m-2 small">
+                                04:15
+                            </div>
+                        </div>
+                        <div class="mt-2">
+                            <h6 class="mb-1">مميزات فلل الفخامة</h6>
+                            <p class="text-muted small mb-0">تم الإضافة: 5 مارس 2025</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="video-item position-relative rounded overflow-hidden">
+                            <img src="https://images.pexels.com/photos/5778899/pexels-photo-5778899.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=250&w=400" class="img-fluid w-100" alt="صورة فيديو">
+                            <div class="video-play-icon">
+                                <i class="fas fa-play-circle fa-3x text-white"></i>
+                            </div>
+                            <div class="video-overlay d-flex align-items-center justify-content-center">
+                                <a href="#" class="btn btn-sm btn-light me-2" data-bs-toggle="modal" data-bs-target="#viewVideoModal"><i class="fas fa-eye"></i></a>
+                                <a href="#" class="btn btn-sm btn-light me-2"><i class="fas fa-link"></i></a>
+                                <a href="#" class="btn btn-sm btn-light"><i class="fas fa-trash"></i></a>
+                            </div>
+                            <div class="video-duration bg-dark bg-opacity-75 text-white px-2 py-1 position-absolute bottom-0 end-0 m-2 small">
+                                01:55
+                            </div>
+                        </div>
+                        <div class="mt-2">
+                            <h6 class="mb-1">إطلالة برج الأفق</h6>
+                            <p class="text-muted small mb-0">تم الإضافة: 1 مارس 2025</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer bg-white d-flex justify-content-center">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination pagination-sm mb-0">
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
+                                <i class="fas fa-chevron-right"></i>
+                            </a>
+                        </li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">
+                                <i class="fas fa-chevron-left"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- موديلات (نوافذ منبثقة) لعرض وإضافة الصور والفيديو -->
+<div class="modal fade" id="viewPhotoModal" tabindex="-1" aria-labelledby="viewPhotoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="viewPhotoModalLabel">عرض الصورة</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <img src="https://via.placeholder.com/800x500" class="img-fluid" alt="صورة كبيرة">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
+                <button type="button" class="btn btn-primary">تحميل</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addPhotoModal" tabindex="-1" aria-labelledby="addPhotoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addPhotoModalLabel">إضافة صور جديدة</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="photoTitle" class="form-label">عنوان الصورة</label>
+                        <input type="text" class="form-control" id="photoTitle">
+                    </div>
+                    <div class="mb-3">
+                        <label for="photoCategory" class="form-label">التصنيف</label>
+                        <select class="form-select" id="photoCategory">
+                            <option selected>اختر التصنيف</option>
+                            <option value="1">مشاريع</option>
+                            <option value="2">فعاليات</option>
+                            <option value="3">عام</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="photoUpload" class="form-label">اختر الصور</label>
+                        <input class="form-control" type="file" id="photoUpload" multiple>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                <button type="button" class="btn btn-primary">رفع الصور</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="viewVideoModal" tabindex="-1" aria-labelledby="viewVideoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="viewVideoModalLabel">عرض الفيديو</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <div class="ratio ratio-16x9">
+                    <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="عرض الفيديو" allowfullscreen></iframe>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
+                <button type="button" class="btn btn-primary">مشاركة</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addVideoModal" tabindex="-1" aria-labelledby="addVideoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addVideoModalLabel">إضافة فيديو جديد</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="videoTitle" class="form-label">عنوان الفيديو</label>
+                        <input type="text" class="form-control" id="videoTitle">
+                    </div>
+                    <div class="mb-3">
+                        <label for="videoDescription" class="form-label">وصف الفيديو</label>
+                        <textarea class="form-control" id="videoDescription" rows="2"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="videoCategory" class="form-label">التصنيف</label>
+                        <select class="form-select" id="videoCategory">
+                            <option selected>اختر التصنيف</option>
+                            <option value="1">مشاريع</option>
+                            <option value="2">جولات</option>
+                            <option value="3">مقابلات</option>
+                            <option value="4">أخرى</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">نوع الفيديو</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="videoType" id="videoTypeFile" checked>
+                            <label class="form-check-label" for="videoTypeFile">
+                                رفع ملف
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="videoType" id="videoTypeURL">
+                            <label class="form-check-label" for="videoTypeURL">
+                                رابط فيديو
+                            </label>
+                        </div>
+                    </div>
+                    <div class="mb-3" id="videoFileUpload">
+                        <label for="videoUpload" class="form-label">اختر الفيديو</label>
+                        <input class="form-control" type="file" id="videoUpload">
+                    </div>
+                    <div class="mb-3 d-none" id="videoURLInput">
+                        <label for="videoURL" class="form-label">رابط الفيديو</label>
+                        <input type="text" class="form-control" id="videoURL" placeholder="مثال: https://www.youtube.com/watch?v=...">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                <button type="button" class="btn btn-primary">رفع الفيديو</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- موديلات (نوافذ منبثقة) لتحرير الملف الشخصي -->
+<div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editProfileModalLabel">تعديل معلومات الشركة</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="companyName" class="form-label">اسم الشركة</label>
+                        <input type="text" class="form-control" id="companyName" value="شركة الإعمار للتطوير العقاري">
+                    </div>
+                    <div class="mb-3">
+                        <label for="companyDescription" class="form-label">وصف الشركة</label>
+                        <textarea class="form-control" id="companyDescription" rows="3">شركة رائدة في مجال التطوير العقاري بالمملكة، متخصصون في إنشاء مجمعات سكنية فاخرة ومشاريع تجارية مبتكرة منذ عام 2010</textarea>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="companyLocation" class="form-label">الموقع</label>
+                            <input type="text" class="form-control" id="companyLocation" value="الرياض، المملكة العربية السعودية">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="companyWebsite" class="form-label">الموقع الإلكتروني</label>
+                            <input type="url" class="form-control" id="companyWebsite" value="www.alemar-dev.com">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="companyEmail" class="form-label">البريد الإلكتروني</label>
+                            <input type="email" class="form-control" id="companyEmail" value="info@alemar-dev.com">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="companyPhone" class="form-label">رقم الهاتف</label>
+                            <input type="tel" class="form-control" id="companyPhone" value="+966 50 000 0000">
+                        </div>
+                    </div>
+                    <h6 class="mt-4 mb-3">وسائل التواصل الاجتماعي</h6>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="twitterLink" class="form-label">تويتر</label>
+                            <input type="url" class="form-control" id="twitterLink" value="https://twitter.com/alemar">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="instagramLink" class="form-label">انستغرام</label>
+                            <input type="url" class="form-control" id="instagramLink" value="https://instagram.com/alemar">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="linkedinLink" class="form-label">لينكد إن</label>
+                            <input type="url" class="form-control" id="linkedinLink" value="https://linkedin.com/company/alemar">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="youtubeLink" class="form-label">يوتيوب</label>
+                            <input type="url" class="form-control" id="youtubeLink" value="https://youtube.com/alemar">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                <button type="button" class="btn btn-primary">حفظ التغييرات</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editCoverModal" tabindex="-1" aria-labelledby="editCoverModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editCoverModalLabel">تغيير صورة الغلاف</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="coverImage" class="form-label">اختر صورة جديدة</label>
+                        <input class="form-control" type="file" id="coverImage">
+                        <div class="form-text">يفضل أن تكون الصورة بأبعاد 1200×300 بكسل</div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                <button type="button" class="btn btn-primary">تطبيق</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editAvatarModal" tabindex="-1" aria-labelledby="editAvatarModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editAvatarModalLabel">تغيير شعار الشركة</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="avatarImage" class="form-label">اختر شعاراً جديداً</label>
+                        <input class="form-control" type="file" id="avatarImage">
+                        <div class="form-text">يفضل أن تكون الصورة مربعة بأبعاد 400×400 بكسل</div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                <button type="button" class="btn btn-primary">تطبيق</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ستتم إضافة باقي الأقسام في الخطوات اللاحقة -->
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // مخطط نمو المتابعين
+    const followersGrowthCtx = document.getElementById('followersGrowthChart').getContext('2d');
+    
+    // حساب نسب النمو الشهرية
+    const followersData = [2450, 2740, 3050, 3380, 3780, 4328];
+    const growthPercentages = [];
+    
+    for (let i = 1; i < followersData.length; i++) {
+        const growthPercent = ((followersData[i] - followersData[i-1]) / followersData[i-1] * 100).toFixed(1);
+        growthPercentages.push(growthPercent + '%');
+    }
+    
+    // إنشاء التدرج اللوني للخلفية
+    const gradientFill = followersGrowthCtx.createLinearGradient(0, 0, 0, 200);
+    gradientFill.addColorStop(0, 'rgba(52, 152, 219, 0.3)');
+    gradientFill.addColorStop(1, 'rgba(52, 152, 219, 0.0)');
+    
+    new Chart(followersGrowthCtx, {
+        type: 'line',
+        data: {
+            labels: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو'],
+            datasets: [{
+                label: 'عدد المتابعين',
+                data: followersData,
+                borderColor: '#3498db',
+                backgroundColor: gradientFill,
+                borderWidth: 3,
+                pointBackgroundColor: '#ffffff',
+                pointBorderColor: '#3498db',
+                pointBorderWidth: 2,
+                pointRadius: 6,
+                pointHoverRadius: 8,
+                tension: 0.4,
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    rtl: true,
+                    titleAlign: 'right',
+                    bodyAlign: 'right',
+                    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                    titleColor: '#ffffff',
+                    bodyColor: '#ffffff',
+                    borderColor: '#3498db',
+                    borderWidth: 1,
+                    padding: 12,
+                    displayColors: false,
+                    callbacks: {
+                        label: function(context) {
+                            let label = [];
+                            label.push('عدد المتابعين: ' + context.raw);
+                            
+                            if (context.dataIndex > 0) {
+                                label.push('نسبة النمو: +' + growthPercentages[context.dataIndex - 1]);
+                            }
+                            
+                            return label;
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: false,
+                    min: 2000,
+                    grid: {
+                        drawBorder: false,
+                        borderDash: [5, 5],
+                        color: 'rgba(0, 0, 0, 0.05)'
+                    },
+                    ticks: {
+                        font: {
+                            family: 'Tajawal, sans-serif'
+                        },
+                        padding: 10
+                    }
+                },
+                x: {
+                    grid: {
+                        display: false
+                    },
+                    ticks: {
+                        font: {
+                            family: 'Tajawal, sans-serif'
+                        },
+                        padding: 5
+                    }
+                }
+            },
+            interaction: {
+                mode: 'index',
+                intersect: false
+            },
+            animation: {
+                duration: 1500,
+                easing: 'easeOutQuart'
+            }
+        }
+    });
+    
+    // مخطط توزيع التفاعل على المنصات
+    const interactionDistributionCtx = document.getElementById('interactionDistributionChart').getContext('2d');
+    new Chart(interactionDistributionCtx, {
+        type: 'doughnut',
+        data: {
+            labels: ['انستغرام', 'تويتر', 'يوتيوب', 'أخرى'],
+            datasets: [{
+                data: [52, 28, 16, 4],
+                backgroundColor: [
+                    'rgba(52, 152, 219, 0.8)',
+                    'rgba(46, 204, 113, 0.8)',
+                    'rgba(241, 196, 15, 0.8)',
+                    'rgba(149, 165, 166, 0.8)'
+                ],
+                borderColor: [
+                    'rgba(52, 152, 219, 1)',
+                    'rgba(46, 204, 113, 1)',
+                    'rgba(241, 196, 15, 1)',
+                    'rgba(149, 165, 166, 1)'
+                ],
+                borderWidth: 1,
+                hoverOffset: 4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '65%',
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    rtl: true,
+                    titleAlign: 'right',
+                    bodyAlign: 'right'
+                }
+            }
+        }
+    });
+});
+</script>
+
+<script>
+    // إضافة كود جافاسكريبت لعرض/إخفاء حقل رابط الفيديو أو رفع الملف حسب نوع الفيديو المختار
+    document.addEventListener('DOMContentLoaded', function() {
+        const videoTypeFile = document.getElementById('videoTypeFile');
+        const videoTypeURL = document.getElementById('videoTypeURL');
+        const videoFileUpload = document.getElementById('videoFileUpload');
+        const videoURLInput = document.getElementById('videoURLInput');
+        
+        if (videoTypeFile && videoTypeURL) {
+            videoTypeFile.addEventListener('change', function() {
+                if (this.checked) {
+                    videoFileUpload.classList.remove('d-none');
+                    videoURLInput.classList.add('d-none');
+                }
+            });
+            
+            videoTypeURL.addEventListener('change', function() {
+                if (this.checked) {
+                    videoFileUpload.classList.add('d-none');
+                    videoURLInput.classList.remove('d-none');
+                }
+            });
+        }
+        
+        // كود لمعالجة تأثير الحركة عند تحويم المؤشر على عناصر المعرض
+        const galleryItems = document.querySelectorAll('.gallery-item');
+        galleryItems.forEach(item => {
+            item.addEventListener('mouseenter', function() {
+                this.querySelector('.gallery-overlay').style.opacity = '1';
+            });
+            item.addEventListener('mouseleave', function() {
+                this.querySelector('.gallery-overlay').style.opacity = '0';
+            });
+        });
+        
+        // كود لمعالجة تأثير الحركة عند تحويم المؤشر على عناصر الفيديو
+        const videoItems = document.querySelectorAll('.video-item');
+        videoItems.forEach(item => {
+            item.addEventListener('mouseenter', function() {
+                this.querySelector('.video-overlay').style.opacity = '1';
+            });
+            item.addEventListener('mouseleave', function() {
+                this.querySelector('.video-overlay').style.opacity = '0';
+            });
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,1043 @@
+{% extends 'developers/dashboard/base_dashboard.html' %}
+
+{% block title %}الإعدادات | لوحة تحكم المطورين{% endblock %}
+
+{% block extra_head %}
+<style>
+    .settings-icon {
+        width: 45px;
+        height: 45px;
+        background-color: rgba(52, 152, 219, 0.1);
+        color: #3498db;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: 15px;
+        font-size: 1.5rem;
+    }
+    
+    .settings-card {
+        transition: all 0.3s ease;
+    }
+    
+    .settings-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+    }
+    
+    .form-check-input:checked {
+        background-color: #3498db;
+        border-color: #3498db;
+    }
+    
+    .form-select:focus, .form-control:focus {
+        border-color: #3498db;
+        box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25);
+    }
+    
+    .avatar-preview {
+        width: 150px;
+        height: 150px;
+        border-radius: 10px;
+        overflow: hidden;
+        margin: 0 auto 20px;
+        border: 3px solid #eee;
+    }
+    
+    .avatar-preview img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    
+    .color-box {
+        width: 30px;
+        height: 30px;
+        display: inline-block;
+        margin-left: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        position: relative;
+        border: 2px solid #eee;
+        transition: all 0.2s ease;
+    }
+    
+    .color-box.active {
+        transform: scale(1.1);
+        border-color: #000;
+    }
+    
+    .verification-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 5px 10px;
+        border-radius: 20px;
+        background-color: #e1f5fe;
+        color: #0288d1;
+        font-size: 0.875rem;
+        margin-right: 10px;
+    }
+    
+    .verification-badge i {
+        margin-left: 5px;
+    }
+    
+    .cover-photo {
+        height: 100px;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        border-radius: 10px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- عنوان الصفحة -->
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="h3 mb-0">إعدادات الحساب</h2>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a href="{{ url_for('developers_dashboard') }}">الرئيسية</a></li>
+            <li class="breadcrumb-item active" aria-current="page">الإعدادات</li>
+        </ol>
+    </nav>
+</div>
+
+<!-- تنبيه للترحيب -->
+<div class="alert alert-info alert-dismissible fade show mb-4" role="alert">
+    <div class="d-flex align-items-center">
+        <i class="fas fa-info-circle fa-lg me-3"></i>
+        <div>
+            <strong>مرحباً بك في صفحة الإعدادات!</strong> يمكنك هنا إدارة خصائص حسابك وتخصيص تجربتك في المنصة.
+        </div>
+    </div>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+
+<!-- قائمة التبويبات -->
+<ul class="nav nav-tabs mb-4" id="settingsTabs" role="tablist">
+    <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="general-tab" data-bs-toggle="tab" data-bs-target="#general" type="button" role="tab" aria-controls="general" aria-selected="true">
+            <i class="fas fa-cog me-2"></i>الإعدادات العامة
+        </button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">
+            <i class="fas fa-building me-2"></i>إعدادات الملف الشخصي
+        </button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="notifications-tab" data-bs-toggle="tab" data-bs-target="#notifications" type="button" role="tab" aria-controls="notifications" aria-selected="false">
+            <i class="fas fa-bell me-2"></i>الإشعارات
+        </button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="security-tab" data-bs-toggle="tab" data-bs-target="#security" type="button" role="tab" aria-controls="security" aria-selected="false">
+            <i class="fas fa-shield-alt me-2"></i>الأمان
+        </button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="privacy-tab" data-bs-toggle="tab" data-bs-target="#privacy" type="button" role="tab" aria-controls="privacy" aria-selected="false">
+            <i class="fas fa-lock me-2"></i>الخصوصية
+        </button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="appearance-tab" data-bs-toggle="tab" data-bs-target="#appearance" type="button" role="tab" aria-controls="appearance" aria-selected="false">
+            <i class="fas fa-palette me-2"></i>المظهر
+        </button>
+    </li>
+</ul>
+
+<!-- محتوى التبويبات -->
+<div class="tab-content" id="settingsTabsContent">
+    <!-- الإعدادات العامة -->
+    <div class="tab-pane fade show active" id="general" role="tabpanel" aria-labelledby="general-tab">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header bg-white py-3">
+                        <h5 class="card-title mb-0">الإعدادات العامة للحساب</h5>
+                    </div>
+                    <div class="card-body">
+                        <form>
+                            <div class="mb-3">
+                                <label for="languageSetting" class="form-label">لغة الواجهة</label>
+                                <select class="form-select" id="languageSetting">
+                                    <option value="ar" selected>العربية</option>
+                                    <option value="en">الإنجليزية</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="timezoneSelect" class="form-label">المنطقة الزمنية</label>
+                                <select class="form-select" id="timezoneSelect">
+                                    <option value="Asia/Riyadh" selected>الرياض (GMT+3)</option>
+                                    <option value="Asia/Dubai">دبي (GMT+4)</option>
+                                    <option value="Asia/Kuwait">الكويت (GMT+3)</option>
+                                    <option value="Asia/Doha">الدوحة (GMT+3)</option>
+                                    <option value="Asia/Amman">عمان (GMT+3)</option>
+                                    <option value="Africa/Cairo">القاهرة (GMT+2)</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="dateFormatSelect" class="form-label">صيغة التاريخ</label>
+                                <select class="form-select" id="dateFormatSelect">
+                                    <option value="dd/mm/yyyy" selected>يوم/شهر/سنة (01/12/2024)</option>
+                                    <option value="mm/dd/yyyy">شهر/يوم/سنة (12/01/2024)</option>
+                                    <option value="yyyy/mm/dd">سنة/شهر/يوم (2024/12/01)</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="currencySelect" class="form-label">العملة الافتراضية</label>
+                                <select class="form-select" id="currencySelect">
+                                    <option value="SAR" selected>ريال سعودي (SAR)</option>
+                                    <option value="AED">درهم إماراتي (AED)</option>
+                                    <option value="QAR">ريال قطري (QAR)</option>
+                                    <option value="KWD">دينار كويتي (KWD)</option>
+                                    <option value="USD">دولار أمريكي (USD)</option>
+                                </select>
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label d-block">إعدادات الإشعارات السريعة</label>
+                                <div class="form-check form-switch mb-2">
+                                    <input class="form-check-input" type="checkbox" id="emailNotifications" checked>
+                                    <label class="form-check-label" for="emailNotifications">إرسال إشعارات البريد الإلكتروني</label>
+                                </div>
+                                <div class="form-check form-switch mb-2">
+                                    <input class="form-check-input" type="checkbox" id="webNotifications" checked>
+                                    <label class="form-check-label" for="webNotifications">إشعارات متصفح الويب</label>
+                                </div>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="mobileNotifications" checked>
+                                    <label class="form-check-label" for="mobileNotifications">إشعارات الجوال</label>
+                                </div>
+                            </div>
+                            <div class="text-end">
+                                <button type="button" class="btn btn-secondary me-2">إلغاء</button>
+                                <button type="submit" class="btn btn-primary">حفظ التغييرات</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header bg-white py-3">
+                        <h5 class="card-title mb-0">اختصارات سريعة</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="list-group list-group-flush">
+                            <a href="{{ url_for('developers_profile') }}" class="list-group-item list-group-item-action border-0 px-0 py-2">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-user-circle text-primary me-2"></i>
+                                    <span>الملف الشخصي</span>
+                                </div>
+                            </a>
+                            <a href="{{ url_for('developers_projects') }}" class="list-group-item list-group-item-action border-0 px-0 py-2">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-city text-primary me-2"></i>
+                                    <span>المشاريع العقارية</span>
+                                </div>
+                            </a>
+                            <a href="{{ url_for('developers_analytics') }}" class="list-group-item list-group-item-action border-0 px-0 py-2">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-chart-line text-primary me-2"></i>
+                                    <span>التحليلات</span>
+                                </div>
+                            </a>
+                            <a href="{{ url_for('developers_subscription') }}" class="list-group-item list-group-item-action border-0 px-0 py-2">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-gem text-primary me-2"></i>
+                                    <span>الاشتراك والباقات</span>
+                                </div>
+                            </a>
+                            <a href="{{ url_for('logout') }}" class="list-group-item list-group-item-action border-0 px-0 py-2 text-danger">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-sign-out-alt text-danger me-2"></i>
+                                    <span>تسجيل الخروج</span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- حالة الحساب -->
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header bg-white py-3">
+                        <h5 class="card-title mb-0">حالة الحساب</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="me-3">
+                                <span class="badge bg-success rounded-pill p-2">نشط</span>
+                            </div>
+                            <div>
+                                <h6 class="mb-1">حسابك نشط بالكامل</h6>
+                                <p class="text-muted small mb-0">آخر تسجيل دخول: اليوم، 13:45</p>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <div class="me-3">
+                                <span class="verification-badge">
+                                    <i class="fas fa-check-circle"></i>
+                                    موثق
+                                </span>
+                            </div>
+                            <div>
+                                <h6 class="mb-1">الحساب موثق</h6>
+                                <p class="text-muted small mb-0">تم التحقق من هوية الشركة</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- إعدادات الملف الشخصي -->
+    <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header bg-white py-3">
+                        <h5 class="card-title mb-0">معلومات الشركة</h5>
+                    </div>
+                    <div class="card-body">
+                        <form>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="companyName" class="form-label">اسم الشركة</label>
+                                    <input type="text" class="form-control" id="companyName" value="شركة الإعمار للتطوير العقاري">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="legalName" class="form-label">الاسم القانوني</label>
+                                    <input type="text" class="form-control" id="legalName" value="شركة الإعمار للاستثمار العقاري المحدودة">
+                                </div>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="companyEmail" class="form-label">البريد الإلكتروني</label>
+                                    <input type="email" class="form-control" id="companyEmail" value="info@alemar-dev.com">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="companyPhone" class="form-label">رقم الهاتف</label>
+                                    <input type="tel" class="form-control" id="companyPhone" value="+966 50 123 4567">
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="companyAddress" class="form-label">العنوان</label>
+                                <input type="text" class="form-control" id="companyAddress" value="الرياض، طريق الملك فهد، برج المملكة، الطابق 25">
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <div class="col-md-4">
+                                    <label for="city" class="form-label">المدينة</label>
+                                    <input type="text" class="form-control" id="city" value="الرياض">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="region" class="form-label">المنطقة</label>
+                                    <input type="text" class="form-control" id="region" value="منطقة الرياض">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="postalCode" class="form-label">الرمز البريدي</label>
+                                    <input type="text" class="form-control" id="postalCode" value="12345">
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="companyBio" class="form-label">نبذة عن الشركة</label>
+                                <textarea class="form-control" id="companyBio" rows="4">شركة الإعمار هي شركة رائدة في مجال التطوير العقاري في المملكة العربية السعودية، تأسست عام 2010 وتمتلك خبرة أكثر من 10 سنوات في إنشاء وتطوير المشاريع السكنية والتجارية الفاخرة.</textarea>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="establishedYear" class="form-label">سنة التأسيس</label>
+                                <input type="number" class="form-control" id="establishedYear" value="2010">
+                            </div>
+                            
+                            <div class="text-end">
+                                <button type="button" class="btn btn-secondary me-2">إلغاء</button>
+                                <button type="submit" class="btn btn-primary">حفظ التغييرات</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header bg-white py-3">
+                        <h5 class="card-title mb-0">روابط مواقع التواصل</h5>
+                    </div>
+                    <div class="card-body">
+                        <form>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text bg-light"><i class="fab fa-twitter text-info"></i></span>
+                                <input type="url" class="form-control" placeholder="رابط حساب تويتر" value="https://twitter.com/Alemar_dev">
+                            </div>
+                            
+                            <div class="input-group mb-3">
+                                <span class="input-group-text bg-light"><i class="fab fa-instagram text-danger"></i></span>
+                                <input type="url" class="form-control" placeholder="رابط حساب انستجرام" value="https://instagram.com/alemar_dev">
+                            </div>
+                            
+                            <div class="input-group mb-3">
+                                <span class="input-group-text bg-light"><i class="fab fa-linkedin text-primary"></i></span>
+                                <input type="url" class="form-control" placeholder="رابط حساب لينكد إن" value="https://linkedin.com/company/alemar-dev">
+                            </div>
+                            
+                            <div class="input-group mb-3">
+                                <span class="input-group-text bg-light"><i class="fab fa-facebook text-primary"></i></span>
+                                <input type="url" class="form-control" placeholder="رابط حساب فيسبوك" value="https://facebook.com/AleamrDevelopment">
+                            </div>
+                            
+                            <div class="input-group mb-4">
+                                <span class="input-group-text bg-light"><i class="fas fa-globe text-success"></i></span>
+                                <input type="url" class="form-control" placeholder="رابط الموقع الإلكتروني" value="https://alemar-dev.com">
+                            </div>
+                            
+                            <div class="text-end">
+                                <button type="button" class="btn btn-secondary me-2">إلغاء</button>
+                                <button type="submit" class="btn btn-primary">حفظ التغييرات</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header bg-white py-3">
+                        <h5 class="card-title mb-0">شعار الشركة</h5>
+                    </div>
+                    <div class="card-body text-center">
+                        <div class="avatar-preview mb-3">
+                            <img src="{{ url_for('static', filename='img/company-logo.png') }}" alt="شعار الشركة" class="img-fluid">
+                        </div>
+                        <div class="d-flex flex-column align-items-center">
+                            <button class="btn btn-primary btn-sm mb-2">تغيير الشعار</button>
+                            <button class="btn btn-outline-danger btn-sm">حذف الشعار</button>
+                            <small class="text-muted mt-3">يجب أن يكون حجم الصورة 500×500 بكسل على الأقل، وبصيغة PNG أو JPG</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header bg-white py-3">
+                        <h5 class="card-title mb-0">صورة الغلاف</h5>
+                    </div>
+                    <div class="card-body text-center">
+                        <div class="cover-photo mb-3"></div>
+                        <div class="d-flex flex-column align-items-center">
+                            <button class="btn btn-primary btn-sm mb-2">تغيير صورة الغلاف</button>
+                            <button class="btn btn-outline-danger btn-sm">حذف الصورة</button>
+                            <small class="text-muted mt-3">الأبعاد المثالية: 1500×500 بكسل</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- إعدادات الإشعارات -->
+    <div class="tab-pane fade" id="notifications" role="tabpanel" aria-labelledby="notifications-tab">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header bg-white py-3">
+                        <h5 class="card-title mb-0">إعدادات الإشعارات</h5>
+                    </div>
+                    <div class="card-body">
+                        <form>
+                            <h6 class="fw-bold mb-3">إشعارات المشاريع</h6>
+                            <div class="list-group list-group-flush mb-4">
+                                <div class="list-group-item border-0 px-0 py-2">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h6 class="mb-1">تعليقات جديدة على المشاريع</h6>
+                                            <p class="text-muted small mb-0">إشعارات عند إضافة تعليقات جديدة على مشاريعك</p>
+                                        </div>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" id="projectComments" checked>
+                                            <label class="form-check-label" for="projectComments"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="list-group-item border-0 px-0 py-2">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h6 class="mb-1">استفسارات العملاء</h6>
+                                            <p class="text-muted small mb-0">إشعارات عند تلقي استفسارات جديدة من العملاء المهتمين</p>
+                                        </div>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" id="customerInquiries" checked>
+                                            <label class="form-check-label" for="customerInquiries"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="list-group-item border-0 px-0 py-2">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h6 class="mb-1">تحديثات المشاريع</h6>
+                                            <p class="text-muted small mb-0">إشعارات عند تحديث حالة أو معلومات المشاريع</p>
+                                        </div>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" id="projectUpdates" checked>
+                                            <label class="form-check-label" for="projectUpdates"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <h6 class="fw-bold mb-3">إشعارات التسويق</h6>
+                            <div class="list-group list-group-flush mb-4">
+                                <div class="list-group-item border-0 px-0 py-2">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h6 class="mb-1">تقارير أداء الحملات</h6>
+                                            <p class="text-muted small mb-0">تلقي تقارير دورية عن أداء الحملات التسويقية</p>
+                                        </div>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" id="campaignReports" checked>
+                                            <label class="form-check-label" for="campaignReports"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="list-group-item border-0 px-0 py-2">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h6 class="mb-1">المسوقين الجدد</h6>
+                                            <p class="text-muted small mb-0">إشعارات عند انضمام مسوقين جدد للمنصة</p>
+                                        </div>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" id="newMarketers" checked>
+                                            <label class="form-check-label" for="newMarketers"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="list-group-item border-0 px-0 py-2">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h6 class="mb-1">تفاعلات المشاهدين</h6>
+                                            <p class="text-muted small mb-0">إشعارات حول تفاعلات المشاهدين مع فيديوهات المشاريع</p>
+                                        </div>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" id="viewerInteractions" checked>
+                                            <label class="form-check-label" for="viewerInteractions"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <h6 class="fw-bold mb-3">إشعارات النظام</h6>
+                            <div class="list-group list-group-flush mb-4">
+                                <div class="list-group-item border-0 px-0 py-2">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h6 class="mb-1">تحديثات النظام</h6>
+                                            <p class="text-muted small mb-0">إشعارات حول تحديثات وميزات جديدة في المنصة</p>
+                                        </div>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" id="systemUpdates" checked>
+                                            <label class="form-check-label" for="systemUpdates"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="list-group-item border-0 px-0 py-2">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h6 class="mb-1">الفعاليات والأخبار</h6>
+                                            <p class="text-muted small mb-0">إشعارات حول الفعاليات والأخبار المتعلقة بالقطاع العقاري</p>
+                                        </div>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" id="eventsNews" checked>
+                                            <label class="form-check-label" for="eventsNews"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="list-group-item border-0 px-0 py-2">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h6 class="mb-1">تذكيرات المواعيد</h6>
+                                            <p class="text-muted small mb-0">إشعارات تذكير بالمواعيد والمهام القادمة</p>
+                                        </div>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" id="appointmentReminders" checked>
+                                            <label class="form-check-label" for="appointmentReminders"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <h6 class="fw-bold mb-3">طرق الإشعارات</h6>
+                            <div class="row mb-4">
+                                <div class="col-md-6">
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" id="emailNotificationsMethod" checked>
+                                        <label class="form-check-label" for="emailNotificationsMethod">البريد الإلكتروني</label>
+                                    </div>
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" id="pushNotificationsMethod" checked>
+                                        <label class="form-check-label" for="pushNotificationsMethod">إشعارات الويب</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" id="smsNotificationsMethod">
+                                        <label class="form-check-label" for="smsNotificationsMethod">الرسائل النصية (SMS)</label>
+                                    </div>
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" id="inAppNotificationsMethod" checked>
+                                        <label class="form-check-label" for="inAppNotificationsMethod">داخل التطبيق</label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="text-end">
+                                <button type="button" class="btn btn-secondary me-2">إلغاء</button>
+                                <button type="submit" class="btn btn-primary">حفظ التغييرات</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header bg-white py-3">
+                        <h5 class="card-title mb-0">وقت الإشعارات</h5>
+                    </div>
+                    <div class="card-body">
+                        <form>
+                            <div class="mb-3">
+                                <label for="notificationFrequency" class="form-label">تكرار الإشعارات</label>
+                                <select class="form-select" id="notificationFrequency">
+                                    <option value="immediately" selected>فوري (عند الحدوث)</option>
+                                    <option value="hourly">ملخص ساعي</option>
+                                    <option value="daily">ملخص يومي</option>
+                                    <option value="weekly">ملخص أسبوعي</option>
+                                </select>
+                                <small class="text-muted d-block mt-1">يتم تطبيق هذا الإعداد على الإشعارات عبر البريد الإلكتروني فقط</small>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">ساعات عدم الإزعاج</label>
+                                <div class="row g-2">
+                                    <div class="col-6">
+                                        <label for="doNotDisturbFrom" class="form-label small">من</label>
+                                        <input type="time" class="form-control" id="doNotDisturbFrom" value="22:00">
+                                    </div>
+                                    <div class="col-6">
+                                        <label for="doNotDisturbTo" class="form-label small">إلى</label>
+                                        <input type="time" class="form-control" id="doNotDisturbTo" value="07:00">
+                                    </div>
+                                </div>
+                                <small class="text-muted d-block mt-1">لن يتم إرسال إشعارات خلال هذه الفترة</small>
+                            </div>
+                            
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="checkbox" id="weekendNotifications" checked>
+                                <label class="form-check-label" for="weekendNotifications">تلقي الإشعارات في عطلة نهاية الأسبوع</label>
+                            </div>
+                            
+                            <div class="text-end">
+                                <button type="button" class="btn btn-secondary me-2">إلغاء</button>
+                                <button type="submit" class="btn btn-primary">حفظ التغييرات</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header bg-white py-3">
+                        <h5 class="card-title mb-0">تاريخ الإشعارات</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <span>عدد الإشعارات غير المقروءة</span>
+                            <span class="badge bg-danger rounded-pill">7</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <span>إجمالي الإشعارات (30 يوم)</span>
+                            <span class="badge bg-secondary rounded-pill">143</span>
+                        </div>
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-outline-primary btn-sm"><i class="fas fa-eye me-2"></i>عرض جميع الإشعارات</button>
+                            <button class="btn btn-outline-secondary btn-sm"><i class="fas fa-check-double me-2"></i>تحديد الكل كمقروء</button>
+                            <button class="btn btn-outline-danger btn-sm"><i class="fas fa-trash-alt me-2"></i>حذف الإشعارات القديمة</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- إعدادات الأمان -->
+    <div class="tab-pane fade" id="security" role="tabpanel" aria-labelledby="security-tab">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header bg-white py-3">
+                        <h5 class="card-title mb-0">تغيير كلمة المرور</h5>
+                    </div>
+                    <div class="card-body">
+                        <form>
+                            <div class="mb-3">
+                                <label for="currentPassword" class="form-label">كلمة المرور الحالية</label>
+                                <input type="password" class="form-control" id="currentPassword">
+                                <small class="text-muted">يجب إدخال كلمة المرور الحالية للتحقق</small>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="newPassword" class="form-label">كلمة المرور الجديدة</label>
+                                <input type="password" class="form-control" id="newPassword">
+                                <small class="text-muted">يجب أن تحتوي على الأقل 8 أحرف، وتتضمن حرف كبير، وحرف صغير، ورقم، ورمز خاص</small>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="confirmPassword" class="form-label">تأكيد كلمة المرور الجديدة</label>
+                                <input type="password" class="form-control" id="confirmPassword">
+                            </div>
+                            
+                            <div class="text-end">
+                                <button type="button" class="btn btn-secondary me-2">إلغاء</button>
+                                <button type="submit" class="btn btn-primary">تحديث كلمة المرور</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+                        <h5 class="card-title mb-0">المصادقة الثنائية</h5>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="twoFactorAuth" checked>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p class="text-success mb-4"><i class="fas fa-shield-alt me-2"></i>المصادقة الثنائية مفعلة - تم تأمين حسابك بطبقة حماية إضافية</p>
+                        
+                        <h6 class="fw-bold mb-3">طرق المصادقة</h6>
+                        <div class="list-group list-group-flush mb-4">
+                            <div class="list-group-item border-0 px-0 py-2">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="mb-1">تطبيق المصادقة</h6>
+                                        <p class="text-muted small mb-0">استخدام Google Authenticator أو تطبيقات مماثلة</p>
+                                    </div>
+                                    <div class="form-check form-radio">
+                                        <input class="form-check-input" type="radio" name="twoFactorMethod" id="authenticatorApp" checked>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="list-group-item border-0 px-0 py-2">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="mb-1">رسائل نصية SMS</h6>
+                                        <p class="text-muted small mb-0">تلقي رمز التحقق عبر رسالة نصية على هاتفك</p>
+                                    </div>
+                                    <div class="form-check form-radio">
+                                        <input class="form-check-input" type="radio" name="twoFactorMethod" id="smsTwoFactor">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="list-group-item border-0 px-0 py-2">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="mb-1">البريد الإلكتروني</h6>
+                                        <p class="text-muted small mb-0">تلقي رمز التحقق عبر البريد الإلكتروني</p>
+                                    </div>
+                                    <div class="form-check form-radio">
+                                        <input class="form-check-input" type="radio" name="twoFactorMethod" id="emailTwoFactor">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="d-grid">
+                            <button class="btn btn-outline-primary">تحديث إعدادات المصادقة الثنائية</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header bg-white py-3">
+                        <h5 class="card-title mb-0">الأجهزة المتصلة</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="list-group list-group-flush">
+                            <div class="list-group-item border-0 px-0 py-3">
+                                <div class="d-flex">
+                                    <div class="me-3">
+                                        <span class="bg-light rounded-circle p-2"><i class="fas fa-laptop"></i></span>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <div class="d-flex justify-content-between align-items-center mb-1">
+                                            <h6 class="mb-0">MacBook Pro</h6>
+                                            <span class="badge bg-success">حالي</span>
+                                        </div>
+                                        <p class="text-muted small mb-0">آخر تسجيل دخول: اليوم، 10:42 ص</p>
+                                        <p class="text-muted small mb-0">الرياض، المملكة العربية السعودية</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="list-group-item border-0 px-0 py-3">
+                                <div class="d-flex">
+                                    <div class="me-3">
+                                        <span class="bg-light rounded-circle p-2"><i class="fas fa-mobile-alt"></i></span>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <div class="d-flex justify-content-between align-items-center mb-1">
+                                            <h6 class="mb-0">iPhone 13</h6>
+                                            <button class="btn btn-sm btn-outline-danger py-0 px-1"><i class="fas fa-times"></i></button>
+                                        </div>
+                                        <p class="text-muted small mb-0">آخر تسجيل دخول: أمس، 8:55 م</p>
+                                        <p class="text-muted small mb-0">الرياض، المملكة العربية السعودية</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="list-group-item border-0 px-0 py-3">
+                                <div class="d-flex">
+                                    <div class="me-3">
+                                        <span class="bg-light rounded-circle p-2"><i class="fas fa-desktop"></i></span>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <div class="d-flex justify-content-between align-items-center mb-1">
+                                            <h6 class="mb-0">Windows PC</h6>
+                                            <button class="btn btn-sm btn-outline-danger py-0 px-1"><i class="fas fa-times"></i></button>
+                                        </div>
+                                        <p class="text-muted small mb-0">آخر تسجيل دخول: 15 مايو 2023، 3:30 م</p>
+                                        <p class="text-muted small mb-0">جدة، المملكة العربية السعودية</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-3 text-center">
+                            <button class="btn btn-danger btn-sm">تسجيل الخروج من جميع الأجهزة</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header bg-white py-3">
+                        <h5 class="card-title mb-0">سجل نشاط الحساب</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="list-group list-group-flush small">
+                            <div class="list-group-item border-0 px-0 py-2">
+                                <span class="text-muted">اليوم، 10:42 ص</span>
+                                <p class="mb-0">تسجيل دخول من متصفح Chrome</p>
+                            </div>
+                            <div class="list-group-item border-0 px-0 py-2">
+                                <span class="text-muted">أمس، 8:55 م</span>
+                                <p class="mb-0">تسجيل دخول من تطبيق الجوال</p>
+                            </div>
+                            <div class="list-group-item border-0 px-0 py-2">
+                                <span class="text-muted">18 مايو 2023، 4:30 م</span>
+                                <p class="mb-0">تم تغيير كلمة المرور</p>
+                            </div>
+                            <div class="list-group-item border-0 px-0 py-2">
+                                <span class="text-muted">15 مايو 2023، 3:30 م</span>
+                                <p class="mb-0">تسجيل دخول من متصفح Edge</p>
+                            </div>
+                            <div class="list-group-item border-0 px-0 py-2">
+                                <span class="text-muted">10 مايو 2023، 11:20 ص</span>
+                                <p class="mb-0">تم تفعيل المصادقة الثنائية</p>
+                            </div>
+                        </div>
+                        <div class="text-center mt-3">
+                            <a href="#" class="btn btn-link btn-sm">عرض المزيد</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- إعدادات الخصوصية -->
+    <div class="tab-pane fade" id="privacy" role="tabpanel" aria-labelledby="privacy-tab">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header bg-white py-3">
+                        <h5 class="card-title mb-0">إعدادات الخصوصية</h5>
+                    </div>
+                    <div class="card-body">
+                        <form>
+                            <h6 class="fw-bold mb-3">رؤية الملف الشخصي</h6>
+                            <div class="mb-4">
+                                <label for="profileVisibility" class="form-label">من يمكنه رؤية ملف الشركة الخاص بك؟</label>
+                                <select class="form-select" id="profileVisibility">
+                                    <option value="public" selected>الجميع</option>
+                                    <option value="registered">المستخدمين المسجلين فقط</option>
+                                    <option value="connections">جهات الاتصال فقط</option>
+                                    <option value="private">خاص (أنت فقط)</option>
+                                </select>
+                            </div>
+                            
+                            <h6 class="fw-bold mb-3">رؤية المشاريع</h6>
+                            <div class="mb-4">
+                                <label for="projectsVisibility" class="form-label">من يمكنه رؤية مشاريعك؟</label>
+                                <select class="form-select" id="projectsVisibility">
+                                    <option value="public" selected>الجميع</option>
+                                    <option value="registered">المستخدمين المسجلين فقط</option>
+                                    <option value="connections">جهات الاتصال فقط</option>
+                                    <option value="private">خاص (أنت فقط)</option>
+                                </select>
+                            </div>
+                            
+                            <h6 class="fw-bold mb-3">معلومات الاتصال</h6>
+                            <div class="mb-4">
+                                <label for="contactInfoVisibility" class="form-label">من يمكنه رؤية معلومات الاتصال الخاصة بك؟</label>
+                                <select class="form-select" id="contactInfoVisibility">
+                                    <option value="public">الجميع</option>
+                                    <option value="registered" selected>المستخدمين المسجلين فقط</option>
+                                    <option value="connections">جهات الاتصال فقط</option>
+                                    <option value="private">خاص (أنت فقط)</option>
+                                </select>
+                            </div>
+                            
+                            <h6 class="fw-bold mb-3">البحث والاكتشاف</h6>
+                            <div class="list-group list-group-flush mb-4">
+                                <div class="list-group-item border-0 px-0 py-2">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h6 class="mb-1">ظهور في نتائج البحث</h6>
+                                            <p class="text-muted small mb-0">السماح بظهور ملف الشركة في نتائج البحث داخل وخارج المنصة</p>
+                                        </div>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" id="searchVisibility" checked>
+                                            <label class="form-check-label" for="searchVisibility"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="list-group-item border-0 px-0 py-2">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h6 class="mb-1">اقتراح ملفك للعملاء المحتملين</h6>
+                                            <p class="text-muted small mb-0">السماح باقتراح شركتك للعملاء المحتملين بناءً على اهتماماتهم</p>
+                                        </div>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" id="recommendProfile" checked>
+                                            <label class="form-check-label" for="recommendProfile"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="list-group-item border-0 px-0 py-2">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h6 class="mb-1">ظهور في صفحات الاكتشاف</h6>
+                                            <p class="text-muted small mb-0">السماح بعرض مشاريعك في صفحات الاكتشاف والترويج</p>
+                                        </div>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" id="discoverPageVisibility" checked>
+                                            <label class="form-check-label" for="discoverPageVisibility"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="text-end">
+                                <button type="button" class="btn btn-secondary me-2">إلغاء</button>
+                                <button type="submit" class="btn btn-primary">حفظ التغييرات</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header bg-white py-3">
+                        <h5 class="card-title mb-0">سياسة الخصوصية</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="small text-muted">تفضل بزيارة سياسة الخصوصية الخاصة بنا للاطلاع على كيفية استخدام بياناتك والمعلومات التي نجمعها منك.</p>
+                        <div class="list-group list-group-flush">
+                            <a href="#" class="list-group-item list-group-item-action border-0 px-0 py-2">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-shield-alt text-primary me-2"></i>
+                                    <span>سياسة الخصوصية</span>
+                                </div>
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action border-0 px-0 py-2">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-cookie text-primary me-2"></i>
+                                    <span>سياسة ملفات تعريف الارتباط</span>
+                                </div>
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action border-0 px-0 py-2">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-gavel text-primary me-2"></i>
+                                    <span>شروط الاستخدام</span>
+                                </div>
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action border-0 px-0 py-2">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-user-shield text-primary me-2"></i>
+                                    <span>حقوقك وخياراتك</span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header bg-white py-3">
+                        <h5 class="card-title mb-0">إدارة البيانات</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="list-group list-group-flush">
+                            <a href="#" class="list-group-item list-group-item-action border-0 px-0 py-2">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-download text-primary me-2"></i>
+                                    <span>تحميل بياناتي الشخصية</span>
+                                </div>
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action border-0 px-0 py-2">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-trash-alt text-danger me-2"></i>
+                                    <span>حذف بياناتي الشخصية</span>
+                                </div>
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action border-0 px-0 py-2">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-ban text-warning me-2"></i>
+                                    <span>طلب حظر بيانات التتبع</span>
+                                </div>
+                            </a>
+                        </div>
+                        
+                        <hr class="my-3">
+                        
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <label class="form-label mb-0 small">ملفات تعريف الارتباط</label>
+                            <button class="btn btn-sm btn-outline-primary">إدارة</button>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar bg-success" role="progressbar" style="width: 75%;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <small class="text-muted d-block mt-1">3 من أصل 4 ملفات تعريف ارتباط مفعلة</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

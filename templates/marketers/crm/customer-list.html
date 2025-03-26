@@ -1,0 +1,814 @@
+{% extends 'marketers/includes/base.html' %}
+
+{% block title %}إدارة العملاء - لوحة تحكم المسوقين العقاريين{% endblock %}
+
+{% block meta_description %}إدارة العملاء - لوحة تحكم المسوقين العقاريين{% endblock %}
+
+{% block additional_css %}
+<style>
+    /* تحسينات تصميم الصفحة وتقليل المساحات البيضاء */
+    body {
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+    }
+    
+    .main-layout {
+        display: flex;
+        width: 100%;
+        min-height: 100vh;
+    }
+    
+    #page-content {
+        padding: 0;
+    }
+    
+    .container-fluid {
+        padding: 1.5rem;
+    }
+    
+    /* تعديل الصفوف لتكون متقاربة أكثر */
+    .row {
+        margin-right: -8px;
+        margin-left: -8px;
+    }
+    
+    .row > [class^="col-"] {
+        padding-right: 8px;
+        padding-left: 8px;
+    }
+    
+    /* تصغير المساحات بين الأقسام */
+    .section-spacing {
+        margin-bottom: 1rem;
+    }
+    
+    /* تحسين تصميم البطاقات */
+    .card {
+        border-radius: var(--card-border-radius);
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+        height: 100%;
+        border: none;
+        margin-bottom: 1rem;
+    }
+    
+    .card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .card-body {
+        padding: 1rem;
+    }
+    
+    /* تنسيق العناصر داخل البطاقات */
+    .d-flex {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .badge {
+        font-size: 0.75rem;
+        padding: 0.2rem 0.5rem;
+    }
+    
+    .small {
+        font-size: 0.875rem;
+    }
+
+    /* الحالة والمؤشرات */
+    .status-badge {
+        padding: 5px 10px;
+        border-radius: 50px;
+        font-size: 0.85rem;
+    }
+    
+    .status-active {
+        background-color: rgba(46, 204, 113, 0.1);
+        color: var(--secondary-color);
+    }
+    
+    .status-pending {
+        background-color: rgba(243, 156, 18, 0.1);
+        color: var(--accent-color);
+    }
+    
+    .status-inactive {
+        background-color: rgba(231, 76, 60, 0.1);
+        color: #e74c3c;
+    }
+    
+    /* جدول العملاء */
+    .customer-table {
+        font-size: 0.95rem;
+    }
+    
+    .customer-table th {
+        font-weight: 600;
+        background-color: #f9f9f9;
+        border-bottom: 2px solid #eaeaea;
+    }
+    
+    .customer-table td {
+        vertical-align: middle;
+    }
+    
+    .table-success-light {
+        background-color: rgba(46, 204, 113, 0.05);
+    }
+    
+    .table-warning-light {
+        background-color: rgba(243, 156, 18, 0.05);
+    }
+    
+    .table-danger-light {
+        background-color: rgba(231, 76, 60, 0.05);
+    }
+    
+    .table-secondary-light {
+        background-color: rgba(189, 195, 199, 0.05);
+    }
+    
+    .customer-table .dropdown-menu {
+        min-width: 12rem;
+        border-radius: 10px;
+        border: none;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        padding: 10px;
+    }
+    
+    .customer-table .dropdown-item {
+        padding: 8px 15px;
+        border-radius: 8px;
+        transition: all var(--transition-speed) ease;
+    }
+    
+    .customer-table .dropdown-item:hover {
+        background-color: #f5f7fa;
+    }
+    
+    .customer-table .dropdown-item i {
+        width: 20px;
+        text-align: center;
+        margin-left: 10px;
+    }
+    
+    /* فلترة وتصنيف */
+    .filter-dropdown .btn {
+        border-radius: 8px;
+        font-size: 0.9rem;
+    }
+    
+    .filter-dropdown .dropdown-menu {
+        min-width: 15rem;
+        padding: 15px;
+        border-radius: 10px;
+        border: none;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* أنماط النموذج */
+    .modal-content {
+        border-radius: 15px;
+        border: none;
+    }
+    
+    .modal-header {
+        background-color: #f9f9f9;
+        border-radius: 15px 15px 0 0;
+    }
+    
+    .form-control, .form-select {
+        border-radius: 10px;
+        padding: 10px 15px;
+        border: 1px solid #eaeaea;
+        transition: all var(--transition-speed) ease;
+    }
+    
+    .form-control:focus, .form-select:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+    }
+    
+    /* التنقل بين الصفحات */
+    .pagination .page-item .page-link {
+        border-radius: 8px;
+        margin: 0 3px;
+        color: var(--dark-color);
+        border: 1px solid #eaeaea;
+        transition: all var(--transition-speed) ease;
+    }
+    
+    .pagination .page-item .page-link:hover {
+        background-color: #f5f7fa;
+        color: var(--primary-color);
+    }
+    
+    .pagination .page-item.active .page-link {
+        background-color: var(--primary-color);
+        border-color: var(--primary-color);
+    }
+    
+   /* تأثيرات الحركة */
+   .fade-in {
+       animation: fadeIn 0.8s ease-in-out;
+   }
+   
+   @keyframes fadeIn {
+       from { opacity: 0; transform: translateY(20px); }
+       to { opacity: 1; transform: translateY(0); }
+   }
+   
+   /* للشاشات الصغيرة */
+   @media (max-width: 992px) {
+       .sidebar {
+           transform: translateX(100%);
+       }
+       
+       .sidebar.show {
+           transform: translateX(0);
+       }
+   }
+    /* وضع النوتيفيكيشن */
+    .notification {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        padding: 15px 20px;
+        border-radius: 8px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        background-color: white;
+        color: #333;
+        z-index: 9999;
+        opacity: 0;
+        transform: translateY(-20px);
+        transition: all 0.3s ease;
+    }
+    
+    .notification.show {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    
+    .notification.success {
+        background-color: #2ecc71;
+        color: white;
+    }
+    
+    .notification.warning {
+        background-color: #f39c12;
+        color: white;
+    }
+    
+    .notification.error {
+        background-color: #e74c3c;
+        color: white;
+    }
+    
+    .notification.info {
+        background-color: #3498db;
+        color: white;
+    }
+    
+    /* تحسينات إضافية للبحث والفلاتر */
+    .avatar-circle {
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        color: white;
+        font-weight: 500;
+    }
+    
+    .input-group .input-group-text {
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+        border-left: 0;
+    }
+    
+    .form-control {
+        border-top-left-radius: 10px;
+        border-bottom-left-radius: 10px;
+    }
+    
+    .input-group .form-control:focus + .input-group-text {
+        border-color: var(--primary-color);
+    }
+    
+    /* تحسين أزرار الفلاتر */
+    .filter-dropdown .btn, .sort-dropdown .btn, .bulk-actions .btn {
+        padding: 0.375rem 0.75rem;
+        font-size: 0.875rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+    }
+    
+    .filter-dropdown .btn:hover, .sort-dropdown .btn:hover, .bulk-actions .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div id="page-content">
+    <div class="container-fluid">
+        <!-- عنوان الصفحة -->
+        <div class="d-flex justify-content-between align-items-center mb-4 fade-in" style="animation-delay: 0.1s;">
+            <div>
+                <h1 class="mb-1">إدارة العملاء</h1>
+                <p class="text-muted">إدارة وتتبع جميع عملائك في مكان واحد</p>
+            </div>
+            <div>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#customerModal">
+                    <i class="fas fa-plus-circle me-2"></i>
+                    إضافة عميل جديد
+                </button>
+            </div>
+        </div>
+        
+        <!-- أدوات التصفية والبحث -->
+        <div class="card mb-4">
+            <div class="card-body p-4">
+                <div class="row align-items-center">
+                    <div class="col-md-6 mb-3 mb-md-0">
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-light">
+                                <i class="fas fa-search text-muted"></i>
+                            </span>
+                            <input type="text" class="form-control" id="customer-search" placeholder="البحث عن عملاء...">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="d-flex justify-content-md-end">
+                            <div class="filter-dropdown dropdown me-2">
+                                <button class="btn btn-light dropdown-toggle" type="button" id="filterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-filter me-1"></i>
+                                    فلترة
+                                </button>
+                                <div class="dropdown-menu p-3" aria-labelledby="filterDropdown">
+                                    <div class="mb-3">
+                                        <label class="form-label">الحالة</label>
+                                        <div class="d-flex flex-wrap">
+                                            <div class="form-check me-3">
+                                                <input class="form-check-input" type="checkbox" id="filter-active" checked>
+                                                <label class="form-check-label" for="filter-active">نشط</label>
+                                            </div>
+                                            <div class="form-check me-3">
+                                                <input class="form-check-input" type="checkbox" id="filter-pending" checked>
+                                                <label class="form-check-label" for="filter-pending">قيد الانتظار</label>
+                                            </div>
+                                            <div class="form-check me-3">
+                                                <input class="form-check-input" type="checkbox" id="filter-inactive" checked>
+                                                <label class="form-check-label" for="filter-inactive">غير نشط</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">التصنيف</label>
+                                        <select class="form-select">
+                                            <option selected value="">جميع التصنيفات</option>
+                                            <option value="vip">VIP</option>
+                                            <option value="potential">محتمل</option>
+                                            <option value="returning">مكرر</option>
+                                        </select>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <button class="btn btn-sm btn-outline-secondary">إعادة تعيين</button>
+                                        <button class="btn btn-sm btn-primary">تطبيق</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="sort-dropdown dropdown me-2">
+                                <button class="btn btn-light dropdown-toggle" type="button" id="sortDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-sort me-1"></i>
+                                    ترتيب
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="sortDropdown">
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-sort-alpha-down me-2"></i>الاسم (تصاعدي)</a></li>
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-sort-alpha-up me-2"></i>الاسم (تنازلي)</a></li>
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-calendar me-2"></i>تاريخ الإضافة</a></li>
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-star me-2"></i>الحالة</a></li>
+                                </ul>
+                            </div>
+                            <div class="bulk-actions dropdown">
+                                <button class="btn btn-light dropdown-toggle disabled" type="button" id="bulkActions" data-bs-toggle="dropdown" aria-expanded="false">
+                                    إجراءات
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="bulkActions">
+                                    <li><a class="dropdown-item text-success" href="#"><i class="fas fa-check-circle"></i>تفعيل</a></li>
+                                    <li><a class="dropdown-item text-warning" href="#"><i class="fas fa-pause-circle"></i>تعليق</a></li>
+                                    <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-times-circle"></i>إلغاء تفعيل</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-file-export"></i>تصدير</a></li>
+                                    <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-trash-alt"></i>حذف</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <div class="card mb-4">
+        
+        <!-- جدول العملاء -->
+        <div class="card mb-4">
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table customer-table table-hover align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th width="40">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="select-all">
+                                    </div>
+                                </th>
+                                <th>العميل</th>
+                                <th>حالة العميل</th>
+                                <th>الاهتمامات</th>
+                                <th>آخر تواصل</th>
+                                <th>الميزانية</th>
+                                <th>التصنيفات</th>
+                                <th width="80">الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- عميل 1 -->
+                            <tr>
+                                <td>
+                                    <div class="form-check">
+                                        <input class="form-check-input customer-select" type="checkbox">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar-circle bg-primary me-2 d-flex align-items-center justify-content-center">س</div>
+                                        <div>
+                                            <h6 class="mb-0">سارة محمد</h6>
+                                            <small class="text-muted">sara@example.com</small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span class="status-badge status-active">نشط</span></td>
+                                <td>فيلا فاخرة</td>
+                                <td>منذ يومين</td>
+                                <td>750,000 ريال</td>
+                                <td>
+                                    <span class="badge bg-primary me-1">VIP</span>
+                                    <span class="badge bg-info">محتمل</span>
+                                </td>
+                                <td>
+                                    <div class="dropdown">
+                                        <button class="btn btn-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                            <li><a class="dropdown-item" href="#"><i class="fas fa-eye me-2"></i>عرض</a></li>
+                                            <li><a class="dropdown-item" href="#"><i class="fas fa-edit me-2"></i>تعديل</a></li>
+                                            <li><a class="dropdown-item" href="#"><i class="fas fa-envelope me-2"></i>إرسال بريد</a></li>
+                                            <li><a class="dropdown-item" href="#"><i class="fas fa-phone me-2"></i>اتصال</a></li>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-trash-alt me-2"></i>حذف</a></li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                            
+                            <!-- عميل 2 -->
+                            <tr>
+                                <td>
+                                    <div class="form-check">
+                                        <input class="form-check-input customer-select" type="checkbox">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar-circle bg-success me-2 d-flex align-items-center justify-content-center">ن</div>
+                                        <div>
+                                            <h6 class="mb-0">نورة عبدالله</h6>
+                                            <small class="text-muted">noura@example.com</small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span class="status-badge status-pending">قيد الانتظار</span></td>
+                                <td>شقة بإطلالة بحرية</td>
+                                <td>منذ أسبوع</td>
+                                <td>500,000 ريال</td>
+                                <td>
+                                    <span class="badge bg-warning">يحتاج متابعة</span>
+                                </td>
+                                <td>
+                                    <div class="dropdown">
+                                        <button class="btn btn-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                            <li><a class="dropdown-item" href="#"><i class="fas fa-eye me-2"></i>عرض</a></li>
+                                            <li><a class="dropdown-item" href="#"><i class="fas fa-edit me-2"></i>تعديل</a></li>
+                                            <li><a class="dropdown-item" href="#"><i class="fas fa-envelope me-2"></i>إرسال بريد</a></li>
+                                            <li><a class="dropdown-item" href="#"><i class="fas fa-phone me-2"></i>اتصال</a></li>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-trash-alt me-2"></i>حذف</a></li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                            
+                            <!-- عميل 3 -->
+                            <tr>
+                                <td>
+                                    <div class="form-check">
+                                        <input class="form-check-input customer-select" type="checkbox">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar-circle bg-danger me-2 d-flex align-items-center justify-content-center">م</div>
+                                        <div>
+                                            <h6 class="mb-0">محمد علي</h6>
+                                            <small class="text-muted">mohamed@example.com</small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span class="status-badge status-inactive">غير نشط</span></td>
+                                <td>مكتب تجاري</td>
+                                <td>منذ شهر</td>
+                                <td>1,200,000 ريال</td>
+                                <td>
+                                    <span class="badge bg-secondary">متوقف</span>
+                                </td>
+                                <td>
+                                    <div class="dropdown">
+                                        <button class="btn btn-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                            <li><a class="dropdown-item" href="#"><i class="fas fa-eye me-2"></i>عرض</a></li>
+                                            <li><a class="dropdown-item" href="#"><i class="fas fa-edit me-2"></i>تعديل</a></li>
+                                            <li><a class="dropdown-item" href="#"><i class="fas fa-envelope me-2"></i>إرسال بريد</a></li>
+                                            <li><a class="dropdown-item" href="#"><i class="fas fa-phone me-2"></i>اتصال</a></li>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-trash-alt me-2"></i>حذف</a></li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                            
+                            <!-- عميل 4 -->
+                            <tr>
+                                <td>
+                                    <div class="form-check">
+                                        <input class="form-check-input customer-select" type="checkbox">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar-circle bg-warning me-2 d-flex align-items-center justify-content-center">خ</div>
+                                        <div>
+                                            <h6 class="mb-0">خالد العبدالله</h6>
+                                            <small class="text-muted">khaled@example.com</small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span class="status-badge status-active">نشط</span></td>
+                                <td>أرض استثمارية</td>
+                                <td>منذ 3 أيام</td>
+                                <td>3,000,000 ريال</td>
+                                <td>
+                                    <span class="badge bg-info me-1">استثمار</span>
+                                    <span class="badge bg-primary">VIP</span>
+                                </td>
+                                <td>
+                                    <div class="dropdown">
+                                        <button class="btn btn-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                            <li><a class="dropdown-item" href="#"><i class="fas fa-eye me-2"></i>عرض</a></li>
+                                            <li><a class="dropdown-item" href="#"><i class="fas fa-edit me-2"></i>تعديل</a></li>
+                                            <li><a class="dropdown-item" href="#"><i class="fas fa-envelope me-2"></i>إرسال بريد</a></li>
+                                            <li><a class="dropdown-item" href="#"><i class="fas fa-phone me-2"></i>اتصال</a></li>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-trash-alt me-2"></i>حذف</a></li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card-footer bg-white border-top-0 p-3">
+                <div class="row align-items-center">
+                    <div class="col-md-6 mb-3 mb-md-0">
+                        <p class="text-muted mb-0">عرض 1 إلى 4 من 25 عميل</p>
+                    </div>
+                    <div class="col-md-6">
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination justify-content-md-end mb-0">
+                                <li class="page-item disabled">
+                                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </a>
+                                </li>
+                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- حاوية الإشعارات -->
+<div class="modal fade" id="customerModal" tabindex="-1" aria-labelledby="customerModalLabel" aria-hidden="true">
+<!-- نموذج إضافة/تعديل عميل -->
+<div class="modal fade" id="customerModal" tabindex="-1" aria-labelledby="customerModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="customerModalLabel">إضافة عميل جديد</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+            </div>
+            <div class="modal-body">
+                <form id="customer-form">
+                    <input type="hidden" id="customer-id" value="">
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6 mb-3 mb-md-0">
+                            <label for="customer-name" class="form-label">الاسم الكامل <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="customer-name" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="customer-email" class="form-label">البريد الإلكتروني <span class="text-danger">*</span></label>
+                            <input type="email" class="form-control" id="customer-email" required>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6 mb-3 mb-md-0">
+                            <label for="customer-phone" class="form-label">رقم الهاتف <span class="text-danger">*</span></label>
+                            <input type="tel" class="form-control" id="customer-phone" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="customer-status" class="form-label">الحالة</label>
+                            <select class="form-select" id="customer-status">
+                                <option value="active">نشط</option>
+                                <option value="pending">قيد الانتظار</option>
+                                <option value="inactive">غير نشط</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="customer-address" class="form-label">العنوان</label>
+                        <textarea class="form-control" id="customer-address" rows="2"></textarea>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6 mb-3 mb-md-0">
+                            <label for="customer-budget" class="form-label">الميزانية</label>
+                            <div class="input-group">
+                                <span class="input-group-text">ر.س</span>
+                                <input type="number" class="form-control" id="customer-budget">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="customer-source" class="form-label">مصدر العميل</label>
+                            <select class="form-select" id="customer-source">
+                                <option value="">اختر المصدر</option>
+                                <option value="website">الموقع الإلكتروني</option>
+                                <option value="social">وسائل التواصل الاجتماعي</option>
+                                <option value="referral">إحالة</option>
+                                <option value="event">فعالية</option>
+                                <option value="other">مصادر أخرى</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="customer-notes" class="form-label">ملاحظات</label>
+                        <textarea class="form-control" id="customer-notes" rows="3"></textarea>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">التصنيفات</label>
+                        <div class="d-flex flex-wrap gap-2">
+                            <div class="form-check me-3">
+                                <input class="form-check-input" type="checkbox" id="tag-vip">
+                                <label class="form-check-label" for="tag-vip">VIP</label>
+                            </div>
+                            <div class="form-check me-3">
+                                <input class="form-check-input" type="checkbox" id="tag-potential">
+                                <label class="form-check-label" for="tag-potential">محتمل</label>
+                            </div>
+                            <div class="form-check me-3">
+                                <input class="form-check-input" type="checkbox" id="tag-returning">
+                                <label class="form-check-label" for="tag-returning">مكرر</label>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                <button type="button" class="btn btn-primary" id="save-customer">حفظ</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // تحديث الإجراءات المجمعة عند تحديد/إلغاء تحديد المربعات
+        const checkboxes = document.querySelectorAll('.customer-select');
+        const bulkActionsDropdown = document.getElementById('bulkActions');
+        
+        function updateBulkActions() {
+            const selectedCount = document.querySelectorAll('.customer-select:checked').length;
+            if (selectedCount > 0) {
+                bulkActionsDropdown.classList.remove('disabled');
+                bulkActionsDropdown.innerText = `إجراءات (${selectedCount})`;
+            } else {
+                bulkActionsDropdown.classList.add('disabled');
+                bulkActionsDropdown.innerText = 'إجراءات';
+            }
+        }
+        
+        // إضافة مستمعي أحداث لمربعات الاختيار
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', updateBulkActions);
+        });
+        
+        // تحديث حالة زر الإجراءات المجمعة عند التحميل
+        updateBulkActions();
+        
+        // إرسال نموذج إضافة/تعديل العميل
+        const saveCustomerBtn = document.getElementById('save-customer');
+        
+        if (saveCustomerBtn) {
+            saveCustomerBtn.addEventListener('click', function() {
+                // في الإنتاج، هنا ستقوم بإرسال البيانات إلى الخادم
+                // للتبسيط، سنقوم بعرض إشعار نجاح
+                
+                setTimeout(function() {
+                    // إغلاق الحوار
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('customerModal'));
+                    modal.hide();
+                    
+                    // عرض إشعار نجاح
+                    showNotification('تم حفظ بيانات العميل بنجاح', 'success');
+                    
+                    // في الإنتاج، هنا ستقوم بتحديث الجدول
+                }, 500);
+            });
+        }
+        
+        // دالة إظهار الإشعارات
+        function showNotification(message, type = 'info') {
+            const container = document.getElementById('notification-container');
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.innerHTML = `
+                <div class="d-flex align-items-center">
+                    <div class="me-3">
+                        ${type === 'success' ? '<i class="fas fa-check-circle fa-lg"></i>' : ''}
+                        ${type === 'error' ? '<i class="fas fa-times-circle fa-lg"></i>' : ''}
+                        ${type === 'warning' ? '<i class="fas fa-exclamation-triangle fa-lg"></i>' : ''}
+                        ${type === 'info' ? '<i class="fas fa-info-circle fa-lg"></i>' : ''}
+                    </div>
+                    <div>${message}</div>
+                </div>
+            `;
+            
+            container.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 10);
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    container.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+    });
+</script>
+{% endblock %}

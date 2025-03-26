@@ -1,0 +1,89 @@
+<!-- القائمة الجانبية -->
+<aside class="sidebar" id="main-sidebar">
+    <div class="sidebar-header p-3">
+        <div class="logo text-center mb-4">
+            <img src="https://cdn-icons-png.flaticon.com/512/2329/2329865.png" alt="شعار منصة العقارات" class="img-fluid" style="max-height: 60px; filter: brightness(0) invert(1);">
+        </div>
+        <div class="user-info d-flex align-items-center mb-3">
+            <div class="avatar-container me-0">
+                <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="صورة المستخدم" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover; border: 2px solid var(--secondary-color);">
+            </div>
+            <div>
+                <h6 class="mb-0 fw-bold">أهلاً، أحمد!</h6>
+                <small class="text-white-50">مسوق عقاري محترف</small>
+            </div>
+        </div>
+    </div>
+    
+    <nav class="sidebar-nav p-3">
+        <ul class="nav flex-column">
+            <li class="nav-item mb-2">
+                <a href="/marketers/dashboard/overview" class="nav-link {{ 'active' if request.path.startswith('/marketers/dashboard') }}">
+                    <i class="fas fa-home me-2"></i>
+                    <span>لوحة التحكم</span>
+                </a>
+            </li>
+            <li class="nav-item mb-2">
+                <a href="/marketers/crm/customers" class="nav-link {{ 'active' if request.path.startswith('/marketers/crm') }}">
+                    <i class="fas fa-users me-2"></i>
+                    <span>إدارة العملاء</span>
+                </a>
+            </li>
+            <li class="nav-item mb-2">
+                <a href="/marketers/scheduler" class="nav-link {{ 'active' if request.path.startswith('/marketers/scheduler') }}">
+                    <i class="fas fa-calendar-alt me-2"></i>
+                    <span>جدولة المواعيد</span>
+                </a>
+            </li>
+            <li class="nav-item mb-2">
+                <a href="/marketers/ads" class="nav-link {{ 'active' if request.path.startswith('/marketers/ads') }}">
+                    <i class="fas fa-ad me-2"></i>
+                    <span>إدارة الإعلانات</span>
+                </a>
+            </li>
+            <li class="nav-item mb-2">
+                <a href="/marketers/ai-assistant" class="nav-link {{ 'active' if request.path.startswith('/marketers/ai-assistant') }}">
+                    <i class="fas fa-robot me-2"></i>
+                    <span>المساعد الذكي</span>
+                    <span class="badge bg-success rounded-pill ms-auto">جديد</span>
+                </a>
+            </li>
+            <li class="nav-item mb-2">
+                <a href="/marketers/video-gallery" class="nav-link {{ 'active' if request.path.startswith('/marketers/video-gallery') }}">
+                    <i class="fas fa-video me-2"></i>
+                    <span>معرض الفيديوهات</span>
+                </a>
+            </li>
+            <li class="nav-item mb-2">
+                <a href="/marketers/commissions" class="nav-link {{ 'active' if request.path.startswith('/marketers/commissions') }}">
+                    <i class="fas fa-money-bill-alt me-2"></i>
+                    <span>العمولات والمدفوعات</span>
+                </a>
+            </li>
+            <li class="nav-item mb-2">
+                <a href="/marketers/social" class="nav-link {{ 'active' if request.path.startswith('/marketers/social') }}">
+                    <i class="fas fa-share-alt me-2"></i>
+                    <span>التفاعل الاجتماعي</span>
+                </a>
+            </li>
+            <li class="nav-item mb-2">
+                <a href="/marketers/settings" class="nav-link {{ 'active' if request.path.startswith('/marketers/settings') }}">
+                    <i class="fas fa-cog me-2"></i>
+                    <span>الإعدادات</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    
+    <div class="sidebar-footer p-3 mt-auto">
+        <div class="d-flex justify-content-between align-items-center">
+            <a href="#" id="theme-toggle" class="btn btn-sm btn-dark rounded-circle" title="تبديل الوضع الداكن">
+                <i class="fas fa-moon"></i>
+            </a>
+            <span id="connection-status" class="status-badge online"><i class="fas fa-circle me-1 small"></i> متصل</span>
+            <a href="/logout" id="logout-btn" class="btn btn-sm btn-danger rounded-pill" title="تسجيل الخروج">
+                <i class="fas fa-sign-out-alt me-1"></i> خروج
+            </a>
+        </div>
+    </div>
+</aside>

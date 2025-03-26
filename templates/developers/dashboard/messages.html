@@ -1,0 +1,307 @@
+{% extends "developers/dashboard/base_dashboard.html" %}
+
+{% block title %}الرسائل والمحادثات{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-4 mt-4 rtl">
+    <!-- عنوان الصفحة -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h3 mb-0 text-gray-800">الرسائل والمحادثات</h1>
+            <p class="mb-0">إدارة الرسائل والمحادثات مع العملاء والمسوقين</p>
+        </div>
+        <div>
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newMessageModal">
+                <i class="fas fa-envelope me-1"></i> رسالة جديدة
+            </button>
+        </div>
+    </div>
+
+    <!-- محتوى صفحة الرسائل -->
+    <div class="row">
+        <div class="col-md-4">
+            <!-- قائمة المحادثات -->
+            <div class="card shadow mb-4">
+                <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+                    <h6 class="m-0 font-weight-bold text-primary">المحادثات</h6>
+                    <div class="dropdown">
+                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownFilterButton" data-bs-toggle="dropdown" aria-expanded="false">
+                            تصفية
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownFilterButton">
+                            <li><a class="dropdown-item" href="#">جميع الرسائل</a></li>
+                            <li><a class="dropdown-item" href="#">غير المقروءة</a></li>
+                            <li><a class="dropdown-item" href="#">المؤرشفة</a></li>
+                            <li><a class="dropdown-item" href="#">العملاء</a></li>
+                            <li><a class="dropdown-item" href="#">المسوقون</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <div class="list-group list-group-flush conversation-list">
+                        <a href="#" class="list-group-item list-group-item-action p-3 active" data-conversation="1">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <h6 class="mb-0">أحمد محمد</h6>
+                                <small class="text-muted">10:30 ص</small>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <p class="mb-0 text-truncate" style="max-width: 200px;">هل الوحدة السكنية متاحة للمعاينة اليوم؟ أود زيارة الموقع وإلقاء...</p>
+                                <span class="badge rounded-pill bg-primary">3</span>
+                            </div>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action p-3" data-conversation="2">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <h6 class="mb-0">سارة أحمد - مسوقة</h6>
+                                <small class="text-muted">الأمس</small>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <p class="mb-0 text-truncate" style="max-width: 200px;">تم الانتهاء من حملة التسويق لمشروع الواحة وحققنا نتائج ممتازة...</p>
+                                <span class="badge rounded-pill bg-secondary">1</span>
+                            </div>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action p-3" data-conversation="3">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <h6 class="mb-0">خالد عبدالله</h6>
+                                <small class="text-muted">22/03</small>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <p class="mb-0 text-truncate" style="max-width: 200px;">شكراً لكم على المعلومات التي أرسلتموها لي حول المشروع...</p>
+                            </div>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action p-3" data-conversation="4">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <h6 class="mb-0">محمد علي - مسوق</h6>
+                                <small class="text-muted">21/03</small>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <p class="mb-0 text-truncate" style="max-width: 200px;">أرسلت لكم تقرير المبيعات الأسبوعي، أرجو مراجعته وإبداء...</p>
+                            </div>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action p-3" data-conversation="5">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <h6 class="mb-0">فاطمة حسن</h6>
+                                <small class="text-muted">20/03</small>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <p class="mb-0 text-truncate" style="max-width: 200px;">لدي استفسار حول طرق الدفع المتاحة لشراء الفيلا رقم 15...</p>
+                            </div>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action p-3" data-conversation="6">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <h6 class="mb-0">عمر خالد</h6>
+                                <small class="text-muted">19/03</small>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <p class="mb-0 text-truncate" style="max-width: 200px;">أرغب في الحصول على معلومات أكثر حول مشاريعكم القادمة...</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="card-footer bg-light p-2">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="بحث عن محادثة...">
+                        <button class="btn btn-outline-secondary" type="button">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <!-- نافذة المحادثة النشطة -->
+            <div class="card shadow mb-4">
+                <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center">
+                        <div class="position-relative me-2">
+                            <div class="user-avatar">
+                                <span class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; font-size: 18px;">أ</span>
+                            </div>
+                            <span class="position-absolute bottom-0 start-0 p-1 bg-success border border-light rounded-circle"
+                                style="width: 10px; height: 10px;"></span>
+                        </div>
+                        <div>
+                            <h6 class="m-0 font-weight-bold">أحمد محمد</h6>
+                            <small class="text-muted">متصل الآن</small>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="btn-group">
+                            <button class="btn btn-sm btn-outline-secondary">
+                                <i class="fas fa-phone"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-secondary">
+                                <i class="fas fa-video"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i> عرض الملف الشخصي</a></li>
+                                <li><a class="dropdown-item" href="#"><i class="fas fa-bell-slash me-2"></i> كتم الإشعارات</a></li>
+                                <li><a class="dropdown-item" href="#"><i class="fas fa-archive me-2"></i> أرشفة المحادثة</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-trash me-2"></i> حذف المحادثة</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body" style="height: 400px; overflow-y: auto;">
+                    <div class="chat-messages p-3">
+                        <!-- تاريخ المحادثة -->
+                        <div class="text-center mb-3">
+                            <span class="badge bg-light text-dark">الثلاثاء، 23 مارس 2025</span>
+                        </div>
+                        
+                        <!-- رسالة واردة -->
+                        <div class="message-item d-flex mb-3">
+                            <div class="me-2 flex-shrink-0">
+                                <span class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 30px; height: 30px; font-size: 14px;">أ</span>
+                            </div>
+                            <div>
+                                <div class="message-content bg-light rounded p-3">
+                                    <p class="mb-0">مرحباً، أود الاستفسار عن مشروع الواحة الجديد. هل لا زالت الوحدات السكنية متاحة للبيع؟</p>
+                                </div>
+                                <small class="text-muted">09:45 صباحاً</small>
+                            </div>
+                        </div>
+                        
+                        <!-- رسالة صادرة -->
+                        <div class="message-item d-flex flex-row-reverse mb-3">
+                            <div class="ms-2 flex-shrink-0">
+                                <span class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 30px; height: 30px; font-size: 14px;">أنا</span>
+                            </div>
+                            <div class="text-end">
+                                <div class="message-content bg-primary text-white rounded p-3">
+                                    <p class="mb-0">أهلاً بك أحمد! نعم، ما زال لدينا وحدات متاحة في مشروع الواحة. هل تبحث عن نوع محدد من الوحدات؟</p>
+                                </div>
+                                <small class="text-muted">09:50 صباحاً</small>
+                            </div>
+                        </div>
+                        
+                        <!-- رسالة واردة -->
+                        <div class="message-item d-flex mb-3">
+                            <div class="me-2 flex-shrink-0">
+                                <span class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 30px; height: 30px; font-size: 14px;">أ</span>
+                            </div>
+                            <div>
+                                <div class="message-content bg-light rounded p-3">
+                                    <p class="mb-0">أبحث عن شقة بغرفتي نوم، وأفضل أن تكون في الطوابق العليا مع إطلالة جيدة. هل لديكم خيارات متاحة تناسب هذه المواصفات؟</p>
+                                </div>
+                                <small class="text-muted">10:05 صباحاً</small>
+                            </div>
+                        </div>
+                        
+                        <!-- رسالة صادرة -->
+                        <div class="message-item d-flex flex-row-reverse mb-3">
+                            <div class="ms-2 flex-shrink-0">
+                                <span class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 30px; height: 30px; font-size: 14px;">أنا</span>
+                            </div>
+                            <div class="text-end">
+                                <div class="message-content bg-primary text-white rounded p-3">
+                                    <p class="mb-0">نعم، لدينا عدة خيارات تناسب طلبك. لدينا شقق بغرفتي نوم في الطوابق من السابع إلى العاشر مع إطلالات رائعة على الحديقة المركزية والمدينة.</p>
+                                    <p class="mb-0">مساحات الشقق تتراوح بين 120م² و 150م²، وتبدأ الأسعار من 900,000 ريال.</p>
+                                </div>
+                                <small class="text-muted">10:10 صباحاً</small>
+                            </div>
+                        </div>
+                        
+                        <!-- رسالة صادرة مع مرفق -->
+                        <div class="message-item d-flex flex-row-reverse mb-3">
+                            <div class="ms-2 flex-shrink-0">
+                                <span class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 30px; height: 30px; font-size: 14px;">أنا</span>
+                            </div>
+                            <div class="text-end">
+                                <div class="message-content bg-primary text-white rounded p-3">
+                                    <div class="mb-2">
+                                        <p class="mb-0">هذا كتالوج يوضح تفاصيل الوحدات المتاحة حالياً:</p>
+                                    </div>
+                                    <div class="attachment p-2 bg-white text-dark rounded d-flex align-items-center">
+                                        <i class="fas fa-file-pdf text-danger me-2 fa-lg"></i>
+                                        <div>
+                                            <span class="d-block">كتالوج_مشروع_الواحة.pdf</span>
+                                            <small>5.4 MB</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <small class="text-muted">10:12 صباحاً</small>
+                            </div>
+                        </div>
+                        
+                        <!-- رسالة واردة -->
+                        <div class="message-item d-flex mb-3">
+                            <div class="me-2 flex-shrink-0">
+                                <span class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 30px; height: 30px; font-size: 14px;">أ</span>
+                            </div>
+                            <div>
+                                <div class="message-content bg-light rounded p-3">
+                                    <p class="mb-0">شكراً جزيلاً على المعلومات والكتالوج! هل الوحدة السكنية متاحة للمعاينة اليوم؟ أود زيارة الموقع وإلقاء نظرة على الشقق المتاحة إذا كان ذلك ممكناً.</p>
+                                </div>
+                                <small class="text-muted">10:30 صباحاً</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer bg-white p-3">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="اكتب رسالتك هنا...">
+                        <button class="btn btn-outline-secondary" type="button">
+                            <i class="fas fa-paperclip"></i>
+                        </button>
+                        <button class="btn btn-primary" type="button">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- نافذة رسالة جديدة -->
+<div class="modal fade" id="newMessageModal" tabindex="-1" aria-labelledby="newMessageModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="newMessageModalLabel">رسالة جديدة</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="messageRecipient" class="form-label">المستلم</label>
+                        <select class="form-select" id="messageRecipient">
+                            <option value="" selected disabled>اختر مستلماً</option>
+                            <optgroup label="العملاء">
+                                <option value="1">أحمد محمد</option>
+                                <option value="2">خالد عبدالله</option>
+                                <option value="3">فاطمة حسن</option>
+                                <option value="4">عمر خالد</option>
+                            </optgroup>
+                            <optgroup label="المسوقون">
+                                <option value="5">سارة أحمد</option>
+                                <option value="6">محمد علي</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="messageSubject" class="form-label">الموضوع</label>
+                        <input type="text" class="form-control" id="messageSubject" placeholder="أدخل موضوع الرسالة">
+                    </div>
+                    <div class="mb-3">
+                        <label for="messageContent" class="form-label">نص الرسالة</label>
+                        <textarea class="form-control" id="messageContent" rows="5" placeholder="اكتب رسالتك هنا..."></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="messageAttachment" class="form-label">إرفاق ملف</label>
+                        <input type="file" class="form-control" id="messageAttachment">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                <button type="button" class="btn btn-primary">إرسال الرسالة</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
