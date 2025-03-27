@@ -12,6 +12,7 @@
 
 {% block styles %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css"/>
 <style>
     /* الأنماط الرئيسية */
     :root {
@@ -26,15 +27,25 @@
         --card-border-radius: 12px;
         --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         --transition-speed: 0.3s;
+        --folder-bg: rgba(255, 255, 255, 0.7);
+        --folder-border: #e0e0e0;
+        --folder-hover-bg: rgba(33, 150, 243, 0.1);
+        --filter-panel-bg: white;
+        --filter-panel-border: #ddd;
     }
 
     /* الوضع الداكن */
-    .dark-mode {
+    [data-theme="dark"] {
         --primary-color: #4dabf7;
         --secondary-color: #6edb72;
         --dark-color: #f4f4f4;
-        --light-color: #333;
+        --light-color: #1a1a1a;
         --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        --folder-bg: rgba(40, 40, 40, 0.7);
+        --folder-border: #444;
+        --folder-hover-bg: rgba(77, 171, 247, 0.15);
+        --filter-panel-bg: #2c2c2c;
+        --filter-panel-border: #444;
     }
 
     body {
@@ -120,7 +131,7 @@
     }
 
     .folder-tab {
-        background-color: rgba(0, 0, 0, 0.05);
+        background-color: var(--folder-bg);
         color: var(--dark-color);
         border: none;
         border-radius: 20px;
@@ -132,11 +143,16 @@
         align-items: center;
         gap: 8px;
         transition: background-color 0.2s;
+        border: 1px solid var(--folder-border);
     }
 
     .folder-tab.active {
         background-color: var(--primary-color);
         color: white;
+    }
+
+    .folder-tab:hover {
+        background-color: var(--folder-hover-bg);
     }
 
     .folder-tab .count {
@@ -206,13 +222,14 @@
         position: absolute;
         top: 100%;
         right: 0;
-        background-color: white;
+        background-color: var(--filter-panel-bg);
         border-radius: 8px;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         min-width: 200px;
         z-index: 100;
         margin-top: 8px;
         display: none;
+        border: 1px solid var(--filter-panel-border);
     }
 
     .filter-dropdown-menu.show {
@@ -357,8 +374,22 @@
         display: -webkit-box;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
+        line-clamp: 2;
         overflow: hidden;
+        text-overflow: ellipsis;
         height: 50px;
+    }
+
+    .property-description {
+        margin-top: 10px;
+        font-size: 14px;
+        color: #666;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        line-clamp: 3;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     .property-location {
@@ -524,6 +555,216 @@
         padding: 20px;
     }
 
+    /* نظام المجلدات الجديد */
+    .folders-sidebar {
+        background-color: var(--folder-bg);
+        border-radius: 12px;
+        padding: 15px;
+        margin-bottom: 20px;
+        border: 1px solid var(--folder-border);
+    }
+    
+    .folders-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+    
+    .folders-header h3 {
+        margin: 0;
+        font-size: 18px;
+    }
+    
+    .add-folder-btn {
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: transform 0.2s, background-color 0.2s;
+    }
+    
+    .add-folder-btn:hover {
+        background-color: #1976d2;
+        transform: scale(1.1);
+    }
+    
+    .folders-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    
+    .folder-item {
+        display: flex;
+        align-items: center;
+        padding: 10px 12px;
+        margin-bottom: 8px;
+        border-radius: 8px;
+        cursor: pointer;
+        position: relative;
+        transition: background-color 0.2s;
+    }
+    
+    .folder-item:hover {
+        background-color: var(--folder-hover-bg);
+    }
+    
+    .folder-item.active {
+        background-color: var(--primary-color);
+        color: white;
+    }
+    
+    .folder-item i {
+        margin-left: 10px;
+        width: 20px;
+        text-align: center;
+    }
+    
+    .folder-item .count {
+        background-color: rgba(0, 0, 0, 0.1);
+        border-radius: 20px;
+        padding: 2px 8px;
+        font-size: 12px;
+        margin-right: auto;
+    }
+    
+    .folder-item.active .count {
+        background-color: rgba(255, 255, 255, 0.3);
+    }
+    
+    .folder-actions {
+        display: none;
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+    
+    .folder-item:hover .folder-actions {
+        display: flex;
+        gap: 5px;
+    }
+    
+    .folder-actions button {
+        background: none;
+        border: none;
+        color: inherit;
+        cursor: pointer;
+        padding: 5px;
+        border-radius: 4px;
+        transition: background-color 0.2s;
+    }
+    
+    .folder-actions button:hover {
+        background-color: rgba(0, 0, 0, 0.1);
+    }
+    
+    .folder-actions .edit-folder:hover {
+        color: var(--info-color);
+    }
+    
+    .folder-actions .delete-folder:hover {
+        color: var(--danger-color);
+    }
+    
+    /* نافذة إنشاء/تعديل المجلدات */
+    .folder-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .folder-modal.show {
+        display: flex;
+    }
+    
+    .folder-modal-content {
+        background-color: var(--light-color);
+        border-radius: 12px;
+        padding: 20px;
+        width: 400px;
+        max-width: 90%;
+    }
+    
+    #folderForm {
+        margin-top: 20px;
+    }
+    
+    #folderName {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid var(--folder-border);
+        border-radius: 8px;
+        margin-bottom: 15px;
+        background-color: var(--filter-panel-bg);
+        color: var(--dark-color);
+    }
+    
+    .color-picker {
+        margin-bottom: 20px;
+    }
+    
+    .color-picker label {
+        display: block;
+        margin-bottom: 10px;
+    }
+    
+    .colors {
+        display: flex;
+        gap: 10px;
+    }
+    
+    .color-option {
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: transform 0.2s;
+    }
+    
+    .color-option:hover, .color-option.selected {
+        transform: scale(1.2);
+        box-shadow: 0 0 0 2px white, 0 0 0 4px currentColor;
+    }
+    
+    .modal-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 20px;
+    }
+    
+    .modal-actions button {
+        padding: 10px 20px;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+    }
+    
+    #cancelFolder {
+        background-color: #f1f1f1;
+        color: #333;
+    }
+    
+    #saveFolder {
+        background-color: var(--primary-color);
+        color: white;
+    }
+
     /* إدارة المجلدات */
     .folders-management {
         margin-bottom: 20px;
@@ -651,57 +892,112 @@
     }
 
     /* الوضع الداكن */
-    .dark-mode .property-card,
-    .dark-mode .no-properties-message,
-    .dark-mode .modal-container {
+    [data-theme="dark"] .property-card,
+    [data-theme="dark"] .no-properties-message,
+    [data-theme="dark"] .modal-container {
         background-color: #222;
         color: #eee;
     }
 
-    .dark-mode .property-title {
+    [data-theme="dark"] .property-title {
         color: #fff;
     }
 
-    .dark-mode .property-location,
-    .dark-mode .detail {
+    [data-theme="dark"] .property-location,
+    [data-theme="dark"] .detail {
         color: #bbb;
     }
 
-    .dark-mode .property-price {
+    [data-theme="dark"] .property-price {
         color: var(--primary-color);
     }
 
-    .dark-mode .save-date {
+    [data-theme="dark"] .save-date {
         color: #888;
     }
 
-    .dark-mode .filter-dropdown-btn,
-    .dark-mode .search-box input {
+    [data-theme="dark"] .filter-dropdown-btn,
+    [data-theme="dark"] .search-box input {
         background-color: #333;
         border-color: #444;
         color: #eee;
     }
 
-    .dark-mode .filter-dropdown-menu {
+    [data-theme="dark"] .filter-dropdown-menu {
         background-color: #333;
     }
 
-    .dark-mode .filter-option:hover {
+    [data-theme="dark"] .filter-option:hover {
         background-color: rgba(255, 255, 255, 0.05);
     }
 
-    .dark-mode .folder-item:hover {
+    [data-theme="dark"] .folder-item:hover {
         background-color: rgba(255, 255, 255, 0.05);
     }
 
-    .dark-mode .add-folder-form input {
+    [data-theme="dark"] .add-folder-form input {
         background-color: #333;
         border-color: #444;
         color: #eee;
     }
 
-    .dark-mode .modal-header {
+    [data-theme="dark"] .modal-header {
         border-bottom-color: #444;
+    }
+    
+    /* نظام المجلدات الجديد - الوضع الداكن */
+    [data-theme="dark"] .folders-sidebar {
+        background-color: #2c2c2c;
+        border-color: #444;
+    }
+    
+    [data-theme="dark"] .folder-item {
+        background-color: #333;
+        color: #eee;
+    }
+    
+    [data-theme="dark"] .folder-item:hover {
+        background-color: #444;
+    }
+    
+    [data-theme="dark"] .folder-item.active {
+        background-color: var(--primary-color);
+        color: white;
+    }
+    
+    [data-theme="dark"] .folder-actions button {
+        color: #eee;
+    }
+    
+    [data-theme="dark"] .folder-actions button:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+    
+    [data-theme="dark"] .folder-modal-content {
+        background-color: #2c2c2c;
+    }
+    
+    [data-theme="dark"] #folderName {
+        background-color: #333;
+        border-color: #444;
+        color: #eee;
+    }
+    
+    [data-theme="dark"] .color-picker label {
+        color: #eee;
+    }
+    
+    [data-theme="dark"] .modal-actions button {
+        background-color: #333;
+        color: #eee;
+    }
+    
+    [data-theme="dark"] #cancelFolder {
+        background-color: #444;
+    }
+    
+    [data-theme="dark"] #saveFolder {
+        background-color: var(--primary-color);
     }
 </style>
 {% endblock %}
@@ -714,558 +1010,1237 @@
             <p class="sub-title">إدارة العقارات التي قمت بحفظها ضمن مجلدات منظمة</p>
         </div>
         <div class="action-buttons">
-            <button class="action-btn" id="createFolderBtn">
-                <i class="fas fa-folder-plus"></i>
-                إنشاء مجلد جديد
+            <button class="action-btn secondary" id="comparePropertiesBtn">
+                <i class="fas fa-exchange-alt"></i>
+                مقارنة العقارات
             </button>
-            <button class="action-btn secondary" id="editFoldersBtn">
-                <i class="fas fa-edit"></i>
-                تعديل المجلدات
+            <button class="action-btn" id="exportPropertiesBtn">
+                <i class="fas fa-file-export"></i>
+                تصدير القائمة
             </button>
         </div>
     </div>
 
-    <div class="folders-tabs">
-        <button class="folder-tab active" data-folder="all">
-            <i class="fas fa-border-all"></i>
-            جميع العقارات
-            <span class="count">24</span>
-        </button>
-        <button class="folder-tab" data-folder="favorites">
-            <i class="fas fa-star"></i>
-            المفضلة
-            <span class="count">5</span>
-        </button>
-        <button class="folder-tab" data-folder="to-visit">
-            <i class="fas fa-route"></i>
-            للزيارة قريباً
-            <span class="count">7</span>
-        </button>
-        <button class="folder-tab" data-folder="investment">
-            <i class="fas fa-chart-line"></i>
-            فرص استثمارية
-            <span class="count">8</span>
-        </button>
-        <button class="folder-tab" data-folder="family">
-            <i class="fas fa-home"></i>
-            مناسب للعائلة
-            <span class="count">4</span>
-        </button>
-    </div>
-
-    <div class="filter-section">
-        <div class="search-box">
-            <input type="text" placeholder="ابحث في العقارات المحفوظة..." id="searchSaved">
-            <i class="fas fa-search"></i>
-        </div>
-        
-        <div class="filter-dropdown">
-            <button class="filter-dropdown-btn" id="sortDropdownBtn">
-                <i class="fas fa-sort"></i>
-                ترتيب حسب
-                <i class="fas fa-chevron-down"></i>
-            </button>
-            <div class="filter-dropdown-menu" id="sortDropdownMenu">
-                <div class="filter-option active" data-sort="date-desc">
-                    <i class="fas fa-clock"></i>
-                    الأحدث أولاً
-                </div>
-                <div class="filter-option" data-sort="date-asc">
-                    <i class="fas fa-history"></i>
-                    الأقدم أولاً
-                </div>
-                <div class="filter-option" data-sort="price-desc">
-                    <i class="fas fa-sort-amount-down"></i>
-                    السعر: من الأعلى للأقل
-                </div>
-                <div class="filter-option" data-sort="price-asc">
-                    <i class="fas fa-sort-amount-up"></i>
-                    السعر: من الأقل للأعلى
-                </div>
-                <div class="filter-option" data-sort="area-desc">
-                    <i class="fas fa-ruler-combined"></i>
-                    المساحة: من الأكبر للأصغر
-                </div>
-                <div class="filter-option" data-sort="area-asc">
-                    <i class="fas fa-compress-arrows-alt"></i>
-                    المساحة: من الأصغر للأكبر
-                </div>
-            </div>
-        </div>
-        
-        <div class="filter-dropdown">
-            <button class="filter-dropdown-btn" id="filterDropdownBtn">
-                <i class="fas fa-filter"></i>
-                تصفية
-                <i class="fas fa-chevron-down"></i>
-            </button>
-            <div class="filter-dropdown-menu" id="filterDropdownMenu">
-                <div class="filter-option active" data-filter="all">
-                    <i class="fas fa-border-all"></i>
-                    جميع العقارات
-                </div>
-                <div class="filter-option" data-filter="villas">
-                    <i class="fas fa-home"></i>
-                    فلل
-                </div>
-                <div class="filter-option" data-filter="apartments">
-                    <i class="fas fa-building"></i>
-                    شقق
-                </div>
-                <div class="filter-option" data-filter="lands">
-                    <i class="fas fa-layer-group"></i>
-                    أراضي
-                </div>
-                <div class="filter-option" data-filter="commercial">
-                    <i class="fas fa-store"></i>
-                    تجاري
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="saved-properties-grid" id="savedPropertiesGrid">
-        <!-- بطاقة عقار محفوظ -->
-        <div class="property-card">
-            <div class="property-image">
-                <img src="{% static 'images/properties/property1.jpg' %}" alt="فيلا فاخرة">
-                <div class="property-labels">
-                    <span class="label premium">فاخر</span>
-                    <span class="label new">جديد</span>
-                </div>
-                <button class="folder-btn" data-property-id="1">
-                    <i class="fas fa-folder"></i>
-                </button>
-                <div class="save-btn active">
-                    <i class="fas fa-bookmark"></i>
-                </div>
-                <div class="like-btn">
-                    <i class="far fa-heart"></i>
-                </div>
-            </div>
-            <div class="property-info">
-                <h3 class="property-title">فيلا فاخرة في الرياض النخيل</h3>
-                <p class="property-location">
-                    <i class="fas fa-map-marker-alt"></i>
-                    الرياض، حي النخيل
-                </p>
-                <div class="property-details">
-                    <div class="detail">
-                        <i class="fas fa-bed"></i>
-                        <span>5 غرف</span>
-                    </div>
-                    <div class="detail">
-                        <i class="fas fa-bath"></i>
-                        <span>4 حمامات</span>
-                    </div>
-                    <div class="detail">
-                        <i class="fas fa-ruler-combined"></i>
-                        <span>450 م²</span>
-                    </div>
-                </div>
-                <div class="property-footer">
-                    <div class="property-price">3,500,000 ريال</div>
-                    <a href="{% url 'property_details' 1 %}" class="view-details-btn">التفاصيل</a>
-                </div>
-                <div class="save-date">
-                    <i class="far fa-clock"></i>
-                    تم الحفظ منذ 3 أيام
-                </div>
-            </div>
-        </div>
-
-        <!-- بطاقة عقار محفوظ -->
-        <div class="property-card">
-            <div class="property-image">
-                <img src="{% static 'images/properties/property2.jpg' %}" alt="شقة مميزة">
-                <div class="property-labels">
-                    <span class="label sale">خصم</span>
-                </div>
-                <button class="folder-btn" data-property-id="2">
-                    <i class="fas fa-folder"></i>
-                </button>
-                <div class="save-btn active">
-                    <i class="fas fa-bookmark"></i>
-                </div>
-                <div class="like-btn active">
-                    <i class="fas fa-heart"></i>
-                </div>
-            </div>
-            <div class="property-info">
-                <h3 class="property-title">شقة مميزة في برج الشرق</h3>
-                <p class="property-location">
-                    <i class="fas fa-map-marker-alt"></i>
-                    جدة، الشاطئ
-                </p>
-                <div class="property-details">
-                    <div class="detail">
-                        <i class="fas fa-bed"></i>
-                        <span>3 غرف</span>
-                    </div>
-                    <div class="detail">
-                        <i class="fas fa-bath"></i>
-                        <span>2 حمامات</span>
-                    </div>
-                    <div class="detail">
-                        <i class="fas fa-ruler-combined"></i>
-                        <span>180 م²</span>
-                    </div>
-                </div>
-                <div class="property-footer">
-                    <div class="property-price">1,200,000 ريال</div>
-                    <a href="{% url 'property_details' 2 %}" class="view-details-btn">التفاصيل</a>
-                </div>
-                <div class="save-date">
-                    <i class="far fa-clock"></i>
-                    تم الحفظ منذ أسبوع
-                </div>
-            </div>
-        </div>
-
-        <!-- بطاقات إضافية هنا -->
-    </div>
-
-    <!-- رسالة عند عدم وجود عقارات -->
-    <div class="no-properties-message" id="noPropertiesMessage" style="display: none;">
-        <i class="fas fa-folder-open"></i>
-        <h3>لا توجد عقارات محفوظة في هذا المجلد</h3>
-        <p>يمكنك تصفح العقارات وحفظ ما يناسبك للرجوع إليه لاحقاً</p>
-        <a href="{% url 'property_search' %}" class="browse-properties-btn">
-            <i class="fas fa-search"></i>
-            استعراض العقارات
-        </a>
-    </div>
-
-    <!-- حوار إدارة المجلدات -->
-    <div class="modal-overlay" id="foldersModal">
-        <div class="modal-container">
-            <div class="modal-header">
-                <h3>إدارة المجلدات</h3>
-                <button class="close-modal-btn">
-                    <i class="fas fa-times"></i>
+    <div class="layout-container">
+        <!-- قسم المجلدات الجديد -->
+        <div class="folders-sidebar">
+            <div class="folders-header">
+                <h3>المجلدات</h3>
+                <button class="add-folder-btn" id="addFolderBtn">
+                    <i class="fas fa-plus"></i>
                 </button>
             </div>
-            <div class="modal-body">
-                <div class="folders-management">
-                    <div class="folder-item">
-                        <div class="folder-info">
-                            <i class="fas fa-folder"></i>
-                            <span>المفضلة</span>
-                            <span class="count">5</span>
-                        </div>
-                        <div class="folder-actions">
-                            <button class="edit-folder-btn" data-folder-id="favorites">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="delete-folder-btn" data-folder-id="favorites">
-                                <i class="fas fa-trash-alt"></i>
-                            </button>
-                        </div>
+            
+            <ul class="folders-list" id="foldersList">
+                <li class="folder-item active" data-id="all">
+                    <i class="fas fa-folder"></i> جميع العقارات
+                    <span class="count">24</span>
+                </li>
+                <li class="folder-item" data-id="favorites">
+                    <i class="fas fa-heart"></i> المفضلة
+                    <span class="count">8</span>
+                </li>
+                <li class="folder-item" data-id="folder-1">
+                    <i class="fas fa-folder"></i> فلل
+                    <span class="count">12</span>
+                    <div class="folder-actions">
+                        <button class="edit-folder"><i class="fas fa-edit"></i></button>
+                        <button class="delete-folder"><i class="fas fa-trash"></i></button>
                     </div>
-                    
-                    <div class="folder-item">
-                        <div class="folder-info">
-                            <i class="fas fa-folder"></i>
-                            <span>للزيارة قريباً</span>
-                            <span class="count">7</span>
-                        </div>
-                        <div class="folder-actions">
-                            <button class="edit-folder-btn" data-folder-id="to-visit">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="delete-folder-btn" data-folder-id="to-visit">
-                                <i class="fas fa-trash-alt"></i>
-                            </button>
-                        </div>
+                </li>
+                <li class="folder-item" data-id="folder-2">
+                    <i class="fas fa-folder"></i> شقق
+                    <span class="count">8</span>
+                    <div class="folder-actions">
+                        <button class="edit-folder"><i class="fas fa-edit"></i></button>
+                        <button class="delete-folder"><i class="fas fa-trash"></i></button>
                     </div>
-                    
-                    <div class="folder-item">
-                        <div class="folder-info">
-                            <i class="fas fa-folder"></i>
-                            <span>فرص استثمارية</span>
-                            <span class="count">8</span>
-                        </div>
-                        <div class="folder-actions">
-                            <button class="edit-folder-btn" data-folder-id="investment">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="delete-folder-btn" data-folder-id="investment">
-                                <i class="fas fa-trash-alt"></i>
-                            </button>
-                        </div>
+                </li>
+                <li class="folder-item" data-id="folder-3">
+                    <i class="fas fa-folder"></i> أراضي
+                    <span class="count">4</span>
+                    <div class="folder-actions">
+                        <button class="edit-folder"><i class="fas fa-edit"></i></button>
+                        <button class="delete-folder"><i class="fas fa-trash"></i></button>
                     </div>
-                    
-                    <div class="folder-item">
-                        <div class="folder-info">
-                            <i class="fas fa-folder"></i>
-                            <span>مناسب للعائلة</span>
-                            <span class="count">4</span>
-                        </div>
-                        <div class="folder-actions">
-                            <button class="edit-folder-btn" data-folder-id="family">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="delete-folder-btn" data-folder-id="family">
-                                <i class="fas fa-trash-alt"></i>
-                            </button>
+                </li>
+            </ul>
+        </div>
+
+        <!-- محتوى الصفحة الرئيسي -->
+        <div class="main-content">
+            <!-- قسم البحث والفلاتر -->
+            <div class="filter-section">
+                <div class="search-box">
+                    <input type="text" id="searchProperties" placeholder="ابحث في العقارات المحفوظة...">
+                    <i class="fas fa-search"></i>
+                </div>
+                
+                <div class="filter-dropdown">
+                    <button class="filter-dropdown-btn" id="priceDropdownBtn">
+                        <i class="fas fa-tag"></i>
+                        السعر
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="filter-dropdown-menu" id="priceDropdownMenu">
+                        <div class="price-range-filter">
+                            <label>نطاق السعر:</label>
+                            <div class="price-slider">
+                                <input type="range" id="minPriceRange" min="0" max="10000000" step="100000" value="0">
+                                <input type="range" id="maxPriceRange" min="0" max="10000000" step="100000" value="10000000">
+                                <div class="price-values">
+                                    <span id="minPriceValue">0 ريال</span>
+                                    <span id="maxPriceValue">10,000,000 ريال</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
                 
-                <div class="add-folder-form">
-                    <input type="text" id="newFolderName" placeholder="اسم المجلد الجديد...">
-                    <button id="addFolderBtn">
-                        <i class="fas fa-plus"></i>
-                        إضافة
+                <div class="filter-dropdown">
+                    <button class="filter-dropdown-btn" id="locationDropdownBtn">
+                        <i class="fas fa-map-marker-alt"></i>
+                        الموقع
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="filter-dropdown-menu" id="locationDropdownMenu">
+                        <div class="filter-option" data-location="all">
+                            <span>جميع المناطق</span>
+                        </div>
+                        <div class="filter-option" data-location="riyadh">
+                            <span>الرياض</span>
+                        </div>
+                        <div class="filter-option" data-location="jeddah">
+                            <span>جدة</span>
+                        </div>
+                        <div class="filter-option" data-location="dammam">
+                            <span>الدمام</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="filter-dropdown">
+                    <button class="filter-dropdown-btn" id="propertyTypeDropdownBtn">
+                        <i class="fas fa-home"></i>
+                        النوع
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="filter-dropdown-menu" id="propertyTypeDropdownMenu">
+                        <div class="filter-option" data-type="all">
+                            <span>جميع الأنواع</span>
+                        </div>
+                        <div class="filter-option" data-type="apartment">
+                            <span>شقق</span>
+                        </div>
+                        <div class="filter-option" data-type="villa">
+                            <span>فلل</span>
+                        </div>
+                        <div class="filter-option" data-type="land">
+                            <span>أراضي</span>
+                        </div>
+                        <div class="filter-option" data-type="commercial">
+                            <span>تجاري</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="filter-reset-btn" id="resetFiltersBtn">
+                    <i class="fas fa-undo"></i>
+                    إعادة تعيين
+                </button>
+            </div>
+            
+            <!-- شريط المعلومات -->
+            <div class="info-bar">
+                <div class="properties-count">
+                    <span id="propertiesCount">24</span> عقار محفوظ
+                </div>
+                <div class="view-options">
+                    <button class="view-option active" data-view="grid">
+                        <i class="fas fa-th"></i>
+                    </button>
+                    <button class="view-option" data-view="list">
+                        <i class="fas fa-list"></i>
                     </button>
                 </div>
             </div>
+
+            <!-- قائمة العقارات -->
+            <div class="saved-properties-grid" id="savedPropertiesGrid">
+                <!-- بطاقة عقار محفوظ -->
+                <div class="property-card">
+                    <div class="property-image">
+                        <img src="{% static 'images/properties/property1.jpg' %}" alt="فيلا فاخرة">
+                        <div class="property-labels">
+                            <span class="label premium">فاخر</span>
+                            <span class="label new">جديد</span>
+                        </div>
+                        <button class="folder-btn" data-property-id="1">
+                            <i class="fas fa-folder"></i>
+                        </button>
+                        <div class="save-btn active">
+                            <i class="fas fa-bookmark"></i>
+                        </div>
+                        <div class="like-btn">
+                            <i class="far fa-heart"></i>
+                        </div>
+                    </div>
+                    <div class="property-info">
+                        <h3 class="property-title">فيلا فاخرة في الرياض النخيل</h3>
+                        <p class="property-description">فيلا فاخرة في الرياض النخيل، تضم 5 غرف نوم و4 حمامات، ومساحة 450 متر مربع.</p>
+                        <p class="property-location">
+                            <i class="fas fa-map-marker-alt"></i>
+                            الرياض، حي النخيل
+                        </p>
+                        <div class="property-details">
+                            <div class="detail">
+                                <i class="fas fa-bed"></i>
+                                <span>5 غرف</span>
+                            </div>
+                            <div class="detail">
+                                <i class="fas fa-bath"></i>
+                                <span>4 حمامات</span>
+                            </div>
+                            <div class="detail">
+                                <i class="fas fa-ruler-combined"></i>
+                                <span>450 م²</span>
+                            </div>
+                        </div>
+                        <div class="property-footer">
+                            <div class="property-price">3,500,000 ريال</div>
+                            <a href="{% url 'property_details' 1 %}" class="view-details-btn">التفاصيل</a>
+                        </div>
+                        <div class="save-date">
+                            <i class="far fa-clock"></i>
+                            تم الحفظ منذ 3 أيام
+                        </div>
+                    </div>
+                </div>
+
+                <!-- بطاقة عقار محفوظ -->
+                <div class="property-card">
+                    <div class="property-image">
+                        <img src="{% static 'images/properties/property2.jpg' %}" alt="شقة مميزة">
+                        <div class="property-labels">
+                            <span class="label sale">خصم</span>
+                        </div>
+                        <button class="folder-btn" data-property-id="2">
+                            <i class="fas fa-folder"></i>
+                        </button>
+                        <div class="save-btn active">
+                            <i class="fas fa-bookmark"></i>
+                        </div>
+                        <div class="like-btn active">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                    </div>
+                    <div class="property-info">
+                        <h3 class="property-title">شقة مميزة في برج الشرق</h3>
+                        <p class="property-description">شقة مميزة في برج الشرق، تضم 3 غرف نوم و2 حمامات، ومساحة 180 متر مربع.</p>
+                        <p class="property-location">
+                            <i class="fas fa-map-marker-alt"></i>
+                            جدة، الشاطئ
+                        </p>
+                        <div class="property-details">
+                            <div class="detail">
+                                <i class="fas fa-bed"></i>
+                                <span>3 غرف</span>
+                            </div>
+                            <div class="detail">
+                                <i class="fas fa-bath"></i>
+                                <span>2 حمامات</span>
+                            </div>
+                            <div class="detail">
+                                <i class="fas fa-ruler-combined"></i>
+                                <span>180 م²</span>
+                            </div>
+                        </div>
+                        <div class="property-footer">
+                            <div class="property-price">1,200,000 ريال</div>
+                            <a href="{% url 'property_details' 2 %}" class="view-details-btn">التفاصيل</a>
+                        </div>
+                        <div class="save-date">
+                            <i class="far fa-clock"></i>
+                            تم الحفظ منذ أسبوع
+                        </div>
+                    </div>
+                </div>
+
+                <!-- بطاقات إضافية هنا -->
+            </div>
+
+            <!-- رسالة عند عدم وجود عقارات -->
+            <div class="no-properties-message" id="noPropertiesMessage" style="display: none;">
+                <i class="fas fa-folder-open"></i>
+                <h3>لا توجد عقارات محفوظة في هذا المجلد</h3>
+                <p>يمكنك تصفح العقارات وحفظ ما يناسبك للرجوع إليه لاحقاً</p>
+                <a href="{% url 'property_search' %}" class="browse-properties-btn">
+                    <i class="fas fa-search"></i>
+                    استعراض العقارات
+                </a>
+            </div>
+
+            <!-- حوار إدارة المجلدات -->
+            <div class="modal-overlay" id="foldersModal">
+                <div class="modal-container">
+                    <div class="modal-header">
+                        <h3>إدارة المجلدات</h3>
+                        <button class="close-modal-btn">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="folders-management">
+                            <div class="folder-item">
+                                <div class="folder-info">
+                                    <i class="fas fa-folder"></i>
+                                    <span>المفضلة</span>
+                                    <span class="count">5</span>
+                                </div>
+                                <div class="folder-actions">
+                                    <button class="edit-folder-btn" data-folder-id="favorites">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="delete-folder-btn" data-folder-id="favorites">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="folder-item">
+                                <div class="folder-info">
+                                    <i class="fas fa-folder"></i>
+                                    <span>للزيارة قريباً</span>
+                                    <span class="count">7</span>
+                                </div>
+                                <div class="folder-actions">
+                                    <button class="edit-folder-btn" data-folder-id="to-visit">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="delete-folder-btn" data-folder-id="to-visit">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="folder-item">
+                                <div class="folder-info">
+                                    <i class="fas fa-folder"></i>
+                                    <span>فرص استثمارية</span>
+                                    <span class="count">8</span>
+                                </div>
+                                <div class="folder-actions">
+                                    <button class="edit-folder-btn" data-folder-id="investment">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="delete-folder-btn" data-folder-id="investment">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="folder-item">
+                                <div class="folder-info">
+                                    <i class="fas fa-folder"></i>
+                                    <span>مناسب للعائلة</span>
+                                    <span class="count">4</span>
+                                </div>
+                                <div class="folder-actions">
+                                    <button class="edit-folder-btn" data-folder-id="family">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="delete-folder-btn" data-folder-id="family">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="add-folder-form">
+                            <input type="text" id="newFolderName" placeholder="اسم المجلد الجديد...">
+                            <button id="addFolderBtn">
+                                <i class="fas fa-plus"></i>
+                                إضافة
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- نافذة إنشاء/تعديل المجلد -->
+<div class="folder-modal" id="folderModal">
+    <div class="folder-modal-content">
+        <h3 id="folderModalTitle">إنشاء مجلد جديد</h3>
+        <form id="folderForm">
+            <input type="text" id="folderName" placeholder="أدخل اسم المجلد" required>
+            
+            <div class="color-picker">
+                <label>اختر لون المجلد:</label>
+                <div class="colors">
+                    <div class="color-option selected" style="background-color: #2196F3;" data-color="#2196F3"></div>
+                    <div class="color-option" style="background-color: #4CAF50;" data-color="#4CAF50"></div>
+                    <div class="color-option" style="background-color: #FFC107;" data-color="#FFC107"></div>
+                    <div class="color-option" style="background-color: #E91E63;" data-color="#E91E63"></div>
+                    <div class="color-option" style="background-color: #9C27B0;" data-color="#9C27B0"></div>
+                    <div class="color-option" style="background-color: #FF5722;" data-color="#FF5722"></div>
+                </div>
+            </div>
+            
+            <div class="modal-actions">
+                <button type="button" id="cancelFolder">إلغاء</button>
+                <button type="submit" id="saveFolder">حفظ</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- نافذة نقل العقار إلى مجلد -->
+<div class="folder-modal" id="moveToFolderModal">
+    <div class="folder-modal-content">
+        <h3>نقل العقار إلى مجلد</h3>
+        <div class="move-to-folder-list" id="moveToFolderList">
+            <!-- سيتم إنشاء هذه العناصر ديناميكياً -->
+        </div>
+        <div class="modal-actions">
+            <button id="cancelMoveToFolder">إلغاء</button>
         </div>
     </div>
 </div>
 {% endblock %}
 
 {% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // تبديل المجلدات
-    const folderTabs = document.querySelectorAll('.folder-tab');
+    // تهيئة نظام السحب والإفلات للمجلدات
+    initFoldersSortable();
     
-    folderTabs.forEach(tab => {
-        tab.addEventListener('click', () => {
-            folderTabs.forEach(t => t.classList.remove('active'));
-            tab.classList.add('active');
-            
-            // هنا سيتم تحديث العقارات المعروضة حسب المجلد المختار
-            // يمكن أن يكون هذا طلب AJAX أو تصفية للعقارات المعروضة
-            const selectedFolder = tab.getAttribute('data-folder');
-            console.log('تم اختيار المجلد:', selectedFolder);
+    // تهيئة نظام السحب والإفلات للعقارات
+    initPropertiesSortable();
+    
+    // تهيئة أحداث المجلدات
+    initFoldersEvents();
+    
+    // تهيئة نظام البحث والفلترة
+    initSearchAndFilters();
+    
+    // تهيئة نظام الوضع الداكن
+    initDarkModeToggle();
+    
+    // تهيئة نوافذ إدارة المجلدات
+    initFolderModals();
+    
+    // تهيئة عارض الصور
+    initPropertyImageSwipers();
+});
+
+// تهيئة نظام السحب والإفلات للمجلدات
+function initFoldersSortable() {
+    const foldersList = document.getElementById('foldersList');
+    if (foldersList) {
+        new Sortable(foldersList, {
+            animation: 150,
+            ghostClass: 'folder-item-ghost',
+            chosenClass: 'folder-item-chosen',
+            dragClass: 'folder-item-drag',
+            onEnd: function(evt) {
+                // حفظ الترتيب الجديد للمجلدات
+                const folderIds = Array.from(foldersList.querySelectorAll('.folder-item'))
+                    .map(folder => folder.getAttribute('data-id'));
+                console.log('ترتيب المجلدات الجديد:', folderIds);
+                // يمكن إرسال الترتيب الجديد إلى الخادم هنا
+                saveFoldersOrder(folderIds);
+            }
         });
-    });
-    
-    // تفعيل قوائم الترتيب والتصفية
-    const sortDropdownBtn = document.getElementById('sortDropdownBtn');
-    const sortDropdownMenu = document.getElementById('sortDropdownMenu');
-    const filterDropdownBtn = document.getElementById('filterDropdownBtn');
-    const filterDropdownMenu = document.getElementById('filterDropdownMenu');
-    
-    // تفعيل/إيقاف قائمة الترتيب
-    sortDropdownBtn.addEventListener('click', () => {
-        sortDropdownMenu.classList.toggle('show');
-        // إغلاق قائمة التصفية إذا كانت مفتوحة
-        filterDropdownMenu.classList.remove('show');
-    });
-    
-    // تفعيل/إيقاف قائمة التصفية
-    filterDropdownBtn.addEventListener('click', () => {
-        filterDropdownMenu.classList.toggle('show');
-        // إغلاق قائمة الترتيب إذا كانت مفتوحة
-        sortDropdownMenu.classList.remove('show');
-    });
-    
-    // اختيار خيار من قائمة الترتيب
-    const sortOptions = document.querySelectorAll('#sortDropdownMenu .filter-option');
-    
-    sortOptions.forEach(option => {
-        option.addEventListener('click', () => {
-            sortOptions.forEach(o => o.classList.remove('active'));
-            option.classList.add('active');
-            sortDropdownMenu.classList.remove('show');
-            
-            // تحديث نص زر الترتيب
-            const optionText = option.textContent.trim();
-            sortDropdownBtn.innerHTML = `<i class="fas fa-sort"></i> ${optionText} <i class="fas fa-chevron-down"></i>`;
-            
-            // هنا سيتم ترتيب العقارات المعروضة حسب الخيار المختار
-            const sortValue = option.getAttribute('data-sort');
-            console.log('تم اختيار الترتيب:', sortValue);
+    }
+}
+
+// تهيئة نظام السحب والإفلات للعقارات
+function initPropertiesSortable() {
+    const propertiesGrid = document.getElementById('savedPropertiesGrid');
+    if (propertiesGrid) {
+        new Sortable(propertiesGrid, {
+            animation: 150,
+            ghostClass: 'property-card-ghost',
+            chosenClass: 'property-card-chosen',
+            dragClass: 'property-card-drag',
+            onEnd: function(evt) {
+                // حفظ الترتيب الجديد للعقارات
+                const propertyIds = Array.from(propertiesGrid.querySelectorAll('.property-card'))
+                    .map(card => card.getAttribute('data-id'));
+                console.log('ترتيب العقارات الجديد:', propertyIds);
+                // يمكن إرسال الترتيب الجديد إلى الخادم هنا
+                savePropertiesOrder(propertyIds);
+            }
         });
-    });
-    
-    // اختيار خيار من قائمة التصفية
-    const filterOptions = document.querySelectorAll('#filterDropdownMenu .filter-option');
-    
-    filterOptions.forEach(option => {
-        option.addEventListener('click', () => {
-            filterOptions.forEach(o => o.classList.remove('active'));
-            option.classList.add('active');
-            filterDropdownMenu.classList.remove('show');
+    }
+}
+
+// تهيئة أحداث المجلدات
+function initFoldersEvents() {
+    const folders = document.querySelectorAll('.folder-item');
+    folders.forEach(folder => {
+        folder.addEventListener('click', function() {
+            // إزالة الكلاس active من جميع المجلدات
+            folders.forEach(f => f.classList.remove('active'));
+            // إضافة الكلاس active للمجلد المختار
+            this.classList.add('active');
             
-            // تحديث نص زر التصفية
-            const optionText = option.textContent.trim();
-            filterDropdownBtn.innerHTML = `<i class="fas fa-filter"></i> ${optionText} <i class="fas fa-chevron-down"></i>`;
+            const folderId = this.getAttribute('data-id');
+            console.log('تم اختيار المجلد:', folderId);
             
-            // هنا سيتم تصفية العقارات المعروضة حسب الخيار المختار
-            const filterValue = option.getAttribute('data-filter');
-            console.log('تم اختيار التصفية:', filterValue);
+            // تحديث عرض العقارات بناءً على المجلد المختار
+            filterPropertiesByFolder(folderId);
         });
-    });
-    
-    // إغلاق القوائم المنسدلة عند النقر في أي مكان آخر
-    document.addEventListener('click', (e) => {
-        if (!sortDropdownBtn.contains(e.target) && !sortDropdownMenu.contains(e.target)) {
-            sortDropdownMenu.classList.remove('show');
+        
+        // أحداث أزرار التعديل والحذف
+        const editBtn = folder.querySelector('.edit-folder');
+        const deleteBtn = folder.querySelector('.delete-folder');
+        
+        if (editBtn) {
+            editBtn.addEventListener('click', function(e) {
+                e.stopPropagation(); // منع انتشار الحدث إلى العنصر الأب
+                const folderId = folder.getAttribute('data-id');
+                const folderName = folder.textContent.trim().split(' ')[1]; // الحصول على اسم المجلد بدون عدد العقارات
+                
+                // فتح نافذة تعديل المجلد
+                openFolderModal('تعديل المجلد', folderName, folderId);
+            });
         }
         
-        if (!filterDropdownBtn.contains(e.target) && !filterDropdownMenu.contains(e.target)) {
-            filterDropdownMenu.classList.remove('show');
+        if (deleteBtn) {
+            deleteBtn.addEventListener('click', function(e) {
+                e.stopPropagation(); // منع انتشار الحدث إلى العنصر الأب
+                const folderId = folder.getAttribute('data-id');
+                
+                // تأكيد الحذف
+                if (confirm('هل أنت متأكد من حذف هذا المجلد؟')) {
+                    console.log('حذف المجلد:', folderId);
+                    // هنا يمكن إرسال طلب حذف المجلد إلى الخادم
+                    folder.remove();
+                }
+            });
         }
     });
     
-    // نموذج البحث
-    const searchInput = document.getElementById('searchSaved');
-    
-    searchInput.addEventListener('input', () => {
-        const searchTerm = searchInput.value.trim().toLowerCase();
-        console.log('البحث عن:', searchTerm);
-        // هنا سيتم تنفيذ البحث في العقارات المعروضة
+    // إدارة أزرار المجلدات في بطاقات العقارات
+    const folderButtons = document.querySelectorAll('.folder-btn');
+    folderButtons.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const propertyId = this.getAttribute('data-property-id');
+            openMoveToFolderModal(propertyId);
+        });
     });
     
-    // إنشاء مجلد جديد
-    const createFolderBtn = document.getElementById('createFolderBtn');
-    
-    createFolderBtn.addEventListener('click', () => {
-        // يمكن هنا إظهار نافذة منبثقة لإنشاء مجلد جديد
-        const folderName = prompt('أدخل اسم المجلد الجديد:');
-        
-        if (folderName && folderName.trim() !== '') {
-            // إنشاء مجلد جديد
-            console.log('تم إنشاء مجلد جديد:', folderName.trim());
-        }
-    });
-    
-    // تعديل المجلدات
-    const editFoldersBtn = document.getElementById('editFoldersBtn');
-    
-    editFoldersBtn.addEventListener('click', () => {
-        // يمكن هنا إظهار نافذة منبثقة لتعديل المجلدات
-        console.log('تعديل المجلدات');
-    });
-    
-    // إنشاء مجلد جديد
-    const foldersModal = document.getElementById('foldersModal');
-    const closeModalBtn = document.querySelector('.close-modal-btn');
-    
-    createFolderBtn.addEventListener('click', () => {
-        foldersModal.style.display = 'flex';
-    });
-    
-    // تعديل المجلدات
-    editFoldersBtn.addEventListener('click', () => {
-        foldersModal.style.display = 'flex';
-    });
-    
-    // إغلاق النافذة المنبثقة
-    closeModalBtn.addEventListener('click', () => {
-        foldersModal.style.display = 'none';
-    });
-    
-    // إغلاق النافذة المنبثقة عند النقر خارجها
-    foldersModal.addEventListener('click', (e) => {
-        if (e.target === foldersModal) {
-            foldersModal.style.display = 'none';
-        }
-    });
-    
-    // إضافة مجلد جديد
+    // زر إضافة مجلد جديد
     const addFolderBtn = document.getElementById('addFolderBtn');
-    const newFolderName = document.getElementById('newFolderName');
-    
-    addFolderBtn.addEventListener('click', () => {
-        const folderName = newFolderName.value.trim();
-        
-        if (folderName !== '') {
-            // إضافة المجلد الجديد (يمكن استبدال هذا بطلب AJAX)
-            console.log('تم إضافة المجلد:', folderName);
-            
-            // إعادة تعيين حقل الإدخال
-            newFolderName.value = '';
-        }
-    });
-    
-    // أزرار حذف وتعديل المجلدات
-    const editFolderBtns = document.querySelectorAll('.edit-folder-btn');
-    const deleteFolderBtns = document.querySelectorAll('.delete-folder-btn');
-    
-    editFolderBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            const folderId = btn.getAttribute('data-folder-id');
-            const folderName = btn.closest('.folder-item').querySelector('.folder-info span').textContent.trim();
-            
-            // يمكن هنا فتح نافذة منبثقة لتعديل اسم المجلد
-            const newName = prompt('تعديل اسم المجلد:', folderName);
-            
-            if (newName && newName.trim() !== '') {
-                console.log('تم تعديل المجلد:', folderId, 'إلى:', newName.trim());
-            }
+    if (addFolderBtn) {
+        addFolderBtn.addEventListener('click', function() {
+            openFolderModal('إنشاء مجلد جديد', '', '');
         });
-    });
-    
-    deleteFolderBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            const folderId = btn.getAttribute('data-folder-id');
-            const folderName = btn.closest('.folder-item').querySelector('.folder-info span').textContent.trim();
-            
-            // طلب تأكيد الحذف
-            if (confirm(`هل أنت متأكد من رغبتك في حذف المجلد "${folderName}"؟`)) {
-                console.log('تم حذف المجلد:', folderId);
-            }
+    }
+}
+
+// تهيئة نظام البحث والفلترة
+function initSearchAndFilters() {
+    // البحث في العقارات
+    const searchInput = document.getElementById('searchProperties');
+    if (searchInput) {
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.trim().toLowerCase();
+            searchProperties(searchTerm);
         });
-    });
-    
-    // أزرار التفاعل مع العقارات
-    const folderBtns = document.querySelectorAll('.folder-btn');
-    const saveBtns = document.querySelectorAll('.save-btn');
-    const likeBtns = document.querySelectorAll('.like-btn');
-    
-    folderBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            const propertyId = btn.getAttribute('data-property-id');
-            
-            // هنا يمكن فتح قائمة منسدلة لاختيار المجلد
-            console.log('تغيير مجلد العقار:', propertyId);
-        });
-    });
-    
-    saveBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            btn.classList.toggle('active');
-            const isActive = btn.classList.contains('active');
-            
-            // تغيير الأيقونة
-            btn.innerHTML = isActive ? '<i class="fas fa-bookmark"></i>' : '<i class="far fa-bookmark"></i>';
-            
-            console.log('تغيير حالة الحفظ');
-        });
-    });
-    
-    likeBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            btn.classList.toggle('active');
-            const isActive = btn.classList.contains('active');
-            
-            // تغيير الأيقونة
-            btn.innerHTML = isActive ? '<i class="fas fa-heart"></i>' : '<i class="far fa-heart"></i>';
-            
-            console.log('تغيير حالة الإعجاب');
-        });
-    });
-    
-    // محاكاة تحميل البيانات
-    function simulateDataLoading() {
-        // هنا يمكن طلب البيانات من الخادم
-        setTimeout(() => {
-            // عند عدم وجود عقارات، يمكن إظهار رسالة "لا توجد عقارات"
-            // const noProperties = true;
-            const noProperties = false;
-            
-            document.getElementById('savedPropertiesGrid').style.display = noProperties ? 'none' : 'grid';
-            document.getElementById('noPropertiesMessage').style.display = noProperties ? 'block' : 'none';
-        }, 500);
     }
     
-    // تشغيل محاكاة تحميل البيانات عند تحميل الصفحة
-    simulateDataLoading();
-});
+    // أزرار فلترة السعر
+    const priceDropdownBtn = document.getElementById('priceDropdownBtn');
+    const priceDropdownMenu = document.getElementById('priceDropdownMenu');
+    if (priceDropdownBtn && priceDropdownMenu) {
+        priceDropdownBtn.addEventListener('click', function() {
+            priceDropdownMenu.classList.toggle('show');
+            
+            // إغلاق القوائم المنسدلة الأخرى
+            closeOtherDropdowns('priceDropdownMenu');
+        });
+    }
+    
+    // نطاق السعر
+    const minPriceRange = document.getElementById('minPriceRange');
+    const maxPriceRange = document.getElementById('maxPriceRange');
+    const minPriceValue = document.getElementById('minPriceValue');
+    const maxPriceValue = document.getElementById('maxPriceValue');
+    
+    if (minPriceRange && maxPriceRange && minPriceValue && maxPriceValue) {
+        minPriceRange.addEventListener('input', function() {
+            const minValue = parseInt(this.value);
+            const maxValue = parseInt(maxPriceRange.value);
+            
+            // التأكد من أن الحد الأدنى لا يتجاوز الحد الأقصى
+            if (minValue > maxValue) {
+                this.value = maxValue;
+            }
+            
+            // تحديث النص
+            minPriceValue.textContent = formatCurrency(this.value) + ' ريال';
+            
+            // تحديث الفلتر
+            filterPropertiesByPrice(parseInt(this.value), parseInt(maxPriceRange.value));
+        });
+        
+        maxPriceRange.addEventListener('input', function() {
+            const minValue = parseInt(minPriceRange.value);
+            const maxValue = parseInt(this.value);
+            
+            // التأكد من أن الحد الأقصى لا يقل عن الحد الأدنى
+            if (maxValue < minValue) {
+                this.value = minValue;
+            }
+            
+            // تحديث النص
+            maxPriceValue.textContent = formatCurrency(this.value) + ' ريال';
+            
+            // تحديث الفلتر
+            filterPropertiesByPrice(parseInt(minPriceRange.value), parseInt(this.value));
+        });
+    }
+    
+    // أزرار فلترة الموقع
+    const locationDropdownBtn = document.getElementById('locationDropdownBtn');
+    const locationDropdownMenu = document.getElementById('locationDropdownMenu');
+    const locationOptions = document.querySelectorAll('#locationDropdownMenu .filter-option');
+    
+    if (locationDropdownBtn && locationDropdownMenu) {
+        locationDropdownBtn.addEventListener('click', function() {
+            locationDropdownMenu.classList.toggle('show');
+            
+            // إغلاق القوائم المنسدلة الأخرى
+            closeOtherDropdowns('locationDropdownMenu');
+        });
+        
+        // اختيار الموقع
+        locationOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                const location = this.getAttribute('data-location');
+                
+                // تعديل نص الزر
+                const locationText = this.querySelector('span').textContent;
+                locationDropdownBtn.innerHTML = `<i class="fas fa-map-marker-alt"></i> ${locationText} <i class="fas fa-chevron-down"></i>`;
+                
+                // إغلاق القائمة
+                locationDropdownMenu.classList.remove('show');
+                
+                // تحديث الفلتر
+                filterPropertiesByLocation(location);
+            });
+        });
+    }
+    
+    // أزرار فلترة نوع العقار
+    const propertyTypeDropdownBtn = document.getElementById('propertyTypeDropdownBtn');
+    const propertyTypeDropdownMenu = document.getElementById('propertyTypeDropdownMenu');
+    const propertyTypeOptions = document.querySelectorAll('#propertyTypeDropdownMenu .filter-option');
+    
+    if (propertyTypeDropdownBtn && propertyTypeDropdownMenu) {
+        propertyTypeDropdownBtn.addEventListener('click', function() {
+            propertyTypeDropdownMenu.classList.toggle('show');
+            
+            // إغلاق القوائم المنسدلة الأخرى
+            closeOtherDropdowns('propertyTypeDropdownMenu');
+        });
+        
+        // اختيار نوع العقار
+        propertyTypeOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                const propertyType = this.getAttribute('data-type');
+                
+                // تعديل نص الزر
+                const typeText = this.querySelector('span').textContent;
+                propertyTypeDropdownBtn.innerHTML = `<i class="fas fa-home"></i> ${typeText} <i class="fas fa-chevron-down"></i>`;
+                
+                // إغلاق القائمة
+                propertyTypeDropdownMenu.classList.remove('show');
+                
+                // تحديث الفلتر
+                filterPropertiesByType(propertyType);
+            });
+        });
+    }
+    
+    // زر إعادة تعيين الفلاتر
+    const resetFiltersBtn = document.getElementById('resetFiltersBtn');
+    if (resetFiltersBtn) {
+        resetFiltersBtn.addEventListener('click', function() {
+            resetAllFilters();
+        });
+    }
+    
+    // إغلاق القوائم المنسدلة عند النقر خارجها
+    document.addEventListener('click', function(e) {
+        const dropdowns = document.querySelectorAll('.filter-dropdown-menu');
+        dropdowns.forEach(dropdown => {
+            const button = dropdown.closest('.filter-dropdown').querySelector('.filter-dropdown-btn');
+            if (!dropdown.contains(e.target) && !button.contains(e.target)) {
+                dropdown.classList.remove('show');
+            }
+        });
+    });
+    
+    // أزرار تغيير طريقة العرض
+    const viewOptions = document.querySelectorAll('.view-option');
+    viewOptions.forEach(option => {
+        option.addEventListener('click', function() {
+            const viewType = this.getAttribute('data-view');
+            
+            // إزالة الكلاس active من جميع الأزرار
+            viewOptions.forEach(btn => btn.classList.remove('active'));
+            
+            // إضافة الكلاس active للزر المختار
+            this.classList.add('active');
+            
+            // تغيير طريقة العرض
+            changeViewType(viewType);
+        });
+    });
+}
+
+// تهيئة نظام الوضع الداكن
+function initDarkModeToggle() {
+    // تحقق من تفضيلات المستخدم المحفوظة
+    const darkModeEnabled = localStorage.getItem('darkMode') === 'true';
+    
+    // تطبيق الوضع المحفوظ
+    if (darkModeEnabled) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+    } else {
+        document.documentElement.setAttribute('data-theme', 'light');
+    }
+    
+    // إضافة زر تبديل الوضع الداكن إذا لم يكن موجوداً
+    const headerSection = document.querySelector('.header-section');
+    if (!document.getElementById('darkModeToggle') && headerSection) {
+        const darkModeBtn = document.createElement('button');
+        darkModeBtn.id = 'darkModeToggle';
+        darkModeBtn.className = 'dark-mode-toggle';
+        darkModeBtn.innerHTML = darkModeEnabled ? 
+            '<i class="fas fa-sun"></i>' : 
+            '<i class="fas fa-moon"></i>';
+        
+        headerSection.appendChild(darkModeBtn);
+        
+        // إضافة حدث النقر
+        darkModeBtn.addEventListener('click', function() {
+            toggleDarkMode();
+        });
+    }
+}
+
+// تبديل الوضع الداكن
+function toggleDarkMode() {
+    const isDarkMode = document.documentElement.getAttribute('data-theme') === 'dark';
+    
+    if (isDarkMode) {
+        document.documentElement.setAttribute('data-theme', 'light');
+        localStorage.setItem('darkMode', 'false');
+        document.getElementById('darkModeToggle').innerHTML = '<i class="fas fa-moon"></i>';
+    } else {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        localStorage.setItem('darkMode', 'true');
+        document.getElementById('darkModeToggle').innerHTML = '<i class="fas fa-sun"></i>';
+    }
+}
+
+// تهيئة نوافذ إدارة المجلدات
+function initFolderModals() {
+    // نافذة إنشاء/تعديل المجلد
+    const folderModal = document.getElementById('folderModal');
+    const folderForm = document.getElementById('folderForm');
+    const folderModalTitle = document.getElementById('folderModalTitle');
+    const folderNameInput = document.getElementById('folderName');
+    const colorOptions = document.querySelectorAll('.color-option');
+    const saveFolder = document.getElementById('saveFolder');
+    const cancelFolder = document.getElementById('cancelFolder');
+    
+    // متغيرات عامة للمجلد الحالي
+    let currentFolderId = '';
+    let selectedColor = '#2196F3';
+    
+    // تحديد اللون المختار
+    colorOptions.forEach(option => {
+        option.addEventListener('click', function() {
+            colorOptions.forEach(opt => opt.classList.remove('selected'));
+            this.classList.add('selected');
+            selectedColor = this.getAttribute('data-color');
+        });
+    });
+    
+    // زر حفظ المجلد
+    if (folderForm) {
+        folderForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const folderName = folderNameInput.value.trim();
+            if (folderName === '') return;
+            
+            if (currentFolderId) {
+                // تعديل مجلد موجود
+                updateFolder(currentFolderId, folderName, selectedColor);
+            } else {
+                // إنشاء مجلد جديد
+                createFolder(folderName, selectedColor);
+            }
+            
+            // إغلاق النافذة
+            folderModal.classList.remove('show');
+            
+            // إعادة تعيين النموذج
+            folderForm.reset();
+            currentFolderId = '';
+        });
+    }
+    
+    // زر إلغاء
+    if (cancelFolder) {
+        cancelFolder.addEventListener('click', function() {
+            folderModal.classList.remove('show');
+            folderForm.reset();
+            currentFolderId = '';
+        });
+    }
+    
+    // نافذة نقل العقار إلى مجلد
+    const moveToFolderModal = document.getElementById('moveToFolderModal');
+    const moveToFolderList = document.getElementById('moveToFolderList');
+    const cancelMoveToFolder = document.getElementById('cancelMoveToFolder');
+    
+    let currentPropertyId = '';
+    
+    // إغلاق نافذة نقل العقار
+    if (cancelMoveToFolder) {
+        cancelMoveToFolder.addEventListener('click', function() {
+            moveToFolderModal.classList.remove('show');
+            currentPropertyId = '';
+        });
+    }
+}
+
+// فتح نافذة إنشاء/تعديل المجلد
+function openFolderModal(title, folderName = '', folderId = '') {
+    const folderModal = document.getElementById('folderModal');
+    const folderModalTitle = document.getElementById('folderModalTitle');
+    const folderNameInput = document.getElementById('folderName');
+    
+    if (folderModal && folderModalTitle && folderNameInput) {
+        folderModalTitle.textContent = title;
+        folderNameInput.value = folderName;
+        
+        // حفظ معرف المجلد إذا كان موجوداً
+        window.currentFolderId = folderId;
+        
+        // إذا كان تعديلاً، يمكن تحديد اللون الحالي
+        if (folderId) {
+            const folder = document.querySelector(`.folder-item[data-id="${folderId}"]`);
+            if (folder) {
+                const folderColor = window.getComputedStyle(folder).getPropertyValue('--folder-color') || '#2196F3';
+                selectFolderColor(folderColor);
+            }
+        }
+        
+        // إظهار النافذة
+        folderModal.classList.add('show');
+        folderNameInput.focus();
+    }
+}
+
+// فتح نافذة نقل العقار إلى مجلد
+function openMoveToFolderModal(propertyId) {
+    const moveToFolderModal = document.getElementById('moveToFolderModal');
+    const moveToFolderList = document.getElementById('moveToFolderList');
+    
+    if (moveToFolderModal && moveToFolderList) {
+        // حفظ معرف العقار
+        window.currentPropertyId = propertyId;
+        
+        // إنشاء قائمة المجلدات
+        moveToFolderList.innerHTML = '';
+        
+        // الحصول على جميع المجلدات ماعدا "جميع العقارات"
+        const folders = document.querySelectorAll('.folder-item:not([data-id="all"])');
+        
+        folders.forEach(folder => {
+            const folderName = folder.textContent.trim().split(' ')[1]; // الحصول على اسم المجلد بدون عدد العقارات
+            const folderId = folder.getAttribute('data-id');
+            
+            const folderOption = document.createElement('div');
+            folderOption.className = 'move-folder-option';
+            folderOption.innerHTML = `
+                <i class="fas fa-folder"></i>
+                <span>${folderName}</span>
+            `;
+            
+            folderOption.addEventListener('click', function() {
+                movePropertyToFolder(propertyId, folderId);
+                moveToFolderModal.classList.remove('show');
+            });
+            
+            moveToFolderList.appendChild(folderOption);
+        });
+        
+        // إضافة خيار "إنشاء مجلد جديد"
+        const newFolderOption = document.createElement('div');
+        newFolderOption.className = 'move-folder-option new-folder';
+        newFolderOption.innerHTML = `
+            <i class="fas fa-folder-plus"></i>
+            <span>إنشاء مجلد جديد</span>
+        `;
+        
+        newFolderOption.addEventListener('click', function() {
+            moveToFolderModal.classList.remove('show');
+            openFolderModal('إنشاء مجلد جديد', '', '');
+        });
+        
+        moveToFolderList.appendChild(newFolderOption);
+        
+        // إظهار النافذة
+        moveToFolderModal.classList.add('show');
+    }
+}
+
+// تهيئة عارض صور العقارات
+function initPropertyImageSwipers() {
+    // يمكن استخدام مكتبة Swiper لإنشاء معرض صور متحرك لكل عقار
+    // هذه وظيفة مزيفة، يمكن تنفيذها باستخدام مكتبة Swiper
+}
+
+// وظائف المساعدة للبحث والفلترة
+
+// البحث في العقارات
+function searchProperties(searchTerm) {
+    const properties = document.querySelectorAll('.property-card');
+    let count = 0;
+    
+    properties.forEach(property => {
+        const title = property.querySelector('.property-title').textContent.toLowerCase();
+        const description = property.querySelector('.property-description').textContent.toLowerCase();
+        const location = property.querySelector('.property-location').textContent.toLowerCase();
+        
+        if (title.includes(searchTerm) || description.includes(searchTerm) || location.includes(searchTerm)) {
+            property.style.display = '';
+            count++;
+        } else {
+            property.style.display = 'none';
+        }
+    });
+    
+    // تحديث العداد
+    updatePropertiesCount(count);
+    
+    // إظهار/إخفاء رسالة عدم وجود عقارات
+    toggleNoPropertiesMessage(count === 0);
+}
+
+// فلترة العقارات حسب المجلد
+function filterPropertiesByFolder(folderId) {
+    const properties = document.querySelectorAll('.property-card');
+    let count = 0;
+    
+    // هذه وظيفة مزيفة، في الواقع يجب أن تتحقق من المجلد الذي ينتمي إليه كل عقار
+    if (folderId === 'all') {
+        // إظهار جميع العقارات
+        properties.forEach(property => {
+            property.style.display = '';
+            count++;
+        });
+    } else {
+        // فلترة حسب المجلد
+        properties.forEach(property => {
+            // هنا يمكن التحقق من خاصية تحدد المجلد، لكن في هذا المثال سنستخدم طريقة مزيفة
+            const shouldShow = folderId === 'favorites' ? 
+                property.querySelector('.like-btn.active') !== null : 
+                Math.random() > 0.5;
+            
+            if (shouldShow) {
+                property.style.display = '';
+                count++;
+            } else {
+                property.style.display = 'none';
+            }
+        });
+    }
+    
+    // تحديث العداد
+    updatePropertiesCount(count);
+    
+    // إظهار/إخفاء رسالة عدم وجود عقارات
+    toggleNoPropertiesMessage(count === 0);
+}
+
+// فلترة العقارات حسب السعر
+function filterPropertiesByPrice(minPrice, maxPrice) {
+    const properties = document.querySelectorAll('.property-card');
+    let count = 0;
+    
+    properties.forEach(property => {
+        const priceElement = property.querySelector('.property-price');
+        if (priceElement) {
+            // استخراج السعر من النص (مثلاً: "3,500,000 ريال" -> 3500000)
+            const priceText = priceElement.textContent.replace(/[^\d]/g, '');
+            const price = parseInt(priceText);
+            
+            if (price >= minPrice && price <= maxPrice) {
+                property.style.display = '';
+                count++;
+            } else {
+                property.style.display = 'none';
+            }
+        }
+    });
+    
+    // تحديث العداد
+    updatePropertiesCount(count);
+    
+    // إظهار/إخفاء رسالة عدم وجود عقارات
+    toggleNoPropertiesMessage(count === 0);
+}
+
+// تحديث عداد العقارات
+function updatePropertiesCount(count) {
+    const countElement = document.getElementById('propertiesCount');
+    if (countElement) {
+        countElement.textContent = count;
+    }
+}
+
+// إظهار/إخفاء رسالة عدم وجود عقارات
+function toggleNoPropertiesMessage(show) {
+    const noPropertiesMessage = document.getElementById('noPropertiesMessage');
+    const propertiesGrid = document.getElementById('savedPropertiesGrid');
+    
+    if (noPropertiesMessage && propertiesGrid) {
+        noPropertiesMessage.style.display = show ? 'flex' : 'none';
+        propertiesGrid.style.display = show ? 'none' : 'grid';
+    }
+}
+
+// وظائف مساعدة إضافية
+
+// تنسيق المبلغ المالي
+function formatCurrency(amount) {
+    return new Intl.NumberFormat('ar-SA').format(amount);
+}
+
+// إغلاق جميع القوائم المنسدلة باستثناء واحدة
+function closeOtherDropdowns(exceptId) {
+    const dropdowns = document.querySelectorAll('.filter-dropdown-menu');
+    
+    dropdowns.forEach(dropdown => {
+        if (dropdown.id !== exceptId) {
+            dropdown.classList.remove('show');
+        }
+    });
+}
+
+// إعادة تعيين جميع الفلاتر
+function resetAllFilters() {
+    // إعادة تعيين فلتر المجلد
+    const allFolderItem = document.querySelector('.folder-item[data-id="all"]');
+    if (allFolderItem) {
+        allFolderItem.click();
+    }
+    
+    // إعادة تعيين فلتر البحث
+    const searchInput = document.getElementById('searchProperties');
+    if (searchInput) {
+        searchInput.value = '';
+    }
+    
+    // إعادة تعيين نطاق السعر
+    const minPriceRange = document.getElementById('minPriceRange');
+    const maxPriceRange = document.getElementById('maxPriceRange');
+    const minPriceValue = document.getElementById('minPriceValue');
+    const maxPriceValue = document.getElementById('maxPriceValue');
+    
+    if (minPriceRange && maxPriceRange && minPriceValue && maxPriceValue) {
+        minPriceRange.value = 0;
+        maxPriceRange.value = 10000000;
+        minPriceValue.textContent = '0 ريال';
+        maxPriceValue.textContent = '10,000,000 ريال';
+    }
+    
+    // إعادة تعيين فلتر الموقع
+    const locationDropdownBtn = document.getElementById('locationDropdownBtn');
+    if (locationDropdownBtn) {
+        locationDropdownBtn.innerHTML = '<i class="fas fa-map-marker-alt"></i> جميع المناطق <i class="fas fa-chevron-down"></i>';
+    }
+    
+    // إعادة تعيين فلتر نوع العقار
+    const propertyTypeDropdownBtn = document.getElementById('propertyTypeDropdownBtn');
+    if (propertyTypeDropdownBtn) {
+        propertyTypeDropdownBtn.innerHTML = '<i class="fas fa-home"></i> جميع الأنواع <i class="fas fa-chevron-down"></i>';
+    }
+    
+    // إظهار جميع العقارات
+    const properties = document.querySelectorAll('.property-card');
+    properties.forEach(property => {
+        property.style.display = '';
+    });
+    
+    // تحديث العداد
+    updatePropertiesCount(properties.length);
+    
+    // إخفاء رسالة عدم وجود عقارات
+    toggleNoPropertiesMessage(false);
+}
+
+// تغيير نمط عرض العقارات (شبكة/قائمة)
+function changeViewType(viewType) {
+    const propertiesGrid = document.getElementById('savedPropertiesGrid');
+    
+    if (propertiesGrid) {
+        if (viewType === 'grid') {
+            propertiesGrid.classList.remove('list-view');
+            propertiesGrid.classList.add('grid-view');
+        } else {
+            propertiesGrid.classList.remove('grid-view');
+            propertiesGrid.classList.add('list-view');
+        }
+    }
+}
+
+// وظائف لإدارة المجلدات
+function createFolder(name, color) {
+    // هذه وظيفة مزيفة، في الواقع يجب إرسال طلب للخادم
+    console.log('إنشاء مجلد جديد:', name, color);
+    
+    // إنشاء عنصر المجلد الجديد
+    const foldersList = document.getElementById('foldersList');
+    const folderId = 'folder-' + Date.now();
+    
+    const newFolder = document.createElement('li');
+    newFolder.className = 'folder-item';
+    newFolder.setAttribute('data-id', folderId);
+    newFolder.style.setProperty('--folder-color', color);
+    newFolder.innerHTML = `
+        <i class="fas fa-folder"></i> ${name}
+        <span class="count">0</span>
+        <div class="folder-actions">
+            <button class="edit-folder"><i class="fas fa-edit"></i></button>
+            <button class="delete-folder"><i class="fas fa-trash"></i></button>
+        </div>
+    `;
+    
+    // إضافة المجلد إلى القائمة
+    if (foldersList) {
+        foldersList.appendChild(newFolder);
+        
+        // إعادة تهيئة أحداث المجلدات
+        initFoldersEvents();
+    }
+}
+
+// وظيفة تحديث المجلد
+function updateFolder(folderId, name, color) {
+    // هذه وظيفة مزيفة، في الواقع يجب إرسال طلب للخادم
+    console.log('تحديث المجلد:', folderId, name, color);
+    
+    // تحديث عنصر المجلد
+    const folder = document.querySelector(`.folder-item[data-id="${folderId}"]`);
+    if (folder) {
+        folder.style.setProperty('--folder-color', color);
+        const icon = folder.querySelector('i');
+        const count = folder.querySelector('.count');
+        
+        folder.innerHTML = '';
+        folder.appendChild(icon);
+        folder.appendChild(document.createTextNode(' ' + name));
+        folder.appendChild(count);
+        
+        // إضافة أزرار التحرير والحذف
+        const actions = document.createElement('div');
+        actions.className = 'folder-actions';
+        actions.innerHTML = `
+            <button class="edit-folder"><i class="fas fa-edit"></i></button>
+            <button class="delete-folder"><i class="fas fa-trash"></i></button>
+        `;
+        folder.appendChild(actions);
+        
+        // إعادة تهيئة أحداث المجلدات
+        initFoldersEvents();
+    }
+}
+
+// تحديد لون المجلد في نافذة تعديل المجلد
+function selectFolderColor(color) {
+    const colorOptions = document.querySelectorAll('.color-option');
+    
+    colorOptions.forEach(option => {
+        const optionColor = option.getAttribute('data-color');
+        if (optionColor === color) {
+            option.classList.add('selected');
+        } else {
+            option.classList.remove('selected');
+        }
+    });
+}
+
+// نقل عقار إلى مجلد
+function movePropertyToFolder(propertyId, folderId) {
+    // هذه وظيفة مزيفة، في الواقع يجب إرسال طلب للخادم
+    console.log('نقل العقار', propertyId, 'إلى المجلد', folderId);
+    
+    // تحديث عرض العقارات
+    const folder = document.querySelector(`.folder-item[data-id="${folderId}"]`);
+    if (folder) {
+        const countElement = folder.querySelector('.count');
+        if (countElement) {
+            const count = parseInt(countElement.textContent) + 1;
+            countElement.textContent = count;
+        }
+    }
+    
+    // عرض إشعار النجاح
+    showNotification('تم نقل العقار بنجاح إلى المجلد المحدد');
+}
+
+// عرض إشعار
+function showNotification(message) {
+    // إنشاء عنصر الإشعار
+    const notification = document.createElement('div');
+    notification.className = 'notification';
+    notification.textContent = message;
+    
+    // إضافة الإشعار إلى الصفحة
+    document.body.appendChild(notification);
+    
+    // إظهار الإشعار
+    setTimeout(() => {
+        notification.classList.add('show');
+    }, 10);
+    
+    // إخفاء الإشعار بعد فترة
+    setTimeout(() => {
+        notification.classList.remove('show');
+        
+        // إزالة الإشعار من الصفحة بعد انتهاء التأثير
+        setTimeout(() => {
+            notification.remove();
+        }, 300);
+    }, 3000);
+}
+
+// حفظ ترتيب المجلدات
+function saveFoldersOrder(folderIds) {
+    // هذه وظيفة مزيفة، في الواقع يجب إرسال طلب للخادم
+    console.log('حفظ ترتيب المجلدات:', folderIds);
+}
+
+// حفظ ترتيب العقارات
+function savePropertiesOrder(propertyIds) {
+    // هذه وظيفة مزيفة، في الواقع يجب إرسال طلب للخادم
+    console.log('حفظ ترتيب العقارات:', propertyIds);
+}
 </script>
 {% endblock %}
