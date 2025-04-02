@@ -1,0 +1,51 @@
+/* أنماط عداد الإشعارات */
+.notification-counter {
+    position: relative;
+    font-size: 0.7rem;
+    padding: 0.2rem 0.5rem;
+    min-width: 1.4rem;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+/* تأثير نبض للإشعارات الجديدة */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.3);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.notification-counter.pulse {
+    animation: pulse 0.5s ease-in-out;
+}
+
+/* تصميم مناسب للقائمة الجانبية في الوضع المصغر */
+.sidebar-collapsed .notification-counter {
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translate(25%, -25%);
+    margin: 0;
+    z-index: 2;
+}
+
+/* تغيير شكل العداد عند التحويم */
+.nav-item:hover .notification-counter {
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+}
+
+/* تأثير الارتداد عند النقر */
+.nav-item:active .notification-counter {
+    transform: scale(0.9);
+}
+
+/* الوضع المظلم */
+.dark-mode .notification-counter {
+    box-shadow: 0 0 4px rgba(255, 255, 255, 0.2);
+}

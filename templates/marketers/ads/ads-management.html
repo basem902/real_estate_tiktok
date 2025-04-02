@@ -43,6 +43,67 @@
         margin-bottom: 1rem;
     }
     
+    /* تنسيقات الإشعارات */
+    #notification-container {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        width: 300px;
+        z-index: 9999;
+    }
+    
+    .notification {
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        padding: 12px 15px;
+        margin-bottom: 10px;
+        transform: translateX(-110%);
+        opacity: 0;
+        transition: all 0.3s ease;
+    }
+    
+    .notification.show {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    
+    .notification.success {
+        border-right: 4px solid #28a745;
+    }
+    
+    .notification.error {
+        border-right: 4px solid #dc3545;
+    }
+    
+    .notification.warning {
+        border-right: 4px solid #ffc107;
+    }
+    
+    .notification.info {
+        border-right: 4px solid #17a2b8;
+    }
+    
+    .notification i {
+        font-size: 1.2rem;
+    }
+    
+    .notification.success i {
+        color: #28a745;
+    }
+    
+    .notification.error i {
+        color: #dc3545;
+    }
+    
+    .notification.warning i {
+        color: #ffc107;
+    }
+    
+    .notification.info i {
+        color: #17a2b8;
+    }
+    
     /* تحسين تصميم البطاقات */
     .card {
         border-radius: var(--card-border-radius);
@@ -145,7 +206,7 @@
         <!-- عنوان الصفحة وشريط الأدوات -->
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h2 class="page-title mb-0">إدارة الإعلانات</h2>
-            <button class="btn btn-primary btn-sm">
+            <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#adModal">
                 <i class="fas fa-plus me-1"></i> إنشاء إعلان جديد
             </button>
         </div>
@@ -400,12 +461,170 @@
         </div>
     </div>
 </div>
+
+<!-- حاوية الإشعارات -->
+<div id="notification-container"></div>
+
+<!-- مودال إنشاء/تعديل إعلان -->
+<div class="modal fade" id="adModal" tabindex="-1" aria-labelledby="adModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="adModalLabel">إنشاء إعلان جديد</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+            </div>
+            <div class="modal-body">
+                <form id="ad-form">
+                    <input type="hidden" id="ad-id" value="">
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6 mb-3 mb-md-0">
+                            <label for="ad-title" class="form-label">عنوان الإعلان <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="ad-title" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="ad-platform" class="form-label">المنصة <span class="text-danger">*</span></label>
+                            <select class="form-select" id="ad-platform" required>
+                                <option value="">اختر المنصة</option>
+                                <option value="facebook">فيسبوك</option>
+                                <option value="instagram">انستجرام</option>
+                                <option value="tiktok">تيك توك</option>
+                                <option value="twitter">تويتر</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6 mb-3 mb-md-0">
+                            <label for="ad-status" class="form-label">الحالة</label>
+                            <select class="form-select" id="ad-status">
+                                <option value="active">نشط</option>
+                                <option value="scheduled">مجدول</option>
+                                <option value="paused">متوقف</option>
+                                <option value="draft">مسودة</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="ad-budget" class="form-label">الميزانية</label>
+                            <div class="input-group">
+                                <span class="input-group-text">ر.س</span>
+                                <input type="number" class="form-control" id="ad-budget">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="ad-description" class="form-label">وصف الإعلان</label>
+                        <textarea class="form-control" id="ad-description" rows="3"></textarea>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="ad-image" class="form-label">صورة الإعلان</label>
+                        <input type="file" class="form-control" id="ad-image">
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6 mb-3 mb-md-0">
+                            <label for="ad-start-date" class="form-label">تاريخ البدء</label>
+                            <input type="date" class="form-control" id="ad-start-date">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="ad-end-date" class="form-label">تاريخ الانتهاء</label>
+                            <input type="date" class="form-control" id="ad-end-date">
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">الفئة المستهدفة</label>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="ad-location" class="form-label">الموقع</label>
+                                <input type="text" class="form-control" id="ad-location" placeholder="مثال: الرياض، جدة">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="ad-age-range" class="form-label">الفئة العمرية</label>
+                                <input type="text" class="form-control" id="ad-age-range" placeholder="مثال: 25-45">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                <button type="button" class="btn btn-primary" id="save-ad">حفظ</button>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 {% block scripts %}
 <script>
-    // إضافة أي سكريبت خاص بصفحة الإعلانات هنا
-    $(document).ready(function() {
+    document.addEventListener('DOMContentLoaded', function() {
+        // تأكد من تهيئة المودال
+        const adModalElement = document.getElementById('adModal');
+        if (adModalElement) {
+            const adModal = new bootstrap.Modal(adModalElement);
+            
+            // تهيئة زر إنشاء إعلان جديد
+            const addAdBtn = document.querySelector('button[data-bs-target="#adModal"]');
+            if (addAdBtn) {
+                addAdBtn.addEventListener('click', function() {
+                    adModal.show();
+                });
+            }
+        }
+        
+        // إرسال نموذج إضافة/تعديل الإعلان
+        const saveAdBtn = document.getElementById('save-ad');
+        
+        if (saveAdBtn) {
+            saveAdBtn.addEventListener('click', function() {
+                // في الإنتاج، هنا ستقوم بإرسال البيانات إلى الخادم
+                // للتبسيط، سنقوم بعرض إشعار نجاح
+                
+                setTimeout(function() {
+                    // إغلاق الحوار
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('adModal'));
+                    modal.hide();
+                    
+                    // عرض إشعار نجاح
+                    showNotification('تم حفظ بيانات الإعلان بنجاح', 'success');
+                }, 500);
+            });
+        }
+        
+        // دالة إظهار الإشعارات
+        function showNotification(message, type = 'info') {
+            const container = document.getElementById('notification-container');
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.innerHTML = `
+                <div class="d-flex align-items-center">
+                    <div class="me-3">
+                        ${type === 'success' ? '<i class="fas fa-check-circle fa-lg"></i>' : ''}
+                        ${type === 'error' ? '<i class="fas fa-times-circle fa-lg"></i>' : ''}
+                        ${type === 'warning' ? '<i class="fas fa-exclamation-triangle fa-lg"></i>' : ''}
+                        ${type === 'info' ? '<i class="fas fa-info-circle fa-lg"></i>' : ''}
+                    </div>
+                    <div>${message}</div>
+                </div>
+            `;
+            
+            container.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 10);
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    container.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+        
         // تفعيل التبويبات
         $('.nav-pills .nav-link').on('click', function(e) {
             e.preventDefault();

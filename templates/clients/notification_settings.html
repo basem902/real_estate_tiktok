@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إعدادات الإشعارات المتقدمة - تيك توك العقاري</title>
+    <!-- Bootstrap RTL -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom Styles -->
+    <style>
+        :root {
+            --primary-color: #2a9d8f;
+            --secondary-color: #e9c46a;
+            --dark-color: #264653;
+            --light-color: #f1faee;
+            --danger-color: #e76f51;
+            --success-color: #2a9d8f;
+            --border-radius: 10px;
+            --box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Cairo', 'Tajawal', sans-serif;
+            background-color: #f7f7f7;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        body.dark-mode {
+            background-color: #222;
+            color: #eee;
+        }
+
+        .notification-container {
+            max-width: 800px;
+            margin: 30px auto;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+        }
+
+        .header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .back-button {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        .mode-toggle {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        .tabs-container {
+            display: flex;
+            border-bottom: 1px solid #eee;
+        }
+
+        .tab {
+            padding: 15px;
+            flex: 1;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab.active {
+            border-bottom: 3px solid var(--primary-color);
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .tab i {
+            margin-left: 5px;
+        }
+
+        .tab-content {
+            padding: 20px;
+        }
+
+        .tab-pane {
+            display: none;
+        }
+
+        .tab-pane.active {
+            display: block;
+        }
+
+        .settings-section {
+            margin-bottom: 25px;
+        }
+
+        .settings-title {
+            margin-bottom: 15px;
+            font-weight: 600;
+            color: var(--dark-color);
+            display: flex;
+            align-items: center;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .settings-title i {
+            margin-left: 8px;
+            color: var(--primary-color);
+        }
+
+        .notification-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #f5f5f5;
+        }
+
+        .notification-item:last-child {
+            border-bottom: none;
+        }
+
+        .notification-info {
+            flex: 1;
+        }
+
+        .notification-name {
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .notification-description {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .notification-controls {
+            display: flex;
+            align-items: center;
+        }
+
+        .form-check {
+            padding-right: 1.5rem;
+        }
+
+        .form-switch {
+            padding-right: 2.5rem;
+        }
+
+        .form-switch .form-check-input {
+            margin-right: -2.5rem;
+        }
+
+        .form-check-input {
+            width: 2.5em;
+            margin-top: 0.25em;
+            margin-right: -2.5em;
+            background-color: #fff;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+            border: 1px solid rgba(0, 0, 0, 0.25);
+            appearance: none;
+            transition: background-color 0.15s ease-in-out, background-position 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        }
+
+        .form-check-input:checked {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .form-select {
+            margin-right: 10px;
+            width: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="notification-container">
+        <div class="header">
+            <div class="back-button">
+                <i class="fas fa-arrow-right"></i>
+            </div>
+            <h4>إعدادات الإشعارات المتقدمة</h4>
+            <div class="mode-toggle">
+                <i class="fas fa-moon"></i>
+            </div>
+        </div>
+
+        <!-- تبويبات الإعدادات -->
+        <div class="tabs-container">
+            <div class="tab active" data-tab="general">
+                <i class="fas fa-bell"></i> الإشعارات العامة
+            </div>
+            <div class="tab" data-tab="property">
+                <i class="fas fa-home"></i> إشعارات العقارات
+            </div>
+            <div class="tab" data-tab="chat">
+                <i class="fas fa-comments"></i> إشعارات المحادثات
+            </div>
+        </div>
+
+        <div class="tab-content">
+            <!-- الإشعارات العامة -->
+            <div class="tab-pane active" id="general">
+                <div class="settings-section">
+                    <div class="settings-title">
+                        <i class="fas fa-cog"></i>
+                        الإعدادات العامة للإشعارات
+                    </div>
+                    
+                    <div class="notification-item">
+                        <div class="notification-info">
+                            <div class="notification-name">تفعيل الإشعارات</div>
+                            <div class="notification-description">الحصول على إشعارات من التطبيق بشكل عام</div>
+                        </div>
+                        <div class="notification-controls">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="enableAllNotifications" checked>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="notification-item">
+                        <div class="notification-info">
+                            <div class="notification-name">الوضع الصامت</div>
+                            <div class="notification-description">استلام الإشعارات بدون صوت</div>
+                        </div>
+                        <div class="notification-controls">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="silentMode">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="notification-item">
+                        <div class="notification-info">
+                            <div class="notification-name">أوقات الإزعاج</div>
+                            <div class="notification-description">منع الإشعارات خلال ساعات محددة</div>
+                        </div>
+                        <div class="notification-controls">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="doNotDisturb">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="notification-item" id="disturbTimeSettings" style="display: none;">
+                        <div class="notification-info">
+                            <div class="notification-name">تحديد فترة عدم الإزعاج</div>
+                        </div>
+                        <div class="notification-controls">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="mb-2">من:</div>
+                                    <input type="time" class="form-control" id="doNotDisturbStart" value="22:00">
+                                </div>
+                                <div class="col-6">
+                                    <div class="mb-2">إلى:</div>
+                                    <input type="time" class="form-control" id="doNotDisturbEnd" value="07:00">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <div class="settings-title">
+                        <i class="fas fa-bell"></i>
+                        إشعارات النظام والفعاليات
+                    </div>
+                    
+                    <div class="notification-item">
+                        <div class="notification-info">
+                            <div class="notification-name">تحديثات النظام</div>
+                            <div class="notification-description">إشعارات بتحديثات وميزات النظام الجديدة</div>
+                        </div>
+                        <div class="notification-controls">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="systemUpdates" checked>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="notification-item">
+                        <div class="notification-info">
+                            <div class="notification-name">عروض خاصة وتخفيضات</div>
+                            <div class="notification-description">إشعارات بالعروض الخاصة والتخفيضات على العقارات</div>
+                        </div>
+                        <div class="notification-controls">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="specialOffers" checked>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="notification-item">
+                        <div class="notification-info">
+                            <div class="notification-name">الفعاليات والمعارض العقارية</div>
+                            <div class="notification-description">إشعارات بالفعاليات والمعارض العقارية القريبة منك</div>
+                        </div>
+                        <div class="notification-controls">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="eventsNotifications" checked>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="notification-item">
+                        <div class="notification-info">
+                            <div class="notification-name">تقارير السوق العقاري</div>
+                            <div class="notification-description">تقارير دورية عن حالة السوق العقاري وأسعار العقارات</div>
+                        </div>
+                        <div class="notification-controls">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="marketReports">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- إشعارات العقارات -->
+            <div class="tab-pane" id="property">
+                <div class="settings-section">
+                    <div class="settings-title">
+                        <i class="fas fa-building"></i>
+                        إشعارات العقارات الجديدة
+                    </div>
+                    
+                    <div class="notification-item">
+                        <div class="notification-info">
+                            <div class="notification-name">عقارات جديدة</div>
+                            <div class="notification-description">إشعارات عند إضافة عقارات جديدة تناسب تفضيلاتك</div>
+                        </div>
+                        <div class="notification-controls">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="newProperties" checked>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="notification-item">
+                        <div class="notification-info">
+                            <div class="notification-name">تحديد نوع العقار</div>
+                            <div class="notification-description">نوع العقارات التي تريد تلقي إشعارات عنها</div>
+                        </div>
+                        <div class="notification-controls">
+                            <select class="form-select" id="propertyType">
+                                <option value="all">جميع أنواع العقارات</option>
+                                <option value="apartment">شقق سكنية</option>
+                                <option value="villa">فلل</option>
+                                <option value="land">أراضي</option>
+                                <option value="commercial">محلات تجارية</option>
+                                <option value="office">مكاتب</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="notification-item">
+                        <div class="notification-info">
+                            <div class="notification-name">نطاق السعر</div>
+                            <div class="notification-description">الحد الأدنى والأعلى لسعر العقارات التي تريد تلقي إشعارات عنها</div>
+                        </div>
+                        <div class="notification-controls">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="mb-2">من:</div>
+                                    <input type="number" class="form-control" id="minPrice" placeholder="مثال: 500000">
+                                </div>
+                                <div class="col-6">
+                                    <div class="mb-2">إلى:</div>
+                                    <input type="number" class="form-control" id="maxPrice" placeholder="مثال: 2000000">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="notification-item">
+                        <div class="notification-info">
+                            <div class="notification-name">الأحياء المفضلة</div>
+                            <div class="notification-description">الأحياء التي تفضل تلقي إشعارات عن العقارات فيها</div>
+                        </div>
+                        <div class="notification-controls">
+                            <select class="form-select" id="preferredDistricts" multiple>
+                                <option value="الرياض-النرجس">الرياض - حي النرجس</option>
+                                <option value="الرياض-الملقا">الرياض - حي الملقا</option>
+                                <option value="الرياض-العليا">الرياض - حي العليا</option>
+                                <option value="جدة-الخالدية">جدة - حي الخالدية</option>
+                                <option value="جدة-البوادي">جدة - حي البوادي</option>
+                                <option value="الدمام-الشاطئ">الدمام - حي الشاطئ</option>
+                            </select>
+                            <div class="form-text">اضغط مع الـ Ctrl لتحديد عدة أحياء</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <div class="settings-title">
+                        <i class="fas fa-chart-line"></i>
+                        إشعارات تغيرات الأسعار
+                    </div>
+                    
+                    <div class="notification-item">
+                        <div class="notification-info">
+                            <div class="notification-name">تخفيضات الأسعار</div>
+                            <div class="notification-description">إشعار عند انخفاض سعر العقارات المحفوظة</div>
+                        </div>
+                        <div class="notification-controls">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="priceReductions" checked>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="notification-item">
+                        <div class="notification-info">
+                            <div class="notification-name">نسبة التخفيض</div>
+                            <div class="notification-description">تلقي إشعار فقط عند تخفيض السعر بنسبة محددة</div>
+                        </div>
+                        <div class="notification-controls">
+                            <select class="form-select" id="reductionPercentage">
+                                <option value="any">أي تخفيض</option>
+                                <option value="5">5% أو أكثر</option>
+                                <option value="10">10% أو أكثر</option>
+                                <option value="15">15% أو أكثر</option>
+                                <option value="20">20% أو أكثر</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="notification-item">
+                        <div class="notification-info">
+                            <div class="notification-name">الزيادة في الأسعار</div>
+                            <div class="notification-description">إشعار عند زيادة سعر العقارات المحفوظة</div>
+                        </div>
+                        <div class="notification-controls">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="priceIncreases">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="notification-item">
+                        <div class="notification-info">
+                            <div class="notification-name">تقارير شهرية للأسعار</div>
+                            <div class="notification-description">الحصول على تقرير شهري بتغيرات أسعار العقارات في المناطق المفضلة</div>
+                        </div>
+                        <div class="notification-controls">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="monthlyReports" checked>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- إشعارات المحادثات -->
+            <div class="tab-pane" id="chat">
+                <div class="settings-section">
+                    <div class="settings-title">
+                        <i class="fas fa-comments"></i>
+                        إعدادات إشعارات المحادثات
+                    </div>
+                    
+                    <div class="notification-item">
+                        <div class="notification-info">
+                            <div class="notification-name">الرسائل الجديدة</div>
+                            <div class="notification-description">إشعار عند استلام رسالة جديدة</div>
+                        </div>
+                        <div class="notification-controls">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="newMessages" checked>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="notification-item">
+                        <div class="notification-info">
+                            <div class="notification-name">إشعارات الوكلاء فقط</div>
+                            <div class="notification-description">تلقي إشعارات فقط للرسائل من الوكلاء العقاريين</div>
+                        </div>
+                        <div class="notification-controls">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="agentsOnly">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="notification-item">
+                        <div class="notification-info">
+                            <div class="notification-name">الرسائل الصوتية</div>
+                            <div class="notification-description">إشعار عند استلام رسالة صوتية جديدة</div>
+                        </div>
+                        <div class="notification-controls">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="voiceMessages" checked>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="notification-item">
+                        <div class="notification-info">
+                            <div class="notification-name">مشاركات العقارات</div>
+                            <div class="notification-description">إشعار عند مشاركة عقار معك في المحادثة</div>
+                        </div>
+                        <div class="notification-controls">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="propertyShares" checked>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <div class="settings-title">
+                        <i class="fas fa-user-clock"></i>
+                        إشعارات حالة الوكلاء
+                    </div>
+                    
+                    <div class="notification-item">
+                        <div class="notification-info">
+                            <div class="notification-name">اتصال الوكلاء</div>
+                            <div class="notification-description">إشعار عند اتصال وكيل كنت تتحدث معه</div>
+                        </div>
+                        <div class="notification-controls">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="agentOnline" checked>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="notification-item">
+                        <div class="notification-info">
+                            <div class="notification-name">تذكير بالمتابعة</div>
+                            <div class="notification-description">تذكير بمتابعة المحادثات المهمة بعد فترة من الانقطاع</div>
+                        </div>
+                        <div class="notification-controls">
+                            <select class="form-select" id="followUpReminder">
+                                <option value="none">بدون تذكير</option>
+                                <option value="24">بعد 24 ساعة</option>
+                                <option value="48" selected>بعد 48 ساعة</option>
+                                <option value="72">بعد 3 أيام</option>
+                                <option value="168">بعد أسبوع</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap و JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // تبديل التبويبات
+            const tabs = document.querySelectorAll('.tab');
+            const tabPanes = document.querySelectorAll('.tab-pane');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    
+                    // إزالة الكلاس النشط من جميع التبويبات
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tabPanes.forEach(p => p.classList.remove('active'));
+                    
+                    // إضافة الكلاس النشط للتبويب المحدد
+                    this.classList.add('active');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+            
+            // التبديل بين الوضع الليلي والنهاري
+            const modeToggle = document.querySelector('.mode-toggle');
+            modeToggle.addEventListener('click', function() {
+                document.body.classList.toggle('dark-mode');
+                
+                // تغيير أيقونة الوضع
+                const icon = this.querySelector('i');
+                if (document.body.classList.contains('dark-mode')) {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                } else {
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                }
+            });
+            
+            // إظهار/إخفاء إعدادات أوقات عدم الإزعاج
+            const doNotDisturbToggle = document.getElementById('doNotDisturb');
+            const disturbTimeSettings = document.getElementById('disturbTimeSettings');
+            
+            doNotDisturbToggle.addEventListener('change', function() {
+                if (this.checked) {
+                    disturbTimeSettings.style.display = 'flex';
+                } else {
+                    disturbTimeSettings.style.display = 'none';
+                }
+            });
+            
+            // تنشيط/تعطيل خيارات الإشعارات بناءً على حالة الإشعارات العامة
+            const enableAllNotifications = document.getElementById('enableAllNotifications');
+            const allSwitches = document.querySelectorAll('.form-check-input:not(#enableAllNotifications)');
+            const allSelects = document.querySelectorAll('.form-select');
+            
+            enableAllNotifications.addEventListener('change', function() {
+                const isDisabled = !this.checked;
+                
+                allSwitches.forEach(switchEl => {
+                    switchEl.disabled = isDisabled;
+                });
+                
+                allSelects.forEach(select => {
+                    select.disabled = isDisabled;
+                });
+            });
+            
+            // حفظ الإعدادات
+            const saveSettings = () => {
+                // جمع جميع إعدادات الإشعارات
+                const settings = {
+                    general: {
+                        enableAll: document.getElementById('enableAllNotifications').checked,
+                        silentMode: document.getElementById('silentMode').checked,
+                        doNotDisturb: document.getElementById('doNotDisturb').checked,
+                        doNotDisturbStart: document.getElementById('doNotDisturbStart').value,
+                        doNotDisturbEnd: document.getElementById('doNotDisturbEnd').value,
+                        systemUpdates: document.getElementById('systemUpdates').checked,
+                        specialOffers: document.getElementById('specialOffers').checked,
+                        eventsNotifications: document.getElementById('eventsNotifications').checked,
+                        marketReports: document.getElementById('marketReports').checked
+                    },
+                    property: {
+                        newProperties: document.getElementById('newProperties').checked,
+                        propertyType: document.getElementById('propertyType').value,
+                        priceRange: {
+                            min: document.getElementById('minPrice').value,
+                            max: document.getElementById('maxPrice').value
+                        },
+                        districts: Array.from(document.getElementById('preferredDistricts').selectedOptions).map(opt => opt.value),
+                        priceReductions: document.getElementById('priceReductions').checked,
+                        reductionPercentage: document.getElementById('reductionPercentage').value,
+                        priceIncreases: document.getElementById('priceIncreases').checked,
+                        monthlyReports: document.getElementById('monthlyReports').checked
+                    },
+                    chat: {
+                        newMessages: document.getElementById('newMessages').checked,
+                        agentsOnly: document.getElementById('agentsOnly').checked,
+                        voiceMessages: document.getElementById('voiceMessages').checked,
+                        propertyShares: document.getElementById('propertyShares').checked,
+                        agentOnline: document.getElementById('agentOnline').checked,
+                        followUpReminder: document.getElementById('followUpReminder').value
+                    }
+                };
+                
+                // حفظ الإعدادات في localStorage
+                localStorage.setItem('notificationSettings', JSON.stringify(settings));
+                console.log('تم حفظ الإعدادات:', settings);
+                
+                // عرض رسالة تأكيد
+                showToast('تم حفظ إعدادات الإشعارات بنجاح');
+            };
+            
+            // استعادة الإعدادات المحفوظة
+            const loadSettings = () => {
+                const savedSettings = localStorage.getItem('notificationSettings');
+                if (savedSettings) {
+                    try {
+                        const settings = JSON.parse(savedSettings);
+                        
+                        // تطبيق الإعدادات العامة
+                        if (settings.general) {
+                            document.getElementById('enableAllNotifications').checked = settings.general.enableAll;
+                            document.getElementById('silentMode').checked = settings.general.silentMode;
+                            document.getElementById('doNotDisturb').checked = settings.general.doNotDisturb;
+                            document.getElementById('doNotDisturbStart').value = settings.general.doNotDisturbStart;
+                            document.getElementById('doNotDisturbEnd').value = settings.general.doNotDisturbEnd;
+                            document.getElementById('systemUpdates').checked = settings.general.systemUpdates;
+                            document.getElementById('specialOffers').checked = settings.general.specialOffers;
+                            document.getElementById('eventsNotifications').checked = settings.general.eventsNotifications;
+                            document.getElementById('marketReports').checked = settings.general.marketReports;
+                            
+                            // إظهار/إخفاء إعدادات أوقات عدم الإزعاج
+                            disturbTimeSettings.style.display = settings.general.doNotDisturb ? 'flex' : 'none';
+                        }
+                        
+                        // تطبيق إعدادات العقارات
+                        if (settings.property) {
+                            document.getElementById('newProperties').checked = settings.property.newProperties;
+                            document.getElementById('propertyType').value = settings.property.propertyType;
+                            document.getElementById('minPrice').value = settings.property.priceRange.min;
+                            document.getElementById('maxPrice').value = settings.property.priceRange.max;
+                            
+                            // تحديد الأحياء المفضلة
+                            const districtsSelect = document.getElementById('preferredDistricts');
+                            for (let i = 0; i < districtsSelect.options.length; i++) {
+                                districtsSelect.options[i].selected = settings.property.districts.includes(districtsSelect.options[i].value);
+                            }
+                            
+                            document.getElementById('priceReductions').checked = settings.property.priceReductions;
+                            document.getElementById('reductionPercentage').value = settings.property.reductionPercentage;
+                            document.getElementById('priceIncreases').checked = settings.property.priceIncreases;
+                            document.getElementById('monthlyReports').checked = settings.property.monthlyReports;
+                        }
+                        
+                        // تطبيق إعدادات المحادثات
+                        if (settings.chat) {
+                            document.getElementById('newMessages').checked = settings.chat.newMessages;
+                            document.getElementById('agentsOnly').checked = settings.chat.agentsOnly;
+                            document.getElementById('voiceMessages').checked = settings.chat.voiceMessages;
+                            document.getElementById('propertyShares').checked = settings.chat.propertyShares;
+                            document.getElementById('agentOnline').checked = settings.chat.agentOnline;
+                            document.getElementById('followUpReminder').value = settings.chat.followUpReminder;
+                        }
+                        
+                        console.log('تم استعادة الإعدادات المحفوظة');
+                    } catch (error) {
+                        console.error('خطأ في استعادة الإعدادات:', error);
+                    }
+                }
+            };
+            
+            // عرض رسالة تأكيد
+            const showToast = (message) => {
+                // إنشاء عنصر Toast
+                const toast = document.createElement('div');
+                toast.className = 'toast-message';
+                toast.textContent = message;
+                toast.style.position = 'fixed';
+                toast.style.bottom = '20px';
+                toast.style.left = '50%';
+                toast.style.transform = 'translateX(-50%)';
+                toast.style.backgroundColor = 'var(--success-color)';
+                toast.style.color = 'white';
+                toast.style.padding = '10px 20px';
+                toast.style.borderRadius = 'var(--border-radius)';
+                toast.style.boxShadow = 'var(--box-shadow)';
+                toast.style.zIndex = '1000';
+                
+                // إضافة العنصر للصفحة
+                document.body.appendChild(toast);
+                
+                // إخفاء العنصر بعد 3 ثواني
+                setTimeout(() => {
+                    toast.style.opacity = '0';
+                    toast.style.transition = 'opacity 0.5s ease';
+                    
+                    setTimeout(() => {
+                        document.body.removeChild(toast);
+                    }, 500);
+                }, 3000);
+            };
+            
+            // إضافة زر الحفظ
+            const container = document.querySelector('.notification-container');
+            const saveButton = document.createElement('button');
+            saveButton.className = 'btn btn-primary w-100 mt-4 mb-3';
+            saveButton.textContent = 'حفظ الإعدادات';
+            saveButton.addEventListener('click', saveSettings);
+            container.appendChild(saveButton);
+            
+            // زر الرجوع
+            const backButton = document.querySelector('.back-button');
+            backButton.addEventListener('click', function() {
+                // الرجوع للصفحة السابقة
+                window.history.back();
+            });
+            
+            // استعادة الإعدادات المحفوظة عند تحميل الصفحة
+            loadSettings();
+        });
+    </script>
+</body>
+</html>

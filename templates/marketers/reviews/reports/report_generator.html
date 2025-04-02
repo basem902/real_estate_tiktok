@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إنشاء تقرير جديد | المسوقين العقاريين</title>
+    <link rel="stylesheet" href="../../assets/css/bootstrap.rtl.min.css">
+    <link rel="stylesheet" href="../../assets/css/all.min.css">
+    <link rel="stylesheet" href="../styles/reports.css">
+</head>
+<body>
+    <!-- شريط التنقل العلوي -->
+    <div id="navbar-placeholder"></div>
+
+    <div class="container-fluid my-4">
+        <div class="row">
+            <!-- القائمة الجانبية -->
+            <div class="col-lg-2 mb-4">
+                <div id="sidebar-placeholder"></div>
+            </div>
+
+            <!-- المحتوى الرئيسي -->
+            <div class="col-lg-10">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card shadow-sm mb-4">
+                            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0">إنشاء تقرير جديد</h5>
+                                <div>
+                                    <button class="btn btn-sm btn-light" id="save-report-draft"><i class="fas fa-save"></i> حفظ كمسودة</button>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <form id="report-generator-form">
+                                    <!-- معلومات التقرير الأساسية -->
+                                    <div class="card shadow-sm mb-4">
+                                        <div class="card-header bg-light">
+                                            <h6 class="mb-0">المعلومات الأساسية</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row g-3">
+                                                <div class="col-md-6">
+                                                    <label for="report-name" class="form-label">اسم التقرير</label>
+                                                    <input type="text" class="form-control" id="report-name" placeholder="أدخل اسم التقرير">
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="report-type" class="form-label">نوع التقرير</label>
+                                                    <select class="form-select" id="report-type">
+                                                        <option value="" selected disabled>اختر نوع التقرير</option>
+                                                        <option value="performance">تقرير أداء</option>
+                                                        <option value="satisfaction">تقرير رضا العملاء</option>
+                                                        <option value="comparison">تقرير مقارنة</option>
+                                                        <option value="analysis">تقرير تحليلي</option>
+                                                        <option value="export">تصدير بيانات</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="report-format" class="form-label">صيغة التقرير</label>
+                                                    <select class="form-select" id="report-format">
+                                                        <option value="pdf">PDF</option>
+                                                        <option value="excel">Excel</option>
+                                                        <option value="html">HTML</option>
+                                                        <option value="csv">CSV</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="report-schedule" class="form-label">جدولة التقرير (اختياري)</label>
+                                                    <select class="form-select" id="report-schedule">
+                                                        <option value="none" selected>بدون جدولة</option>
+                                                        <option value="daily">يومي</option>
+                                                        <option value="weekly">أسبوعي</option>
+                                                        <option value="monthly">شهري</option>
+                                                        <option value="quarterly">ربع سنوي</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-12">
+                                                    <label for="report-description" class="form-label">وصف التقرير</label>
+                                                    <textarea class="form-control" id="report-description" rows="3" placeholder="أدخل وصفاً مختصراً للتقرير"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- معايير البيانات -->
+                                    <div class="card shadow-sm mb-4">
+                                        <div class="card-header bg-light">
+                                            <h6 class="mb-0">معايير البيانات</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row g-3">
+                                                <div class="col-md-6">
+                                                    <label for="date-range" class="form-label">النطاق الزمني</label>
+                                                    <select class="form-select" id="date-range">
+                                                        <option value="last-week">الأسبوع الماضي</option>
+                                                        <option value="last-month" selected>الشهر الماضي</option>
+                                                        <option value="last-quarter">الربع الماضي</option>
+                                                        <option value="last-year">السنة الماضية</option>
+                                                        <option value="custom">مخصص</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="data-source" class="form-label">مصدر البيانات</label>
+                                                    <select class="form-select" id="data-source">
+                                                        <option value="all" selected>جميع المصادر</option>
+                                                        <option value="reviews">التقييمات فقط</option>
+                                                        <option value="customers">بيانات العملاء</option>
+                                                        <option value="properties">بيانات العقارات</option>
+                                                        <option value="transactions">المعاملات</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-6 d-none" id="custom-date-range">
+                                                    <div class="row g-2">
+                                                        <div class="col-6">
+                                                            <label for="start-date" class="form-label">تاريخ البدء</label>
+                                                            <input type="date" class="form-control" id="start-date">
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <label for="end-date" class="form-label">تاريخ الانتهاء</label>
+                                                            <input type="date" class="form-control" id="end-date">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="data-granularity" class="form-label">مستوى التفصيل</label>
+                                                    <select class="form-select" id="data-granularity">
+                                                        <option value="daily">يومي</option>
+                                                        <option value="weekly" selected>أسبوعي</option>
+                                                        <option value="monthly">شهري</option>
+                                                        <option value="quarterly">ربع سنوي</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-12">
+                                                    <label class="form-label">فلاتر إضافية</label>
+                                                    <div class="card border">
+                                                        <div class="card-body py-2">
+                                                            <div class="row g-2">
+                                                                <div class="col-md-4">
+                                                                    <div class="form-check">
+                                                                        <input class="form-check-input" type="checkbox" value="" id="filter-positive-reviews">
+                                                                        <label class="form-check-label" for="filter-positive-reviews">
+                                                                            التقييمات الإيجابية فقط
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="form-check">
+                                                                        <input class="form-check-input" type="checkbox" value="" id="filter-negative-reviews">
+                                                                        <label class="form-check-label" for="filter-negative-reviews">
+                                                                            التقييمات السلبية فقط
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="form-check">
+                                                                        <input class="form-check-input" type="checkbox" value="" id="filter-unresolved">
+                                                                        <label class="form-check-label" for="filter-unresolved">
+                                                                            القضايا غير المحلولة
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- مكونات التقرير -->
+                                    <div class="card shadow-sm mb-4">
+                                        <div class="card-header bg-light">
+                                            <h6 class="mb-0">مكونات التقرير</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row g-3">
+                                                <div class="col-12">
+                                                    <div class="card border">
+                                                        <div class="card-body py-2">
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox" value="" id="component-summary" checked>
+                                                                <label class="form-check-label" for="component-summary">
+                                                                    ملخص تنفيذي
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="card border">
+                                                        <div class="card-body py-2">
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox" value="" id="component-charts" checked>
+                                                                <label class="form-check-label" for="component-charts">
+                                                                    الرسوم البيانية
+                                                                </label>
+                                                            </div>
+                                                            <div class="ms-4 mt-2">
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input" type="checkbox" value="" id="chart-trend" checked>
+                                                                    <label class="form-check-label" for="chart-trend">
+                                                                        مخطط الاتجاهات
+                                                                    </label>
+                                                                </div>
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input" type="checkbox" value="" id="chart-distribution" checked>
+                                                                    <label class="form-check-label" for="chart-distribution">
+                                                                        مخطط التوزيع
+                                                                    </label>
+                                                                </div>
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input" type="checkbox" value="" id="chart-comparison">
+                                                                    <label class="form-check-label" for="chart-comparison">
+                                                                        مخطط المقارنة
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="card border">
+                                                        <div class="card-body py-2">
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox" value="" id="component-data-tables" checked>
+                                                                <label class="form-check-label" for="component-data-tables">
+                                                                    جداول البيانات
+                                                                </label>
+                                                            </div>
+                                                            <div class="ms-4 mt-2">
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input" type="checkbox" value="" id="table-detailed" checked>
+                                                                    <label class="form-check-label" for="table-detailed">
+                                                                        جدول البيانات التفصيلية
+                                                                    </label>
+                                                                </div>
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input" type="checkbox" value="" id="table-summary" checked>
+                                                                    <label class="form-check-label" for="table-summary">
+                                                                        جدول الملخص
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="card border">
+                                                        <div class="card-body py-2">
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox" value="" id="component-recommendations">
+                                                                <label class="form-check-label" for="component-recommendations">
+                                                                    توصيات ذكية
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="card border">
+                                                        <div class="card-body py-2">
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox" value="" id="component-comments">
+                                                                <label class="form-check-label" for="component-comments">
+                                                                    تعليقات المستخدمين
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- خيارات التصدير والمشاركة -->
+                                    <div class="card shadow-sm mb-4">
+                                        <div class="card-header bg-light">
+                                            <h6 class="mb-0">خيارات التصدير والمشاركة</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row g-3">
+                                                <div class="col-md-6">
+                                                    <label for="share-options" class="form-label">خيارات المشاركة</label>
+                                                    <select class="form-select" id="share-options">
+                                                        <option value="private" selected>خاص (المالك فقط)</option>
+                                                        <option value="team">فريق التسويق</option>
+                                                        <option value="company">الشركة بأكملها</option>
+                                                        <option value="public">عام (رابط خارجي)</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="notification" class="form-label">إرسال إشعارات</label>
+                                                    <select class="form-select" id="notification">
+                                                        <option value="none">بدون إشعارات</option>
+                                                        <option value="email" selected>البريد الإلكتروني</option>
+                                                        <option value="sms">رسالة نصية</option>
+                                                        <option value="both">البريد الإلكتروني والرسائل النصية</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-12">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" value="" id="auto-update">
+                                                        <label class="form-check-label" for="auto-update">
+                                                            تحديث تلقائي للتقرير عند توفر بيانات جديدة
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- أزرار الإجراءات -->
+                                    <div class="d-flex justify-content-between mt-4">
+                                        <button type="button" class="btn btn-secondary" id="preview-report">
+                                            <i class="fas fa-eye me-1"></i> معاينة التقرير
+                                        </button>
+                                        <div>
+                                            <button type="button" class="btn btn-outline-secondary me-2" id="cancel-report">
+                                                إلغاء
+                                            </button>
+                                            <button type="submit" class="btn btn-primary" id="generate-report">
+                                                <i class="fas fa-file-alt me-1"></i> إنشاء التقرير
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- تذييل الصفحة -->
+    <div id="footer-placeholder"></div>
+
+    <!-- تضمين النصوص البرمجية المشتركة -->
+    <div id="scripts-placeholder"></div>
+
+    <!-- نصوص مخصصة لصفحة مولد التقارير -->
+    <script>
+        $(function() {
+            // تحميل المكونات المشتركة
+            $("#navbar-placeholder").load("../../includes/navbar.html");
+            $("#sidebar-placeholder").load("../../includes/sidebar.html");
+            $("#footer-placeholder").load("../../includes/footer.html");
+            $("#scripts-placeholder").load("../../includes/scripts.html", function() {
+                // تهيئة مولد التقارير بعد تحميل النصوص البرمجية المشتركة
+                initReportGenerator();
+            });
+        });
+
+        // تهيئة مولد التقارير
+        function initReportGenerator() {
+            console.log("تهيئة مولد التقارير");
+            
+            // إعداد أحداث النموذج
+            setupFormEvents();
+            
+            // ضبط التواريخ الافتراضية للنطاق الزمني المخصص
+            setDefaultDates();
+        }
+
+        // إعداد أحداث النموذج
+        function setupFormEvents() {
+            // إظهار/إخفاء حقول التاريخ المخصصة عند تغيير النطاق الزمني
+            $("#date-range").on("change", function() {
+                if ($(this).val() === "custom") {
+                    $("#custom-date-range").removeClass("d-none");
+                } else {
+                    $("#custom-date-range").addClass("d-none");
+                }
+            });
+            
+            // ربط/فك الارتباط بين خيارات الرسوم البيانية وخانة الاختيار الرئيسية
+            $("#component-charts").on("change", function() {
+                const isChecked = $(this).prop("checked");
+                $("#chart-trend, #chart-distribution, #chart-comparison").prop("disabled", !isChecked);
+                if (!isChecked) {
+                    $("#chart-trend, #chart-distribution, #chart-comparison").prop("checked", false);
+                }
+            });
+            
+            // ربط/فك الارتباط بين خيارات جداول البيانات وخانة الاختيار الرئيسية
+            $("#component-data-tables").on("change", function() {
+                const isChecked = $(this).prop("checked");
+                $("#table-detailed, #table-summary").prop("disabled", !isChecked);
+                if (!isChecked) {
+                    $("#table-detailed, #table-summary").prop("checked", false);
+                }
+            });
+            
+            // معالجة النقر على زر معاينة التقرير
+            $("#preview-report").on("click", function(e) {
+                e.preventDefault();
+                console.log("معاينة التقرير");
+                // هنا سيتم إظهار معاينة للتقرير
+                alert("ستظهر معاينة للتقرير هنا");
+            });
+            
+            // معالجة النقر على زر إنشاء التقرير
+            $("#report-generator-form").on("submit", function(e) {
+                e.preventDefault();
+                console.log("إنشاء التقرير");
+                
+                // التحقق من صحة النموذج
+                if (!validateForm()) {
+                    return;
+                }
+                
+                // إظهار رسالة النجاح وإعادة التوجيه
+                alert("تم إنشاء التقرير بنجاح");
+                window.location.href = "reports_dashboard.html";
+            });
+            
+            // معالجة النقر على زر الإلغاء
+            $("#cancel-report").on("click", function() {
+                console.log("إلغاء إنشاء التقرير");
+                
+                // التأكيد قبل الإلغاء
+                if (confirm("هل أنت متأكد من إلغاء إنشاء التقرير؟ ستفقد جميع البيانات التي أدخلتها.")) {
+                    window.location.href = "reports_dashboard.html";
+                }
+            });
+            
+            // معالجة النقر على زر حفظ كمسودة
+            $("#save-report-draft").on("click", function() {
+                console.log("حفظ التقرير كمسودة");
+                
+                // إظهار رسالة النجاح
+                alert("تم حفظ التقرير كمسودة");
+            });
+        }
+
+        // ضبط التواريخ الافتراضية للنطاق الزمني المخصص
+        function setDefaultDates() {
+            const today = new Date();
+            
+            // تاريخ الانتهاء هو اليوم
+            const endDate = formatDate(today);
+            $("#end-date").val(endDate);
+            
+            // تاريخ البدء هو قبل شهر من اليوم
+            const startDate = new Date(today);
+            startDate.setMonth(startDate.getMonth() - 1);
+            $("#start-date").val(formatDate(startDate));
+        }
+
+        // تنسيق التاريخ بصيغة YYYY-MM-DD
+        function formatDate(date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
+        // التحقق من صحة النموذج
+        function validateForm() {
+            let isValid = true;
+            
+            // التحقق من اسم التقرير
+            if (!$("#report-name").val().trim()) {
+                alert("يرجى إدخال اسم التقرير");
+                $("#report-name").focus();
+                isValid = false;
+            }
+            
+            // التحقق من نوع التقرير
+            else if (!$("#report-type").val()) {
+                alert("يرجى اختيار نوع التقرير");
+                $("#report-type").focus();
+                isValid = false;
+            }
+            
+            // التحقق من النطاق الزمني المخصص (إذا تم اختياره)
+            else if ($("#date-range").val() === "custom") {
+                const startDate = $("#start-date").val();
+                const endDate = $("#end-date").val();
+                
+                if (!startDate || !endDate) {
+                    alert("يرجى تحديد تاريخ البدء وتاريخ الانتهاء");
+                    isValid = false;
+                } else if (new Date(startDate) > new Date(endDate)) {
+                    alert("يجب أن يكون تاريخ البدء قبل تاريخ الانتهاء");
+                    isValid = false;
+                }
+            }
+            
+            return isValid;
+        }
+    </script>
+</body>
+</html>

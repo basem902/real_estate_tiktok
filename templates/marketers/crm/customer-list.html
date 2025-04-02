@@ -634,7 +634,8 @@
 </div>
 
 <!-- حاوية الإشعارات -->
-<div class="modal fade" id="customerModal" tabindex="-1" aria-labelledby="customerModalLabel" aria-hidden="true">
+<div id="notification-container"></div>
+
 <!-- نموذج إضافة/تعديل عميل -->
 <div class="modal fade" id="customerModal" tabindex="-1" aria-labelledby="customerModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -735,6 +736,20 @@
 {% block scripts %}
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // تأكد من تهيئة المودال
+        const customerModalElement = document.getElementById('customerModal');
+        if (customerModalElement) {
+            const customerModal = new bootstrap.Modal(customerModalElement);
+            
+            // تهيئة زر إضافة عميل جديد
+            const addCustomerBtn = document.querySelector('button[data-bs-target="#customerModal"]');
+            if (addCustomerBtn) {
+                addCustomerBtn.addEventListener('click', function() {
+                    customerModal.show();
+                });
+            }
+        }
+        
         // تحديث الإجراءات المجمعة عند تحديد/إلغاء تحديد المربعات
         const checkboxes = document.querySelectorAll('.customer-select');
         const bulkActionsDropdown = document.getElementById('bulkActions');

@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تفاصيل التقييم | المسوقين العقاريين</title>
+    <link rel="stylesheet" href="../assets/css/bootstrap.rtl.min.css">
+    <link rel="stylesheet" href="../assets/css/all.min.css">
+    <link rel="stylesheet" href="styles/reviews_detail.css">
+</head>
+<body>
+    <!-- شريط التنقل العلوي -->
+    <div id="navbar-placeholder"></div>
+
+    <div class="container-fluid my-4">
+        <div class="row">
+            <!-- القائمة الجانبية -->
+            <div class="col-lg-2 mb-4">
+                <div id="sidebar-placeholder"></div>
+            </div>
+
+            <!-- المحتوى الرئيسي -->
+            <div class="col-lg-10">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card shadow-sm mb-4">
+                            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0">تفاصيل التقييم <span id="review-id">#12345</span></h5>
+                                <div>
+                                    <a href="reviews_dashboard.html" class="btn btn-sm btn-light"><i class="fas fa-arrow-left"></i> العودة</a>
+                                    <button class="btn btn-sm btn-light" id="print-review"><i class="fas fa-print"></i></button>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <!-- بيانات العميل والعقار -->
+                                    <div class="col-md-4">
+                                        <div class="card shadow-sm h-100">
+                                            <div class="card-header bg-light">
+                                                <h6 class="mb-0">معلومات التقييم</h6>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="mb-3">
+                                                    <label class="fw-bold">العميل:</label>
+                                                    <div id="client-info" class="d-flex align-items-center">
+                                                        <img src="../assets/img/avatar.jpg" class="rounded-circle me-2" width="40" height="40" alt="صورة العميل">
+                                                        <div>
+                                                            <span id="client-name">أحمد محمد</span>
+                                                            <a href="#" class="text-primary d-block small">عرض الملف الشخصي</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="fw-bold">العقار:</label>
+                                                    <div id="property-info">
+                                                        <a href="#" class="text-primary">فيلا في حي الياسمين</a>
+                                                        <span class="badge bg-info">فيلا</span>
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="fw-bold">تاريخ التقييم:</label>
+                                                    <div id="review-date">25 مارس 2025</div>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="fw-bold">التقييم العام:</label>
+                                                    <div id="overall-rating" class="d-flex align-items-center">
+                                                        <div class="stars">
+                                                            <i class="fas fa-star text-warning"></i>
+                                                            <i class="fas fa-star text-warning"></i>
+                                                            <i class="fas fa-star text-warning"></i>
+                                                            <i class="fas fa-star text-warning"></i>
+                                                            <i class="far fa-star text-warning"></i>
+                                                        </div>
+                                                        <span class="ms-2">4.0/5.0</span>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <label class="fw-bold">الحالة:</label>
+                                                    <div>
+                                                        <select class="form-select" id="review-status">
+                                                            <option value="pending">بانتظار الرد</option>
+                                                            <option value="responded">تم الرد</option>
+                                                            <option value="resolved">تم الحل</option>
+                                                            <option value="escalated">مصعدة</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- تفاصيل التقييم -->
+                                    <div class="col-md-8">
+                                        <div class="card shadow-sm mb-4">
+                                            <div class="card-header bg-light">
+                                                <h6 class="mb-0">تفاصيل التقييم</h6>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="mb-4">
+                                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                                        <label class="fw-bold">تقييم الموقع:</label>
+                                                        <div class="stars">
+                                                            <i class="fas fa-star text-warning"></i>
+                                                            <i class="fas fa-star text-warning"></i>
+                                                            <i class="fas fa-star text-warning"></i>
+                                                            <i class="fas fa-star text-warning"></i>
+                                                            <i class="fas fa-star text-warning"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                                        <label class="fw-bold">جودة البناء:</label>
+                                                        <div class="stars">
+                                                            <i class="fas fa-star text-warning"></i>
+                                                            <i class="fas fa-star text-warning"></i>
+                                                            <i class="fas fa-star text-warning"></i>
+                                                            <i class="fas fa-star text-warning"></i>
+                                                            <i class="far fa-star text-warning"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                                        <label class="fw-bold">التصميم الداخلي:</label>
+                                                        <div class="stars">
+                                                            <i class="fas fa-star text-warning"></i>
+                                                            <i class="fas fa-star text-warning"></i>
+                                                            <i class="fas fa-star text-warning"></i>
+                                                            <i class="far fa-star text-warning"></i>
+                                                            <i class="far fa-star text-warning"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                                        <label class="fw-bold">المساحات:</label>
+                                                        <div class="stars">
+                                                            <i class="fas fa-star text-warning"></i>
+                                                            <i class="fas fa-star text-warning"></i>
+                                                            <i class="fas fa-star text-warning"></i>
+                                                            <i class="fas fa-star text-warning"></i>
+                                                            <i class="far fa-star text-warning"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <label class="fw-bold">القيمة مقابل السعر:</label>
+                                                        <div class="stars">
+                                                            <i class="fas fa-star text-warning"></i>
+                                                            <i class="fas fa-star text-warning"></i>
+                                                            <i class="fas fa-star text-warning"></i>
+                                                            <i class="far fa-star text-warning"></i>
+                                                            <i class="far fa-star text-warning"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <!-- تعليق التقييم -->
+                                                <div class="mb-3">
+                                                    <label class="fw-bold">تعليق العميل:</label>
+                                                    <div id="review-comment" class="p-3 bg-light rounded">
+                                                        <p>موقع العقار ممتاز جداً وقريب من جميع الخدمات. جودة البناء جيدة بشكل عام لكن هناك بعض المشاكل في التشطيبات النهائية. المساحات مناسبة للعائلة المتوسطة. أعتقد أن السعر مرتفع قليلاً مقارنة بما رأيته في مناطق مشابهة.</p>
+                                                    </div>
+                                                </div>
+
+                                                <!-- تحليل المشاعر -->
+                                                <div class="mb-4">
+                                                    <label class="fw-bold">تحليل المشاعر:</label>
+                                                    <div class="progress">
+                                                        <div class="progress-bar bg-success" role="progressbar" style="width: 65%" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100">إيجابي 65%</div>
+                                                        <div class="progress-bar bg-warning" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">محايد 25%</div>
+                                                        <div class="progress-bar bg-danger" role="progressbar" style="width: 10%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100">سلبي 10%</div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- صور التقييم -->
+                                                <div class="mb-4">
+                                                    <label class="fw-bold">الصور المرفقة:</label>
+                                                    <div class="row g-2 mt-2">
+                                                        <div class="col-md-3">
+                                                            <a href="#" class="text-decoration-none">
+                                                                <img src="../assets/img/property-sample.jpg" class="img-thumbnail" alt="صورة العقار">
+                                                            </a>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <a href="#" class="text-decoration-none">
+                                                                <img src="../assets/img/property-sample2.jpg" class="img-thumbnail" alt="صورة العقار">
+                                                            </a>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <a href="#" class="text-decoration-none">
+                                                                <img src="../assets/img/property-sample3.jpg" class="img-thumbnail" alt="صورة العقار">
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- ملاحظات صوتية -->
+                                                <div class="mb-4">
+                                                    <label class="fw-bold">الملاحظات الصوتية:</label>
+                                                    <div class="mt-2">
+                                                        <audio controls class="w-100">
+                                                            <source src="#" type="audio/mpeg">
+                                                            متصفحك لا يدعم عنصر الصوت.
+                                                        </audio>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- تقييم المسوق -->
+                                        <div class="card shadow-sm mb-4">
+                                            <div class="card-header bg-light">
+                                                <h6 class="mb-0">تقييم المسوق العقاري</h6>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="mb-3">
+                                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                                        <label class="fw-bold">مستوى المعرفة والخبرة:</label>
+                                                        <div class="stars">
+                                                            <i class="fas fa-star text-warning"></i>
+                                                            <i class="fas fa-star text-warning"></i>
+                                                            <i class="fas fa-star text-warning"></i>
+                                                            <i class="fas fa-star text-warning"></i>
+                                                            <i class="fas fa-star text-warning"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                                        <label class="fw-bold">الاحترافية:</label>
+                                                        <div class="stars">
+                                                            <i class="fas fa-star text-warning"></i>
+                                                            <i class="fas fa-star text-warning"></i>
+                                                            <i class="fas fa-star text-warning"></i>
+                                                            <i class="fas fa-star text-warning"></i>
+                                                            <i class="far fa-star text-warning"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <label class="fw-bold">دقة المعلومات:</label>
+                                                        <div class="stars">
+                                                            <i class="fas fa-star text-warning"></i>
+                                                            <i class="fas fa-star text-warning"></i>
+                                                            <i class="fas fa-star text-warning"></i>
+                                                            <i class="fas fa-star text-warning"></i>
+                                                            <i class="far fa-star text-warning"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <label class="fw-bold">تعليق على المسوق:</label>
+                                                    <div class="p-3 bg-light rounded">
+                                                        <p>المسوق كان على دراية كبيرة بتفاصيل العقار والمنطقة المحيطة. قدم معلومات دقيقة عن مواصفات البناء والخدمات القريبة. أسلوبه احترافي ومقنع.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- نموذج الرد على التقييم -->
+                                        <div class="card shadow-sm">
+                                            <div class="card-header bg-light">
+                                                <h6 class="mb-0">الرد على التقييم</h6>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="mb-3">
+                                                    <label class="form-label">اختر قالب الرد:</label>
+                                                    <select class="form-select" id="reply-template">
+                                                        <option value="">-- اختر قالب --</option>
+                                                        <option value="positive">الرد على تقييم إيجابي</option>
+                                                        <option value="neutral">الرد على تقييم محايد</option>
+                                                        <option value="negative">الرد على تقييم سلبي</option>
+                                                        <option value="custom">رد مخصص</option>
+                                                    </select>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">نص الرد:</label>
+                                                    <textarea class="form-control" id="reply-text" rows="4" placeholder="اكتب ردك هنا..."></textarea>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" id="notify-client">
+                                                        <label class="form-check-label" for="notify-client">إرسال إشعار للعميل</label>
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex justify-content-end">
+                                                    <button class="btn btn-primary" id="submit-reply">إرسال الرد</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- تذييل الصفحة -->
+    <div id="footer-placeholder"></div>
+
+    <!-- نوافذ الحوار -->
+    <div class="modal fade" id="image-modal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">عرض الصورة</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <img src="" class="img-fluid" id="modal-image" alt="صورة العقار">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- سكريبت التفاصيل -->
+    <script src="../assets/js/jquery.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="js/ReviewAPIService.js"></script>
+    <script>
+        // تحميل المكونات المشتركة
+        $(function () {
+            $("#navbar-placeholder").load("../includes/navbar.html");
+            $("#sidebar-placeholder").load("../includes/sidebar.html");
+            $("#footer-placeholder").load("../includes/footer.html");
+            
+            // تهيئة صفحة التفاصيل
+            initReviewDetail();
+            
+            // استمع إلى تغييرات حالة التقييم
+            $("#review-status").on("change", function() {
+                updateReviewStatus($(this).val());
+            });
+            
+            // استمع إلى اختيار قالب الرد
+            $("#reply-template").on("change", function() {
+                loadReplyTemplate($(this).val());
+            });
+            
+            // زر إرسال الرد
+            $("#submit-reply").on("click", function() {
+                submitReply();
+            });
+            
+            // مشاهدة الصور بالحجم الكامل
+            $(".img-thumbnail").on("click", function(e) {
+                e.preventDefault();
+                var imgSrc = $(this).attr("src");
+                $("#modal-image").attr("src", imgSrc);
+                $("#image-modal").modal("show");
+            });
+        });
+
+        function initReviewDetail() {
+            // تحميل بيانات التقييم من الخادم
+            // في هذا المثال نستخدم بيانات ثابتة
+            console.log("تهيئة صفحة تفاصيل التقييم");
+        }
+        
+        function updateReviewStatus(status) {
+            console.log("تحديث حالة التقييم إلى: " + status);
+            // إرسال الحالة المحدثة إلى الخادم
+        }
+        
+        function loadReplyTemplate(template) {
+            var replyText = "";
+            
+            switch(template) {
+                case "positive":
+                    replyText = "شكراً لك على تقييمك الإيجابي للعقار والخدمة. نحن سعداء بأن تجربتك كانت مرضية ونتطلع إلى خدمتك مرة أخرى في المستقبل.";
+                    break;
+                case "neutral":
+                    replyText = "نشكرك على تقييمك وملاحظاتك. سنأخذ رأيك بعين الاعتبار لتحسين خدماتنا. نرحب بأي استفسارات إضافية.";
+                    break;
+                case "negative":
+                    replyText = "نأسف لسماع أن تجربتك لم تكن على المستوى المطلوب. نقدر ملاحظاتك ونود العمل معك لمعالجة أي مشكلات. يرجى التواصل مع مديرنا المباشر على الرقم ...";
+                    break;
+                default:
+                    replyText = "";
+            }
+            
+            $("#reply-text").val(replyText);
+        }
+        
+        function submitReply() {
+            var replyText = $("#reply-text").val();
+            var notifyClient = $("#notify-client").is(":checked");
+            
+            if (!replyText) {
+                alert("يرجى كتابة رد قبل الإرسال");
+                return;
+            }
+            
+            console.log("إرسال الرد: " + replyText);
+            console.log("إشعار العميل: " + notifyClient);
+            
+            // إرسال الرد إلى الخادم
+            // بعد النجاح:
+            alert("تم إرسال الرد بنجاح");
+            
+            // تحديث حالة التقييم
+            $("#review-status").val("responded").trigger("change");
+        }
+    </script>
+</body>
+</html>

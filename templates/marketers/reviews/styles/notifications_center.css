@@ -1,0 +1,173 @@
+/* تنسيقات عامة لمركز الإشعارات */
+:root {
+    --primary-color: #007bff;
+    --danger-color: #dc3545;
+    --success-color: #28a745;
+    --warning-color: #ffc107;
+    --info-color: #17a2b8;
+    --secondary-color: #6c757d;
+    --light-color: #f8f9fa;
+    --dark-color: #343a40;
+    --card-border-radius: 0.5rem;
+    --notification-border-radius: 0.25rem;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    font-family: 'Cairo', sans-serif;
+}
+
+.container-fluid {
+    padding: 1.5rem;
+}
+
+/* تعديل الصفوف لتكون متقاربة أكثر */
+.row {
+    margin-right: -8px;
+    margin-left: -8px;
+}
+
+.row > [class^="col-"] {
+    padding-right: 8px;
+    padding-left: 8px;
+}
+
+/* تنسيقات البطاقات */
+.card {
+    border-radius: var(--card-border-radius);
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    height: 100%;
+    border: none;
+    margin-bottom: 1rem;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.card-body {
+    padding: 1rem;
+}
+
+/* تنسيقات الإشعارات */
+.list-group-item {
+    border-left: none;
+    border-right: none;
+    padding: 1rem;
+    transition: background-color 0.2s ease;
+}
+
+.list-group-item:hover {
+    background-color: rgba(0, 123, 255, 0.05);
+}
+
+.list-group-item.unread {
+    background-color: rgba(0, 123, 255, 0.03);
+    position: relative;
+}
+
+.list-group-item.unread:before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 50%;
+    background-color: var(--primary-color);
+    border-radius: 4px 0 0 4px;
+}
+
+.list-group-item.urgent {
+    position: relative;
+}
+
+.list-group-item.urgent:before {
+    background-color: var(--danger-color);
+    height: 70%;
+}
+
+/* أيقونة الإشعار */
+.notification-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+/* أزرار إجراءات الإشعارات */
+.notification-actions .btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+}
+
+/* شارات التصنيف */
+.badge {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 50px;
+}
+
+/* تنسيقات الفلاتر */
+.form-select, .form-control {
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+}
+
+/* تنسيقات ترقيم الصفحات */
+.pagination .page-link {
+    border-radius: 0.25rem;
+    margin: 0 2px;
+    color: var(--primary-color);
+}
+
+.pagination .page-item.active .page-link {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+/* حالات الإشعارات المختلفة */
+.notification-status-pending {
+    color: var(--warning-color);
+}
+
+.notification-status-approved {
+    color: var(--success-color);
+}
+
+.notification-status-rejected {
+    color: var(--danger-color);
+}
+
+/* تنسيقات تفاعلية للإشعارات */
+@media (hover: hover) {
+    .list-group-item.unread:hover:before {
+        height: 70%;
+    }
+}
+
+/* التجاوب مع الشاشات الصغيرة */
+@media (max-width: 768px) {
+    .notification-actions {
+        margin-top: 0.5rem;
+        display: flex;
+        justify-content: flex-end;
+    }
+    
+    .list-group-item .d-flex {
+        flex-direction: column;
+    }
+    
+    .notification-icon {
+        width: 40px;
+        height: 40px;
+    }
+}

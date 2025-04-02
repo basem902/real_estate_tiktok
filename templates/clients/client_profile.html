@@ -1,619 +1,958 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 
-{% block title %}الملف الشخصي | روابط تك{% endblock %}
+{% block title %}الملف الشخصي - العميل{% endblock %}
 
-{% block extra_head %}
+{% block styles %}
 <style>
-    /* أنماط خاصة بصفحة البروفايل */
     :root {
-        --primary-color: #0d6efd;
-        --secondary-color: #6c757d;
-        --dark-color: #212529;
-        --light-color: #f8f9fa;
-        --success-color: #198754;
-        --info-color: #0dcaf0;
-        --warning-color: #ffc107;
-        --danger-color: #dc3545;
-        --profile-bg: var(--light-color);
-        --text-color: var(--dark-color);
-        --border-radius: 15px;
-        --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        --transition-speed: 0.3s;
+        --primary-color: #0056b3;
+        --primary-dark: #004494;
+        --primary-light: #e6f0ff;
+        --primary-rgb: 0, 86, 179;
+        --text-color: #000000;
+        --text-secondary: #333333;
+        --text-tertiary: #555555;
+        --card-bg: #ffffff;
+        --border-color: #e0e0e0;
+        --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        --card-border-radius: 8px;
+        --input-border-radius: 6px;
     }
-
-    [data-bs-theme="dark"] {
-        --profile-bg: #121212;
-        --text-color: #f8f9fa;
-        --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    
+    body {
+        font-family: 'Segoe UI', 'Arial', sans-serif !important;
+        font-size: 20px !important;
+        color: #000000 !important;
+        font-weight: 700 !important;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        line-height: 1.6;
     }
-
-    .profile-container {
-        padding: 1rem;
-        background-color: var(--profile-bg);
-        color: var(--text-color);
-        transition: all var(--transition-speed) ease;
+    
+    /* تكبير النص في الصفحة الرئيسية مع تجاوز الأنماط */
+    .main-content p, p, div, span, li, td, th {
+        font-size: 22px !important;
+        line-height: 1.8 !important;
+        color: #000000 !important;
+        font-weight: 700 !important;
     }
-
-    .profile-header {
-        position: relative;
-        margin-bottom: 4.5rem;
-        border-radius: var(--border-radius);
-        overflow: hidden;
+    
+    /* تحسين عناوين الصفحة */
+    h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+        color: #0056b3 !important;
+        font-weight: 900 !important;
+        letter-spacing: 0.5px !important;
+        margin-bottom: 20px !important;
+        line-height: 1.4 !important;
     }
-
-    .profile-cover {
-        height: 200px;
-        width: 100%;
-        background-image: linear-gradient(135deg, #00c6fb 0%, #005bea 100%);
-        position: relative;
+    
+    h1, .h1 {
+        font-size: 42px !important;
     }
-
-    .profile-avatar-container {
-        position: absolute;
-        bottom: -60px;
-        right: 50%;
-        transform: translateX(50%);
-        width: 120px;
-        height: 120px;
-        border-radius: 50%;
-        border: 4px solid var(--profile-bg);
-        background-color: var(--profile-bg);
-        overflow: hidden;
-        box-shadow: var(--card-shadow);
-        transition: all var(--transition-speed) ease;
+    
+    h2, .h2 {
+        font-size: 36px !important;
     }
-
-    .profile-avatar {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
+    
+    h3, .h3 {
+        font-size: 28px !important;
     }
-
-    .edit-profile-btn {
-        position: absolute;
-        bottom: -60px;
-        left: 10px;
-        z-index: 2;
+    
+    /* تحسين الملف الشخصي */
+    .profile-name, .card-title {
+        font-size: 36px !important;
+        font-weight: 900 !important;
+        color: #0056b3 !important;
+        margin-bottom: 15px !important;
+        text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1) !important;
     }
-
-    .profile-info {
-        text-align: center;
-        padding: 1rem;
+    
+    .profile-role {
+        font-size: 24px !important;
+        font-weight: 700 !important;
+        color: #000000 !important;
+        margin-bottom: 25px !important;
     }
-
-    .profile-name {
-        font-size: 1.5rem;
-        font-weight: 700;
-        margin-bottom: 0.5rem;
-    }
-
-    .profile-username {
-        color: var(--secondary-color);
-        margin-bottom: 1rem;
-    }
-
-    .profile-bio {
-        margin-bottom: 1rem;
-    }
-
-    .profile-stats {
-        display: flex;
-        justify-content: center;
-        gap: 1.5rem;
-        margin-bottom: 1.5rem;
-    }
-
-    .stat-item {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
+    
+    /* تحسين الإحصائيات مع تجاوز جميع الأنماط */
     .stat-value {
-        font-weight: 700;
-        font-size: 1.2rem;
+        font-size: 38px !important;
+        font-weight: 900 !important;
+        color: #0056b3 !important;
+        margin-bottom: 8px !important;
+        text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.05) !important;
     }
-
+    
     .stat-label {
-        color: var(--secondary-color);
-        font-size: 0.9rem;
+        font-size: 20px !important;
+        font-weight: 700 !important;
+        color: #000000 !important;
     }
-
-    .profile-tabs .nav-link {
-        color: var(--secondary-color);
-        border: none;
-        border-bottom: 2px solid transparent;
-        border-radius: 0;
-        padding: 0.75rem 1rem;
-        transition: all var(--transition-speed) ease;
+    
+    /* تحسين التبويبات مع تجاوز جميع الأنماط */
+    .nav-tabs {
+        border-bottom: 3px solid #0056b3 !important;
     }
-
-    .profile-tabs .nav-link.active {
-        color: var(--primary-color);
-        border-bottom-color: var(--primary-color);
-        background-color: transparent;
+    
+    .nav-tabs .nav-link {
+        font-size: 22px !important;
+        font-weight: 800 !important;
+        padding: 15px 25px !important;
+        color: #333333 !important;
+        border: 2px solid transparent !important;
+        border-radius: 8px 8px 0 0 !important;
+        margin-right: 5px !important;
     }
-
-    .profile-card {
-        background-color: var(--profile-bg);
-        border-radius: var(--border-radius);
-        margin-bottom: 1rem;
-        overflow: hidden;
-        box-shadow: var(--card-shadow);
-        transition: all var(--transition-speed) ease;
+    
+    .nav-tabs .nav-link.active {
+        color: white !important;
+        background-color: #0056b3 !important;
+        border-color: #0056b3 !important;
+        font-weight: 900 !important;
     }
-
-    .profile-card:hover {
-        transform: translateY(-3px);
+    
+    .nav-tabs .nav-link:hover:not(.active) {
+        background-color: #e6f0ff !important;
+        color: #0056b3 !important;
+        border-color: #0056b3 !important;
     }
-
-    .property-image {
-        height: 200px;
-        object-fit: cover;
+    
+    /* تحسين بطاقات العقارات */
+    .property-title {
+        font-size: 26px !important;
+        font-weight: 900 !important;
+        color: #0056b3 !important;
+        margin-bottom: 15px !important;
+        line-height: 1.4 !important;
     }
-
-    .saved-property {
-        position: relative;
+    
+    .property-location {
+        font-size: 20px !important;
+        font-weight: 700 !important;
+        color: #000000 !important;
+        margin-bottom: 15px !important;
     }
-
-    .remove-saved {
-        position: absolute;
-        top: 10px;
-        left: 10px;
-        z-index: 1;
-        opacity: 0;
-        transition: opacity var(--transition-speed) ease;
+    
+    .property-price {
+        font-size: 26px !important;
+        font-weight: 900 !important;
+        color: #0056b3 !important;
+        background-color: #e6f0ff !important;
+        padding: 8px 15px !important;
+        border-radius: 6px !important;
+        display: inline-block !important;
     }
-
-    .saved-property:hover .remove-saved {
-        opacity: 1;
+    
+    .spec-value {
+        font-size: 24px !important;
+        font-weight: 900 !important;
+        color: #0056b3 !important;
     }
-
-    .saved-property .property-price {
-        position: absolute;
-        bottom: 10px;
-        right: 10px;
-        background-color: rgba(0, 0, 0, 0.7);
-        color: #fff;
-        padding: 5px 10px;
-        border-radius: 5px;
-        font-weight: 700;
+    
+    .spec-label {
+        font-size: 18px !important;
+        font-weight: 700 !important;
+        color: #000000 !important;
     }
-
-    .profile-settings .list-group-item {
-        background-color: var(--profile-bg);
-        color: var(--text-color);
-        border-color: rgba(0, 0, 0, 0.1);
-        transition: all var(--transition-speed) ease;
+    
+    /* تحسين قسم النشاط */
+    #activity .timeline-date {
+        font-size: 26px !important;
+        font-weight: 900 !important;
+        color: #0056b3 !important;
+        margin-bottom: 15px !important;
+        padding-bottom: 8px !important;
+        border-bottom: 2px solid #0056b3 !important;
     }
-
-    [data-bs-theme="dark"] .profile-settings .list-group-item {
-        border-color: rgba(255, 255, 255, 0.1);
+    
+    #activity .activity-title {
+        font-size: 22px !important;
+        font-weight: 800 !important;
+        color: #0056b3 !important;
     }
-
-    .profile-settings .list-group-item:hover {
-        background-color: rgba(0, 0, 0, 0.03);
+    
+    #activity .activity-subtitle {
+        font-size: 20px !important;
+        font-weight: 700 !important;
+        color: #000000 !important;
     }
-
-    [data-bs-theme="dark"] .profile-settings .list-group-item:hover {
-        background-color: rgba(255, 255, 255, 0.03);
+    
+    #activity .activity-time {
+        font-size: 18px !important;
+        font-weight: 700 !important;
+        color: #555555 !important;
     }
-
-    /* للشاشات المتوسطة والكبيرة */
-    @media (min-width: 768px) {
-        .profile-container {
-            padding: 2rem;
-        }
-        
-        .profile-header {
-            margin-bottom: 2rem;
-        }
-        
-        .profile-avatar-container {
-            right: 2rem;
-            transform: none;
-            bottom: -60px;
-        }
-        
-        .profile-info {
-            text-align: right;
-            padding-right: 150px;
-        }
-        
-        .profile-stats {
-            justify-content: flex-start;
-            padding-right: 150px;
-        }
+    
+    /* تحسين قسم الإعدادات */
+    #settings .card-title {
+        font-size: 32px !important;
+        font-weight: 900 !important;
+        color: #0056b3 !important;
+        margin-bottom: 25px !important;
+        padding-bottom: 10px !important;
+        border-bottom: 3px solid #0056b3 !important;
     }
-
-    /* تحسينات للأجهزة اللمسية */
-    @media (hover: none) {
-        .remove-saved {
-            opacity: 1;
-        }
+    
+    #settings .settings-section-title {
+        font-size: 26px !important;
+        font-weight: 900 !important;
+        color: #0056b3 !important;
+        margin-bottom: 20px !important;
+        padding-bottom: 10px !important;
+        border-bottom: 2px solid #0056b3 !important;
     }
-
-    /* تعديلات للشاشات الصغيرة جدًا */
-    @media (max-width: 360px) {
-        .profile-stats {
-            gap: 0.75rem;
-        }
-        
-        .profile-tabs .nav-link {
-            padding: 0.5rem;
-        }
+    
+    #settings .form-label {
+        font-size: 20px !important;
+        font-weight: 700 !important;
+        color: #000000 !important;
+        margin-bottom: 10px !important;
     }
-
-    /* أنماط التأثيرات الحركية */
-    .fade-in {
-        animation: fadeIn 0.5s ease-in-out;
+    
+    #settings .form-control, 
+    #settings .form-select {
+        font-size: 18px !important;
+        font-weight: 600 !important;
+        padding: 12px 15px !important;
+        border: 2px solid #cccccc !important;
+        border-radius: 8px !important;
     }
-
-    @keyframes fadeIn {
-        from { opacity: 0; }
-        to { opacity: 1; }
+    
+    #settings .form-control:focus, 
+    #settings .form-select:focus {
+        border-color: #0056b3 !important;
+        box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.25) !important;
     }
-
-    .pulse {
-        animation: pulse 1.5s infinite;
+    
+    #settings .form-check-label {
+        font-size: 20px !important;
+        font-weight: 700 !important;
+        color: #000000 !important;
     }
-
-    @keyframes pulse {
-        0% { transform: scale(1); }
-        50% { transform: scale(1.05); }
-        100% { transform: scale(1); }
+    
+    /* أزرار بلون أزرق */
+    .btn-primary {
+        background-color: #0056b3 !important;
+        border-color: #0056b3 !important;
+        font-weight: 700 !important;
+        font-size: 18px !important;
+        padding: 10px 20px !important;
+        border-radius: 6px !important;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1) !important;
     }
-
-    /* تحسين القابلية للاستخدام للأجهزة اللمسية */
-    .touch-target {
-        min-height: 48px;
-        min-width: 48px;
+    
+    .btn-primary:hover {
+        background-color: #004494 !important;
+        border-color: #004494 !important;
+        transform: translateY(-2px) !important;
+        box-shadow: 0 5px 12px rgba(0, 0, 0, 0.15) !important;
+    }
+    
+    /* تحسين البطاقات وإضافة تأثيرات زرقاء مع تجاوز الأنماط */
+    .card {
+        background-color: #ffffff !important;
+        border: none !important;
+        border-radius: 10px !important;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1) !important;
+        overflow: hidden !important;
+        margin-bottom: 25px !important;
+        border-top: 4px solid #0056b3 !important;
+    }
+    
+    .card:hover {
+        box-shadow: 0 8px 25px rgba(0, 86, 179, 0.15) !important;
+        transform: translateY(-5px) !important;
+    }
+    
+    .card-header {
+        background-color: #e6f0ff !important;
+        border-bottom: 2px solid #0056b3 !important;
+        padding: 15px 20px !important;
+        font-size: 22px !important;
+        font-weight: 800 !important;
+        color: #0056b3 !important;
+    }
+    
+    .card-body {
+        padding: 20px !important;
+    }
+    
+    /* تأكيد أن التغييرات تُطبق على العناصر الرئيسية للصفحة */
+    #mainContent {
+        font-size: 22px !important;
+        color: #000000 !important;
+        font-weight: 700 !important;
+    }
+    
+    .profile-header {
+        background-color: #ffffff !important;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15) !important;
+    }
+    
+    .profile-info {
+        color: #000000 !important;
+        font-weight: 700 !important;
+    }
+    
+    .property-image img {
+        border-radius: 8px 8px 0 0 !important;
+    }
+    
+    /* تضمين css بخصائص مهمة للتأكد من تطبيق التغييرات */
+    * {
+        font-family: 'Segoe UI', 'Arial', sans-serif !important;
     }
 </style>
 {% endblock %}
 
 {% block content %}
-<!-- التنقل الرئيسي -->
-<nav class="navbar fixed-bottom navbar-light bg-white border-top pt-2 pb-2">
-    <div class="container-fluid">
-        <div class="row w-100 text-center">
-            <div class="col">
-                <a href="{{ url_for('client_feed') }}" class="text-secondary text-decoration-none">
-                    <i class="fas fa-home fa-lg"></i>
-                    <div class="small">الرئيسية</div>
-                </a>
-            </div>
-            <div class="col">
-                <a href="#" class="text-secondary text-decoration-none">
-                    <i class="fas fa-search fa-lg"></i>
-                    <div class="small">البحث</div>
-                </a>
-            </div>
-            <div class="col">
-                <a href="#" class="text-secondary text-decoration-none">
-                    <i class="fas fa-bell fa-lg"></i>
-                    <div class="small">الإشعارات</div>
-                </a>
-            </div>
-            <div class="col">
-                <a href="{{ url_for('client_profile') }}" class="text-primary text-decoration-none">
-                    <i class="fas fa-user fa-lg"></i>
-                    <div class="small">حسابي</div>
-                </a>
-            </div>
-        </div>
-    </div>
-</nav>
+<!-- طبقة التغطية للشاشات الصغيرة -->
+<div class="overlay" id="overlay"></div>
 
-<div class="profile-container pb-5 fade-in">
+{% include 'clients/client_sidebar.html' %}
+
+<div class="main-content" id="mainContent">
     <!-- رأس الملف الشخصي -->
     <div class="profile-header">
-        <div class="profile-cover"></div>
-        <div class="profile-avatar-container">
-            <img src="{{ url_for('static', filename='img/avatars/default-user.jpg') }}" alt="صورة الملف الشخصي" class="profile-avatar">
+        <div class="profile-cover" style="background-image: url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80');"></div>
+        <div class="profile-info">
+            <div class="profile-avatar">
+                <img src="https://randomuser.me/api/portraits/men/44.jpg" alt="صورة المستخدم" id="userAvatar">
+            </div>
+            <div class="profile-details">
+                <h2 class="profile-name">أحمد محمد علي</h2>
+                <p class="profile-role">عميل منذ يناير 2023</p>
+                <div class="profile-stats">
+                    <div class="stat-item">
+                        <div class="stat-value">15</div>
+                        <div class="stat-label">العقارات</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">8</div>
+                        <div class="stat-label">المفضلة</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">3</div>
+                        <div class="stat-label">الزيارات</div>
+                    </div>
+                </div>
+            </div>
+            <!-- إضافة زر تعديل الملف الشخصي -->
+            <div class="profile-actions">
+                <button class="btn btn-outline-primary btn-sm" id="editProfileBtn">
+                    <i class="fas fa-edit ml-1"></i> تعديل الملف
+                </button>
+            </div>
         </div>
-        <button class="btn btn-sm btn-primary rounded-circle edit-profile-btn">
-            <i class="fas fa-pencil-alt"></i>
-        </button>
     </div>
-
-    <!-- معلومات الملف الشخصي -->
-    <div class="profile-info">
-        <h1 class="profile-name">أحمد محمد</h1>
-        <div class="profile-username">@ahmed_mohammed</div>
-        <p class="profile-bio">مهتم بالاستثمار العقاري والبحث عن الفرص المميزة في المناطق الحيوية</p>
+    
+    <!-- إضافة قسم جديد للمعلومات الشخصية -->
+    <div class="card mb-3 section-spacing">
+        <div class="card-body">
+            <h5 class="card-title mb-3"><i class="fas fa-user-circle ml-2"></i> المعلومات الشخصية</h5>
+            <div class="row">
+                <div class="col-md-6 mb-2">
+                    <div class="personal-info-item">
+                        <span class="info-label"><i class="fas fa-envelope ml-1"></i> البريد الإلكتروني:</span>
+                        <span class="info-value">ahmed.ali@example.com</span>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-2">
+                    <div class="personal-info-item">
+                        <span class="info-label"><i class="fas fa-phone ml-1"></i> رقم الهاتف:</span>
+                        <span class="info-value">+966 50 123 4567</span>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-2">
+                    <div class="personal-info-item">
+                        <span class="info-label"><i class="fas fa-map-marker-alt ml-1"></i> المدينة:</span>
+                        <span class="info-value">الرياض</span>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-2">
+                    <div class="personal-info-item">
+                        <span class="info-label"><i class="fas fa-calendar-alt ml-1"></i> تاريخ التسجيل:</span>
+                        <span class="info-value">05/01/2023</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <!-- إحصائيات الملف الشخصي -->
-    <div class="profile-stats">
-        <div class="stat-item">
-            <div class="stat-value">15</div>
-            <div class="stat-label">عقار محفوظ</div>
-        </div>
-        <div class="stat-item">
-            <div class="stat-value">8</div>
-            <div class="stat-label">إعجابات</div>
-        </div>
-        <div class="stat-item">
-            <div class="stat-value">3</div>
-            <div class="stat-label">استفسارات</div>
-        </div>
-    </div>
-
+    
     <!-- تبويبات الملف الشخصي -->
-    <ul class="nav nav-tabs profile-tabs mb-3" id="profileTabs" role="tablist">
-        <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="saved-tab" data-bs-toggle="tab" data-bs-target="#saved-content" type="button" role="tab" aria-controls="saved-content" aria-selected="true">
-                <i class="fas fa-bookmark me-1"></i> المحفوظات
-            </button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="history-tab" data-bs-toggle="tab" data-bs-target="#history-content" type="button" role="tab" aria-controls="history-content" aria-selected="false">
-                <i class="fas fa-history me-1"></i> السجل
-            </button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="settings-tab" data-bs-toggle="tab" data-bs-target="#settings-content" type="button" role="tab" aria-controls="settings-content" aria-selected="false">
-                <i class="fas fa-cog me-1"></i> الإعدادات
-            </button>
-        </li>
-    </ul>
-
+    <div class="profile-tabs">
+        <nav>
+            <div class="nav nav-tabs" id="profileTabs" role="tablist">
+                <button class="nav-link active" id="properties-tab" data-bs-toggle="tab" data-bs-target="#properties" type="button" role="tab" aria-controls="properties" aria-selected="true">
+                    <i class="fas fa-home"></i> عقاراتي
+                </button>
+                <button class="nav-link" id="saved-tab" data-bs-toggle="tab" data-bs-target="#saved" type="button" role="tab" aria-controls="saved" aria-selected="false">
+                    <i class="fas fa-bookmark"></i> المفضلة
+                </button>
+                <button class="nav-link" id="activity-tab" data-bs-toggle="tab" data-bs-target="#activity" type="button" role="tab" aria-controls="activity" aria-selected="false">
+                    <i class="fas fa-bell"></i> النشاط
+                </button>
+                <button class="nav-link" id="settings-tab" data-bs-toggle="tab" data-bs-target="#settings" type="button" role="tab" aria-controls="settings" aria-selected="false">
+                    <i class="fas fa-cog"></i> الإعدادات
+                </button>
+            </div>
+        </nav>
+    </div>
+    
     <!-- محتوى التبويبات -->
     <div class="tab-content" id="profileTabsContent">
-        <!-- تبويب المحفوظات -->
-        <div class="tab-pane fade show active" id="saved-content" role="tabpanel" aria-labelledby="saved-tab">
+        <!-- تبويب العقارات -->
+        <div class="tab-pane fade show active" id="properties" role="tabpanel" aria-labelledby="properties-tab">
             <div class="row">
-                {% for i in range(6) %}
-                <div class="col-12 col-md-6 col-lg-4 mb-3">
-                    <div class="profile-card saved-property">
-                        <img src="{{ url_for('static', filename='img/properties/property-' ~ ((i % 5) + 1) ~ '.jpg') }}" class="property-image w-100" alt="عقار محفوظ">
-                        <button class="btn btn-sm btn-danger rounded-circle remove-saved">
-                            <i class="fas fa-times"></i>
-                        </button>
-                        <div class="property-price">{{ 850000 + (i * 100000) }} ر.س</div>
-                        <div class="p-3">
-                            <h5 class="mb-2">فيلا فاخرة بحي الملقا</h5>
-                            <div class="d-flex gap-3 text-secondary mb-2">
-                                <div><i class="fas fa-bed me-1"></i> 5 غرف</div>
-                                <div><i class="fas fa-bath me-1"></i> 4 حمامات</div>
-                                <div><i class="fas fa-ruler-combined me-1"></i> 450م²</div>
+                <div class="col-md-4 mb-4">
+                    <div class="card property-card">
+                        <div class="property-image">
+                            <div class="img-loading-skeleton"></div>
+                            <img src="https://images.unsplash.com/photo-1580587771525-78b9dba3b914?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="عقار فاخر" loading="lazy" class="property-img" onload="this.parentElement.querySelector('.img-loading-skeleton').style.display='none';">
+                            <div class="property-type">فيلا</div>
+                            <div class="property-badge">جديد</div>
+                        </div>
+                        <div class="property-content">
+                            <h3 class="property-title">فيلا فاخرة مع مسبح خاص</h3>
+                            <div class="property-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>حي النخيل، الرياض</span>
                             </div>
-                            <div class="d-flex justify-content-between mt-2">
-                                <span><i class="fas fa-map-marker-alt me-1"></i> الرياض، حي الملقا</span>
-                                <button class="btn btn-sm btn-outline-primary">التفاصيل</button>
+                            <div class="property-specs">
+                                <div class="spec-item">
+                                    <div class="spec-value">5</div>
+                                    <div class="spec-label">غرف</div>
+                                </div>
+                                <div class="spec-item">
+                                    <div class="spec-value">4</div>
+                                    <div class="spec-label">حمامات</div>
+                                </div>
+                                <div class="spec-item">
+                                    <div class="spec-value">450 م²</div>
+                                    <div class="spec-label">مساحة</div>
+                                </div>
+                            </div>
+                            <div class="property-price">
+                                3,500,000 ريال
+                            </div>
+                        </div>
+                        <div class="property-footer">
+                            <div class="property-posted">تم النشر منذ 3 أيام</div>
+                            <div class="property-actions">
+                                <button class="btn btn-light" title="مشاركة"><i class="fas fa-share-alt"></i></button>
+                                <button class="btn btn-light favorited" title="حفظ"><i class="fas fa-heart"></i></button>
                             </div>
                         </div>
                     </div>
                 </div>
-                {% endfor %}
+                
+                <div class="col-md-4 mb-4">
+                    <div class="card property-card">
+                        <div class="property-image">
+                            <div class="img-loading-skeleton"></div>
+                            <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="شقة فاخرة" loading="lazy" class="property-img" onload="this.parentElement.querySelector('.img-loading-skeleton').style.display='none';">
+                            <div class="property-type">شقة</div>
+                        </div>
+                        <div class="property-content">
+                            <h3 class="property-title">شقة فاخرة في برج سكني</h3>
+                            <div class="property-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>حي العليا، الرياض</span>
+                            </div>
+                            <div class="property-specs">
+                                <div class="spec-item">
+                                    <div class="spec-value">3</div>
+                                    <div class="spec-label">غرف</div>
+                                </div>
+                                <div class="spec-item">
+                                    <div class="spec-value">2</div>
+                                    <div class="spec-label">حمامات</div>
+                                </div>
+                                <div class="spec-item">
+                                    <div class="spec-value">180 م²</div>
+                                    <div class="spec-label">مساحة</div>
+                                </div>
+                            </div>
+                            <div class="property-price">
+                                1,200,000 ريال
+                            </div>
+                        </div>
+                        <div class="property-footer">
+                            <div class="property-posted">تم النشر منذ أسبوع</div>
+                            <div class="property-actions">
+                                <button class="btn btn-light" title="مشاركة"><i class="fas fa-share-alt"></i></button>
+                                <button class="btn btn-light" title="حفظ"><i class="fas fa-heart"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 mb-4">
+                    <div class="card property-card">
+                        <div class="property-image">
+                            <div class="img-loading-skeleton"></div>
+                            <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="فلة مع حديقة" loading="lazy" class="property-img" onload="this.parentElement.querySelector('.img-loading-skeleton').style.display='none';">
+                            <div class="property-type">فيلا</div>
+                            <div class="property-badge">حصري</div>
+                        </div>
+                        <div class="property-content">
+                            <h3 class="property-title">فيلا فاخرة مع حديقة واسعة</h3>
+                            <div class="property-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>حي الياسمين، الرياض</span>
+                            </div>
+                            <div class="property-specs">
+                                <div class="spec-item">
+                                    <div class="spec-value">4</div>
+                                    <div class="spec-label">غرف</div>
+                                </div>
+                                <div class="spec-item">
+                                    <div class="spec-value">3</div>
+                                    <div class="spec-label">حمامات</div>
+                                </div>
+                                <div class="spec-item">
+                                    <div class="spec-value">320 م²</div>
+                                    <div class="spec-label">مساحة</div>
+                                </div>
+                            </div>
+                            <div class="property-price">
+                                2,800,000 ريال
+                            </div>
+                        </div>
+                        <div class="property-footer">
+                            <div class="property-posted">تم النشر منذ 5 أيام</div>
+                            <div class="property-actions">
+                                <button class="btn btn-light" title="مشاركة"><i class="fas fa-share-alt"></i></button>
+                                <button class="btn btn-light" title="حفظ"><i class="fas fa-heart"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row mt-2">
+                <!-- محتوى إضافي للعقارات يمكن إضافته هنا -->
             </div>
         </div>
-
-        <!-- تبويب السجل -->
-        <div class="tab-pane fade" id="history-content" role="tabpanel" aria-labelledby="history-tab">
-            <div class="profile-card mb-3">
-                <div class="list-group list-group-flush">
-                    {% for i in range(10) %}
-                    <div class="list-group-item d-flex align-items-center">
-                        <img src="{{ url_for('static', filename='img/properties/property-' ~ ((i % 5) + 1) ~ '.jpg') }}" class="rounded me-3" alt="عقار" style="width: 60px; height: 60px; object-fit: cover;">
-                        <div class="flex-grow-1">
-                            <h6 class="mb-1">شقة فاخرة بحي النرجس</h6>
-                            <p class="mb-1 text-secondary small"><i class="fas fa-map-marker-alt me-1"></i> الرياض، حي النرجس</p>
+        
+        <!-- تبويب المفضلة -->
+        <div class="tab-pane fade" id="saved" role="tabpanel" aria-labelledby="saved-tab">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="card property-card">
+                        <div class="property-image">
+                            <div class="img-loading-skeleton"></div>
+                            <img src="https://images.unsplash.com/photo-1493809842364-78817add7ffb?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="شقة مفروشة" loading="lazy" class="property-img" onload="this.parentElement.querySelector('.img-loading-skeleton').style.display='none';">
+                            <div class="property-type">شقة</div>
+                            <div class="property-badge">مميز</div>
                         </div>
-                        <div class="text-muted small">منذ {{ i+1 }} {{ 'يوم' if i==0 else 'أيام' }}</div>
+                        <div class="property-content">
+                            <h3 class="property-title">شقة مفروشة في حي النخيل</h3>
+                            <div class="property-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>حي النخيل، الرياض</span>
+                            </div>
+                            <div class="property-specs">
+                                <div class="spec-item">
+                                    <div class="spec-value">2</div>
+                                    <div class="spec-label">غرف</div>
+                                </div>
+                                <div class="spec-item">
+                                    <div class="spec-value">1</div>
+                                    <div class="spec-label">حمامات</div>
+                                </div>
+                                <div class="spec-item">
+                                    <div class="spec-value">120 م²</div>
+                                    <div class="spec-label">مساحة</div>
+                                </div>
+                            </div>
+                            <div class="property-price">
+                                850,000 ريال
+                            </div>
+                        </div>
+                        <div class="property-footer">
+                            <div class="property-posted">أضيف للمفضلة منذ 2 يوم</div>
+                            <div class="property-actions">
+                                <button class="btn btn-light" title="مشاركة"><i class="fas fa-share-alt"></i></button>
+                                <button class="btn btn-light favorited" title="حفظ"><i class="fas fa-heart"></i></button>
+                            </div>
+                        </div>
                     </div>
-                    {% endfor %}
+                </div>
+                
+                <div class="col-md-4 mb-4">
+                    <div class="card property-card">
+                        <div class="property-image">
+                            <div class="img-loading-skeleton"></div>
+                            <img src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="فيلا حديثة" loading="lazy" class="property-img" onload="this.parentElement.querySelector('.img-loading-skeleton').style.display='none';">
+                            <div class="property-type">فيلا</div>
+                        </div>
+                        <div class="property-content">
+                            <h3 class="property-title">فيلا حديثة في حي الملقا</h3>
+                            <div class="property-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>حي الملقا، الرياض</span>
+                            </div>
+                            <div class="property-specs">
+                                <div class="spec-item">
+                                    <div class="spec-value">5</div>
+                                    <div class="spec-label">غرف</div>
+                                </div>
+                                <div class="spec-item">
+                                    <div class="spec-value">4</div>
+                                    <div class="spec-label">حمامات</div>
+                                </div>
+                                <div class="spec-item">
+                                    <div class="spec-value">400 م²</div>
+                                    <div class="spec-label">مساحة</div>
+                                </div>
+                            </div>
+                            <div class="property-price">
+                                3,200,000 ريال
+                            </div>
+                        </div>
+                        <div class="property-footer">
+                            <div class="property-posted">أضيف للمفضلة منذ أسبوع</div>
+                            <div class="property-actions">
+                                <button class="btn btn-light" title="مشاركة"><i class="fas fa-share-alt"></i></button>
+                                <button class="btn btn-light favorited" title="حفظ"><i class="fas fa-heart"></i></button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-
+        
+        <!-- تبويب النشاط -->
+        <div class="tab-pane fade" id="activity" role="tabpanel" aria-labelledby="activity-tab">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">سجل النشاط</h5>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-date">اليوم</div>
+                            <div class="timeline-content">
+                                <div class="activity-card">
+                                    <div class="activity-icon bg-primary">
+                                        <i class="fas fa-eye"></i>
+                                    </div>
+                                    <div class="activity-details">
+                                        <div class="activity-title">زيارة عقار</div>
+                                        <div class="activity-subtitle">قمت بزيارة فيلا فاخرة في حي الياسمين</div>
+                                        <div class="activity-time">منذ 3 ساعات</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item">
+                            <div class="timeline-date">أمس</div>
+                            <div class="timeline-content">
+                                <div class="activity-card">
+                                    <div class="activity-icon bg-success">
+                                        <i class="fas fa-heart"></i>
+                                    </div>
+                                    <div class="activity-details">
+                                        <div class="activity-title">إضافة للمفضلة</div>
+                                        <div class="activity-subtitle">أضفت شقة مفروشة في حي النخيل للمفضلة</div>
+                                        <div class="activity-time">01 أبريل، 10:30 صباحاً</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="activity-card mt-3">
+                                    <div class="activity-icon bg-info">
+                                        <i class="fas fa-search"></i>
+                                    </div>
+                                    <div class="activity-details">
+                                        <div class="activity-title">بحث جديد</div>
+                                        <div class="activity-subtitle">بحثت عن "فيلا في شمال الرياض"</div>
+                                        <div class="activity-time">01 أبريل، 09:15 صباحاً</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item">
+                            <div class="timeline-date">الأسبوع الماضي</div>
+                            <div class="timeline-content">
+                                <div class="activity-card">
+                                    <div class="activity-icon bg-warning">
+                                        <i class="fas fa-comment"></i>
+                                    </div>
+                                    <div class="activity-details">
+                                        <div class="activity-title">تعليق جديد</div>
+                                        <div class="activity-subtitle">علقت على عقار "فيلا حديثة في حي الملقا"</div>
+                                        <div class="activity-time">29 مارس، 11:45 صباحاً</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
         <!-- تبويب الإعدادات -->
-        <div class="tab-pane fade" id="settings-content" role="tabpanel" aria-labelledby="settings-tab">
-            <div class="profile-settings">
-                <div class="list-group rounded-3 mb-4">
-                    <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                        <div>
-                            <i class="fas fa-user-edit me-2 text-primary"></i>
-                            تعديل الملف الشخصي
+        <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title mb-4">إعدادات الحساب</h5>
+                    
+                    <form>
+                        <div class="mb-4">
+                            <h6 class="settings-section-title">المعلومات الشخصية</h6>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="fullName" class="form-label">الاسم الكامل</label>
+                                    <input type="text" class="form-control" id="fullName" value="أحمد محمد علي">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="email" class="form-label">البريد الإلكتروني</label>
+                                    <input type="email" class="form-control" id="email" value="ahmed.ali@example.com">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="phone" class="form-label">رقم الهاتف</label>
+                                    <input type="tel" class="form-control" id="phone" value="+966 50 123 4567">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="city" class="form-label">المدينة</label>
+                                    <select class="form-select" id="city">
+                                        <option value="riyadh" selected>الرياض</option>
+                                        <option value="jeddah">جدة</option>
+                                        <option value="dammam">الدمام</option>
+                                        <option value="makkah">مكة المكرمة</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
-                        <i class="fas fa-chevron-left"></i>
-                    </a>
-                    <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                        <div>
-                            <i class="fas fa-bell me-2 text-primary"></i>
-                            إعدادات الإشعارات
+                        
+                        <div class="mb-4">
+                            <h6 class="settings-section-title">إعدادات الإشعارات</h6>
+                            <div class="form-check form-switch mb-2">
+                                <input class="form-check-input" type="checkbox" id="emailNotif" checked>
+                                <label class="form-check-label" for="emailNotif">إشعارات البريد الإلكتروني</label>
+                            </div>
+                            <div class="form-check form-switch mb-2">
+                                <input class="form-check-input" type="checkbox" id="smsNotif">
+                                <label class="form-check-label" for="smsNotif">إشعارات الرسائل النصية</label>
+                            </div>
+                            <div class="form-check form-switch mb-2">
+                                <input class="form-check-input" type="checkbox" id="newPropertyNotif" checked>
+                                <label class="form-check-label" for="newPropertyNotif">إشعارات العقارات الجديدة</label>
+                            </div>
                         </div>
-                        <i class="fas fa-chevron-left"></i>
-                    </a>
-                    <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                        <div>
-                            <i class="fas fa-search me-2 text-primary"></i>
-                            تفضيلات البحث
+                        
+                        <div class="mb-4">
+                            <h6 class="settings-section-title">إعدادات التطبيق</h6>
+                            <div class="form-check form-switch mb-2">
+                                <input class="form-check-input" type="checkbox" id="darkMode">
+                                <label class="form-check-label" for="darkMode">الوضع الداكن</label>
+                            </div>
+                            <div class="form-check form-switch mb-2">
+                                <input class="form-check-input" type="checkbox" id="saveHistory" checked>
+                                <label class="form-check-label" for="saveHistory">حفظ سجل البحث</label>
+                            </div>
                         </div>
-                        <i class="fas fa-chevron-left"></i>
-                    </a>
-                    <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                        <div>
-                            <i class="fas fa-shield-alt me-2 text-primary"></i>
-                            الخصوصية والأمان
+                        
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <button type="button" class="btn btn-light">إلغاء</button>
+                            <button type="button" class="btn btn-primary">حفظ التغييرات</button>
                         </div>
-                        <i class="fas fa-chevron-left"></i>
-                    </a>
-                </div>
-
-                <div class="list-group rounded-3 mb-4">
-                    <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                        <div>
-                            <i class="fas fa-moon me-2 text-primary"></i>
-                            الوضع الداكن
-                        </div>
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" role="switch" id="darkModeSwitch">
-                            <label class="form-check-label visually-hidden" for="darkModeSwitch">الوضع الداكن</label>
-                        </div>
-                    </a>
-                    <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                        <div>
-                            <i class="fas fa-language me-2 text-primary"></i>
-                            اللغة
-                        </div>
-                        <div>
-                            العربية <i class="fas fa-chevron-left ms-2"></i>
-                        </div>
-                    </a>
-                </div>
-
-                <div class="list-group rounded-3">
-                    <a href="#" class="list-group-item list-group-item-action">
-                        <i class="fas fa-question-circle me-2 text-primary"></i>
-                        المساعدة والدعم
-                    </a>
-                    <a href="#" class="list-group-item list-group-item-action">
-                        <i class="fas fa-file-alt me-2 text-primary"></i>
-                        سياسة الخصوصية
-                    </a>
-                    <a href="#" class="list-group-item list-group-item-action">
-                        <i class="fas fa-file-contract me-2 text-primary"></i>
-                        شروط الاستخدام
-                    </a>
-                    <a href="#" class="list-group-item list-group-item-action text-danger">
-                        <i class="fas fa-sign-out-alt me-2"></i>
-                        تسجيل الخروج
-                    </a>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
-{% endblock %}
 
-{% block scripts %}
+<!-- زر العائم للشاشات الصغيرة -->
+<div class="floating-button" id="menuToggle">
+    <i class="fas fa-bars"></i>
+</div>
+
+<!-- سكريبت تفعيل وظائف الصفحة -->
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // تهيئة الوضع الداكن من إعدادات المستخدم أو النظام
-        const darkModeSwitch = document.getElementById('darkModeSwitch');
-        const themeToggle = document.getElementById('theme-toggle');
-        const themeColor = document.getElementById('theme-color');
-        const isDarkMode = localStorage.getItem('darkMode') === 'true' || 
-                         (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches && 
-                          localStorage.getItem('darkMode') === null);
-        
-        // تعيين حالة الوضع الداكن
-        if (isDarkMode) {
-            document.documentElement.setAttribute('data-bs-theme', 'dark');
-            darkModeSwitch.checked = true;
-            themeToggle.querySelector('i').classList.replace('fa-moon', 'fa-sun');
-            themeColor.setAttribute('content', '#121212');
+document.addEventListener('DOMContentLoaded', function() {
+    const overlay = document.getElementById('overlay');
+    const sidebar = document.querySelector('.sidebar');
+    const menuToggle = document.getElementById('menuToggle');
+    
+    // التحقق من إعدادات الوضع المظلم
+    function checkDarkMode() {
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        } else {
+            document.documentElement.setAttribute('data-theme', 'light');
         }
-        
-        // تحديث تبديل الوضع الداكن عند النقر
-        darkModeSwitch.addEventListener('change', function() {
-            if (this.checked) {
-                document.documentElement.setAttribute('data-bs-theme', 'dark');
-                localStorage.setItem('darkMode', 'true');
-                themeToggle.querySelector('i').classList.replace('fa-moon', 'fa-sun');
-                themeColor.setAttribute('content', '#121212');
-            } else {
-                document.documentElement.setAttribute('data-bs-theme', 'light');
-                localStorage.setItem('darkMode', 'false');
-                themeToggle.querySelector('i').classList.replace('fa-sun', 'fa-moon');
-                themeColor.setAttribute('content', '#ffffff');
-            }
-        });
-        
-        // نقرة زر تبديل الوضعية في أسفل الشاشة
-        themeToggle.addEventListener('click', function() {
-            darkModeSwitch.checked = !darkModeSwitch.checked;
-            const event = new Event('change');
-            darkModeSwitch.dispatchEvent(event);
-        });
-        
-        // تنفيذ زر إزالة العقار من المحفوظات
-        document.querySelectorAll('.remove-saved').forEach(button => {
-            button.addEventListener('click', function(e) {
-                e.preventDefault();
-                const propertyCard = this.closest('.saved-property').closest('.col-12');
-                propertyCard.classList.add('animate__animated', 'animate__fadeOut');
-                setTimeout(() => {
-                    propertyCard.remove();
-                }, 500);
-            });
-        });
-        
-        // تحميل بيانات الملف الشخصي من API
-        function loadProfileData() {
-            // محاكاة طلب API
-            setTimeout(() => {
-                console.log('تم تحميل بيانات الملف الشخصي بنجاح');
-            }, 500);
-        }
-        
-        // تحميل إحصائيات المستخدم
-        function loadUserStats() {
-            // محاكاة طلب API
-            setTimeout(() => {
-                console.log('تم تحميل إحصائيات المستخدم بنجاح');
-            }, 700);
-        }
-        
-        // تحميل قائمة العقارات المحفوظة
-        function loadSavedProperties() {
-            // محاكاة طلب API
-            setTimeout(() => {
-                console.log('تم تحميل العقارات المحفوظة بنجاح');
-            }, 1000);
-        }
-        
-        // تنفيذ تحميل البيانات
-        loadProfileData();
-        loadUserStats();
-        loadSavedProperties();
-        
-        // استدعاء تغيير التبويب
-        const triggerTabList = [].slice.call(document.querySelectorAll('#profileTabs button'));
-        triggerTabList.forEach(function (triggerEl) {
-            const tabTrigger = new bootstrap.Tab(triggerEl);
-            triggerEl.addEventListener('click', function (event) {
-                event.preventDefault();
-                tabTrigger.show();
-            });
-        });
-        
-        // ميزة التوافق مع PWA - تخزين البيانات محليًا
-        function cacheProfileData() {
-            if ('caches' in window) {
-                // هنا يمكن إضافة التخزين المحلي للبيانات باستخدام واجهة Cache API
-                console.log('تم تخزين بيانات الملف الشخصي محليًا للاستخدام دون اتصال');
+    }
+    
+    // تفعيل التحقق عند التحميل
+    checkDarkMode();
+    
+    // تبديل الشريط الجانبي
+    function toggleSidebar() {
+        sidebar.classList.toggle('active');
+        overlay.style.display = sidebar.classList.contains('active') ? 'block' : 'none';
+        document.body.style.overflow = sidebar.classList.contains('active') ? 'hidden' : 'auto';
+    }
+    
+    // تحديث واجهة المستخدم للأجهزة المختلفة
+    function updateUI() {
+        if (window.innerWidth <= 991) {
+            if (!menuToggle.getAttribute('listener')) {
+                menuToggle.addEventListener('click', toggleSidebar);
+                menuToggle.setAttribute('listener', 'true');
             }
         }
+    }
+    
+    // استدعاء تحديث الواجهة عند تغيير حجم النافذة
+    window.addEventListener('resize', updateUI);
+    
+    // تحديث الواجهة عند التحميل
+    updateUI();
+    
+    // إضافة حدث النقر على الشاشة لإغلاق الشريط الجانبي
+    overlay.addEventListener('click', toggleSidebar);
+    
+    // تحميل الصور بشكل أكثر كفاءة
+    function lazyLoadImages() {
+        const images = document.querySelectorAll('.property-img[loading="lazy"]');
         
-        // تنفيذ التخزين المحلي للبيانات
-        cacheProfileData();
-        
-        // التحقق من حالة الاتصال للدعم دون اتصال
-        window.addEventListener('online', updateOnlineStatus);
-        window.addEventListener('offline', updateOnlineStatus);
-        
-        function updateOnlineStatus() {
-            const condition = navigator.onLine ? "متصل" : "غير متصل";
-            console.log(`أنت الآن ${condition}`);
+        if ('IntersectionObserver' in window) {
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        
+                        // تعيين src للصورة إذا كان هناك data-src
+                        if (img.dataset.src) {
+                            img.src = img.dataset.src;
+                        }
+                        
+                        // إضافة مستمع للحدث عند اكتمال التحميل
+                        img.onload = function() {
+                            // إخفاء skeleton loader
+                            const skeleton = this.parentElement.querySelector('.img-loading-skeleton');
+                            if (skeleton) {
+                                skeleton.style.opacity = '0';
+                                setTimeout(() => {
+                                    skeleton.style.display = 'none';
+                                }, 300);
+                            }
+                            // إظهار الصورة بتأثير التلاشي
+                            this.style.opacity = '1';
+                        };
+                        
+                        // عدم مراقبة هذه الصورة بعد الآن
+                        observer.unobserve(img);
+                    }
+                });
+            }, {
+                rootMargin: '100px 0px'
+            });
             
-            if (!navigator.onLine) {
-                // إظهار إشعار عدم الاتصال
-                const offlineAlert = document.createElement('div');
-                offlineAlert.className = 'alert alert-warning alert-dismissible fade show';
-                offlineAlert.setAttribute('role', 'alert');
-                offlineAlert.innerHTML = `
-                    <i class="fas fa-wifi-slash me-2"></i> أنت الآن في وضع عدم الاتصال. سيتم عرض البيانات المخزنة محليًا.
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="إغلاق"></button>
-                `;
-                document.querySelector('.profile-container').prepend(offlineAlert);
+            images.forEach(img => {
+                // إعداد الصور للتحميل الكسول
+                img.style.opacity = '0';
+                imageObserver.observe(img);
+            });
+        } else {
+            // Fallback لحالة عدم دعم IntersectionObserver
+            images.forEach(img => {
+                if (img.dataset.src) {
+                    img.src = img.dataset.src;
+                }
+            });
+        }
+    }
+    
+    // تشغيل lazy loading للصور
+    lazyLoadImages();
+    
+    // تحسين تفاعل المستخدم مع البطاقات
+    const propertyCards = document.querySelectorAll('.property-card');
+    propertyCards.forEach(card => {
+        card.addEventListener('click', function(e) {
+            // تجنب تشغيل الحدث عند النقر على الأزرار
+            if (!e.target.closest('.property-actions')) {
+                // يمكن إضافة رابط لصفحة تفاصيل العقار هنا
+                console.log('تم النقر على البطاقة:', this.querySelector('.property-title').textContent);
             }
+        });
+    });
+    
+    // أزرار الإجراءات لكل عقار
+    const actionButtons = document.querySelectorAll('.property-actions .btn');
+    actionButtons.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation(); // منع انتشار الحدث للبطاقة
+            
+            if (this.querySelector('.fa-heart')) {
+                this.classList.toggle('favorited');
+                if (this.classList.contains('favorited')) {
+                    this.querySelector('i').className = 'fas fa-heart';
+                } else {
+                    this.querySelector('i').className = 'far fa-heart';
+                }
+            } else if (this.querySelector('.fa-share-alt')) {
+                // تنفيذ المشاركة
+                if (navigator.share) {
+                    navigator.share({
+                        title: 'مشاركة عقار',
+                        text: this.closest('.property-card').querySelector('.property-title').textContent,
+                        url: window.location.href,
+                    })
+                    .catch(console.error);
+                } else {
+                    alert('المشاركة غير مدعومة في متصفحك');
+                }
+            }
+        });
+    });
+    
+    // دعم وضع عدم الاتصال
+    function updateOnlineStatus() {
+        const statusElement = document.createElement('div');
+        statusElement.className = 'connection-status';
+        
+        if (navigator.onLine) {
+            statusElement.textContent = 'تم استعادة الاتصال بالإنترنت';
+            statusElement.classList.add('online');
+        } else {
+            statusElement.textContent = 'أنت حالياً غير متصل بالإنترنت';
+            statusElement.classList.add('offline');
         }
         
-        // التحقق من حالة الاتصال عند تحميل الصفحة
-        updateOnlineStatus();
-    });
+        document.body.appendChild(statusElement);
+        
+        setTimeout(() => {
+            statusElement.classList.add('show');
+            
+            setTimeout(() => {
+                statusElement.classList.remove('show');
+                setTimeout(() => {
+                    document.body.removeChild(statusElement);
+                }, 300);
+            }, 3000);
+        }, 100);
+    }
+    
+    window.addEventListener('online', updateOnlineStatus);
+    window.addEventListener('offline', updateOnlineStatus);
+    
+    // دعم تطبيق الويب التقدمي (PWA)
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/service-worker.js')
+            .then(registration => {
+                console.log('تم تسجيل Service Worker بنجاح:', registration.scope);
+            })
+            .catch(error => {
+                console.log('فشل تسجيل Service Worker:', error);
+            });
+        });
+    }
+});
 </script>
 {% endblock %}

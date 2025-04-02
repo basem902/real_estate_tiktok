@@ -217,6 +217,49 @@ def client_feed():
                            agents=agents, 
                            format_price=format_price)
 
+# إضافة مسار للملف الشخصي للعميل
+@app.route('/clients/profile')
+def client_profile():
+    """صفحة الملف الشخصي للعميل"""
+    # بيانات المستخدم الحالي (يمكن استبدالها بالبيانات من قاعدة البيانات لاحقًا)
+    client = {
+        'id': 1,
+        'name': 'محمد الأحمد',
+        'email': 'mohammed@example.com',
+        'phone': '+966 50 123 4567',
+        'address': 'الرياض، حي النزهة',
+        'photo': url_for('static', filename='images/default-profile.png'),
+        'liked_properties': 12,
+        'saved_searches': 5,
+        'recent_views': 24,
+        'membership': 'عضوية ذهبية',
+        'join_date': '2024-01-15'
+    }
+    
+    return render_template('clients/client_profile.html', client=client)
+
+# إضافة مسار جديد لعرض شريط التنقل الجانبي المستقل
+@app.route('/clients/sidebar')
+def client_sidebar():
+    # صفحة عرض الشريط الجانبي للعميل
+    return render_template('clients/client_sidebar.html')
+
+# المسارات الخاصة بالعملاء
+@app.route('/clients/likes')
+def client_likes():
+    """صفحة الإعجابات للعميل"""
+    return render_template('clients/client_likes.html')
+
+@app.route('/clients/messages')
+def client_messages():
+    """صفحة الرسائل للعميل"""
+    return render_template('clients/client_messages.html')
+
+@app.route('/clients/search')
+def client_search():
+    """صفحة البحث للعميل"""
+    return render_template('clients/client_search.html')
+
 @app.route('/developers/dashboard')
 def developers_dashboard():
     # الصفحة الرئيسية للوحة تحكم المطورين العقاريين
@@ -267,33 +310,7 @@ def developers_settings():
     # صفحة الإعدادات
     return render_template('developers/dashboard/settings.html')
 
-# إضافة مسارات جديدة للوحة تحكم المطورين العقاريين
-@app.route('/developers/followers')
-def developers_followers():
-    # صفحة إدارة المتابعين
-    return render_template('developers/dashboard/followers.html')
-
-@app.route('/developers/reports')
-def developers_reports():
-    # صفحة التقارير والإحصائيات
-    return render_template('developers/dashboard/reports.html')
-
-@app.route('/developers/notifications')
-def developers_notifications():
-    # صفحة الإشعارات والتنبيهات
-    return render_template('developers/dashboard/notifications.html')
-
-@app.route('/developers/messages')
-def developers_messages():
-    # صفحة إدارة الرسائل
-    return render_template('developers/dashboard/messages.html')
-
-@app.route('/developers/customers')
-def developers_customers():
-    # صفحة إدارة العملاء والزبائن
-    return render_template('developers/dashboard/customers.html')
-
-# المسارات الخاصة بالمسوقين
+# إضافة مسارات جديدة لصفحات المسوقين
 @app.route('/marketers/login_marketers')
 def marketers_login_direct():
     # صفحة تسجيل دخول المسوقين (طريقة مباشرة)
@@ -364,9 +381,19 @@ def marketers_ai_content_writer():
     # صفحة كاتب المحتوى
     return render_template('marketers/ai-assistant/content-writer.html')
 
+@app.route('/marketers/ai-assistant/content-writer.html')
+def marketers_ai_content_writer_html():
+    # صفحة كاتب المحتوى - مسار بديل
+    return render_template('marketers/ai-assistant/content-writer.html')
+
 @app.route('/marketers/ai-assistant/ad-generator')
 def marketers_ai_ad_generator():
     # صفحة مولّد الإعلانات
+    return render_template('marketers/ai-assistant/ad-generator.html')
+
+@app.route('/marketers/ai-assistant/ad-generator.html')
+def marketers_ai_ad_generator_html():
+    # صفحة مولّد الإعلانات - مسار بديل
     return render_template('marketers/ai-assistant/ad-generator.html')
 
 @app.route('/marketers/ai-assistant/conversation-analyzer')
@@ -376,7 +403,7 @@ def marketers_ai_conversation_analyzer():
 
 @app.route('/marketers/ai-assistant/conversation-analyzer.html')
 def marketers_ai_conversation_analyzer_html():
-    # صفحة محلل المحادثات (مع لاحقة .html)
+    # صفحة محلل المحادثات - مسار بديل
     return render_template('marketers/ai-assistant/conversation-analyzer.html')
 
 @app.route('/marketers/ai-assistant/market-analyzer')
@@ -384,9 +411,19 @@ def marketers_ai_market_analyzer():
     # صفحة محلل السوق
     return render_template('marketers/ai-assistant/market-analyzer.html')
 
+@app.route('/marketers/ai-assistant/market-analyzer.html')
+def marketers_ai_market_analyzer_html():
+    # صفحة محلل السوق - مسار بديل
+    return render_template('marketers/ai-assistant/market-analyzer.html')
+
 @app.route('/marketers/video-gallery')
 def marketers_video_gallery():
     # صفحة معرض الفيديوهات للمسوقين
+    return render_template('marketers/video-gallery/video-library.html')
+
+@app.route('/marketers/video-gallery/video-library.html')
+def marketers_video_gallery_html():
+    # صفحة معرض الفيديوهات - مسار بديل
     return render_template('marketers/video-gallery/video-library.html')
 
 @app.route('/marketers/video-gallery/ad-tiktok')
@@ -394,9 +431,19 @@ def marketers_ad_tiktok():
     # صفحة فيديوهات الإعلانية بنمط تيك توك
     return render_template('marketers/video-gallery/ad-video-tiktok.html')
 
+@app.route('/marketers/video-gallery/ad-tiktok.html')
+def marketers_ad_tiktok_html():
+    # صفحة فيديوهات الإعلانية بنمط تيك توك - مسار بديل
+    return render_template('marketers/video-gallery/ad-video-tiktok.html')
+
 @app.route('/marketers/commissions')
 def marketers_commissions():
     # صفحة العمولات والمدفوعات للمسوقين
+    return render_template('marketers/commissions/commissions-payments.html')
+
+@app.route('/marketers/commissions/commissions-payments.html')
+def marketers_commissions_html():
+    # صفحة العمولات والمدفوعات - مسار بديل
     return render_template('marketers/commissions/commissions-payments.html')
 
 @app.route('/marketers/social')
@@ -404,14 +451,34 @@ def marketers_social():
     # صفحة التفاعل الاجتماعي للمسوقين
     return render_template('marketers/social/social-hub.html')
 
+@app.route('/marketers/social/social-hub.html')
+def marketers_social_html():
+    # صفحة التفاعل الاجتماعي - مسار بديل
+    return render_template('marketers/social/social-hub.html')
+
 @app.route('/marketers/social/review-manager')
 def marketers_social_review():
     # صفحة إدارة التقييمات
     return render_template('marketers/social/review-manager.html')
 
+@app.route('/marketers/social/review-manager.html')
+def marketers_social_review_html():
+    # صفحة إدارة التقييمات - مسار بديل
+    return render_template('marketers/social/review-manager.html')
+
+@app.route('/marketers/reviews/reviews_dashboard.html')
+def marketers_reviews_dashboard():
+    # صفحة لوحة التحكم للتقييمات - مسار قديم للتوافق
+    return render_template('marketers/reviews/reviews_dashboard.html')
+
 @app.route('/marketers/social/followers-manager')
 def marketers_social_followers():
     # صفحة إدارة المتابعين
+    return render_template('marketers/social/followers-manager.html')
+
+@app.route('/marketers/social/followers-manager.html')
+def marketers_social_followers_html():
+    # صفحة إدارة المتابعين - مسار بديل
     return render_template('marketers/social/followers-manager.html')
 
 @app.route('/marketers/social/likes-manager')
@@ -419,9 +486,19 @@ def marketers_social_likes():
     # صفحة إدارة الإعجابات
     return render_template('marketers/social/likes-manager.html')
 
+@app.route('/marketers/social/likes-manager.html')
+def marketers_social_likes_html():
+    # صفحة إدارة الإعجابات - مسار بديل
+    return render_template('marketers/social/likes-manager.html')
+
 @app.route('/marketers/social/comments-manager')
 def marketers_social_comments():
     # صفحة إدارة التعليقات
+    return render_template('marketers/social/comments-manager.html')
+
+@app.route('/marketers/social/comments-manager.html')
+def marketers_social_comments_html():
+    # صفحة إدارة التعليقات - مسار بديل
     return render_template('marketers/social/comments-manager.html')
 
 @app.route('/marketers/social/chats-manager')
@@ -429,9 +506,19 @@ def marketers_social_chats():
     # صفحة المحادثات الداخلية
     return render_template('marketers/social/chats-manager.html')
 
+@app.route('/marketers/social/chats-manager.html')
+def marketers_social_chats_html():
+    # صفحة المحادثات الداخلية - مسار بديل
+    return render_template('marketers/social/chats-manager.html')
+
 @app.route('/marketers/settings')
 def marketers_settings():
     # صفحة الإعدادات للمسوقين
+    return render_template('marketers/settings/settings.html')
+
+@app.route('/marketers/settings/settings.html')
+def marketers_settings_html():
+    # صفحة الإعدادات - مسار بديل
     return render_template('marketers/settings/settings.html')
 
 @app.route('/logout')

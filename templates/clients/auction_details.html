@@ -1,0 +1,1925 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تفاصيل المزاد | منصة العقارات</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.rtl.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../static/css/styles.css">
+    <!-- إضافة مكتبة Socket.IO للاتصال المباشر -->
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <style>
+        /* أنماط خاصة بصفحة تفاصيل المزاد */
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2ecc71;
+            --danger-color: #e74c3c;
+            --warning-color: #f39c12;
+            --dark-color: #2c3e50;
+            --dark-bg: #1a1a1a;
+            --dark-card: #2c2c2c;
+            --dark-text: #e0e0e0;
+        }
+        
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #f5f5f5;
+        }
+        
+        .auction-details-page {
+            padding-bottom: 50px;
+        }
+        
+        .auction-header {
+            background-color: #fff;
+            padding: 30px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .auction-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--dark-color);
+        }
+        
+        .auction-location {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .auction-location i {
+            color: var(--primary-color);
+            margin-left: 8px;
+        }
+        
+        .auction-id {
+            display: flex;
+            align-items: center;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .auction-id i {
+            margin-left: 8px;
+            color: #888;
+        }
+        
+        .auction-status {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+        }
+        
+        .auction-status.active {
+            border-right: 4px solid var(--danger-color);
+        }
+        
+        .auction-status.upcoming {
+            border-right: 4px solid var(--warning-color);
+        }
+        
+        .auction-status.ended {
+            border-right: 4px solid #6c757d;
+        }
+        
+        .status-label {
+            display: inline-block;
+            font-weight: 600;
+            margin-bottom: 10px;
+            padding: 5px 10px;
+            border-radius: 20px;
+            color: #fff;
+            font-size: 14px;
+        }
+        
+        .auction-status.active .status-label {
+            background-color: var(--danger-color);
+        }
+        
+        .auction-status.upcoming .status-label {
+            background-color: var(--warning-color);
+        }
+        
+        .auction-status.ended .status-label {
+            background-color: #6c757d;
+        }
+        
+        .auction-timer {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .timer-item {
+            text-align: center;
+            width: 60px;
+        }
+        
+        .timer-value {
+            background-color: var(--dark-color);
+            color: #fff;
+            border-radius: 4px;
+            padding: 8px 0;
+            display: block;
+            font-size: 18px;
+            font-weight: 700;
+        }
+        
+        .timer-label {
+            font-size: 12px;
+            margin-top: 5px;
+            color: #666;
+        }
+        
+        .auction-price-info {
+            display: flex;
+            justify-content: space-between;
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .price-box {
+            text-align: center;
+            flex: 1;
+        }
+        
+        .price-box h3 {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        
+        .price {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--dark-color);
+        }
+        
+        .current-price .price {
+            color: var(--primary-color);
+        }
+        
+        .auction-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        /* أنماط المزايدة المباشرة والمستخدمين النشطين */
+        .active-user-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0 10px 10px 0;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .active-user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid #eee;
+            margin-bottom: 5px;
+            position: relative;
+        }
+        
+        .active-user-avatar img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        
+        .active-user-name {
+            font-size: 12px;
+            text-align: center;
+            max-width: 70px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        .active-user-status {
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #28a745;
+            border: 2px solid #fff;
+        }
+        
+        .bidding-now .active-user-avatar {
+            border-color: var(--danger-color);
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(220, 53, 69, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(220, 53, 69, 0);
+            }
+        }
+        
+        /* أنماط الإشعارات الفورية للمزايدات */
+        .live-notification {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            padding: 15px;
+            max-width: 350px;
+            z-index: 1050;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease-out;
+        }
+        
+        .live-notification.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .live-notification-content {
+            display: flex;
+            align-items: center;
+        }
+        
+        .live-notification-icon {
+            margin-left: 15px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+        }
+        
+        .live-notification-icon.bid {
+            background-color: var(--primary-color);
+        }
+        
+        .live-notification-icon.join {
+            background-color: var(--success-color);
+        }
+        
+        .live-notification-icon.time {
+            background-color: var(--warning-color);
+        }
+        
+        .live-notification-text {
+            flex: 1;
+        }
+        
+        .live-notification-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .live-notification-message {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        /* سجل المزايدات */
+        .bid-item {
+            transition: background-color 0.3s ease;
+        }
+        
+        .bid-item.new-bid {
+            background-color: rgba(25, 135, 84, 0.1);
+            animation: fadeInHighlight 2s forwards;
+        }
+        
+        @keyframes fadeInHighlight {
+            from { background-color: rgba(25, 135, 84, 0.1); }
+            to { background-color: transparent; }
+        }
+        
+        .bidder-typing {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            padding: 8px 15px;
+            background-color: rgba(33, 37, 41, 0.8);
+            color: white;
+            border-radius: 20px;
+            font-size: 14px;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+        }
+        
+        .bidder-typing.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .typing-dots {
+            display: inline-flex;
+            margin-right: 10px;
+        }
+        
+        .typing-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: white;
+            margin: 0 2px;
+            opacity: 0.6;
+        }
+        
+        .typing-dot:nth-child(1) {
+            animation: typingDot 1.4s infinite 0s;
+        }
+        
+        .typing-dot:nth-child(2) {
+            animation: typingDot 1.4s infinite 0.2s;
+        }
+        
+        .typing-dot:nth-child(3) {
+            animation: typingDot 1.4s infinite 0.4s;
+        }
+        
+        @keyframes typingDot {
+            0% { opacity: 0.6; transform: translateY(0); }
+            25% { opacity: 1; transform: translateY(-3px); }
+            50% { opacity: 0.6; transform: translateY(0); }
+            100% { opacity: 0.6; transform: translateY(0); }
+        }
+    </style>
+    
+    <!-- أنماط CSS للمزايدة المباشرة والإشعارات -->
+    <style>
+        /* أنماط المستخدمين النشطين */
+        .active-users-section {
+            margin-top: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .active-users-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            color: #fff;
+        }
+        
+        .active-users-header h5 {
+            margin: 0;
+            font-weight: 600;
+        }
+        
+        .active-users-count {
+            display: inline-block;
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 3px 10px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: normal;
+        }
+        
+        .active-users-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+        
+        .active-user-item {
+            position: relative;
+            background: #fff;
+            border-radius: 10px;
+            padding: 10px;
+            width: calc(20% - 10px);
+            min-width: 100px;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .active-user-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .active-user-avatar {
+            position: relative;
+            margin-bottom: 5px;
+        }
+        
+        .active-user-avatar img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .active-user-status {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #2ecc71;
+            border: 2px solid #fff;
+        }
+        
+        .active-user-name {
+            font-size: 0.85rem;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .active-user-item.bidding-now {
+            animation: pulse 2s infinite;
+            border: 2px solid #e74c3c;
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 8px rgba(231, 76, 60, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(231, 76, 60, 0);
+            }
+        }
+        
+        .no-active-users {
+            text-align: center;
+            padding: 20px;
+            color: #7f8c8d;
+            font-style: italic;
+        }
+        
+        /* أنماط الإشعارات المباشرة */
+        #live-notification-container {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1050;
+            max-width: 350px;
+            width: 100%;
+        }
+        
+        .live-notification {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            margin-bottom: 10px;
+            overflow: hidden;
+            transform: translateX(-120%);
+            transition: transform 0.3s ease;
+            border-right: 5px solid #3498db;
+        }
+        
+        .live-notification.show {
+            transform: translateX(0);
+        }
+        
+        .live-notification-content {
+            display: flex;
+            padding: 12px;
+        }
+        
+        .live-notification-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            margin-left: 12px;
+            flex-shrink: 0;
+        }
+        
+        .live-notification-icon.bid {
+            background-color: rgba(231, 76, 60, 0.1);
+            color: #e74c3c;
+        }
+        
+        .live-notification-icon.join {
+            background-color: rgba(46, 204, 113, 0.1);
+            color: #2ecc71;
+        }
+        
+        .live-notification-icon.warning {
+            background-color: rgba(241, 196, 15, 0.1);
+            color: #f39c12;
+        }
+        
+        .live-notification-text {
+            flex-grow: 1;
+        }
+        
+        .live-notification-title {
+            font-weight: 600;
+            margin-bottom: 3px;
+            font-size: 0.95rem;
+        }
+        
+        .live-notification-message {
+            font-size: 0.85rem;
+            color: #7f8c8d;
+        }
+        
+        /* مؤشر الكتابة */
+        .bidder-typing {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            border-radius: 50px;
+            padding: 8px 15px;
+            display: flex;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+        
+        .bidder-typing.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .typing-dots {
+            display: flex;
+            margin-left: 8px;
+        }
+        
+        .typing-dot {
+            width: 6px;
+            height: 6px;
+            background-color: white;
+            border-radius: 50%;
+            margin: 0 2px;
+            opacity: 0.6;
+        }
+        
+        .typing-dot:nth-child(1) {
+            animation: typing-dot 1.4s infinite;
+        }
+        
+        .typing-dot:nth-child(2) {
+            animation: typing-dot 1.4s infinite 0.2s;
+        }
+        
+        .typing-dot:nth-child(3) {
+            animation: typing-dot 1.4s infinite 0.4s;
+        }
+        
+        @keyframes typing-dot {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-5px); }
+        }
+        
+        /* تحسينات متنوعة لسجل المزايدات */
+        .bid-history-item.new-bid {
+            animation: highlight-bid 2s ease-in-out;
+        }
+        
+        @keyframes highlight-bid {
+            0% { background-color: rgba(231, 76, 60, 0.2); }
+            100% { background-color: transparent; }
+        }
+        
+        /* تخصيص أنماط للشاشات الصغيرة */
+        @media (max-width: 768px) {
+            .active-user-item {
+                width: calc(33.33% - 10px);
+            }
+            
+            #live-notification-container {
+                left: 10px;
+                right: 10px;
+                max-width: calc(100% - 20px);
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .active-user-item {
+                width: calc(50% - 10px);
+            }
+        }
+    </style>
+</head>
+<body class="auction-details-page">
+    <!-- رأس الصفحة -->
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+            <div class="container">
+                <a class="navbar-brand" href="#">
+                    <img src="../../static/images/logo.png" alt="شعار منصة العقارات" height="40" class="me-2">
+                    منصة العقارات
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" href="client_feed.html">الرئيسية</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="auctions.html">المزادات</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="saved_properties.html">المفضلة</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="chat.html">المحادثات</a>
+                        </li>
+                    </ul>
+                    <div class="d-flex">
+                        <div class="form-check form-switch ms-3 me-3 d-flex align-items-center">
+                            <input class="form-check-input" type="checkbox" id="darkModeToggle">
+                            <label class="form-check-label me-2" for="darkModeToggle">
+                                <i class="fas fa-moon"></i>
+                            </label>
+                        </div>
+                        <a href="profile.html" class="btn btn-outline-primary">
+                            <i class="fas fa-user-circle"></i>
+                            حسابي
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    
+    <!-- قسم تفاصيل المزاد -->
+    <main>
+        <section class="auction-header">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8">
+                        <h1 class="auction-title">فيلا فاخرة في حي الياسمين</h1>
+                        <div class="auction-location">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>الرياض، حي الياسمين، شارع الأمير سعود</span>
+                        </div>
+                        <div class="auction-id">
+                            <i class="fas fa-hashtag"></i>
+                            <span>رقم المزاد: AUC-12345</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="auction-status active">
+                            <div class="status-label">مزاد نشط</div>
+                            <div class="auction-timer" id="auction-countdown" data-end="2025-04-15T18:00:00">
+                                <div class="timer-item">
+                                    <span class="timer-value" id="days">01</span>
+                                    <span class="timer-label">يوم</span>
+                                </div>
+                                <div class="timer-item">
+                                    <span class="timer-value" id="hours">12</span>
+                                    <span class="timer-label">ساعة</span>
+                                </div>
+                                <div class="timer-item">
+                                    <span class="timer-value" id="minutes">45</span>
+                                    <span class="timer-label">دقيقة</span>
+                                </div>
+                                <div class="timer-item">
+                                    <span class="timer-value" id="seconds">30</span>
+                                    <span class="timer-label">ثانية</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-4">
+                    <div class="col-md-8">
+                        <div class="auction-price-info">
+                            <div class="price-box">
+                                <h3>سعر البداية</h3>
+                                <div class="price">1,200,000 ر.س</div>
+                            </div>
+                            <div class="price-box current-price">
+                                <h3>السعر الحالي</h3>
+                                <div class="price" id="current-price" data-price="1450000">1,450,000 ر.س</div>
+                            </div>
+                            <div class="price-box">
+                                <h3>عدد المزايدات</h3>
+                                <div class="bids-count" id="bids-count">24 مزايدة</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="auction-actions">
+                            <button class="btn btn-primary btn-lg w-100 mb-2" id="place-bid-btn">
+                                <i class="fas fa-gavel"></i> قدم مزايدة
+                            </button>
+                            <button class="btn btn-outline-primary btn-lg w-100 mb-2" id="watch-auction-btn">
+                                <i class="fas fa-eye"></i> متابعة المزاد
+                            </button>
+                            <button class="btn btn-outline-secondary btn-lg w-100" id="share-auction-btn">
+                                <i class="fas fa-share-alt"></i> مشاركة
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <div class="container">
+            <div class="alert alert-info text-center mb-4">
+                هذه نسخة أولية من صفحة تفاصيل المزاد. سيتم إضافة المزيد من الميزات قريباً:
+                <ul class="list-inline mt-2">
+                    <li class="list-inline-item">معرض الصور</li>
+                    <li class="list-inline-item">تفاصيل العقار</li>
+                    <li class="list-inline-item">نظام المزايدات المباشر</li>
+                    <li class="list-inline-item">مخطط تغير الأسعار</li>
+                    <li class="list-inline-item">خريطة الموقع</li>
+                </ul>
+            </div>
+            
+            <!-- معرض الصور وتفاصيل العقار -->
+            <div class="row mb-4">
+                <!-- معرض الصور -->
+                <div class="col-md-8 mb-4">
+                    <div class="card">
+                        <div class="card-header bg-white">
+                            <h3 class="mb-0 fs-5">معرض الصور</h3>
+                        </div>
+                        <div class="card-body p-0">
+                            <div id="propertyCarousel" class="carousel slide" data-bs-ride="carousel">
+                                <div class="carousel-indicators">
+                                    <button type="button" data-bs-target="#propertyCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                                    <button type="button" data-bs-target="#propertyCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                                    <button type="button" data-bs-target="#propertyCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                                    <button type="button" data-bs-target="#propertyCarousel" data-bs-slide-to="3" aria-label="Slide 4"></button>
+                                </div>
+                                <div class="carousel-inner">
+                                    <div class="carousel-item active">
+                                        <img src="https://via.placeholder.com/900x500?text=صورة+العقار+1" class="d-block w-100" alt="صورة العقار">
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img src="https://via.placeholder.com/900x500?text=صورة+العقار+2" class="d-block w-100" alt="صورة العقار">
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img src="https://via.placeholder.com/900x500?text=صورة+العقار+3" class="d-block w-100" alt="صورة العقار">
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img src="https://via.placeholder.com/900x500?text=صورة+العقار+4" class="d-block w-100" alt="صورة العقار">
+                                    </div>
+                                </div>
+                                <button class="carousel-control-prev" type="button" data-bs-target="#propertyCarousel" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">السابق</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#propertyCarousel" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">التالي</span>
+                                </button>
+                            </div>
+                            <div class="thumbnail-gallery d-flex flex-wrap p-2 justify-content-center">
+                                <div class="thumbnail active mx-1 mb-2">
+                                    <img src="https://via.placeholder.com/100x80?text=1" class="img-thumbnail" alt="صورة مصغرة" data-bs-target="#propertyCarousel" data-bs-slide-to="0">
+                                </div>
+                                <div class="thumbnail mx-1 mb-2">
+                                    <img src="https://via.placeholder.com/100x80?text=2" class="img-thumbnail" alt="صورة مصغرة" data-bs-target="#propertyCarousel" data-bs-slide-to="1">
+                                </div>
+                                <div class="thumbnail mx-1 mb-2">
+                                    <img src="https://via.placeholder.com/100x80?text=3" class="img-thumbnail" alt="صورة مصغرة" data-bs-target="#propertyCarousel" data-bs-slide-to="2">
+                                </div>
+                                <div class="thumbnail mx-1 mb-2">
+                                    <img src="https://via.placeholder.com/100x80?text=4" class="img-thumbnail" alt="صورة مصغرة" data-bs-target="#propertyCarousel" data-bs-slide-to="3">
+                                </div>
+                                <div class="thumbnail mx-1 mb-2">
+                                    <button class="btn btn-primary btn-sm px-3">
+                                        <i class="fas fa-camera me-1"></i> 
+                                        عرض الكل (12)
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- تفاصيل العقار -->
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header bg-white">
+                            <h3 class="mb-0 fs-5">معلومات العقار</h3>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    نوع العقار
+                                    <span class="badge bg-light text-dark">فيلا</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    المساحة
+                                    <span class="badge bg-light text-dark">500م²</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    عدد الغرف
+                                    <span class="badge bg-light text-dark">5 غرف</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    عدد الحمامات
+                                    <span class="badge bg-light text-dark">4 حمامات</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    عدد الصالات
+                                    <span class="badge bg-light text-dark">3 صالات</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    عمر العقار
+                                    <span class="badge bg-light text-dark">3 سنوات</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    الواجهة
+                                    <span class="badge bg-light text-dark">شمالية</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    شارع العقار
+                                    <span class="badge bg-light text-dark">20م</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    السعر المتوقع
+                                    <span class="badge bg-light text-danger fw-bold">1,500,000 - 1,700,000 ر.س</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- قسم المزايدة وسجل المزايدات -->
+            <div class="row mb-4">
+                <!-- نموذج المزايدة -->
+                <div class="col-lg-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header bg-white">
+                            <h3 class="mb-0 fs-5">تقديم مزايدة</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="current-price-display text-center mb-4">
+                                <p class="text-muted mb-1">السعر الحالي</p>
+                                <h2 class="fw-bold text-primary mb-0" id="current-price-display">1,450,000 ر.س</h2>
+                                <p class="text-muted mt-2">الحد الأدنى للمزايدة: <span id="min-increment">10,000</span> ر.س</p>
+                            </div>
+                            
+                            <div class="bidding-form">
+                                <form id="bidding-form">
+                                    <div class="mb-3">
+                                        <label for="bid-amount" class="form-label">قيمة المزايدة (ر.س)</label>
+                                        <div class="input-group">
+                                            <input type="number" class="form-control text-start" id="bid-amount" value="1460000" min="1460000" step="10000">
+                                            <button type="button" class="btn btn-outline-secondary btn-plus-minus" data-action="decrease">
+                                                <i class="fas fa-minus"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-outline-secondary btn-plus-minus" data-action="increase">
+                                                <i class="fas fa-plus"></i>
+                                            </button>
+                                        </div>
+                                        <div class="form-text" id="bid-amount-help">يجب أن تكون المزايدة أعلى من السعر الحالي بمقدار 10,000 ر.س على الأقل</div>
+                                    </div>
+                                    
+                                    <div class="bid-confirmation-box p-3 mb-3 bg-light rounded">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <i class="fas fa-info-circle text-primary me-2"></i>
+                                                تأكيد المزايدة
+                                            </div>
+                                            <span class="bid-amount-confirmation fw-bold">1,460,000 ر.س</span>
+                                        </div>
+                                        <div class="mt-2 text-muted small">
+                                            <p class="mb-1">بالضغط على زر "تأكيد المزايدة" فأنت توافق على:</p>
+                                            <ul class="mb-0 me-4">
+                                                <li>الالتزام بقواعد المزاد</li>
+                                                <li>سداد قيمة العقار في حال رسو المزاد عليك</li>
+                                                <li>عدم التراجع عن المزايدة</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="d-grid gap-2">
+                                        <button type="submit" class="btn btn-primary btn-lg">
+                                            <i class="fas fa-gavel me-1"></i> تأكيد المزايدة
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- سجل المزايدات -->
+                <div class="col-lg-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                            <h3 class="mb-0 fs-5">سجل المزايدات</h3>
+                            <span class="badge bg-primary">24 مزايدة</span>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="bid-history" id="bid-history">
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item bid-item d-flex justify-content-between align-items-center">
+                                        <div class="bid-info">
+                                            <div class="bidder-info d-flex align-items-center">
+                                                <div class="bidder-avatar me-2">
+                                                    <img src="https://via.placeholder.com/32" class="rounded-circle" alt="المزايد">
+                                                </div>
+                                                <div>
+                                                    <div class="bidder-name">أحمد س.</div>
+                                                    <div class="bid-time text-muted small">منذ 5 دقائق</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="bid-amount fw-bold">1,450,000 ر.س</div>
+                                    </li>
+                                    <li class="list-group-item bid-item d-flex justify-content-between align-items-center">
+                                        <div class="bid-info">
+                                            <div class="bidder-info d-flex align-items-center">
+                                                <div class="bidder-avatar me-2">
+                                                    <img src="https://via.placeholder.com/32" class="rounded-circle" alt="المزايد">
+                                                </div>
+                                                <div>
+                                                    <div class="bidder-name">محمد ع.</div>
+                                                    <div class="bid-time text-muted small">منذ 7 دقائق</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="bid-amount fw-bold">1,440,000 ر.س</div>
+                                    </li>
+                                    <li class="list-group-item bid-item d-flex justify-content-between align-items-center">
+                                        <div class="bid-info">
+                                            <div class="bidder-info d-flex align-items-center">
+                                                <div class="bidder-avatar me-2">
+                                                    <img src="https://via.placeholder.com/32" class="rounded-circle" alt="المزايد">
+                                                </div>
+                                                <div>
+                                                    <div class="bidder-name">أحمد س.</div>
+                                                    <div class="bid-time text-muted small">منذ 10 دقائق</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="bid-amount fw-bold">1,430,000 ر.س</div>
+                                    </li>
+                                    <li class="list-group-item bid-item d-flex justify-content-between align-items-center">
+                                        <div class="bid-info">
+                                            <div class="bidder-info d-flex align-items-center">
+                                                <div class="bidder-avatar me-2">
+                                                    <img src="https://via.placeholder.com/32" class="rounded-circle" alt="المزايد">
+                                                </div>
+                                                <div>
+                                                    <div class="bidder-name">سارة م.</div>
+                                                    <div class="bid-time text-muted small">منذ 15 دقيقة</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="bid-amount fw-bold">1,420,000 ر.س</div>
+                                    </li>
+                                    <li class="list-group-item bid-item d-flex justify-content-between align-items-center">
+                                        <div class="bid-info">
+                                            <div class="bidder-info d-flex align-items-center">
+                                                <div class="bidder-avatar me-2">
+                                                    <img src="https://via.placeholder.com/32" class="rounded-circle" alt="المزايد">
+                                                </div>
+                                                <div>
+                                                    <div class="bidder-name">عبدالله خ.</div>
+                                                    <div class="bid-time text-muted small">منذ 20 دقيقة</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="bid-amount fw-bold">1,410,000 ر.س</div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="card-footer bg-white text-center">
+                                <button class="btn btn-link text-primary" id="load-more-bids">عرض المزيد من المزايدات</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- قسم المستخدمين النشطين -->
+            <div class="card shadow-sm mb-4 active-users-section">
+                <div class="active-users-header">
+                    <h5>الأشخاص النشطون في المزاد</h5>
+                    <span class="active-users-count" id="active-users-count">0 شخص</span>
+                </div>
+                <div class="active-users-content">
+                    <div class="active-users-list" id="active-users-list">
+                        <!-- سيتم تعبئة هذا القسم ديناميكياً -->
+                    </div>
+                    <div class="no-active-users" id="no-active-users">
+                        <i class="fas fa-users-slash me-2"></i> لا يوجد مستخدمين نشطين حالياً
+                    </div>
+                </div>
+            </div>
+            
+            <!-- قسم وصف العقار، المستندات، والخريطة -->
+            <div class="row mb-4">
+                <!-- وصف العقار -->
+                <div class="col-lg-6 mb-4">
+                    <div class="card">
+                        <div class="card-header bg-white">
+                            <h3 class="mb-0 fs-5">وصف العقار</h3>
+                        </div>
+                        <div class="card-body">
+                            <p>فيلا فاخرة ومميزة تقع في مخطط حي الياسمين شمال الرياض، تصميم معماري حديث لفيلا درجة أولى بمواصفات ممتازة وتشطيب فاخر.</p>
+                            
+                            <p>تتكون الفيلا من:</p>
+                            <ul>
+                                <li>دور أرضي يضم مجلسين رجال مع حمام، مجلس نساء، صالة طعام، مطبخ داخلي، غرفة خادمة مع حمام، مخزن.</li>
+                                <li>الدور الأول يضم ثلاث غرف نوم رئيسية كل منها مع حمام خاص، صالة عائلية.</li>
+                                <li>دور السطح يضم غرفة غسيل، خزان المياه، وسطح خارجي.</li>
+                                <li>حديقة أمامية وخلفية.</li>
+                                <li>موقفين للسيارات.</li>
+                            </ul>
+                            
+                            <div class="features-section mt-4">
+                                <h4 class="fs-6 mb-3">مميزات العقار:</h4>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <ul class="features-list">
+                                            <li><i class="fas fa-check text-success me-2"></i> تكييف مركزي</li>
+                                            <li><i class="fas fa-check text-success me-2"></i> نظام أمان وكاميرات مراقبة</li>
+                                            <li><i class="fas fa-check text-success me-2"></i> مصعد داخلي</li>
+                                            <li><i class="fas fa-check text-success me-2"></i> أرضيات رخام</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <ul class="features-list">
+                                            <li><i class="fas fa-check text-success me-2"></i> قريب من الخدمات</li>
+                                            <li><i class="fas fa-check text-success me-2"></i> أبواب خشب ماهوجني</li>
+                                            <li><i class="fas fa-check text-success me-2"></i> خزان ماء أرضي</li>
+                                            <li><i class="fas fa-check text-success me-2"></i> مدخل سيارة منحدر</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="services-section mt-4">
+                                <h4 class="fs-6 mb-3">الخدمات المحيطة:</h4>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <ul class="service-list">
+                                            <li><i class="fas fa-mosque text-primary me-2"></i> مسجد (200م)</li>
+                                            <li><i class="fas fa-shopping-cart text-primary me-2"></i> مركز تسوق (500م)</li>
+                                            <li><i class="fas fa-graduation-cap text-primary me-2"></i> مدرسة (1كم)</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <ul class="service-list">
+                                            <li><i class="fas fa-hospital text-primary me-2"></i> مستشفى (2كم)</li>
+                                            <li><i class="fas fa-tree text-primary me-2"></i> حديقة عامة (800م)</li>
+                                            <li><i class="fas fa-utensils text-primary me-2"></i> مطاعم (300م)</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- المستندات والخريطة -->
+                <div class="col-lg-6 mb-4">
+                    <div class="card mb-4">
+                        <div class="card-header bg-white">
+                            <h3 class="mb-0 fs-5">المستندات</h3>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-group">
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <i class="fas fa-file-pdf text-danger me-2"></i>
+                                        صك الملكية
+                                    </div>
+                                    <button class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-eye me-1"></i> عرض
+                                    </button>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <i class="fas fa-file-pdf text-danger me-2"></i>
+                                        رخصة البناء
+                                    </div>
+                                    <button class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-eye me-1"></i> عرض
+                                    </button>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <i class="fas fa-file-image text-info me-2"></i>
+                                        مخطط المبنى
+                                    </div>
+                                    <button class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-eye me-1"></i> عرض
+                                    </button>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <i class="fas fa-file-pdf text-danger me-2"></i>
+                                        تقرير التقييم العقاري
+                                    </div>
+                                    <button class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-eye me-1"></i> عرض
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- خريطة الموقع -->
+                    <div class="card">
+                        <div class="card-header bg-white">
+                            <h3 class="mb-0 fs-5">موقع العقار</h3>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="property-map" id="property-map" style="height: 300px; background-color: #eee;">
+                                <!-- ستتم إضافة خريطة حقيقية هنا باستخدام Google Maps API -->
+                                <div class="text-center py-5">
+                                    <i class="fas fa-map-marked-alt fa-4x text-secondary mb-3"></i>
+                                    <h5>موقع العقار</h5>
+                                    <p class="text-muted">الرياض، حي الياسمين، شارع الأمير سعود</p>
+                                    <button class="btn btn-primary mt-2" id="load-map-btn">
+                                        <i class="fas fa-map-marker-alt me-1"></i> عرض على الخريطة
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-white">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <i class="fas fa-directions text-primary me-1"></i>
+                                    <a href="#" class="text-decoration-none">الحصول على الاتجاهات</a>
+                                </div>
+                                <div>
+                                    <i class="fas fa-share-alt text-primary me-1"></i>
+                                    <a href="#" class="text-decoration-none">مشاركة الموقع</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- تذييل الصفحة -->
+    <footer class="bg-light py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5>منصة العقارات</h5>
+                    <p>المنصة الأولى للمزادات العقارية في المملكة</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>روابط سريعة</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="client_feed.html">الصفحة الرئيسية</a></li>
+                        <li><a href="auctions.html">المزادات</a></li>
+                        <li><a href="financing_calculator.html">حاسبة التمويل</a></li>
+                        <li><a href="ai_consultant.html">المستشار العقاري</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>تواصل معنا</h5>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-phone me-2"></i> 920001234</li>
+                        <li><i class="fas fa-envelope me-2"></i> info@realestate.com</li>
+                        <li><i class="fas fa-map-marker-alt me-2"></i> الرياض، المملكة العربية السعودية</li>
+                    </ul>
+                </div>
+            </div>
+            <hr>
+            <div class="text-center">
+                <p class="mb-0">جميع الحقوق محفوظة 2025 منصة العقارات</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- سكربتات JavaScript -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // تهيئة العد التنازلي
+        initCountdown();
+        
+        // زر المزايدة
+        document.getElementById('place-bid-btn').addEventListener('click', function() {
+            alert('سيتم تنفيذ نظام المزايدات المباشر قريباً');
+        });
+        
+        // زر المتابعة
+        document.getElementById('watch-auction-btn').addEventListener('click', function() {
+            this.innerHTML = '<i class="fas fa-eye-slash"></i> إلغاء المتابعة';
+            alert('تمت إضافة هذا المزاد إلى قائمة المتابعة');
+        });
+        
+        // زر المشاركة
+        document.getElementById('share-auction-btn').addEventListener('click', function() {
+            alert('سيتم تنفيذ خيارات المشاركة قريباً');
+        });
+        
+        // وضع الليل
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        darkModeToggle.addEventListener('change', function() {
+            document.body.classList.toggle('dark-mode', this.checked);
+        });
+
+        // تهيئة نظام المزايدة
+        initBiddingSystem();
+        
+        // تهيئة نظام المزايدة المباشرة
+        const liveSystem = initLiveBiddingSystem();
+        
+        // تهيئة معرض الصور المصغرة
+        initThumbnailGallery();
+        
+        // تفعيل زر تحميل الخريطة
+        const loadMapButton = document.getElementById('load-map-btn');
+        if (loadMapButton) {
+            loadMapButton.addEventListener('click', loadPropertyMap);
+        }
+        
+        // أزرار عرض المستندات
+        const documentButtons = document.querySelectorAll('.card-body .list-group-item button');
+        documentButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const documentName = this.closest('.list-group-item').querySelector('div:first-child').textContent.trim();
+                showDocumentPreview(documentName);
+            });
+        });
+    });
+    
+    // وظيفة العد التنازلي
+    function initCountdown() {
+        const countdownElement = document.getElementById('auction-countdown');
+        if (!countdownElement) return;
+        
+        const endDate = new Date(countdownElement.dataset.end);
+        
+        function updateTimer() {
+            const now = new Date();
+            const distance = endDate - now;
+            
+            if (distance <= 0) {
+                document.getElementById('days').textContent = '00';
+                document.getElementById('hours').textContent = '00';
+                document.getElementById('minutes').textContent = '00';
+                document.getElementById('seconds').textContent = '00';
+                
+                // تغيير حالة المزاد إلى منتهي
+                const statusElement = document.querySelector('.auction-status');
+                if (statusElement) {
+                    statusElement.classList.remove('active');
+                    statusElement.classList.add('ended');
+                    statusElement.querySelector('.status-label').textContent = 'المزاد منتهي';
+                }
+                
+                // تعطيل زر المزايدة
+                const bidButton = document.getElementById('place-bid-btn');
+                if (bidButton) {
+                    bidButton.disabled = true;
+                    bidButton.textContent = 'انتهى المزاد';
+                }
+                
+                // تعطيل نموذج المزايدة
+                disableBiddingForm();
+                
+                return;
+            }
+            
+            // حساب القيم
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            
+            // تحديث العرض
+            document.getElementById('days').textContent = days.toString().padStart(2, '0');
+            document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+            document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+        }
+        
+        // تحديث العداد كل ثانية
+        updateTimer();
+        setInterval(updateTimer, 1000);
+    }
+
+    // تهيئة نظام المزايدة
+    function initBiddingSystem() {
+        // مرجع للعناصر
+        const bidForm = document.getElementById('bidding-form');
+        const bidAmountInput = document.getElementById('bid-amount');
+        const bidConfirmationAmount = document.querySelector('.bid-amount-confirmation');
+        const currentPriceDisplay = document.getElementById('current-price-display');
+        const minIncrement = parseInt(document.getElementById('min-increment').textContent.replace(/,/g, ''));
+        
+        // الحصول على السعر الحالي
+        const currentPrice = parseInt(document.getElementById('current-price').dataset.price || 1450000);
+        
+        // أزرار زيادة / تقليل المبلغ
+        const plusMinusButtons = document.querySelectorAll('.btn-plus-minus');
+        plusMinusButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const action = this.dataset.action;
+                let currentValue = parseInt(bidAmountInput.value);
+                
+                if (action === 'increase') {
+                    currentValue += minIncrement;
+                } else if (action === 'decrease' && (currentValue - minIncrement) >= (currentPrice + minIncrement)) {
+                    currentValue -= minIncrement;
+                }
+                
+                bidAmountInput.value = currentValue;
+                updateBidConfirmation(currentValue);
+            });
+        });
+        
+        // تحديث قيمة التأكيد عند تغيير قيمة المزايدة
+        bidAmountInput.addEventListener('input', function() {
+            const value = parseInt(this.value);
+            updateBidConfirmation(value);
+            
+            // التحقق من صحة المبلغ
+            if (value < (currentPrice + minIncrement)) {
+                this.classList.add('is-invalid');
+                document.getElementById('bid-amount-help').classList.add('text-danger');
+            } else {
+                this.classList.remove('is-invalid');
+                document.getElementById('bid-amount-help').classList.remove('text-danger');
+            }
+        });
+        
+        // عند تقديم نموذج المزايدة
+        bidForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const bidAmount = parseInt(bidAmountInput.value);
+            
+            // التحقق من صحة المبلغ
+            if (bidAmount < (currentPrice + minIncrement)) {
+                alert('يجب أن تكون المزايدة أعلى من السعر الحالي بمقدار ' + minIncrement + ' ر.س على الأقل.');
+                return;
+            }
+            
+            // محاكاة إرسال المزايدة
+            simulateBidSubmission(bidAmount);
+        });
+        
+        // تحديث قيمة التأكيد
+        function updateBidConfirmation(value) {
+            // تنسيق الرقم بإضافة فواصل للآلاف
+            bidConfirmationAmount.textContent = new Intl.NumberFormat('ar-SA').format(value) + ' ر.س';
+        }
+        
+        // محاكاة إرسال المزايدة
+        function simulateBidSubmission(amount) {
+            // إظهار مؤشر التحميل
+            const submitButton = bidForm.querySelector('button[type="submit"]');
+            const originalText = submitButton.innerHTML;
+            submitButton.disabled = true;
+            submitButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> جاري التنفيذ...';
+            
+            // محاكاة التأخير في الشبكة
+            setTimeout(() => {
+                // تحديث السعر الحالي
+                currentPriceDisplay.textContent = new Intl.NumberFormat('ar-SA').format(amount) + ' ر.س';
+                document.getElementById('current-price').dataset.price = amount;
+                
+                // إضافة المزايدة إلى السجل
+                addBidToHistory({
+                    name: 'أنت',
+                    avatar: 'https://via.placeholder.com/32?text=U',
+                    time: 'الآن',
+                    amount: amount
+                });
+                
+                // إعادة تعيين النموذج
+                bidAmountInput.value = amount + minIncrement;
+                bidAmountInput.min = amount + minIncrement;
+                updateBidConfirmation(amount + minIncrement);
+                
+                // إعادة تمكين الزر
+                submitButton.disabled = false;
+                submitButton.innerHTML = originalText;
+                
+                // عرض رسالة نجاح
+                showBidSuccessMessage();
+            }, 1500);
+        }
+        
+        // إضافة مزايدة إلى السجل
+        function addBidToHistory(bid) {
+            const bidHistory = document.getElementById('bid-history').querySelector('ul');
+            const newBid = document.createElement('li');
+            newBid.className = 'list-group-item bid-item d-flex justify-content-between align-items-center new-bid';
+            
+            newBid.innerHTML = `
+                <div class="bid-info">
+                    <div class="bidder-info d-flex align-items-center">
+                        <div class="bidder-avatar me-2">
+                            <img src="${bid.avatar}" class="rounded-circle" alt="المزايد">
+                        </div>
+                        <div>
+                            <div class="bidder-name">${bid.name}</div>
+                            <div class="bid-time text-muted small">${bid.time}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bid-amount fw-bold">${new Intl.NumberFormat('ar-SA').format(bid.amount)} ر.س</div>
+            `;
+            
+            // إضافة المزايدة إلى أعلى القائمة
+            bidHistory.insertBefore(newBid, bidHistory.firstChild);
+            
+            // تطبيق تأثير التلاشي
+            setTimeout(() => {
+                newBid.classList.add('bid-added');
+            }, 100);
+            
+            // تحديث عدد المزايدات
+            updateBidCount();
+        }
+        
+        // تحديث عدد المزايدات
+        function updateBidCount() {
+            const bidCountElement = document.querySelector('.card-header .badge');
+            if (bidCountElement) {
+                let count = parseInt(bidCountElement.textContent.split(' ')[0]) + 1;
+                bidCountElement.textContent = count + ' مزايدة';
+                
+                // تحديث عدد المزايدات في رأس الصفحة
+                const bidsCountElement = document.getElementById('bids-count');
+                if (bidsCountElement) {
+                    bidsCountElement.textContent = count + ' مزايدة';
+                }
+            }
+        }
+        
+        // عرض رسالة نجاح المزايدة
+        function showBidSuccessMessage() {
+            // إنشاء عنصر التنبيه
+            const alertElement = document.createElement('div');
+            alertElement.className = 'alert alert-success alert-dismissible fade show bid-success-alert';
+            alertElement.innerHTML = `
+                <i class="fas fa-check-circle me-2"></i>
+                تم تقديم مزايدتك بنجاح! أنت الآن صاحب أعلى مزايدة.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            `;
+            
+            // إضافة التنبيه قبل نموذج المزايدة
+            const biddingForm = document.querySelector('.bidding-form');
+            biddingForm.parentNode.insertBefore(alertElement, biddingForm);
+            
+            // إزالة التنبيه بعد فترة
+            setTimeout(() => {
+                alertElement.classList.add('fade');
+                setTimeout(() => {
+                    alertElement.remove();
+                }, 500);
+            }, 5000);
+        }
+        
+        // تعطيل نموذج المزايدة
+        function disableBiddingForm() {
+            bidForm.querySelectorAll('input, button').forEach(element => {
+                element.disabled = true;
+            });
+            
+            bidForm.querySelector('.bid-confirmation-box').innerHTML = `
+                <div class="alert alert-secondary mb-0">
+                    <i class="fas fa-info-circle me-2"></i>
+                    انتهى المزاد. لم يعد بالإمكان تقديم مزايدات جديدة.
+                </div>
+            `;
+        }
+    }
+    
+    // تهيئة نظام المزايدة المباشرة
+    function initLiveBiddingSystem() {
+        // تهيئة اتصال WebSocket
+        const socket = io.connect('wss://yourdomain.com/auction', { 
+            transports: ['websocket'],
+            query: {
+                auctionId: '123456', // يجب أن يكون هذا ديناميكياً بناءً على المزاد الحالي
+                userId: 'user789', // يجب أن يكون هذا ديناميكياً بناءً على المستخدم الحالي
+                userName: 'المستخدم الحالي'
+            } 
+        });
+        
+        // مرجع للعناصر
+        const bidForm = document.getElementById('bidding-form');
+        const bidAmountInput = document.getElementById('bid-amount');
+        const activeUsersList = document.getElementById('active-users-list');
+        const noActiveUsersMessage = document.getElementById('no-active-users');
+        const activeUsersCount = document.getElementById('active-users-count');
+        const bidderTyping = document.getElementById('bidder-typing');
+        const bidderTypingText = document.querySelector('.bidder-typing-text');
+        
+        // المستخدمين النشطين
+        const activeUsers = new Map();
+        
+        // الاستماع لأحداث Socket
+        
+        // عند الاتصال
+        socket.on('connect', () => {
+            showLiveNotification('اتصال', 'تم الاتصال بالمزاد', 'أنت الآن متصل بالمزاد بشكل مباشر');
+            console.log('WebSocket تم الاتصال بنجاح');
+        });
+        
+        // عند فقدان الاتصال
+        socket.on('disconnect', () => {
+            showLiveNotification('انقطاع', 'تم فقدان الاتصال', 'جاري إعادة الاتصال بالمزاد...', 'warning');
+            console.log('WebSocket تم فقدان الاتصال');
+        });
+        
+        // عندما ينضم مستخدم جديد
+        socket.on('user_joined', (userData) => {
+            console.log('مستخدم انضم:', userData);
+            addActiveUser(userData);
+            showLiveNotification('انضمام', 'مستخدم جديد', `انضم ${userData.name} إلى المزاد`, 'join');
+        });
+        
+        // عندما يغادر مستخدم
+        socket.on('user_left', (userId) => {
+            console.log('مستخدم غادر:', userId);
+            removeActiveUser(userId);
+        });
+        
+        // عند استلام مزايدة جديدة
+        socket.on('new_bid', (bidData) => {
+            console.log('مزايدة جديدة:', bidData);
+            
+            // تحديث السعر الحالي
+            updateCurrentPrice(bidData.amount);
+            
+            // إضافة المزايدة إلى السجل
+            addBidToHistory({
+                name: bidData.userName,
+                avatar: bidData.userAvatar || 'https://via.placeholder.com/32',
+                time: 'الآن',
+                amount: bidData.amount
+            });
+            
+            // إظهار إشعار
+            showLiveNotification('مزايدة', 'مزايدة جديدة', `قام ${bidData.userName} بتقديم مزايدة بقيمة ${new Intl.NumberFormat('ar-SA').format(bidData.amount)} ر.س`, 'bid');
+            
+            // تحديث حالة المستخدم النشط
+            updateUserBiddingStatus(bidData.userId);
+        });
+        
+        // عندما يكتب مستخدم مزايدة
+        socket.on('user_typing', (userData) => {
+            showBidderTyping(userData.name);
+            
+            // إخفاء بعد 3 ثواني إذا لم يتم تحديثه
+            setTimeout(() => {
+                hideBidderTyping();
+            }, 3000);
+        });
+        
+        // الاستماع لتغييرات نموذج المزايدة
+        bidAmountInput.addEventListener('input', () => {
+            // إرسال حدث أن المستخدم يكتب
+            socket.emit('typing', { 
+                auctionId: '123456',
+                timestamp: new Date().getTime()
+            });
+        });
+        
+        // تعديل الإرسال عند تقديم النموذج
+        const originalSubmitHandler = bidForm.onsubmit;
+        bidForm.onsubmit = function(e) {
+            e.preventDefault();
+            
+            const bidAmount = parseInt(bidAmountInput.value);
+            
+            // التحقق من صحة المبلغ
+            if (bidAmount < (currentPrice + minIncrement)) {
+                alert('يجب أن تكون المزايدة أعلى من السعر الحالي بمقدار ' + minIncrement + ' ر.س على الأقل.');
+                return;
+            }
+            
+            // إظهار مؤشر التحميل
+            const submitButton = bidForm.querySelector('button[type="submit"]');
+            const originalText = submitButton.innerHTML;
+            submitButton.disabled = true;
+            submitButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> جاري التنفيذ...';
+            
+            // إرسال المزايدة عبر WebSocket
+            socket.emit('place_bid', {
+                auctionId: '123456',
+                amount: bidAmount,
+                timestamp: new Date().getTime()
+            });
+            
+            // إعادة تمكين الزر بعد فترة
+            setTimeout(() => {
+                submitButton.disabled = false;
+                submitButton.innerHTML = originalText;
+            }, 1000);
+        };
+        
+        // إضافة مستخدم نشط
+        function addActiveUser(userData) {
+            // تحقق مما إذا كان المستخدم موجودًا بالفعل
+            if (activeUsers.has(userData.id)) {
+                return;
+            }
+            
+            // إضافة المستخدم إلى الخريطة
+            activeUsers.set(userData.id, userData);
+            
+            // إخفاء رسالة "لا يوجد مستخدمين نشطين"
+            if (noActiveUsersMessage) {
+                noActiveUsersMessage.style.display = 'none';
+            }
+            
+            // إنشاء عنصر المستخدم
+            const userElement = document.createElement('div');
+            userElement.className = 'active-user-item';
+            userElement.setAttribute('data-user-id', userData.id);
+            userElement.innerHTML = `
+                <div class="active-user-avatar">
+                    <img src="${userData.avatar || 'https://via.placeholder.com/50'}" alt="${userData.name}">
+                    <span class="active-user-status"></span>
+                </div>
+                <div class="active-user-name">${userData.name}</div>
+            `;
+            
+            // إضافة المستخدم إلى القائمة
+            activeUsersList.appendChild(userElement);
+            
+            // تحديث العداد
+            updateActiveUsersCount();
+        }
+        
+        // إزالة مستخدم نشط
+        function removeActiveUser(userId) {
+            // إزالة المستخدم من الخريطة
+            activeUsers.delete(userId);
+            
+            // إزالة عنصر المستخدم من القائمة
+            const userElement = document.querySelector(`.active-user-item[data-user-id="${userId}"]`);
+            if (userElement) {
+                userElement.remove();
+            }
+            
+            // إظهار رسالة "لا يوجد مستخدمين نشطين" إذا كانت القائمة فارغة
+            if (activeUsers.size === 0 && noActiveUsersMessage) {
+                noActiveUsersMessage.style.display = 'block';
+            }
+            
+            // تحديث العداد
+            updateActiveUsersCount();
+        }
+        
+        // تحديث عدد المستخدمين النشطين
+        function updateActiveUsersCount() {
+            const count = activeUsers.size;
+            if (activeUsersCount) {
+                activeUsersCount.textContent = count + (count === 1 ? ' شخص' : ' أشخاص');
+            }
+        }
+        
+        // تحديث حالة المزايدة للمستخدم
+        function updateUserBiddingStatus(userId) {
+            // إزالة حالة المزايدة من جميع المستخدمين
+            document.querySelectorAll('.active-user-item').forEach(item => {
+                item.classList.remove('bidding-now');
+            });
+            
+            // إضافة حالة المزايدة للمستخدم الذي قام بالمزايدة
+            const userElement = document.querySelector(`.active-user-item[data-user-id="${userId}"]`);
+            if (userElement) {
+                userElement.classList.add('bidding-now');
+                
+                // إزالة الحالة بعد 5 ثوانٍ
+                setTimeout(() => {
+                    userElement.classList.remove('bidding-now');
+                }, 5000);
+            }
+        }
+        
+        // تحديث السعر الحالي
+        function updateCurrentPrice(amount) {
+            const currentPriceDisplay = document.getElementById('current-price-display');
+            if (currentPriceDisplay) {
+                currentPriceDisplay.textContent = new Intl.NumberFormat('ar-SA').format(amount) + ' ر.س';
+                document.getElementById('current-price').dataset.price = amount;
+                
+                // تحديث قيمة الحد الأدنى للمزايدة
+                const minIncrement = parseInt(document.getElementById('min-increment').textContent.replace(/,/g, ''));
+                bidAmountInput.value = amount + minIncrement;
+                bidAmountInput.min = amount + minIncrement;
+            }
+        }
+        
+        // إظهار المستخدم الذي يكتب
+        function showBidderTyping(userName) {
+            bidderTypingText.textContent = `${userName} يضع مزايدة...`;
+            bidderTyping.classList.add('show');
+        }
+        
+        // إخفاء مؤشر الكتابة
+        function hideBidderTyping() {
+            bidderTyping.classList.remove('show');
+        }
+        
+        // إظهار إشعار حي
+        function showLiveNotification(type, title, message, iconClass = 'bid') {
+            const container = document.getElementById('live-notification-container');
+            if (!container) return;
+            
+            // إنشاء عنصر الإشعار
+            const notification = document.createElement('div');
+            notification.className = 'live-notification';
+            notification.innerHTML = `
+                <div class="live-notification-content">
+                    <div class="live-notification-icon ${iconClass}">
+                        <i class="fas ${getIconForType(type)}"></i>
+                    </div>
+                    <div class="live-notification-text">
+                        <div class="live-notification-title">${title}</div>
+                        <div class="live-notification-message">${message}</div>
+                    </div>
+                </div>
+            `;
+            
+            // إضافة الإشعار إلى الحاوية
+            container.appendChild(notification);
+            
+            // إظهار الإشعار بعد لحظة (للسماح بالتأثير الحركي)
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 10);
+            
+            // إخفاء الإشعار بعد 5 ثوانٍ
+            setTimeout(() => {
+                notification.classList.remove('show');
+                
+                // إزالة الإشعار من الـ DOM بعد انتهاء التأثير
+                setTimeout(() => {
+                    notification.remove();
+                }, 300);
+            }, 5000);
+        }
+        
+        // الحصول على أيقونة مناسبة للنوع
+        function getIconForType(type) {
+            switch (type) {
+                case 'مزايدة': return 'fa-gavel';
+                case 'انضمام': return 'fa-user-plus';
+                case 'اتصال': return 'fa-plug';
+                case 'انقطاع': return 'fa-plug';
+                case 'تحذير': return 'fa-exclamation-triangle';
+                case 'وقت': return 'fa-clock';
+                default: return 'fa-bell';
+            }
+        }
+        
+        // محاكاة بيانات المستخدمين النشطين
+        function simulateActiveUsers() {
+            // إضافة بعض المستخدمين النشطين للاختبار
+            const mockUsers = [
+                { id: 'user1', name: 'أحمد محمد', avatar: 'https://i.pravatar.cc/50?img=1' },
+                { id: 'user2', name: 'سارة العتيبي', avatar: 'https://i.pravatar.cc/50?img=5' },
+                { id: 'user3', name: 'فهد الدوسري', avatar: 'https://i.pravatar.cc/50?img=3' },
+                { id: 'user4', name: 'نورة الشمري', avatar: 'https://i.pravatar.cc/50?img=4' },
+                { id: 'user5', name: 'عبدالله القحطاني', avatar: 'https://i.pravatar.cc/50?img=8' }
+            ];
+            
+            mockUsers.forEach(user => {
+                setTimeout(() => {
+                    addActiveUser(user);
+                    showLiveNotification('انضمام', 'مستخدم جديد', `انضم ${user.name} إلى المزاد`, 'join');
+                }, Math.random() * 5000);
+            });
+            
+            // محاكاة مزايدات عشوائية
+            let currentPrice = parseInt(document.getElementById('current-price').dataset.price || 1450000);
+            const minIncrement = parseInt(document.getElementById('min-increment').textContent.replace(/,/g, ''));
+            
+            setInterval(() => {
+                // اختيار مستخدم عشوائي من المستخدمين النشطين
+                if (activeUsers.size > 0 && Math.random() > 0.7) {
+                    const randomIndex = Math.floor(Math.random() * mockUsers.length);
+                    const randomUser = mockUsers[randomIndex];
+                    
+                    // محاكاة حدث الكتابة
+                    showBidderTyping(randomUser.name);
+                    
+                    // محاكاة مزايدة بعد ثانيتين
+                    setTimeout(() => {
+                        hideBidderTyping();
+                        
+                        // زيادة السعر بمقدار عشوائي (على الأقل الحد الأدنى للزيادة)
+                        const bidIncrement = minIncrement * (1 + Math.floor(Math.random() * 3));
+                        currentPrice += bidIncrement;
+                        
+                        // تحديث السعر الحالي
+                        updateCurrentPrice(currentPrice);
+                        
+                        // إضافة المزايدة إلى السجل
+                        addBidToHistory({
+                            name: randomUser.name,
+                            avatar: randomUser.avatar,
+                            time: 'الآن',
+                            amount: currentPrice
+                        });
+                        
+                        // إظهار إشعار
+                        showLiveNotification('مزايدة', 'مزايدة جديدة', `قام ${randomUser.name} بتقديم مزايدة بقيمة ${new Intl.NumberFormat('ar-SA').format(currentPrice)} ر.س`, 'bid');
+                        
+                        // تحديث حالة المستخدم النشط
+                        updateUserBiddingStatus(randomUser.id);
+                    }, 2000);
+                }
+            }, 10000); // احتمالية وجود مزايدة كل 10 ثوانٍ
+        }
+        
+        // في بيئة الاختبار، نقوم بمحاكاة النظام
+        simulateActiveUsers();
+        
+        return {
+            socket,
+            showLiveNotification
+        };
+    }
+    
+    // تهيئة جميع الوظائف عند تحميل الصفحة
+    document.addEventListener('DOMContentLoaded', function() {
+        // تهيئة العد التنازلي
+        initCountdown();
+        
+        // تهيئة نظام المزايدة
+        initBiddingSystem();
+        
+        // تهيئة نظام المزايدة المباشرة
+        const liveSystem = initLiveBiddingSystem();
+        
+        // تهيئة معرض الصور المصغرة
+        initThumbnailGallery();
+        
+        // تفعيل زر تحميل الخريطة
+        const loadMapButton = document.getElementById('load-map-btn');
+        if (loadMapButton) {
+            loadMapButton.addEventListener('click', loadPropertyMap);
+        }
+    });
+    </script>
+    
+    <!-- إضافة مكتبة Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- عناصر واجهة المستخدم للمزايدة المباشرة -->
+    <div id="live-notification-container"></div>
+
+    <!-- مؤشر الكتابة -->
+    <div class="bidder-typing" id="bidder-typing">
+        <div class="typing-dots">
+            <span class="typing-dot"></span>
+            <span class="typing-dot"></span>
+            <span class="typing-dot"></span>
+        </div>
+        <span class="bidder-typing-text"></span>
+    </div>
+</body>
+</html>

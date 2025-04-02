@@ -1,0 +1,1404 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المزادات العقارية - تيك توك العقاري</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <style>
+        :root {
+            --primary-color: #25d366;
+            --secondary-color: #128c7e;
+            --dark-color: #075e54;
+            --light-color: #dcf8c6;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --dark-bg: #121212;
+            --dark-card: #1e1e1e;
+            --dark-text: #e0e0e0;
+        }
+        
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            padding-bottom: 60px;
+        }
+        
+        /* تنسيقات عامة للصفحة */
+        .auction-container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 15px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .auction-header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .auction-header h1 {
+            font-weight: 700;
+            color: var(--dark-color);
+            margin-bottom: 10px;
+        }
+        
+        /* تنسيقات التنبيه */
+        .auction-alert {
+            background-color: #fff8eb;
+            border: 1px solid #ffecd1;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+        
+        .alert-icon {
+            background-color: var(--warning-color);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 15px;
+            color: white;
+            font-size: 18px;
+        }
+        
+        .alert-content {
+            flex: 1;
+        }
+        
+        .alert-content h4 {
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .alert-content p {
+            margin-bottom: 0;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .alert-action {
+            margin-right: 15px;
+        }
+        
+        /* تنسيقات التبويبات */
+        .nav-tabs {
+            border-bottom: 2px solid #eee;
+            margin-bottom: 25px;
+        }
+        
+        .nav-tabs .nav-link {
+            border: none;
+            color: #666;
+            font-weight: 600;
+            padding: 12px 25px;
+            margin-right: 5px;
+            transition: all 0.3s ease;
+            border-radius: 5px 5px 0 0;
+        }
+        
+        .nav-tabs .nav-link.active,
+        .nav-tabs .nav-link:hover {
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--primary-color);
+            background-color: transparent;
+        }
+        
+        /* تنسيقات قائمة المزادات */
+        .auction-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+        
+        .auction-card {
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+        }
+        
+        .auction-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+        }
+        
+        /* شريط الحالة */
+        .ribbon {
+            position: absolute;
+            top: 20px;
+            right: -5px;
+            z-index: 1;
+        }
+        
+        .ribbon span {
+            position: relative;
+            display: block;
+            padding: 6px 12px;
+            background-color: var(--primary-color);
+            color: #fff;
+            font-size: 12px;
+            font-weight: 600;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        .ribbon span:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -10px;
+            border-right: 10px solid var(--primary-color);
+            border-top: 13px solid transparent;
+            border-bottom: 13px solid transparent;
+        }
+        
+        .live-auction .ribbon span {
+            background-color: var(--danger-color);
+        }
+        
+        .live-auction .ribbon span:before {
+            border-right-color: var(--danger-color);
+        }
+        
+        .upcoming-auction .ribbon span {
+            background-color: var(--warning-color);
+        }
+        
+        .upcoming-auction .ribbon span:before {
+            border-right-color: var(--warning-color);
+        }
+        
+        .past-auction .ribbon span {
+            background-color: #6c757d;
+        }
+        
+        .past-auction .ribbon span:before {
+            border-right-color: #6c757d;
+        }
+        
+        .my-auction .ribbon span,
+        .my-property .ribbon span {
+            background-color: var(--success-color);
+        }
+        
+        .my-auction .ribbon span:before,
+        .my-property .ribbon span:before {
+            border-right-color: var(--success-color);
+        }
+        
+        /* صورة العقار */
+        .auction-image {
+            height: 180px;
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            position: relative;
+        }
+        
+        /* تفاصيل المزاد */
+        .auction-details {
+            padding: 15px;
+        }
+        
+        .auction-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .auction-location {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .auction-location i {
+            margin-left: 8px;
+            color: var(--primary-color);
+        }
+        
+        /* مواصفات العقار */
+        .auction-specs {
+            display: flex;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .spec-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .spec-item i {
+            color: var(--secondary-color);
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+        
+        .spec-item span {
+            font-size: 13px;
+            color: #666;
+        }
+        
+        /* أسعار المزاد */
+        .auction-pricing {
+            margin-bottom: 15px;
+        }
+        
+        .starting-price,
+        .current-price,
+        .sold-price,
+        .my-bid {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        
+        .starting-price .label,
+        .current-price .label,
+        .sold-price .label,
+        .my-bid .label {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .starting-price .value,
+        .current-price .value,
+        .sold-price .value,
+        .my-bid .value {
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .current-price .value,
+        .my-bid .value {
+            color: var(--primary-color);
+        }
+        
+        .sold-price .value {
+            color: var(--success-color);
+        }
+        
+        /* مؤقت المزاد */
+        .auction-timer {
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .timer-label {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .timer-label i {
+            margin-left: 8px;
+            color: var(--warning-color);
+        }
+        
+        .timer-digits {
+            display: flex;
+            justify-content: space-around;
+        }
+        
+        .digit-group {
+            text-align: center;
+        }
+        
+        .digit {
+            background-color: #333;
+            color: #fff;
+            border-radius: 4px;
+            padding: 5px 8px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+        
+        .digit-group .label {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        /* تاريخ المزاد */
+        .auction-date {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .auction-date i {
+            margin-left: 8px;
+            color: var(--secondary-color);
+        }
+        
+        /* حالة المزاد */
+        .auction-status {
+            margin-bottom: 15px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            padding: 10px;
+        }
+        
+        .status-complete,
+        .status-active,
+        .status-pending {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+        }
+        
+        .status-complete i,
+        .status-active i,
+        .status-pending i {
+            margin-left: 8px;
+            font-size: 16px;
+        }
+        
+        .status-complete i {
+            color: var(--success-color);
+        }
+        
+        .status-active i {
+            color: var(--primary-color);
+        }
+        
+        .status-pending i {
+            color: var(--warning-color);
+        }
+        
+        /* أزرار المزاد */
+        .auction-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .btn-block {
+            display: block;
+            width: 100%;
+        }
+        
+        .join-auction-btn,
+        .notify-auction-btn,
+        .payment-btn {
+            font-weight: 600;
+        }
+        
+        /* تنسيقات تبويب مزاداتي */
+        .my-auction-content .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px 0 15px;
+        }
+        
+        .my-auction-content .section-header h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--dark-color);
+            margin-bottom: 0;
+        }
+        
+        .add-property-btn {
+            display: flex;
+            align-items: center;
+        }
+        
+        .add-property-btn i {
+            margin-left: 8px;
+        }
+        
+        /* استجابة للشاشات الصغيرة */
+        @media (max-width: 768px) {
+            .auction-list {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-tabs .nav-link {
+                padding: 8px 15px;
+                font-size: 14px;
+            }
+            
+            .auction-alert {
+                flex-direction: column;
+                text-align: center;
+                padding: 15px 10px;
+            }
+            
+            .alert-icon {
+                margin: 0 auto 10px;
+            }
+            
+            .alert-action {
+                margin-top: 15px;
+                margin-right: 0;
+            }
+            
+            .my-auction-content .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .add-property-btn {
+                margin-top: 10px;
+            }
+        }
+        
+        /* نمط الوضع الداكن */
+        .dark-mode {
+            background-color: var(--dark-bg);
+            color: var(--dark-text);
+        }
+        
+        .dark-mode .auction-container {
+            background-color: var(--dark-card);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .dark-mode .auction-header {
+            border-bottom-color: #333;
+        }
+        
+        .dark-mode .auction-header h1 {
+            color: var(--primary-color);
+        }
+        
+        .dark-mode .auction-alert {
+            background-color: #2c2c2c;
+            border-color: #3c3c3c;
+        }
+        
+        .dark-mode .alert-content h4 {
+            color: var(--dark-text);
+        }
+        
+        .dark-mode .alert-content p {
+            color: #aaa;
+        }
+        
+        .dark-mode .nav-tabs {
+            border-bottom-color: #333;
+        }
+        
+        .dark-mode .nav-tabs .nav-link {
+            color: #aaa;
+        }
+        
+        .dark-mode .auction-card {
+            background-color: var(--dark-card);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .dark-mode .auction-title {
+            color: var(--dark-text);
+        }
+        
+        .dark-mode .auction-location,
+        .dark-mode .spec-item span,
+        .dark-mode .starting-price .label,
+        .dark-mode .current-price .label,
+        .dark-mode .sold-price .label,
+        .dark-mode .my-bid .label,
+        .dark-mode .timer-label,
+        .dark-mode .digit-group .label,
+        .dark-mode .auction-date {
+            color: #aaa;
+        }
+        
+        .dark-mode .auction-specs {
+            border-bottom-color: #333;
+        }
+        
+        .dark-mode .auction-timer,
+        .dark-mode .auction-status {
+            background-color: #2c2c2c;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- هيدر الصفحة -->
+        <div class="page-header">
+            <h1 class="header-title">المزادات العقارية</h1>
+            <div class="header-actions">
+                <button class="mode-toggle" aria-label="تبديل الوضع">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="back-button" aria-label="العودة">
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- الإشعار قريب من بدء المزاد -->
+        <div id="auction-alert" class="auction-alert" style="display: none;">
+            <div class="alert-icon">
+                <i class="fas fa-bell"></i>
+            </div>
+            <div class="alert-content">
+                <div class="alert-title">مزاد جديد سيبدأ قريباً!</div>
+                <div class="alert-time">يبدأ في <span id="auction-countdown">00:00:00</span></div>
+            </div>
+            <button class="alert-join">الانضمام</button>
+            <button class="alert-close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <!-- التبويبات الرئيسية -->
+        <ul class="nav nav-tabs auction-tabs" id="auctionTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="live-tab" data-bs-toggle="tab" data-bs-target="#live-auctions" type="button" role="tab" aria-controls="live-auctions" aria-selected="true">مزادات جارية</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="upcoming-tab" data-bs-toggle="tab" data-bs-target="#upcoming-auctions" type="button" role="tab" aria-controls="upcoming-auctions" aria-selected="false">مزادات قادمة</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="past-tab" data-bs-toggle="tab" data-bs-target="#past-auctions" type="button" role="tab" aria-controls="past-auctions" aria-selected="false">مزادات سابقة</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="my-tab" data-bs-toggle="tab" data-bs-target="#my-auctions" type="button" role="tab" aria-controls="my-auctions" aria-selected="false">مزاداتي</button>
+            </li>
+        </ul>
+        
+        <!-- محتوى التبويبات -->
+        <div class="tab-content auction-content" id="auctionTabsContent">
+            <!-- المزادات الجارية -->
+            <div class="tab-pane fade show active" id="live-auctions" role="tabpanel" aria-labelledby="live-tab">
+                <div class="auction-list">
+                    <!-- مزاد جاري 1 -->
+                    <div class="auction-card live-auction">
+                        <div class="ribbon">
+                            <span>جاري</span>
+                        </div>
+                        <div class="auction-image" style="background-image: url('https://via.placeholder.com/500x300');"></div>
+                        <div class="auction-details">
+                            <h3 class="auction-title">فيلا فاخرة بحي النرجس</h3>
+                            <div class="auction-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>الرياض، حي النرجس</span>
+                            </div>
+                            <div class="auction-specs">
+                                <div class="spec-item">
+                                    <i class="fas fa-ruler-combined"></i>
+                                    <span>500م²</span>
+                                </div>
+                                <div class="spec-item">
+                                    <i class="fas fa-bed"></i>
+                                    <span>5 غرف</span>
+                                </div>
+                                <div class="spec-item">
+                                    <i class="fas fa-bath"></i>
+                                    <span>4 حمامات</span>
+                                </div>
+                            </div>
+                            <div class="auction-pricing">
+                                <div class="starting-price">
+                                    <span class="label">السعر الابتدائي:</span>
+                                    <span class="value">1,800,000 ر.س</span>
+                                </div>
+                                <div class="current-price">
+                                    <span class="label">السعر الحالي:</span>
+                                    <span class="value">2,150,000 ر.س</span>
+                                </div>
+                            </div>
+                            <div class="auction-timer">
+                                <div class="timer-label">
+                                    <i class="fas fa-clock"></i>
+                                    <span>ينتهي في:</span>
+                                </div>
+                                <div class="timer-digits">
+                                    <div class="digit-group">
+                                        <div class="digit">01</div>
+                                        <div class="label">يوم</div>
+                                    </div>
+                                    <div class="digit-group">
+                                        <div class="digit">12</div>
+                                        <div class="label">ساعة</div>
+                                    </div>
+                                    <div class="digit-group">
+                                        <div class="digit">45</div>
+                                        <div class="label">دقيقة</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="auction-actions">
+                                <button class="btn btn-primary btn-block join-auction-btn">الدخول للمزايدة</button>
+                                <a href="auction_details.html" class="btn btn-outline-secondary btn-block details-btn">تفاصيل العقار</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- مزاد جاري 2 -->
+                    <div class="auction-card live-auction">
+                        <div class="ribbon">
+                            <span>جاري</span>
+                        </div>
+                        <div class="auction-image" style="background-image: url('https://via.placeholder.com/500x300');"></div>
+                        <div class="auction-details">
+                            <h3 class="auction-title">أرض تجارية بموقع مميز</h3>
+                            <div class="auction-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>الرياض، طريق الملك فهد</span>
+                            </div>
+                            <div class="auction-specs">
+                                <div class="spec-item">
+                                    <i class="fas fa-ruler-combined"></i>
+                                    <span>1200م²</span>
+                                </div>
+                                <div class="spec-item">
+                                    <i class="fas fa-landmark"></i>
+                                    <span>تجاري</span>
+                                </div>
+                                <div class="spec-item">
+                                    <i class="fas fa-road"></i>
+                                    <span>3 واجهات</span>
+                                </div>
+                            </div>
+                            <div class="auction-pricing">
+                                <div class="starting-price">
+                                    <span class="label">السعر الابتدائي:</span>
+                                    <span class="value">3,500,000 ر.س</span>
+                                </div>
+                                <div class="current-price">
+                                    <span class="label">السعر الحالي:</span>
+                                    <span class="value">4,200,000 ر.س</span>
+                                </div>
+                            </div>
+                            <div class="auction-timer">
+                                <div class="timer-label">
+                                    <i class="fas fa-clock"></i>
+                                    <span>ينتهي في:</span>
+                                </div>
+                                <div class="timer-digits">
+                                    <div class="digit-group">
+                                        <div class="digit">00</div>
+                                        <div class="label">يوم</div>
+                                    </div>
+                                    <div class="digit-group">
+                                        <div class="digit">04</div>
+                                        <div class="label">ساعة</div>
+                                    </div>
+                                    <div class="digit-group">
+                                        <div class="digit">22</div>
+                                        <div class="label">دقيقة</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="auction-actions">
+                                <button class="btn btn-primary btn-block join-auction-btn">الدخول للمزايدة</button>
+                                <a href="auction_details.html" class="btn btn-outline-secondary btn-block details-btn">تفاصيل العقار</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- المزادات القادمة -->
+            <div class="tab-pane fade" id="upcoming-auctions" role="tabpanel" aria-labelledby="upcoming-tab">
+                <div class="auction-list">
+                    <!-- مزاد قادم 1 -->
+                    <div class="auction-card upcoming-auction">
+                        <div class="ribbon">
+                            <span>قريباً</span>
+                        </div>
+                        <div class="auction-image" style="background-image: url('https://via.placeholder.com/500x300');"></div>
+                        <div class="auction-details">
+                            <h3 class="auction-title">شقة فاخرة بإطلالة بحرية</h3>
+                            <div class="auction-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>جدة، حي الشاطئ</span>
+                            </div>
+                            <div class="auction-specs">
+                                <div class="spec-item">
+                                    <i class="fas fa-ruler-combined"></i>
+                                    <span>220م²</span>
+                                </div>
+                                <div class="spec-item">
+                                    <i class="fas fa-bed"></i>
+                                    <span>3 غرف</span>
+                                </div>
+                                <div class="spec-item">
+                                    <i class="fas fa-bath"></i>
+                                    <span>2 حمامات</span>
+                                </div>
+                            </div>
+                            <div class="auction-pricing">
+                                <div class="starting-price">
+                                    <span class="label">السعر الابتدائي:</span>
+                                    <span class="value">1,200,000 ر.س</span>
+                                </div>
+                            </div>
+                            <div class="auction-timer">
+                                <div class="timer-label">
+                                    <i class="fas fa-clock"></i>
+                                    <span>يبدأ في:</span>
+                                </div>
+                                <div class="timer-digits">
+                                    <div class="digit-group">
+                                        <div class="digit">02</div>
+                                        <div class="label">يوم</div>
+                                    </div>
+                                    <div class="digit-group">
+                                        <div class="digit">10</div>
+                                        <div class="label">ساعة</div>
+                                    </div>
+                                    <div class="digit-group">
+                                        <div class="digit">30</div>
+                                        <div class="label">دقيقة</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="auction-actions">
+                                <button class="btn btn-primary btn-block notify-auction-btn">تذكيرني عند البدء</button>
+                                <a href="auction_details.html" class="btn btn-outline-secondary btn-block details-btn">تفاصيل العقار</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- مزاد قادم 2 -->
+                    <div class="auction-card upcoming-auction">
+                        <div class="ribbon">
+                            <span>قريباً</span>
+                        </div>
+                        <div class="auction-image" style="background-image: url('https://via.placeholder.com/500x300');"></div>
+                        <div class="auction-details">
+                            <h3 class="auction-title">مزرعة استثمارية</h3>
+                            <div class="auction-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>القصيم، بريدة</span>
+                            </div>
+                            <div class="auction-specs">
+                                <div class="spec-item">
+                                    <i class="fas fa-ruler-combined"></i>
+                                    <span>10,000م²</span>
+                                </div>
+                                <div class="spec-item">
+                                    <i class="fas fa-home"></i>
+                                    <span>استراحة</span>
+                                </div>
+                                <div class="spec-item">
+                                    <i class="fas fa-tint"></i>
+                                    <span>بئر ماء</span>
+                                </div>
+                            </div>
+                            <div class="auction-pricing">
+                                <div class="starting-price">
+                                    <span class="label">السعر الابتدائي:</span>
+                                    <span class="value">850,000 ر.س</span>
+                                </div>
+                            </div>
+                            <div class="auction-timer">
+                                <div class="timer-label">
+                                    <i class="fas fa-clock"></i>
+                                    <span>يبدأ في:</span>
+                                </div>
+                                <div class="timer-digits">
+                                    <div class="digit-group">
+                                        <div class="digit">05</div>
+                                        <div class="label">يوم</div>
+                                    </div>
+                                    <div class="digit-group">
+                                        <div class="digit">08</div>
+                                        <div class="label">ساعة</div>
+                                    </div>
+                                    <div class="digit-group">
+                                        <div class="digit">15</div>
+                                        <div class="label">دقيقة</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="auction-actions">
+                                <button class="btn btn-primary btn-block notify-auction-btn">تذكيرني عند البدء</button>
+                                <a href="auction_details.html" class="btn btn-outline-secondary btn-block details-btn">تفاصيل العقار</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- المزادات السابقة -->
+            <div class="tab-pane fade" id="past-auctions" role="tabpanel" aria-labelledby="past-tab">
+                <div class="auction-list">
+                    <!-- مزاد سابق 1 -->
+                    <div class="auction-card past-auction">
+                        <div class="ribbon">
+                            <span>مكتمل</span>
+                        </div>
+                        <div class="auction-image" style="background-image: url('https://via.placeholder.com/500x300');"></div>
+                        <div class="auction-details">
+                            <h3 class="auction-title">عمارة استثمارية</h3>
+                            <div class="auction-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>الدمام، حي الفيحاء</span>
+                            </div>
+                            <div class="auction-specs">
+                                <div class="spec-item">
+                                    <i class="fas fa-ruler-combined"></i>
+                                    <span>600م²</span>
+                                </div>
+                                <div class="spec-item">
+                                    <i class="fas fa-building"></i>
+                                    <span>10 شقق</span>
+                                </div>
+                                <div class="spec-item">
+                                    <i class="fas fa-store"></i>
+                                    <span>4 محلات</span>
+                                </div>
+                            </div>
+                            <div class="auction-pricing">
+                                <div class="starting-price">
+                                    <span class="label">السعر الابتدائي:</span>
+                                    <span class="value">4,000,000 ر.س</span>
+                                </div>
+                                <div class="sold-price">
+                                    <span class="label">سعر البيع:</span>
+                                    <span class="value">4,850,000 ر.س</span>
+                                </div>
+                            </div>
+                            <div class="auction-date">
+                                <i class="fas fa-calendar-alt"></i>
+                                <span>تم البيع في: 15 مارس 2023</span>
+                            </div>
+                            <div class="auction-actions">
+                                <a href="auction_details.html" class="btn btn-outline-secondary btn-block details-btn">تفاصيل العقار</a>
+                                <button class="btn btn-outline-primary btn-block similar-btn">عقارات مشابهة</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- مزاد سابق 2 -->
+                    <div class="auction-card past-auction">
+                        <div class="ribbon">
+                            <span>مكتمل</span>
+                        </div>
+                        <div class="auction-image" style="background-image: url('https://via.placeholder.com/500x300');"></div>
+                        <div class="auction-details">
+                            <h3 class="auction-title">فيلا مودرن</h3>
+                            <div class="auction-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>الرياض، حي الياسمين</span>
+                            </div>
+                            <div class="auction-specs">
+                                <div class="spec-item">
+                                    <i class="fas fa-ruler-combined"></i>
+                                    <span>450م²</span>
+                                </div>
+                                <div class="spec-item">
+                                    <i class="fas fa-bed"></i>
+                                    <span>6 غرف</span>
+                                </div>
+                                <div class="spec-item">
+                                    <i class="fas fa-bath"></i>
+                                    <span>5 حمامات</span>
+                                </div>
+                            </div>
+                            <div class="auction-pricing">
+                                <div class="starting-price">
+                                    <span class="label">السعر الابتدائي:</span>
+                                    <span class="value">2,200,000 ر.س</span>
+                                </div>
+                                <div class="sold-price">
+                                    <span class="label">سعر البيع:</span>
+                                    <span class="value">2,550,000 ر.س</span>
+                                </div>
+                            </div>
+                            <div class="auction-date">
+                                <i class="fas fa-calendar-alt"></i>
+                                <span>تم البيع في: 22 فبراير 2023</span>
+                            </div>
+                            <div class="auction-actions">
+                                <a href="auction_details.html" class="btn btn-outline-secondary btn-block details-btn">تفاصيل العقار</a>
+                                <button class="btn btn-outline-primary btn-block similar-btn">عقارات مشابهة</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- مزاداتي -->
+            <div class="tab-pane fade" id="my-auctions" role="tabpanel" aria-labelledby="my-tab">
+                <div class="my-auction-content">
+                    <!-- قائمة المزادات التي شاركت فيها -->
+                    <div class="section-header my-participations">
+                        <h3>المزادات التي شاركت فيها</h3>
+                    </div>
+                    <div class="auction-list">
+                        <div class="auction-card my-auction">
+                            <div class="ribbon">
+                                <span>فائز</span>
+                            </div>
+                            <div class="auction-image" style="background-image: url('https://via.placeholder.com/500x300');"></div>
+                            <div class="auction-details">
+                                <h3 class="auction-title">شقة دوبلكس</h3>
+                                <div class="auction-location">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>الرياض، حي المروج</span>
+                                </div>
+                                <div class="auction-pricing">
+                                    <div class="starting-price">
+                                        <span class="label">السعر الابتدائي:</span>
+                                        <span class="value">1,400,000 ر.س</span>
+                                    </div>
+                                    <div class="current-price">
+                                        <span class="label">سعر البيع:</span>
+                                        <span class="value">1,650,000 ر.س</span>
+                                    </div>
+                                    <div class="my-bid">
+                                        <span class="label">عرضي:</span>
+                                        <span class="value">1,650,000 ر.س</span>
+                                    </div>
+                                </div>
+                                <div class="auction-status">
+                                    <div class="status-complete">
+                                        <i class="fas fa-check-circle"></i>
+                                        <span>مكتمل - فائز</span>
+                                    </div>
+                                </div>
+                                <div class="auction-actions">
+                                    <button class="btn btn-success btn-block payment-btn">استكمال الدفع</button>
+                                    <a href="auction_details.html" class="btn btn-outline-secondary btn-block details-btn">تفاصيل العقار</a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="auction-card my-auction">
+                            <div class="ribbon">
+                                <span>مشارك</span>
+                            </div>
+                            <div class="auction-image" style="background-image: url('https://via.placeholder.com/500x300');"></div>
+                            <div class="auction-details">
+                                <h3 class="auction-title">أرض سكنية</h3>
+                                <div class="auction-location">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>جدة، حي الفيحاء</span>
+                                </div>
+                                <div class="auction-pricing">
+                                    <div class="starting-price">
+                                        <span class="label">السعر الابتدائي:</span>
+                                        <span class="value">900,000 ر.س</span>
+                                    </div>
+                                    <div class="current-price">
+                                        <span class="label">السعر الحالي:</span>
+                                        <span class="value">1,150,000 ر.س</span>
+                                    </div>
+                                    <div class="my-bid">
+                                        <span class="label">عرضي:</span>
+                                        <span class="value">1,050,000 ر.س</span>
+                                    </div>
+                                </div>
+                                <div class="auction-status">
+                                    <div class="status-active">
+                                        <i class="fas fa-clock"></i>
+                                        <span>جاري - يمكنك المزايدة</span>
+                                    </div>
+                                </div>
+                                <div class="auction-actions">
+                                    <button class="btn btn-primary btn-block join-auction-btn">العودة للمزايدة</button>
+                                    <a href="auction_details.html" class="btn btn-outline-secondary btn-block details-btn">تفاصيل العقار</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- قائمة العقارات التي أضفتها للمزاد -->
+                    <div class="section-header my-auctions-list">
+                        <h3>العقارات التي أضفتها للمزاد</h3>
+                        <button class="btn btn-primary add-property-btn">
+                            <i class="fas fa-plus"></i> إضافة عقار للمزاد
+                        </button>
+                    </div>
+                    <div class="auction-list">
+                        <div class="auction-card my-property">
+                            <div class="ribbon">
+                                <span>قيد المراجعة</span>
+                            </div>
+                            <div class="auction-image" style="background-image: url('https://via.placeholder.com/500x300');"></div>
+                            <div class="auction-details">
+                                <h3 class="auction-title">شقة سكنية</h3>
+                                <div class="auction-location">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>المدينة المنورة، حي العوالي</span>
+                                </div>
+                                <div class="auction-specs">
+                                    <div class="spec-item">
+                                        <i class="fas fa-ruler-combined"></i>
+                                        <span>140م²</span>
+                                    </div>
+                                    <div class="spec-item">
+                                        <i class="fas fa-bed"></i>
+                                        <span>3 غرف</span>
+                                    </div>
+                                    <div class="spec-item">
+                                        <i class="fas fa-bath"></i>
+                                        <span>2 حمامات</span>
+                                    </div>
+                                </div>
+                                <div class="auction-pricing">
+                                    <div class="starting-price">
+                                        <span class="label">السعر المطلوب:</span>
+                                        <span class="value">750,000 ر.س</span>
+                                    </div>
+                                </div>
+                                <div class="auction-status">
+                                    <div class="status-pending">
+                                        <i class="fas fa-hourglass-half"></i>
+                                        <span>قيد المراجعة من الإدارة</span>
+                                    </div>
+                                </div>
+                                <div class="auction-actions">
+                                    <button class="btn btn-outline-primary btn-block edit-property-btn">تعديل البيانات</button>
+                                    <button class="btn btn-outline-danger btn-block cancel-property-btn">إلغاء الطلب</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // التبديل بين التبويبات
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+            
+            // إظهار تنبيه المزاد القادم
+            function showAuctionAlert() {
+                const auctionAlert = document.getElementById('auction-alert');
+                auctionAlert.style.display = 'flex';
+                
+                // إخفاء التنبيه بعد النقر على زر الإغلاق
+                const closeButton = document.querySelector('.alert-close');
+                closeButton.addEventListener('click', function() {
+                    auctionAlert.style.display = 'none';
+                });
+            }
+            
+            // بعد 3 ثواني من تحميل الصفحة، سيظهر التنبيه
+            setTimeout(showAuctionAlert, 3000);
+            
+            // تحديث العد التنازلي للمزادات
+            function updateCountdowns() {
+                // المزادات الجارية - العد التنازلي لإنتهاء المزاد
+                document.querySelectorAll('.live-auction .auction-timer').forEach(timer => {
+                    const dayDigit = timer.querySelector('.digit-group:nth-child(1) .digit');
+                    const hourDigit = timer.querySelector('.digit-group:nth-child(2) .digit');
+                    const minuteDigit = timer.querySelector('.digit-group:nth-child(3) .digit');
+                    
+                    // تحديث الأرقام (هذا المثال يقلل الدقائق، ويمكن تعديله لاستخدام الوقت الفعلي)
+                    let days = parseInt(dayDigit.textContent);
+                    let hours = parseInt(hourDigit.textContent);
+                    let minutes = parseInt(minuteDigit.textContent);
+                    
+                    if (minutes > 0) {
+                        minutes--;
+                    } else {
+                        minutes = 59;
+                        if (hours > 0) {
+                            hours--;
+                        } else {
+                            hours = 23;
+                            if (days > 0) {
+                                days--;
+                            }
+                        }
+                    }
+                    
+                    // تحديث العرض
+                    dayDigit.textContent = days < 10 ? '0' + days : days;
+                    hourDigit.textContent = hours < 10 ? '0' + hours : hours;
+                    minuteDigit.textContent = minutes < 10 ? '0' + minutes : minutes;
+                    
+                    // تحقق إذا انتهى المزاد
+                    if (days === 0 && hours === 0 && minutes === 0) {
+                        timer.innerHTML = '<div class="auction-ended">انتهى المزاد</div>';
+                    }
+                });
+                
+                // المزادات القادمة - العد التنازلي لبدء المزاد
+                document.querySelectorAll('.upcoming-auction .auction-timer').forEach(timer => {
+                    const dayDigit = timer.querySelector('.digit-group:nth-child(1) .digit');
+                    const hourDigit = timer.querySelector('.digit-group:nth-child(2) .digit');
+                    const minuteDigit = timer.querySelector('.digit-group:nth-child(3) .digit');
+                    
+                    let days = parseInt(dayDigit.textContent);
+                    let hours = parseInt(hourDigit.textContent);
+                    let minutes = parseInt(minuteDigit.textContent);
+                    
+                    if (minutes > 0) {
+                        minutes--;
+                    } else {
+                        minutes = 59;
+                        if (hours > 0) {
+                            hours--;
+                        } else {
+                            hours = 23;
+                            if (days > 0) {
+                                days--;
+                            }
+                        }
+                    }
+                    
+                    // تحديث العرض
+                    dayDigit.textContent = days < 10 ? '0' + days : days;
+                    hourDigit.textContent = hours < 10 ? '0' + hours : hours;
+                    minuteDigit.textContent = minutes < 10 ? '0' + minutes : minutes;
+                    
+                    // تحقق إذا بدأ المزاد
+                    if (days === 0 && hours === 0 && minutes === 0) {
+                        // يتم تحديث شريط المزاد ليصبح "جاري"
+                        const ribbon = timer.closest('.auction-card').querySelector('.ribbon span');
+                        ribbon.textContent = "جاري الآن";
+                        ribbon.style.backgroundColor = "var(--danger-color)";
+                        
+                        // تغيير نص التنبيه وإضافة زر الدخول للمزايدة
+                        const timerLabel = timer.querySelector('.timer-label span');
+                        timerLabel.textContent = "بدأ للتو!";
+                        
+                        const actions = timer.closest('.auction-card').querySelector('.auction-actions');
+                        actions.innerHTML = `
+                            <button class="btn btn-primary btn-block join-auction-btn">الدخول للمزايدة</button>
+                            <a href="auction_details.html" class="btn btn-outline-secondary btn-block details-btn">تفاصيل العقار</a>
+                        `;
+                    }
+                });
+                
+                // تحديث العد التنازلي في التنبيه
+                const countdownEl = document.getElementById('auction-countdown');
+                if (countdownEl) {
+                    let [hours, minutes, seconds] = countdownEl.textContent.split(':').map(Number);
+                    
+                    if (seconds > 0) {
+                        seconds--;
+                    } else {
+                        seconds = 59;
+                        if (minutes > 0) {
+                            minutes--;
+                        } else {
+                            minutes = 59;
+                            if (hours > 0) {
+                                hours--;
+                            } else {
+                                // العد التنازلي انتهى
+                                clearInterval(countdownInterval);
+                                document.querySelector('.alert-content .alert-title').textContent = "بدأ المزاد الآن!";
+                                document.querySelector('.alert-content .alert-time').innerHTML = "<span style='color: var(--success-color);'>قم بالانضمام الآن</span>";
+                                document.querySelector('.alert-join').classList.add('btn-success');
+                                return;
+                            }
+                        }
+                    }
+                    
+                    countdownEl.textContent = `${hours < 10 ? '0' + hours : hours}:${minutes < 10 ? '0' + minutes : minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+                }
+            }
+            
+            // تحديث العد التنازلي كل دقيقة (يمكن تغييره إلى كل ثانية للدقة)
+            setInterval(updateCountdowns, 60000);
+            
+            // وظائف الأزرار
+            document.addEventListener('click', function(e) {
+                // الدخول للمزايدة
+                if (e.target.classList.contains('join-auction-btn')) {
+                    const auctionTitle = e.target.closest('.auction-card').querySelector('.auction-title').textContent;
+                    alert(`سيتم تحويلك إلى صفحة المزايدة للعقار: ${auctionTitle}`);
+                    // يمكن هنا إضافة كود التوجيه إلى صفحة المزايدة
+                }
+                
+                // تفاصيل العقار
+                if (e.target.classList.contains('details-btn')) {
+                    const auctionTitle = e.target.closest('.auction-card').querySelector('.auction-title').textContent;
+                    alert(`سيتم عرض تفاصيل العقار: ${auctionTitle}`);
+                    // يمكن هنا إضافة كود عرض تفاصيل العقار
+                }
+                
+                // إشعاري عند بدء المزاد
+                if (e.target.classList.contains('notify-auction-btn')) {
+                    const auctionTitle = e.target.closest('.auction-card').querySelector('.auction-title').textContent;
+                    alert(`سيتم إشعارك عند بدء المزاد على: ${auctionTitle}`);
+                    e.target.textContent = "تم تفعيل التنبيه";
+                    e.target.classList.remove('btn-primary');
+                    e.target.classList.add('btn-success');
+                    e.target.disabled = true;
+                }
+                
+                // عقارات مشابهة
+                if (e.target.classList.contains('similar-btn')) {
+                    const auctionTitle = e.target.closest('.auction-card').querySelector('.auction-title').textContent;
+                    alert(`سيتم عرض عقارات مشابهة لـ: ${auctionTitle}`);
+                    // يمكن هنا إضافة كود عرض العقارات المشابهة
+                }
+                
+                // استكمال الدفع
+                if (e.target.classList.contains('payment-btn')) {
+                    const auctionTitle = e.target.closest('.auction-card').querySelector('.auction-title').textContent;
+                    alert(`ستتم إعادة توجيهك لاستكمال الدفع لـ: ${auctionTitle}`);
+                    // يمكن هنا إضافة كود التوجيه إلى صفحة استكمال الدفع
+                }
+                
+                // إضافة عقار للمزاد
+                if (e.target.classList.contains('add-property-btn') || e.target.closest('.add-property-btn')) {
+                    alert('سيتم توجيهك إلى صفحة إضافة عقار للمزاد');
+                    // يمكن هنا إضافة كود التوجيه إلى صفحة إضافة عقار
+                }
+                
+                // تعديل بيانات العقار
+                if (e.target.classList.contains('edit-property-btn')) {
+                    const auctionTitle = e.target.closest('.auction-card').querySelector('.auction-title').textContent;
+                    alert(`سيتم توجيهك لتعديل بيانات: ${auctionTitle}`);
+                    // يمكن هنا إضافة كود التوجيه إلى صفحة تعديل بيانات العقار
+                }
+                
+                // إلغاء طلب المزاد
+                if (e.target.classList.contains('cancel-property-btn')) {
+                    const auctionTitle = e.target.closest('.auction-card').querySelector('.auction-title').textContent;
+                    if (confirm(`هل أنت متأكد من إلغاء طلب المزاد على: ${auctionTitle}؟`)) {
+                        alert('تم إلغاء الطلب بنجاح');
+                        e.target.closest('.auction-card').remove();
+                    }
+                }
+            });
+            
+            // وظيفة البحث والتصفية
+            function setupSearch() {
+                const searchInput = document.getElementById('search-auctions');
+                if (searchInput) {
+                    searchInput.addEventListener('input', function() {
+                        const searchTerm = this.value.toLowerCase();
+                        document.querySelectorAll('.auction-card').forEach(card => {
+                            const title = card.querySelector('.auction-title').textContent.toLowerCase();
+                            const location = card.querySelector('.auction-location span').textContent.toLowerCase();
+                            
+                            if (title.includes(searchTerm) || location.includes(searchTerm)) {
+                                card.style.display = 'block';
+                            } else {
+                                card.style.display = 'none';
+                            }
+                        });
+                    });
+                }
+            }
+            
+            // تنفيذ وظيفة البحث عند تحميل الصفحة
+            setupSearch();
+            
+            // وظيفة تبديل الوضع الداكن
+            function setupDarkMode() {
+                const darkModeToggle = document.getElementById('dark-mode-toggle');
+                if (darkModeToggle) {
+                    darkModeToggle.addEventListener('click', function() {
+                        document.body.classList.toggle('dark-mode');
+                        const isDarkMode = document.body.classList.contains('dark-mode');
+                        localStorage.setItem('dark-mode', isDarkMode);
+                        
+                        // تغيير أيقونة الزر
+                        const icon = this.querySelector('i');
+                        if (isDarkMode) {
+                            icon.classList.remove('fa-moon');
+                            icon.classList.add('fa-sun');
+                        } else {
+                            icon.classList.remove('fa-sun');
+                            icon.classList.add('fa-moon');
+                        }
+                    });
+                    
+                    // استعادة إعدادات الوضع الداكن من localStorage
+                    const savedDarkMode = localStorage.getItem('dark-mode') === 'true';
+                    if (savedDarkMode) {
+                        document.body.classList.add('dark-mode');
+                        const icon = darkModeToggle.querySelector('i');
+                        if (icon) {
+                            icon.classList.remove('fa-moon');
+                            icon.classList.add('fa-sun');
+                        }
+                    }
+                }
+            }
+            
+            // تنفيذ وظيفة الوضع الداكن
+            setupDarkMode();
+            
+            // مؤقت العد التنازلي في التنبيه
+            function initializeAlertCountdown() {
+                const auctionCountdown = document.getElementById('auction-countdown');
+                if (auctionCountdown) {
+                    // إعداد العد التنازلي الأولي (ساعتين)
+                    auctionCountdown.textContent = "02:00:00";
+                    
+                    // تحديث العد التنازلي كل ثانية
+                    const countdownInterval = setInterval(function() {
+                        let [hours, minutes, seconds] = auctionCountdown.textContent.split(':').map(Number);
+                        
+                        if (seconds > 0) {
+                            seconds--;
+                        } else {
+                            seconds = 59;
+                            if (minutes > 0) {
+                                minutes--;
+                            } else {
+                                minutes = 59;
+                                if (hours > 0) {
+                                    hours--;
+                                } else {
+                                    // العد التنازلي انتهى
+                                    clearInterval(countdownInterval);
+                                    document.querySelector('.alert-content .alert-title').textContent = "بدأ المزاد الآن!";
+                                    document.querySelector('.alert-content .alert-time').innerHTML = "<span style='color: var(--success-color);'>قم بالانضمام الآن</span>";
+                                    document.querySelector('.alert-join').classList.add('btn-success');
+                                    return;
+                                }
+                            }
+                        }
+                        
+                        auctionCountdown.textContent = `${hours < 10 ? '0' + hours : hours}:${minutes < 10 ? '0' + minutes : minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+                    }, 1000);
+                }
+            }
+            
+            // بدء العد التنازلي في التنبيه
+            initializeAlertCountdown();
+        });
+    </script>
+</body>
+</html>

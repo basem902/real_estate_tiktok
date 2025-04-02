@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة تحكم التقييمات | المسوقين العقاريين</title>
+    <link rel="stylesheet" href="../assets/css/bootstrap.rtl.min.css">
+    <link rel="stylesheet" href="../assets/css/all.min.css">
+    <link rel="stylesheet" href="styles/reviews_dashboard.css">
+</head>
+<body>
+    <!-- شريط التنقل العلوي -->
+    <div id="navbar-placeholder"></div>
+
+    <div class="container-fluid my-4">
+        <div class="row">
+            <!-- القائمة الجانبية -->
+            <div class="col-lg-2 mb-4">
+                <div id="sidebar-placeholder"></div>
+            </div>
+
+            <!-- المحتوى الرئيسي -->
+            <div class="col-lg-10">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card shadow-sm mb-4">
+                            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0">لوحة تحكم التقييمات</h5>
+                                <div>
+                                    <button class="btn btn-sm btn-light" id="refresh-data"><i class="fas fa-sync-alt"></i></button>
+                                    <button class="btn btn-sm btn-light" id="export-data"><i class="fas fa-file-export"></i></button>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <!-- ملخص إحصائيات التقييمات -->
+                                <div class="row mb-4">
+                                    <div class="col-md-3">
+                                        <div class="card border-0 bg-light h-100">
+                                            <div class="card-body text-center">
+                                                <h3 class="text-primary mb-0" id="total-reviews">0</h3>
+                                                <p class="text-muted">إجمالي التقييمات</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="card border-0 bg-light h-100">
+                                            <div class="card-body text-center">
+                                                <h3 class="text-success mb-0" id="positive-reviews">0</h3>
+                                                <p class="text-muted">تقييمات إيجابية</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="card border-0 bg-light h-100">
+                                            <div class="card-body text-center">
+                                                <h3 class="text-warning mb-0" id="neutral-reviews">0</h3>
+                                                <p class="text-muted">تقييمات محايدة</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="card border-0 bg-light h-100">
+                                            <div class="card-body text-center">
+                                                <h3 class="text-danger mb-0" id="negative-reviews">0</h3>
+                                                <p class="text-muted">تقييمات سلبية</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- مخطط التقييمات -->
+                                <div class="row mb-4">
+                                    <div class="col-md-8">
+                                        <div class="card shadow-sm h-100">
+                                            <div class="card-header bg-light">
+                                                <h6 class="mb-0">اتجاهات التقييمات</h6>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="chart-container" style="position: relative; height:300px;">
+                                                    <canvas id="ratings-trend-chart"></canvas>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="card shadow-sm h-100">
+                                            <div class="card-header bg-light">
+                                                <h6 class="mb-0">توزيع التقييمات</h6>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="chart-container" style="position: relative; height:300px;">
+                                                    <canvas id="ratings-distribution-chart"></canvas>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- فلاتر البحث والتصفية -->
+                                <div class="card shadow-sm mb-4">
+                                    <div class="card-header bg-light">
+                                        <h6 class="mb-0">فلترة وبحث</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row g-3">
+                                            <div class="col-md-3">
+                                                <label class="form-label">نطاق التاريخ</label>
+                                                <select class="form-select" id="date-range">
+                                                    <option value="all">الكل</option>
+                                                    <option value="today">اليوم</option>
+                                                    <option value="week">الأسبوع الحالي</option>
+                                                    <option value="month">الشهر الحالي</option>
+                                                    <option value="quarter">الربع الحالي</option>
+                                                    <option value="year">السنة الحالية</option>
+                                                    <option value="custom">تخصيص...</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label">التقييم</label>
+                                                <select class="form-select" id="rating-filter">
+                                                    <option value="all">الكل</option>
+                                                    <option value="5">5 نجوم</option>
+                                                    <option value="4">4 نجوم</option>
+                                                    <option value="3">3 نجوم</option>
+                                                    <option value="2">2 نجوم</option>
+                                                    <option value="1">1 نجوم</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label">نوع العقار</label>
+                                                <select class="form-select" id="property-type">
+                                                    <option value="all">الكل</option>
+                                                    <option value="apartment">شقة</option>
+                                                    <option value="villa">فيلا</option>
+                                                    <option value="land">أرض</option>
+                                                    <option value="commercial">تجاري</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label">الحالة</label>
+                                                <select class="form-select" id="review-status">
+                                                    <option value="all">الكل</option>
+                                                    <option value="pending">بانتظار الرد</option>
+                                                    <option value="responded">تم الرد</option>
+                                                    <option value="resolved">تم الحل</option>
+                                                    <option value="escalated">مصعدة</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" placeholder="ابحث في التقييمات..." id="search-reviews">
+                                                    <button class="btn btn-primary" type="button" id="search-button">بحث</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- قائمة التقييمات -->
+                                <div class="card shadow-sm">
+                                    <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                                        <h6 class="mb-0">أحدث التقييمات</h6>
+                                        <div>
+                                            <select class="form-select form-select-sm" id="sort-by" style="width: auto; display: inline-block;">
+                                                <option value="date-desc">الأحدث أولاً</option>
+                                                <option value="date-asc">الأقدم أولاً</option>
+                                                <option value="rating-desc">التقييم: الأعلى أولاً</option>
+                                                <option value="rating-asc">التقييم: الأدنى أولاً</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="card-body p-0">
+                                        <div id="reviews-list" class="list-group list-group-flush">
+                                            <!-- سيتم إضافة عناصر التقييمات هنا بواسطة JavaScript -->
+                                            <div class="text-center py-5">
+                                                <div class="spinner-border text-primary" role="status">
+                                                    <span class="visually-hidden">جاري التحميل...</span>
+                                                </div>
+                                                <p class="mt-2">جاري تحميل التقييمات...</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        <nav aria-label="تنقل الصفحات">
+                                            <ul class="pagination justify-content-center mb-0">
+                                                <li class="page-item disabled">
+                                                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">السابق</a>
+                                                </li>
+                                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                                <li class="page-item">
+                                                    <a class="page-link" href="#">التالي</a>
+                                                </li>
+                                            </ul>
+                                        </nav>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- تذييل الصفحة -->
+    <div id="footer-placeholder"></div>
+
+    <!-- نوافذ الحوار -->
+    <div class="modal fade" id="custom-date-modal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">تخصيص نطاق التاريخ</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">من تاريخ</label>
+                            <input type="date" class="form-control" id="date-from">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">إلى تاريخ</label>
+                            <input type="date" class="form-control" id="date-to">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="button" class="btn btn-primary" id="apply-date-range">تطبيق</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- تضمين النصوص البرمجية المشتركة -->
+    <div id="scripts-placeholder"></div>
+
+    <!-- نصوص مخصصة لصفحة لوحة تحكم التقييمات -->
+    <script>
+        $(function() {
+            // تحميل القائمة الجانبية وشريط التنقل العلوي
+            $("#navbar-placeholder").load("../includes/navbar.html");
+            $("#sidebar-placeholder").load("../includes/sidebar.html");
+            $("#footer-placeholder").load("../includes/footer.html");
+            $("#scripts-placeholder").load("../includes/scripts.html");
+            
+            // تهيئة البيانات ومخططات التقييمات
+            initDashboard();
+        });
+
+        function initDashboard() {
+            // هذه الدالة ستقوم بتهيئة البيانات والمخططات
+            // سيتم تنفيذها بعد تحميل الصفحة
+            console.log("تهيئة لوحة تحكم التقييمات");
+            
+            // سيتم استبدال هذه البيانات بمعلومات حقيقية من الخادم
+            document.getElementById('total-reviews').textContent = '248';
+            document.getElementById('positive-reviews').textContent = '187';
+            document.getElementById('neutral-reviews').textContent = '42';
+            document.getElementById('negative-reviews').textContent = '19';
+            
+            // تهيئة المخططات
+            initTrendChart();
+            initDistributionChart();
+            
+            // تحميل قائمة التقييمات
+            loadReviewsList();
+        }
+
+        // هنا سيتم إضافة الدوال المساعدة لتهيئة المخططات وتحميل البيانات
+    </script>
+</body>
+</html>

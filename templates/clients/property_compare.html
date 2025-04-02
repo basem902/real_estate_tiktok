@@ -1,0 +1,1261 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مقارنة العقارات - تيك توك العقار</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2196F3;
+            --secondary-color: #FF9800;
+            --dark-color: #333;
+            --light-color: #f4f4f4;
+            --danger-color: #dc3545;
+            --success-color: #28a745;
+            --box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            --border-radius: 8px;
+            --transition: all 0.3s ease;
+        }
+        
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+        
+        body.dark-mode {
+            --light-color: #1a1a1a;
+            --dark-color: #f4f4f4;
+            background-color: var(--light-color);
+            color: var(--dark-color);
+        }
+        
+        .compare-container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+        
+        body.dark-mode .compare-container {
+            background-color: #2a2a2a;
+            box-shadow: 0 2px 10px rgba(255, 255, 255, 0.05);
+        }
+        
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        body.dark-mode .page-header {
+            border-bottom: 1px solid #444;
+        }
+        
+        .header-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+        
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .back-button, .mode-toggle {
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+        
+        .back-button:hover, .mode-toggle:hover {
+            background-color: rgba(33, 150, 243, 0.1);
+        }
+        
+        body.dark-mode .back-button:hover, body.dark-mode .mode-toggle:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        /* تنسيقات للمقارنة */
+        .section-title {
+            position: relative;
+            padding-right: 15px;
+            color: var(--primary-color);
+        }
+        
+        .section-title::before {
+            content: "";
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 5px;
+            height: 20px;
+            background-color: var(--primary-color);
+            border-radius: 3px;
+        }
+        
+        /* بطاقات اختيار العقارات */
+        .property-card {
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            height: 200px;
+            transition: var(--transition);
+            position: relative;
+        }
+        
+        body.dark-mode .property-card {
+            border-color: #444;
+        }
+        
+        .property-placeholder {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            background-color: #f9f9f9;
+            color: #999;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        body.dark-mode .property-placeholder {
+            background-color: #333;
+            color: #aaa;
+        }
+        
+        .property-placeholder:hover {
+            background-color: #f0f0f0;
+            color: var(--primary-color);
+        }
+        
+        body.dark-mode .property-placeholder:hover {
+            background-color: #3a3a3a;
+        }
+        
+        .property-info {
+            padding: 10px;
+            position: relative;
+        }
+        
+        .property-info img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: var(--border-radius) var(--border-radius) 0 0;
+        }
+        
+        .property-info .property-title {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .property-info .property-details {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #666;
+        }
+        
+        body.dark-mode .property-info .property-details {
+            color: #aaa;
+        }
+        
+        .property-info .remove-property {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            background-color: rgba(255, 255, 255, 0.8);
+            color: var(--danger-color);
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            font-size: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        body.dark-mode .property-info .remove-property {
+            background-color: rgba(50, 50, 50, 0.8);
+        }
+        
+        .property-info .remove-property:hover {
+            background-color: var(--danger-color);
+            color: white;
+        }
+        
+        /* جدول المقارنة */
+        .comparison-table .table {
+            background-color: white;
+        }
+        
+        body.dark-mode .comparison-table .table {
+            background-color: #2a2a2a;
+            color: var(--dark-color);
+        }
+        
+        body.dark-mode .comparison-table .table-primary {
+            background-color: #3a3a3a;
+        }
+        
+        .category-header {
+            background-color: #f5f5f5;
+            font-weight: bold;
+            text-align: center;
+        }
+        
+        body.dark-mode .category-header {
+            background-color: #3a3a3a;
+        }
+        
+        .highlight-different {
+            background-color: rgba(255, 152, 0, 0.1);
+        }
+        
+        body.dark-mode .highlight-different {
+            background-color: rgba(255, 152, 0, 0.2);
+        }
+        
+        .highlight-better {
+            background-color: rgba(40, 167, 69, 0.1);
+        }
+        
+        body.dark-mode .highlight-better {
+            background-color: rgba(40, 167, 69, 0.2);
+        }
+        
+        .highlight-worse {
+            background-color: rgba(220, 53, 69, 0.1);
+        }
+        
+        body.dark-mode .highlight-worse {
+            background-color: rgba(220, 53, 69, 0.2);
+        }
+        
+        /* قسم التحليل */
+        .analysis-section .card {
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+        
+        body.dark-mode .analysis-section .card {
+            background-color: #2a2a2a;
+            border-color: #444;
+        }
+        
+        .search-results {
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+        }
+        
+        body.dark-mode .search-results {
+            border-color: #444;
+        }
+        
+        .search-results .list-group-item {
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .search-results .list-group-item:hover {
+            background-color: rgba(33, 150, 243, 0.1);
+        }
+        
+        body.dark-mode .search-results .list-group-item {
+            background-color: #2a2a2a;
+            color: var(--dark-color);
+            border-color: #444;
+        }
+        
+        body.dark-mode .search-results .list-group-item:hover {
+            background-color: #3a3a3a;
+        }
+        
+        .property-thumbnail {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+        
+        @media (max-width: 768px) {
+            .comparison-controls {
+                flex-direction: column;
+            }
+            
+            .comparison-filters, .comparison-actions {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+            
+            .property-card {
+                height: 180px;
+            }
+        }
+        
+        /* سيتم إضافة المزيد من التنسيقات لاحقاً */
+    </style>
+</head>
+<body>
+    <div class="compare-container">
+        <div class="page-header">
+            <div class="header-title">
+                <button class="back-button me-2">
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+                <span>مقارنة العقارات</span>
+            </div>
+            <div class="header-actions">
+                <button class="mode-toggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+        
+        <div class="property-selector mb-4">
+            <h5 class="section-title mb-3">اختر العقارات للمقارنة</h5>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text"><i class="fas fa-search"></i></span>
+                        <input type="text" class="form-control" placeholder="ابحث عن عقار لإضافته للمقارنة..." id="propertySearch">
+                        <button class="btn btn-primary" type="button" id="searchButton">بحث</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="selected-properties mb-4">
+                <div class="row" id="selectedPropertiesContainer">
+                    <!-- عقار للمقارنة 1 -->
+                    <div class="col-md-4 mb-3">
+                        <div class="property-card">
+                            <div class="property-placeholder">
+                                <i class="fas fa-plus-circle fa-3x"></i>
+                                <p>أضف عقار للمقارنة</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- عقار للمقارنة 2 -->
+                    <div class="col-md-4 mb-3">
+                        <div class="property-card">
+                            <div class="property-placeholder">
+                                <i class="fas fa-plus-circle fa-3x"></i>
+                                <p>أضف عقار للمقارنة</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- عقار للمقارنة 3 -->
+                    <div class="col-md-4 mb-3">
+                        <div class="property-card">
+                            <div class="property-placeholder">
+                                <i class="fas fa-plus-circle fa-3x"></i>
+                                <p>أضف عقار للمقارنة</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="search-results mb-4" id="searchResults" style="display: none;">
+                <h6>نتائج البحث</h6>
+                <div class="list-group">
+                    <!-- ستتم إضافة نتائج البحث ديناميكيًا -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- قسم جدول المقارنة -->
+        <div class="comparison-table mb-4" id="comparisonTableSection" style="display: none;">
+            <h5 class="section-title mb-3">مقارنة تفصيلية</h5>
+            
+            <div class="comparison-controls mb-3">
+                <div class="d-flex justify-content-between align-items-center flex-wrap">
+                    <div class="comparison-filters">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="showAllFeatures" checked>
+                            <label class="form-check-label" for="showAllFeatures">عرض جميع الخصائص</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="highlightDifferences">
+                            <label class="form-check-label" for="highlightDifferences">إبراز الاختلافات</label>
+                        </div>
+                    </div>
+                    <div class="comparison-actions">
+                        <button class="btn btn-sm btn-outline-primary" id="printComparison">
+                            <i class="fas fa-print"></i> طباعة المقارنة
+                        </button>
+                        <button class="btn btn-sm btn-outline-primary ms-2" id="shareComparison">
+                            <i class="fas fa-share-alt"></i> مشاركة
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="table-responsive">
+                <table class="table table-bordered comparison-table">
+                    <thead>
+                        <tr class="table-primary">
+                            <th scope="col" style="width: 20%;">مواصفات العقار</th>
+                            <th scope="col" style="width: 26.66%;">العقار 1</th>
+                            <th scope="col" style="width: 26.66%;">العقار 2</th>
+                            <th scope="col" style="width: 26.66%;">العقار 3</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- معلومات العقار الأساسية -->
+                        <tr class="category-header">
+                            <td colspan="4">المعلومات الأساسية</td>
+                        </tr>
+                        <tr>
+                            <td>الصورة</td>
+                            <td class="property-image-1">-</td>
+                            <td class="property-image-2">-</td>
+                            <td class="property-image-3">-</td>
+                        </tr>
+                        <tr>
+                            <td>الحي/المنطقة</td>
+                            <td class="property-location-1">-</td>
+                            <td class="property-location-2">-</td>
+                            <td class="property-location-3">-</td>
+                        </tr>
+                        <tr>
+                            <td>نوع العقار</td>
+                            <td class="property-type-1">-</td>
+                            <td class="property-type-2">-</td>
+                            <td class="property-type-3">-</td>
+                        </tr>
+                        <tr>
+                            <td>السعر</td>
+                            <td class="property-price-1">-</td>
+                            <td class="property-price-2">-</td>
+                            <td class="property-price-3">-</td>
+                        </tr>
+                        <tr>
+                            <td>المساحة</td>
+                            <td class="property-area-1">-</td>
+                            <td class="property-area-2">-</td>
+                            <td class="property-area-3">-</td>
+                        </tr>
+                        <tr>
+                            <td>سعر المتر المربع</td>
+                            <td class="property-square-meter-price-1">-</td>
+                            <td class="property-square-meter-price-2">-</td>
+                            <td class="property-square-meter-price-3">-</td>
+                        </tr>
+                        
+                        <!-- خصائص العقار -->
+                        <tr class="category-header">
+                            <td colspan="4">الخصائص والمميزات</td>
+                        </tr>
+                        <tr>
+                            <td>عدد الغرف</td>
+                            <td class="property-rooms-1">-</td>
+                            <td class="property-rooms-2">-</td>
+                            <td class="property-rooms-3">-</td>
+                        </tr>
+                        <tr>
+                            <td>عدد الحمامات</td>
+                            <td class="property-bathrooms-1">-</td>
+                            <td class="property-bathrooms-2">-</td>
+                            <td class="property-bathrooms-3">-</td>
+                        </tr>
+                        <tr>
+                            <td>عدد المواقف</td>
+                            <td class="property-parking-1">-</td>
+                            <td class="property-parking-2">-</td>
+                            <td class="property-parking-3">-</td>
+                        </tr>
+                        <tr>
+                            <td>عمر العقار</td>
+                            <td class="property-age-1">-</td>
+                            <td class="property-age-2">-</td>
+                            <td class="property-age-3">-</td>
+                        </tr>
+                        <tr>
+                            <td>نوع التكييف</td>
+                            <td class="property-ac-1">-</td>
+                            <td class="property-ac-2">-</td>
+                            <td class="property-ac-3">-</td>
+                        </tr>
+                        <tr>
+                            <td>مسبح</td>
+                            <td class="property-pool-1">-</td>
+                            <td class="property-pool-2">-</td>
+                            <td class="property-pool-3">-</td>
+                        </tr>
+                        
+                        <!-- المرافق القريبة -->
+                        <tr class="category-header">
+                            <td colspan="4">المرافق والخدمات القريبة</td>
+                        </tr>
+                        <tr>
+                            <td>المدارس</td>
+                            <td class="property-schools-1">-</td>
+                            <td class="property-schools-2">-</td>
+                            <td class="property-schools-3">-</td>
+                        </tr>
+                        <tr>
+                            <td>المستشفيات</td>
+                            <td class="property-hospitals-1">-</td>
+                            <td class="property-hospitals-2">-</td>
+                            <td class="property-hospitals-3">-</td>
+                        </tr>
+                        <tr>
+                            <td>المراكز التجارية</td>
+                            <td class="property-malls-1">-</td>
+                            <td class="property-malls-2">-</td>
+                            <td class="property-malls-3">-</td>
+                        </tr>
+                        <tr>
+                            <td>المساجد</td>
+                            <td class="property-mosques-1">-</td>
+                            <td class="property-mosques-2">-</td>
+                            <td class="property-mosques-3">-</td>
+                        </tr>
+                        <tr>
+                            <td>الحدائق</td>
+                            <td class="property-parks-1">-</td>
+                            <td class="property-parks-2">-</td>
+                            <td class="property-parks-3">-</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- قسم التحليل والتوصيات -->
+        <div class="analysis-section mb-4" id="analysisSection" style="display: none;">
+            <h5 class="section-title mb-3">التحليل والتوصيات</h5>
+            <div class="card">
+                <div class="card-body">
+                    <h6>ملخص المقارنة</h6>
+                    <p class="analysis-summary">قم باختيار عقارين أو أكثر للمقارنة للحصول على تحليل تفصيلي.</p>
+                    
+                    <div class="recommendation-section mt-4">
+                        <h6>التوصية</h6>
+                        <div class="recommendation-content">
+                            <div class="recommendation-placeholder text-center p-4">
+                                <i class="fas fa-chart-bar fa-3x mb-3 text-muted"></i>
+                                <p class="text-muted">سيظهر هنا التحليل المقارن والتوصيات بعد اختيار العقارات</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // بيانات وهمية للعقارات للعرض التوضيحي
+        const demoProperties = [
+            {
+                id: 1,
+                title: "فيلا فاخرة في شمال الرياض",
+                location: "حي الملقا، الرياض",
+                type: "فيلا",
+                price: 2500000,
+                area: 450,
+                rooms: 5,
+                bathrooms: 6,
+                parking: 2,
+                age: 1,
+                ac: "مركزي",
+                pool: "نعم",
+                image: "https://via.placeholder.com/500x300?text=فيلا+فاخرة",
+                schools: "2 كم",
+                hospitals: "5 كم",
+                malls: "1.5 كم",
+                mosques: "0.5 كم",
+                parks: "1 كم"
+            },
+            {
+                id: 2,
+                title: "شقة واسعة في غرب جدة",
+                location: "حي الشاطئ، جدة",
+                type: "شقة",
+                price: 900000,
+                area: 180,
+                rooms: 3,
+                bathrooms: 2,
+                parking: 1,
+                age: 3,
+                ac: "سبليت",
+                pool: "لا",
+                image: "https://via.placeholder.com/500x300?text=شقة+واسعة",
+                schools: "1 كم",
+                hospitals: "3 كم",
+                malls: "0.8 كم",
+                mosques: "0.3 كم",
+                parks: "2 كم"
+            },
+            {
+                id: 3,
+                title: "شقة سكنية في شرق الرياض",
+                location: "حي الروضة، الرياض",
+                type: "شقة",
+                price: 750000,
+                area: 150,
+                rooms: 3,
+                bathrooms: 2,
+                parking: 1,
+                age: 5,
+                ac: "سبليت",
+                pool: "لا",
+                image: "https://via.placeholder.com/500x300?text=شقة+سكنية",
+                schools: "0.5 كم",
+                hospitals: "4 كم",
+                malls: "2 كم",
+                mosques: "0.2 كم",
+                parks: "1.5 كم"
+            },
+            {
+                id: 4,
+                title: "فيلا دوبلكس في الدمام",
+                location: "حي النزهة، الدمام",
+                type: "فيلا دوبلكس",
+                price: 1800000,
+                area: 350,
+                rooms: 4,
+                bathrooms: 4,
+                parking: 2,
+                age: 2,
+                ac: "مركزي",
+                pool: "نعم",
+                image: "https://via.placeholder.com/500x300?text=فيلا+دوبلكس",
+                schools: "1.5 كم",
+                hospitals: "6 كم",
+                malls: "3 كم",
+                mosques: "0.4 كم",
+                parks: "0.7 كم"
+            },
+            {
+                id: 5,
+                title: "أرض سكنية في الخُبر",
+                location: "حي اليرموك، الخُبر",
+                type: "أرض",
+                price: 1200000,
+                area: 600,
+                rooms: "-",
+                bathrooms: "-",
+                parking: "-",
+                age: "-",
+                ac: "-",
+                pool: "-",
+                image: "https://via.placeholder.com/500x300?text=أرض+سكنية",
+                schools: "2 كم",
+                hospitals: "5 كم",
+                malls: "2.5 كم",
+                mosques: "1 كم",
+                parks: "2 كم"
+            },
+            {
+                id: 6,
+                title: "استراحة مميزة شمال جدة",
+                location: "حي أبحر، جدة",
+                type: "استراحة",
+                price: 3500000,
+                area: 800,
+                rooms: 8,
+                bathrooms: 9,
+                parking: 5,
+                age: 3,
+                ac: "مركزي",
+                pool: "نعم",
+                image: "https://via.placeholder.com/500x300?text=استراحة+مميزة",
+                schools: "5 كم",
+                hospitals: "8 كم",
+                malls: "6 كم",
+                mosques: "1.5 كم",
+                parks: "3 كم"
+            }
+        ];
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // متغيرات عامة
+            const selectedProperties = [];
+            
+            // تبديل الوضع الليلي/النهاري
+            const modeToggle = document.querySelector('.mode-toggle');
+            modeToggle.addEventListener('click', function() {
+                document.body.classList.toggle('dark-mode');
+                
+                // تغيير أيقونة الوضع
+                const icon = this.querySelector('i');
+                if (document.body.classList.contains('dark-mode')) {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                } else {
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                }
+            });
+            
+            // زر الرجوع
+            const backButton = document.querySelector('.back-button');
+            backButton.addEventListener('click', function() {
+                window.history.back();
+            });
+            
+            // إعداد وظائف البحث واختيار العقارات
+            const searchInput = document.getElementById('propertySearch');
+            const searchResults = document.getElementById('searchResults');
+            const searchResultsContainer = document.getElementById('searchResults');
+            const comparisonTableSection = document.getElementById('comparisonTableSection');
+            const analysisSection = document.getElementById('analysisSection');
+            
+            // وظيفة البحث عن العقارات
+            searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.trim().toLowerCase();
+                
+                if (searchTerm.length < 2) {
+                    searchResultsContainer.style.display = 'none';
+                    return;
+                }
+                
+                // فلترة النتائج بناءً على مصطلح البحث
+                const filteredProperties = demoProperties.filter(property => {
+                    return property.title.toLowerCase().includes(searchTerm) || 
+                           property.location.toLowerCase().includes(searchTerm) ||
+                           property.type.toLowerCase().includes(searchTerm);
+                });
+                
+                // عرض نتائج البحث
+                displaySearchResults(filteredProperties);
+                searchResultsContainer.style.display = 'block';
+            });
+            
+            // وظيفة لعرض نتائج البحث
+            function displaySearchResults(properties) {
+                searchResults.innerHTML = '';
+                
+                if (properties.length === 0) {
+                    searchResults.innerHTML = '<div class="p-3 text-center text-muted">لا توجد نتائج مطابقة</div>';
+                    return;
+                }
+                
+                properties.forEach(property => {
+                    // تحقق مما إذا كان العقار مختارًا بالفعل
+                    const isSelected = selectedProperties.some(p => p.id === property.id);
+                    if (isSelected) return; // تخطي العقارات المختارة بالفعل
+                    
+                    const listItem = document.createElement('div');
+                    listItem.className = 'list-group-item d-flex align-items-center';
+                    
+                    // تنسيق سعر العقار
+                    const formattedPrice = new Intl.NumberFormat('ar-SA').format(property.price);
+                    
+                    listItem.innerHTML = `
+                        <img src="${property.image}" alt="${property.title}" class="property-thumbnail me-3">
+                        <div class="flex-grow-1">
+                            <h6 class="mb-0">${property.title}</h6>
+                            <small class="text-muted">${property.location} | ${property.type}</small>
+                        </div>
+                        <div class="text-end">
+                            <div class="fw-bold">${formattedPrice} ر.س</div>
+                            <small>${property.area} م²</small>
+                        </div>
+                        <button class="btn btn-sm btn-primary ms-2 add-property" data-id="${property.id}">إضافة</button>
+                    `;
+                    
+                    searchResults.appendChild(listItem);
+                });
+                
+                // إضافة معالجات الأحداث لأزرار إضافة العقار
+                document.querySelectorAll('.add-property').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const propertyId = parseInt(this.getAttribute('data-id'));
+                        const property = demoProperties.find(p => p.id === propertyId);
+                        
+                        if (property) {
+                            addPropertyToComparison(property);
+                            // إخفاء هذا العقار من نتائج البحث
+                            this.closest('.list-group-item').remove();
+                            // مسح حقل البحث
+                            searchInput.value = '';
+                            searchResultsContainer.style.display = 'none';
+                        }
+                    });
+                });
+            }
+            
+            // وظيفة لإضافة عقار إلى المقارنة
+            function addPropertyToComparison(property) {
+                // التحقق من عدم تجاوز الحد الأقصى للعقارات (3)
+                if (selectedProperties.length >= 3) {
+                    alert('يمكنك مقارنة 3 عقارات كحد أقصى. الرجاء إزالة أحد العقارات المختارة أولاً.');
+                    return;
+                }
+                
+                // إضافة العقار إلى المصفوفة
+                selectedProperties.push(property);
+                
+                // تحديث واجهة المستخدم
+                updatePropertyCards();
+                
+                // إذا تم اختيار عقارين على الأقل، قم بعرض جدول المقارنة
+                if (selectedProperties.length >= 2) {
+                    updateComparisonTable();
+                    comparisonTableSection.style.display = 'block';
+                    analysisSection.style.display = 'block';
+                }
+            }
+            
+            // وظيفة لإزالة عقار من المقارنة
+            function removePropertyFromComparison(propertyId) {
+                const index = selectedProperties.findIndex(p => p.id === propertyId);
+                if (index !== -1) {
+                    selectedProperties.splice(index, 1);
+                    
+                    // تحديث واجهة المستخدم
+                    updatePropertyCards();
+                    
+                    // تحديث جدول المقارنة إذا كان هناك عقارين على الأقل
+                    if (selectedProperties.length >= 2) {
+                        updateComparisonTable();
+                    } else {
+                        // إخفاء جدول المقارنة وقسم التحليل إذا كان هناك أقل من عقارين
+                        comparisonTableSection.style.display = 'none';
+                        analysisSection.style.display = 'none';
+                    }
+                }
+            }
+            
+            // وظيفة لتحديث بطاقات العقارات المختارة
+            function updatePropertyCards() {
+                // الحصول على حاويات البطاقات الثلاثة
+                const propertyCards = document.querySelectorAll('.property-card');
+                
+                // إعادة تعيين جميع البطاقات إلى حالة "الإضافة"
+                propertyCards.forEach((card, index) => {
+                    const property = selectedProperties[index];
+                    
+                    if (property) {
+                        // تنسيق سعر العقار
+                        const formattedPrice = new Intl.NumberFormat('ar-SA').format(property.price);
+                        
+                        // تحديث البطاقة بمعلومات العقار
+                        card.innerHTML = `
+                            <div class="property-info">
+                                <img src="${property.image}" alt="${property.title}">
+                                <button class="remove-property" data-id="${property.id}">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                                <div class="property-title">${property.title}</div>
+                                <div class="property-details">
+                                    <span>${property.type}</span>
+                                    <span>${formattedPrice} ر.س</span>
+                                </div>
+                            </div>
+                        `;
+                    } else {
+                        // إظهار القالب للإضافة
+                        card.innerHTML = `
+                            <div class="property-placeholder">
+                                <i class="fas fa-plus-circle fa-2x mb-2"></i>
+                                <span>إضافة عقار للمقارنة</span>
+                            </div>
+                        `;
+                    }
+                });
+                
+                // إضافة معالجات الأحداث لأزرار إزالة العقار
+                document.querySelectorAll('.remove-property').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const propertyId = parseInt(this.getAttribute('data-id'));
+                        removePropertyFromComparison(propertyId);
+                    });
+                });
+                
+                // إضافة معالجات الأحداث لبطاقات الإضافة
+                document.querySelectorAll('.property-placeholder').forEach(placeholder => {
+                    placeholder.addEventListener('click', function() {
+                        // التركيز على حقل البحث عند النقر على "إضافة عقار"
+                        searchInput.focus();
+                    });
+                });
+            }
+            
+            // تهيئة بطاقات العقارات عند تحميل الصفحة
+            updatePropertyCards();
+            
+            // وظيفة تحديث جدول المقارنة
+            function updateComparisonTable() {
+                // تحديث جميع خلايا الجدول بالبيانات المناسبة
+                for (let i = 0; i < 3; i++) {
+                    const property = selectedProperties[i] || null;
+                    const index = i + 1;
+                    
+                    // الصورة
+                    const imageCell = document.querySelector(`.property-image-${index}`);
+                    if (property) {
+                        imageCell.innerHTML = `<img src="${property.image}" alt="${property.title}" style="width: 100%; max-width: 120px; border-radius: 4px;">`;
+                    } else {
+                        imageCell.innerHTML = '-';
+                    }
+                    
+                    // تحديث بقية الخلايا
+                    updateTableCell(`property-location-${index}`, property ? property.location : '-');
+                    updateTableCell(`property-type-${index}`, property ? property.type : '-');
+                    
+                    // تنسيق السعر
+                    const price = property ? new Intl.NumberFormat('ar-SA').format(property.price) + ' ر.س' : '-';
+                    updateTableCell(`property-price-${index}`, price);
+                    
+                    // المساحة
+                    const area = property ? property.area + ' م²' : '-';
+                    updateTableCell(`property-area-${index}`, area);
+                    
+                    // سعر المتر المربع
+                    let squareMeterPrice = '-';
+                    if (property && property.area > 0) {
+                        const pricePerSqm = Math.round(property.price / property.area);
+                        squareMeterPrice = new Intl.NumberFormat('ar-SA').format(pricePerSqm) + ' ر.س/م²';
+                    }
+                    updateTableCell(`property-square-meter-price-${index}`, squareMeterPrice);
+                    
+                    // الخصائص
+                    updateTableCell(`property-rooms-${index}`, property ? property.rooms : '-');
+                    updateTableCell(`property-bathrooms-${index}`, property ? property.bathrooms : '-');
+                    updateTableCell(`property-parking-${index}`, property ? property.parking : '-');
+                    updateTableCell(`property-age-${index}`, property ? property.age + ' سنة' : '-');
+                    updateTableCell(`property-ac-${index}`, property ? property.ac : '-');
+                    updateTableCell(`property-pool-${index}`, property ? property.pool : '-');
+                    
+                    // المرافق القريبة
+                    updateTableCell(`property-schools-${index}`, property ? property.schools : '-');
+                    updateTableCell(`property-hospitals-${index}`, property ? property.hospitals : '-');
+                    updateTableCell(`property-malls-${index}`, property ? property.malls : '-');
+                    updateTableCell(`property-mosques-${index}`, property ? property.mosques : '-');
+                    updateTableCell(`property-parks-${index}`, property ? property.parks : '-');
+                }
+                
+                // تفعيل التمييز للفروقات
+                highlightDifferences();
+                
+                // تحديث قسم التحليل
+                updateAnalysisSection();
+            }
+            
+            // وظيفة مساعدة لتحديث خلية في الجدول
+            function updateTableCell(className, value) {
+                const cells = document.querySelectorAll(`.${className}`);
+                cells.forEach(cell => {
+                    cell.textContent = value;
+                });
+            }
+            
+            // وظيفة لتمييز الاختلافات
+            function highlightDifferences() {
+                const highlightCheckbox = document.getElementById('highlightDifferences');
+                
+                if (selectedProperties.length < 2) return;
+                
+                // الحصول على جميع صفوف البيانات (تخطي العناوين وصفوف الفئات)
+                const rows = document.querySelectorAll('.comparison-table tbody tr:not(.category-header)');
+                
+                rows.forEach(row => {
+                    // الحصول على الخلايا في هذا الصف (تخطي خلية العنوان الأولى)
+                    const cells = Array.from(row.querySelectorAll('td:not(:first-child)'));
+                    
+                    // التحقق مما إذا كانت جميع القيم متطابقة
+                    const values = cells.map(cell => cell.textContent.trim()).filter(val => val !== '-');
+                    const allSame = values.every(val => val === values[0]);
+                    
+                    // إزالة جميع فئات التمييز
+                    cells.forEach(cell => {
+                        cell.classList.remove('highlight-different', 'highlight-better', 'highlight-worse');
+                    });
+                    
+                    // إضافة تمييز إذا كانت مختلفة وتم تمكين التمييز
+                    if (highlightCheckbox.checked && !allSame && values.length > 1) {
+                        cells.forEach(cell => {
+                            if (cell.textContent.trim() !== '-') {
+                                cell.classList.add('highlight-different');
+                            }
+                        });
+                        
+                        // تمييز خاص للسعر والمساحة
+                        const rowTitle = row.querySelector('td:first-child').textContent.trim();
+                        if (rowTitle === 'السعر' || rowTitle === 'سعر المتر المربع') {
+                            highlightBestValues(cells, true); // الأفضل هو الأقل
+                        } else if (rowTitle === 'المساحة' || rowTitle === 'عدد الغرف' || rowTitle === 'عدد الحمامات' || rowTitle === 'عدد المواقف') {
+                            highlightBestValues(cells, false); // الأفضل هو الأكثر
+                        }
+                    }
+                });
+            }
+            
+            // وظيفة لتمييز أفضل وأسوأ القيم
+            function highlightBestValues(cells, lowerIsBetter) {
+                // تصفية الخلايا التي تحتوي على قيم
+                const validCells = cells.filter(cell => cell.textContent.trim() !== '-');
+                if (validCells.length < 2) return;
+                
+                // استخراج القيم الرقمية
+                const values = validCells.map(cell => {
+                    const text = cell.textContent.trim();
+                    // استخراج الرقم من النص (يتجاهل الحروف ووحدات القياس)
+                    const matches = text.match(/[0-9,.]+/);
+                    return matches ? parseFloat(matches[0].replace(/,/g, '')) : NaN;
+                });
+                
+                // تحديد القيمة الأفضل والأسوأ
+                let bestValue, worstValue;
+                if (lowerIsBetter) {
+                    bestValue = Math.min(...values);
+                    worstValue = Math.max(...values);
+                } else {
+                    bestValue = Math.max(...values);
+                    worstValue = Math.min(...values);
+                }
+                
+                // تطبيق التنسيق
+                validCells.forEach((cell, index) => {
+                    if (!isNaN(values[index])) {
+                        cell.classList.remove('highlight-different');
+                        if (values[index] === bestValue) {
+                            cell.classList.add('highlight-better');
+                        } else if (values[index] === worstValue && validCells.length > 2) {
+                            cell.classList.add('highlight-worse');
+                        }
+                    }
+                });
+            }
+            
+            // وظيفة تحديث قسم التحليل
+            function updateAnalysisSection() {
+                const analysisSummary = document.querySelector('.analysis-summary');
+                const recommendationContent = document.querySelector('.recommendation-content');
+                
+                if (selectedProperties.length < 2) {
+                    analysisSummary.textContent = 'قم باختيار عقارين أو أكثر للمقارنة للحصول على تحليل تفصيلي.';
+                    recommendationContent.innerHTML = `
+                        <div class="recommendation-placeholder text-center p-4">
+                            <i class="fas fa-chart-bar fa-3x mb-3 text-muted"></i>
+                            <p class="text-muted">سيظهر هنا التحليل المقارن والتوصيات بعد اختيار العقارات</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                // توليد ملخص المقارنة
+                let summary = `تمت مقارنة ${selectedProperties.length} عقارات: `;
+                summary += selectedProperties.map(p => p.title).join('، ');
+                analysisSummary.textContent = summary;
+                
+                // إنشاء تحليل بسيط وتوصية
+                const analysis = analyzeProperties(selectedProperties);
+                
+                recommendationContent.innerHTML = `
+                    <div class="recommendation-details">
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <div class="card h-100">
+                                    <div class="card-body text-center">
+                                        <h6 class="card-title">أفضل قيمة سعرية</h6>
+                                        <i class="fas fa-money-bill-wave fa-2x mb-2 text-success"></i>
+                                        <p>${analysis.bestValue.title}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card h-100">
+                                    <div class="card-body text-center">
+                                        <h6 class="card-title">أفضل مواصفات</h6>
+                                        <i class="fas fa-star fa-2x mb-2 text-warning"></i>
+                                        <p>${analysis.bestFeatures.title}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card h-100">
+                                    <div class="card-body text-center">
+                                        <h6 class="card-title">أفضل موقع</h6>
+                                        <i class="fas fa-map-marker-alt fa-2x mb-2 text-primary"></i>
+                                        <p>${analysis.bestLocation.title}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="recommendation-summary p-3 border rounded bg-light">
+                            <h6><i class="fas fa-lightbulb text-warning me-2"></i> التوصية النهائية</h6>
+                            <p>${analysis.finalRecommendation}</p>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // وظيفة لتحليل العقارات وتقديم توصيات
+            function analyzeProperties(properties) {
+                // حساب أفضل قيمة (سعر المتر المربع)
+                let bestValueProperty = properties[0];
+                let lowestPricePerSqm = bestValueProperty.price / bestValueProperty.area;
+                
+                // حساب أفضل مواصفات (عدد الغرف + الحمامات)
+                let bestFeaturesProperty = properties[0];
+                let highestFeatureScore = getFeatureScore(bestFeaturesProperty);
+                
+                // تحديد أفضل موقع (افتراضي للعرض التوضيحي)
+                // في التطبيق الحقيقي، يمكن استخدام معايير أكثر تعقيدًا
+                const locationRanking = {
+                    'الرياض': 5,
+                    'جدة': 4.5,
+                    'الدمام': 4,
+                    'الخُبر': 4.2
+                };
+                
+                let bestLocationProperty = properties[0];
+                let highestLocationScore = getLocationScore(bestLocationProperty, locationRanking);
+                
+                // تحليل كل عقار
+                properties.forEach(property => {
+                    // تحليل القيمة
+                    const pricePerSqm = property.price / property.area;
+                    if (pricePerSqm < lowestPricePerSqm) {
+                        lowestPricePerSqm = pricePerSqm;
+                        bestValueProperty = property;
+                    }
+                    
+                    // تحليل المواصفات
+                    const featureScore = getFeatureScore(property);
+                    if (featureScore > highestFeatureScore) {
+                        highestFeatureScore = featureScore;
+                        bestFeaturesProperty = property;
+                    }
+                    
+                    // تحليل الموقع
+                    const locationScore = getLocationScore(property, locationRanking);
+                    if (locationScore > highestLocationScore) {
+                        highestLocationScore = locationScore;
+                        bestLocationProperty = property;
+                    }
+                });
+                
+                // توليد توصية نهائية
+                let finalRecommendation = '';
+                // حساب نقاط لكل عقار لتحديد التوصية النهائية
+                const propertyScores = properties.map(property => {
+                    const valueScore = (lowestPricePerSqm / (property.price / property.area)) * 10;
+                    const featureScore = getFeatureScore(property) / highestFeatureScore * 10;
+                    const locationScore = getLocationScore(property, locationRanking) / 5 * 10;
+                    
+                    return {
+                        property: property,
+                        totalScore: valueScore * 0.4 + featureScore * 0.35 + locationScore * 0.25
+                    };
+                });
+                
+                // ترتيب العقارات حسب النتيجة الإجمالية
+                propertyScores.sort((a, b) => b.totalScore - a.totalScore);
+                const bestProperty = propertyScores[0].property;
+                
+                // توليد التوصية
+                finalRecommendation = `بناء على تحليل العقارات المقارنة، نوصي بالعقار "${bestProperty.title}" حيث يقدم أفضل توازن بين القيمة السعرية (${new Intl.NumberFormat('ar-SA').format(Math.round(bestProperty.price / bestProperty.area))} ر.س/م²) والمواصفات الممتازة والموقع المميز.`;
+                
+                return {
+                    bestValue: bestValueProperty,
+                    bestFeatures: bestFeaturesProperty,
+                    bestLocation: bestLocationProperty,
+                    finalRecommendation: finalRecommendation
+                };
+            }
+            
+            // وظيفة مساعدة لحساب نقاط المواصفات
+            function getFeatureScore(property) {
+                let score = 0;
+                
+                // تحويل القيم النصية إلى رقمية
+                const rooms = typeof property.rooms === 'number' ? property.rooms : 0;
+                const bathrooms = typeof property.bathrooms === 'number' ? property.bathrooms : 0;
+                const parking = typeof property.parking === 'number' ? property.parking : 0;
+                
+                // حساب النقاط
+                score += rooms * 2; // كل غرفة تساوي نقطتين
+                score += bathrooms * 1.5; // كل حمام يساوي 1.5 نقطة
+                score += parking; // كل موقف يساوي نقطة واحدة
+                
+                // مكافأة للتكييف المركزي
+                if (property.ac === 'مركزي') {
+                    score += 2;
+                }
+                
+                // مكافأة للمسبح
+                if (property.pool === 'نعم') {
+                    score += 3;
+                }
+                
+                // خصم للعمر الكبير
+                if (typeof property.age === 'number' && property.age > 0) {
+                    score -= (property.age - 1) * 0.5; // خصم 0.5 نقطة لكل سنة بعد السنة الأولى
+                }
+                
+                return Math.max(score, 0); // لا نسمح بنقاط سالبة
+            }
+            
+            // وظيفة مساعدة لحساب نقاط الموقع
+            function getLocationScore(property, locationRanking) {
+                // نستخرج اسم المدينة من الموقع (افترض أن الموقع يتضمن اسم المدينة)
+                const location = property.location.split('،')[1]?.trim() || property.location;
+                
+                // البحث عن المدينة في تصنيف المواقع
+                for (const city in locationRanking) {
+                    if (location.includes(city)) {
+                        return locationRanking[city];
+                    }
+                }
+                
+                // إذا لم نجد تطابقًا، نعيد قيمة افتراضية
+                return 3;
+            }
+            
+            // إضافة معالجات الأحداث للمرشحات وأزرار التحكم
+            document.getElementById('highlightDifferences').addEventListener('change', highlightDifferences);
+            document.getElementById('showAllFeatures').addEventListener('change', function() {
+                // يمكن تنفيذ وظيفة إظهار/إخفاء بعض الخصائص هنا
+            });
+            
+            // أزرار طباعة ومشاركة المقارنة
+            document.getElementById('printComparison').addEventListener('click', function() {
+                window.print();
+            });
+            
+            document.getElementById('shareComparison').addEventListener('click', function() {
+                // يمكن تنفيذ وظيفة المشاركة هنا (مثلاً نسخ رابط أو مشاركة على وسائل التواصل)
+                alert('سيتم إضافة خيارات المشاركة قريبًا...');
+            });
+        });
+    </script>
+</body>
+</html>

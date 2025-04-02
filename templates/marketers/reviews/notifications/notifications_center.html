@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مركز الإشعارات للتقييمات | المسوقين العقاريين</title>
+    <link rel="stylesheet" href="../../assets/css/bootstrap.rtl.min.css">
+    <link rel="stylesheet" href="../../assets/css/all.min.css">
+    <link rel="stylesheet" href="../styles/notifications_center.css">
+</head>
+<body>
+    <!-- شريط التنقل العلوي -->
+    <div id="navbar-placeholder"></div>
+
+    <div class="container-fluid my-4">
+        <div class="row">
+            <!-- القائمة الجانبية -->
+            <div class="col-lg-2 mb-4">
+                <div id="sidebar-placeholder"></div>
+            </div>
+
+            <!-- المحتوى الرئيسي -->
+            <div class="col-lg-10">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card shadow-sm mb-4">
+                            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0">مركز الإشعارات للتقييمات</h5>
+                                <div>
+                                    <button class="btn btn-sm btn-light" id="mark-all-read"><i class="fas fa-check-double"></i> تعليم الكل كمقروء</button>
+                                    <button class="btn btn-sm btn-light" id="refresh-notifications"><i class="fas fa-sync-alt"></i></button>
+                                    <button class="btn btn-sm btn-light" id="notification-settings"><i class="fas fa-cog"></i></button>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <!-- ملخص إحصائيات الإشعارات -->
+                                <div class="row mb-4">
+                                    <div class="col-md-3">
+                                        <div class="card border-0 bg-light h-100">
+                                            <div class="card-body text-center">
+                                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                                    <h6 class="text-muted mb-0">إجمالي الإشعارات</h6>
+                                                    <i class="fas fa-bell text-primary fa-2x"></i>
+                                                </div>
+                                                <h3 id="total-notifications" class="fw-bold">45</h3>
+                                                <div class="text-success small">
+                                                    <i class="fas fa-arrow-up"></i> 12% منذ الأسبوع الماضي
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="card border-0 bg-light h-100">
+                                            <div class="card-body text-center">
+                                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                                    <h6 class="text-muted mb-0">إشعارات غير مقروءة</h6>
+                                                    <i class="fas fa-envelope text-danger fa-2x"></i>
+                                                </div>
+                                                <h3 id="unread-notifications" class="fw-bold">8</h3>
+                                                <div class="text-danger small">
+                                                    <i class="fas fa-arrow-up"></i> 5 جديدة اليوم
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="card border-0 bg-light h-100">
+                                            <div class="card-body text-center">
+                                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                                    <h6 class="text-muted mb-0">تنبيهات عاجلة</h6>
+                                                    <i class="fas fa-exclamation-circle text-warning fa-2x"></i>
+                                                </div>
+                                                <h3 id="urgent-notifications" class="fw-bold">3</h3>
+                                                <div class="text-warning small">
+                                                    <i class="fas fa-exclamation-triangle"></i> بحاجة للمراجعة
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="card border-0 bg-light h-100">
+                                            <div class="card-body text-center">
+                                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                                    <h6 class="text-muted mb-0">تقييمات جديدة</h6>
+                                                    <i class="fas fa-star text-info fa-2x"></i>
+                                                </div>
+                                                <h3 id="new-reviews" class="fw-bold">15</h3>
+                                                <div class="text-info small">
+                                                    <i class="fas fa-arrow-up"></i> 20% منذ آخر شهر
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- فلترة الإشعارات -->
+                                <div class="card shadow-sm mb-4">
+                                    <div class="card-header bg-light">
+                                        <h6 class="mb-0">فلترة الإشعارات</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row g-3">
+                                            <div class="col-md-3">
+                                                <label for="filter-type" class="form-label">نوع الإشعار</label>
+                                                <select class="form-select" id="filter-type">
+                                                    <option value="all" selected>جميع الأنواع</option>
+                                                    <option value="review">تقييمات جديدة</option>
+                                                    <option value="comment">تعليقات</option>
+                                                    <option value="reply">ردود</option>
+                                                    <option value="system">إشعارات النظام</option>
+                                                    <option value="urgent">تنبيهات عاجلة</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label for="filter-status" class="form-label">حالة الإشعار</label>
+                                                <select class="form-select" id="filter-status">
+                                                    <option value="all" selected>جميع الحالات</option>
+                                                    <option value="unread">غير مقروءة</option>
+                                                    <option value="read">مقروءة</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label for="filter-date" class="form-label">تاريخ الإشعار</label>
+                                                <select class="form-select" id="filter-date">
+                                                    <option value="all" selected>كل الفترات</option>
+                                                    <option value="today">اليوم</option>
+                                                    <option value="yesterday">الأمس</option>
+                                                    <option value="last-week">آخر أسبوع</option>
+                                                    <option value="last-month">آخر شهر</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label for="search-notifications" class="form-label">بحث</label>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" id="search-notifications" placeholder="ابحث في الإشعارات...">
+                                                    <button class="btn btn-primary" type="button"><i class="fas fa-search"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- قائمة الإشعارات -->
+                                <div class="card shadow-sm">
+                                    <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                                        <h6 class="mb-0">الإشعارات الأخيرة</h6>
+                                        <div>
+                                            <select class="form-select form-select-sm" id="sort-by" style="width: auto; display: inline-block;">
+                                                <option value="date-desc" selected>الأحدث أولاً</option>
+                                                <option value="date-asc">الأقدم أولاً</option>
+                                                <option value="importance">الأهمية</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="card-body p-0">
+                                        <div class="list-group list-group-flush" id="notifications-list">
+                                            <!-- نموذج لإشعار غير مقروء - تقييم جديد (عاجل) -->
+                                            <div class="list-group-item list-group-item-action unread urgent">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="notification-icon bg-danger text-white">
+                                                            <i class="fas fa-star"></i>
+                                                        </div>
+                                                        <div class="ms-3">
+                                                            <div class="d-flex align-items-center">
+                                                                <h6 class="mb-0 fw-bold">تقييم جديد من أحمد محمد</h6>
+                                                                <span class="badge bg-danger ms-2">عاجل</span>
+                                                                <span class="badge bg-primary ms-2">تقييم جديد</span>
+                                                            </div>
+                                                            <div class="text-muted small">تقييم سلبي (2 من 5) للفيلا الواقعة في حي الربيع</div>
+                                                            <div class="small">منذ 15 دقيقة</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="notification-actions">
+                                                        <button class="btn btn-sm btn-primary me-1"><i class="fas fa-eye"></i> عرض</button>
+                                                        <button class="btn btn-sm btn-outline-secondary me-1"><i class="fas fa-check"></i></button>
+                                                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">
+                                                            <i class="fas fa-ellipsis-v"></i>
+                                                        </button>
+                                                        <ul class="dropdown-menu dropdown-menu-end">
+                                                            <li><a class="dropdown-item" href="#"><i class="fas fa-reply"></i> الرد</a></li>
+                                                            <li><a class="dropdown-item" href="#"><i class="fas fa-bell-slash"></i> إيقاف الإشعارات</a></li>
+                                                            <li><hr class="dropdown-divider"></li>
+                                                            <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-trash"></i> حذف</a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- نموذج لإشعار غير مقروء - تعليق على رد -->
+                                            <div class="list-group-item list-group-item-action unread">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="notification-icon bg-info text-white">
+                                                            <i class="fas fa-comment"></i>
+                                                        </div>
+                                                        <div class="ms-3">
+                                                            <div class="d-flex align-items-center">
+                                                                <h6 class="mb-0 fw-bold">تعليق جديد من ليلى عبدالله</h6>
+                                                                <span class="badge bg-info ms-2">تعليق</span>
+                                                            </div>
+                                                            <div class="text-muted small">ردت على تعليقك على تقييم الشقة في حي النخيل</div>
+                                                            <div class="small">منذ 45 دقيقة</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="notification-actions">
+                                                        <button class="btn btn-sm btn-primary me-1"><i class="fas fa-eye"></i> عرض</button>
+                                                        <button class="btn btn-sm btn-outline-secondary me-1"><i class="fas fa-check"></i></button>
+                                                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">
+                                                            <i class="fas fa-ellipsis-v"></i>
+                                                        </button>
+                                                        <ul class="dropdown-menu dropdown-menu-end">
+                                                            <li><a class="dropdown-item" href="#"><i class="fas fa-reply"></i> الرد</a></li>
+                                                            <li><a class="dropdown-item" href="#"><i class="fas fa-bell-slash"></i> إيقاف الإشعارات</a></li>
+                                                            <li><hr class="dropdown-divider"></li>
+                                                            <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-trash"></i> حذف</a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- نموذج لإشعار مقروء - تقييم إيجابي -->
+                                            <div class="list-group-item list-group-item-action read">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="notification-icon bg-success text-white">
+                                                            <i class="fas fa-star"></i>
+                                                        </div>
+                                                        <div class="ms-3">
+                                                            <div class="d-flex align-items-center">
+                                                                <h6 class="mb-0">تقييم جديد من منى سعيد</h6>
+                                                                <span class="badge bg-success ms-2">تقييم إيجابي</span>
+                                                            </div>
+                                                            <div class="text-muted small">تقييم ممتاز (5 من 5) للفيلا الواقعة في حي الياسمين</div>
+                                                            <div class="small">منذ 2 ساعة</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="notification-actions">
+                                                        <button class="btn btn-sm btn-outline-primary me-1"><i class="fas fa-eye"></i> عرض</button>
+                                                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">
+                                                            <i class="fas fa-ellipsis-v"></i>
+                                                        </button>
+                                                        <ul class="dropdown-menu dropdown-menu-end">
+                                                            <li><a class="dropdown-item" href="#"><i class="fas fa-reply"></i> الرد</a></li>
+                                                            <li><a class="dropdown-item" href="#"><i class="fas fa-bell-slash"></i> إيقاف الإشعارات</a></li>
+                                                            <li><hr class="dropdown-divider"></li>
+                                                            <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-trash"></i> حذف</a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- نموذج لإشعار النظام -->
+                                            <div class="list-group-item list-group-item-action read">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="notification-icon bg-secondary text-white">
+                                                            <i class="fas fa-cog"></i>
+                                                        </div>
+                                                        <div class="ms-3">
+                                                            <div class="d-flex align-items-center">
+                                                                <h6 class="mb-0">تحديث في نظام التقييمات</h6>
+                                                                <span class="badge bg-secondary ms-2">إشعار نظام</span>
+                                                            </div>
+                                                            <div class="text-muted small">تم تحديث نظام التقييمات بميزات جديدة متعلقة بالتحليلات والمكافآت</div>
+                                                            <div class="small">منذ يوم واحد</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="notification-actions">
+                                                        <button class="btn btn-sm btn-outline-primary me-1"><i class="fas fa-eye"></i> عرض</button>
+                                                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">
+                                                            <i class="fas fa-ellipsis-v"></i>
+                                                        </button>
+                                                        <ul class="dropdown-menu dropdown-menu-end">
+                                                            <li><a class="dropdown-item" href="#"><i class="fas fa-reply"></i> الرد</a></li>
+                                                            <li><a class="dropdown-item" href="#"><i class="fas fa-bell-slash"></i> إيقاف الإشعارات</a></li>
+                                                            <li><hr class="dropdown-divider"></li>
+                                                            <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-trash"></i> حذف</a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- يمكن إضافة المزيد من نماذج الإشعارات هنا -->
+                                        </div>
+                                        
+                                        <!-- نظام التنقل بين صفحات الإشعارات -->
+                                        <div class="d-flex justify-content-between align-items-center p-3 border-top">
+                                            <div class="small text-muted">عرض 1-4 من أصل 45 إشعار</div>
+                                            <nav aria-label="تنقل بين صفحات الإشعارات">
+                                                <ul class="pagination pagination-sm mb-0">
+                                                    <li class="page-item disabled">
+                                                        <a class="page-link" href="#" aria-label="السابق">
+                                                            <span aria-hidden="true">&laquo;</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                                    <li class="page-item">
+                                                        <a class="page-link" href="#" aria-label="التالي">
+                                                            <span aria-hidden="true">&raquo;</span>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </nav>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- تذييل الصفحة -->
+    <div id="footer-placeholder"></div>
+
+    <!-- تضمين النصوص البرمجية المشتركة -->
+    <div id="scripts-placeholder"></div>
+
+    <!-- نصوص مخصصة لمركز الإشعارات -->
+    <script>
+        $(function() {
+            // تحميل المكونات المشتركة
+            $("#navbar-placeholder").load("../../includes/navbar.html");
+            $("#sidebar-placeholder").load("../../includes/sidebar.html");
+            $("#footer-placeholder").load("../../includes/footer.html");
+            $("#scripts-placeholder").load("../../includes/scripts.html", function() {
+                // تهيئة مركز الإشعارات بعد تحميل النصوص البرمجية المشتركة
+                initNotificationsCenter();
+            });
+        });
+
+        // تهيئة مركز الإشعارات
+        function initNotificationsCenter() {
+            console.log("تهيئة مركز الإشعارات");
+            
+            // إعداد أحداث الأزرار
+            setupButtonsEvents();
+            
+            // تحميل الإشعارات
+            loadNotifications();
+        }
+
+        // إعداد أحداث الأزرار
+        function setupButtonsEvents() {
+            // تحديث الإشعارات
+            $("#refresh-notifications").on("click", function() {
+                console.log("تحديث الإشعارات");
+                loadNotifications();
+            });
+
+            // تعليم الكل كمقروء
+            $("#mark-all-read").on("click", function() {
+                console.log("تعليم الكل كمقروء");
+                markAllAsRead();
+            });
+
+            // إعدادات الإشعارات
+            $("#notification-settings").on("click", function() {
+                console.log("فتح إعدادات الإشعارات");
+                openNotificationSettings();
+            });
+
+            // فلترة الإشعارات
+            $("#filter-type, #filter-status, #filter-date").on("change", function() {
+                console.log("تطبيق فلاتر الإشعارات");
+                applyFilters();
+            });
+
+            // البحث في الإشعارات
+            $("#search-notifications").on("keyup", function() {
+                console.log("البحث في الإشعارات");
+                applyFilters();
+            });
+        }
+
+        // تحميل الإشعارات من الخادم
+        function loadNotifications() {
+            // محاكاة طلب API لجلب الإشعارات
+            // في الواقع سيتم استبدال هذا بطلب AJAX فعلي
+            console.log("تحميل الإشعارات من الخادم");
+            
+            // تحديث العدادات
+            updateNotificationCounters();
+        }
+
+        // تحديث عدادات الإشعارات
+        function updateNotificationCounters() {
+            // في الواقع سيتم تحديث هذه القيم بناءً على البيانات الفعلية
+            console.log("تحديث عدادات الإشعارات");
+        }
+
+        // تعليم جميع الإشعارات كمقروءة
+        function markAllAsRead() {
+            // محاكاة طلب API لتعليم جميع الإشعارات كمقروءة
+            console.log("تعليم جميع الإشعارات كمقروءة");
+            
+            // تحديث واجهة المستخدم
+            $(".unread").removeClass("unread").addClass("read");
+            
+            // تحديث العدادات
+            $("#unread-notifications").text("0");
+        }
+
+        // فتح إعدادات الإشعارات
+        function openNotificationSettings() {
+            // محاكاة فتح نافذة الإعدادات
+            console.log("فتح إعدادات الإشعارات");
+            alert("سيتم فتح إعدادات الإشعارات!");
+        }
+
+        // تطبيق فلاتر البحث
+        function applyFilters() {
+            const type = $("#filter-type").val();
+            const status = $("#filter-status").val();
+            const date = $("#filter-date").val();
+            const search = $("#search-notifications").val().toLowerCase();
+            
+            console.log(`تطبيق الفلاتر: النوع=${type}, الحالة=${status}, التاريخ=${date}, البحث=${search}`);
+            
+            // في الواقع سيتم تنفيذ منطق فلترة الإشعارات هنا
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<!-- ملفات جافا سكريبت الأساسية -->
+<script src="../assets/js/bootstrap.bundle.min.js"></script>
+<script src="../assets/js/jquery-3.6.0.min.js"></script>
+<script src="../assets/js/chart.min.js"></script>
+
+<!-- ملفات جافا سكريبت المخصصة -->
+<script src="../reviews/js/notification_counter.js"></script>
+
+<!-- نص تهيئة -->
+<script>
+    $(function() {
+        // تحديث أيقونات FontAwesome لتعمل بشكل ديناميكي
+        if (typeof FontAwesome !== 'undefined') {
+            FontAwesome.dom.watch();
+        }
+        
+        // تهيئة عداد الإشعارات إذا كان موجودًا
+        if (typeof window.notificationCounter !== 'undefined') {
+            window.notificationCounter.init();
+        }
+    });
+</script>

@@ -30,6 +30,26 @@
                 </a>
             </li>
             <li class="nav-item mb-2">
+                <a href="{{ url_for('marketers_social_review') }}" class="nav-link {{ 'active' if request.path.startswith('/marketers/social/review-manager') }}">
+                    <i class="fas fa-star me-2"></i>
+                    <span>إدارة التقييمات</span>
+                </a>
+            </li>
+            <li class="nav-item mb-2">
+                <a href="{{ url_for('marketers_social') }}" class="nav-link {{ 'active' if request.path.startswith('/marketers/social') }}">
+                    <i class="fas fa-bell me-2"></i>
+                    <span>الإشعارات</span>
+                    <span class="badge bg-danger rounded-pill ms-auto notification-counter">8</span>
+                </a>
+            </li>
+            <li class="nav-item mb-2">
+                <a href="{{ url_for('marketers_commissions') }}" class="nav-link {{ 'active' if request.path.startswith('/marketers/commissions') }}">
+                    <i class="fas fa-chart-bar me-2"></i>
+                    <span>التقارير</span>
+                    <span class="badge bg-primary rounded-pill ms-auto">جديد</span>
+                </a>
+            </li>
+            <li class="nav-item mb-2">
                 <a href="/marketers/scheduler" class="nav-link {{ 'active' if request.path.startswith('/marketers/scheduler') }}">
                     <i class="fas fa-calendar-alt me-2"></i>
                     <span>جدولة المواعيد</span>

@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>عرض التقرير | نظام إدارة التقييمات</title>
+    
+    <!-- روابط Bootstrap وFontawesome -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- روابط DataTables -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.bootstrap5.min.css">
+    
+    <!-- أنماط التقارير المخصصة -->
+    <link rel="stylesheet" href="../styles/reports.css">
+    
+    <style>
+        .report-header {
+            background-color: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        }
+        
+        .report-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+        
+        .report-meta span {
+            padding: 0.25rem 0.5rem;
+            background-color: #e9ecef;
+            border-radius: 0.25rem;
+            font-size: 0.875rem;
+        }
+        
+        .report-toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            padding: 0.75rem;
+            background-color: #fff;
+            border-radius: 0.5rem;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        }
+        
+        .kpi-summary {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        
+        .kpi-card {
+            background-color: #fff;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            flex: 1 1 200px;
+            text-align: center;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        }
+        
+        .kpi-value {
+            font-size: 1.75rem;
+            font-weight: bold;
+            margin: 0.5rem 0;
+        }
+        
+        .kpi-trend {
+            font-size: 0.875rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            display: inline-block;
+        }
+        
+        .kpi-trend.positive {
+            background-color: rgba(40, 167, 69, 0.1);
+            color: #28a745;
+        }
+        
+        .kpi-trend.negative {
+            background-color: rgba(220, 53, 69, 0.1);
+            color: #dc3545;
+        }
+        
+        .chart-container {
+            height: 300px;
+            margin-bottom: 1.5rem;
+            background-color: #fff;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+            position: relative;
+        }
+        
+        .report-section {
+            margin-bottom: 2rem;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .report-comments {
+            background-color: #fff;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        }
+        
+        .comment-item {
+            border-bottom: 1px solid #e9ecef;
+            padding: 1rem 0;
+        }
+        
+        .comment-item:last-child {
+            border-bottom: none;
+        }
+        
+        .comment-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <!-- شريط التنقل العلوي -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">نظام إدارة التقييمات</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">لوحة التحكم</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">التقييمات</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">التقارير</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">التحليلات</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-user"></i> الملف الشخصي</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- المحتوى الرئيسي -->
+    <div class="container">
+        <!-- التنقل الفرعي -->
+        <nav aria-label="breadcrumb" class="mb-4">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">الرئيسية</a></li>
+                <li class="breadcrumb-item"><a href="reports_dashboard.html">التقارير</a></li>
+                <li class="breadcrumb-item active">تقرير أداء التقييمات الأسبوعي</li>
+            </ol>
+        </nav>
+        
+        <!-- محتوى التقرير -->
+        <div id="report-content">
+            <!-- رأس التقرير -->
+            <div class="report-header">
+                <h3 id="report-title">تقرير أداء التقييمات الأسبوعي</h3>
+                <div class="report-meta">
+                    <span><i class="fas fa-file-alt me-1"></i> نوع التقرير: تقرير أداء</span>
+                    <span><i class="fas fa-calendar-alt me-1"></i> تاريخ الإنشاء: 28/03/2025</span>
+                    <span><i class="fas fa-user me-1"></i> المنشئ: محمد أحمد</span>
+                    <span><i class="fas fa-clock me-1"></i> الفترة: 21/03/2025 - 28/03/2025</span>
+                </div>
+            </div>
+            
+            <!-- شريط الأدوات -->
+            <div class="report-toolbar">
+                <button id="export-pdf-btn" class="btn btn-sm btn-primary"><i class="fas fa-file-pdf me-1"></i> تصدير PDF</button>
+                <button id="export-excel-btn" class="btn btn-sm btn-success"><i class="fas fa-file-excel me-1"></i> تصدير Excel</button>
+                <button id="export-csv-btn" class="btn btn-sm btn-info text-white"><i class="fas fa-file-csv me-1"></i> تصدير CSV</button>
+                <button id="print-report-btn" class="btn btn-sm btn-secondary"><i class="fas fa-print me-1"></i> طباعة</button>
+                <button id="share-report-btn" class="btn btn-sm btn-warning"><i class="fas fa-share-alt me-1"></i> مشاركة</button>
+                <button id="edit-report-btn" class="btn btn-sm btn-outline-primary"><i class="fas fa-edit me-1"></i> تعديل</button>
+                <button id="schedule-report-btn" class="btn btn-sm btn-outline-success"><i class="fas fa-clock me-1"></i> جدولة</button>
+                <div class="ms-auto">
+                    <select id="chart-period-filter" class="form-select form-select-sm">
+                        <option value="week">أسبوعي</option>
+                        <option value="month">شهري</option>
+                        <option value="quarter">ربع سنوي</option>
+                        <option value="year">سنوي</option>
+                    </select>
+                </div>
+            </div>
+            
+            <!-- ملخص تنفيذي -->
+            <div class="report-section">
+                <div class="section-header">
+                    <h4>ملخص تنفيذي</h4>
+                    <button class="btn btn-sm btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#summaryCollapse">
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
+                <div class="collapse show" id="summaryCollapse">
+                    <div class="card card-body">
+                        <p>يظهر تحليل البيانات زيادة في نسبة التقييمات الإيجابية بمقدار 15% مقارنة بالفترة السابقة. تحسن ملحوظ في معايير جودة الخدمة ورضا العملاء، مع وجود فرص للتحسين في سرعة الاستجابة.</p>
+                        
+                        <!-- مؤشرات الأداء الرئيسية -->
+                        <div class="kpi-summary">
+                            <div class="kpi-card">
+                                <h5>متوسط التقييم</h5>
+                                <div class="kpi-value">4.7</div>
+                                <div class="kpi-trend positive">+0.3</div>
+                            </div>
+                            <div class="kpi-card">
+                                <h5>عدد التقييمات</h5>
+                                <div class="kpi-value">45</div>
+                                <div class="kpi-trend positive">+12</div>
+                            </div>
+                            <div class="kpi-card">
+                                <h5>نسبة الرضا</h5>
+                                <div class="kpi-value">92%</div>
+                                <div class="kpi-trend positive">+5%</div>
+                            </div>
+                            <div class="kpi-card">
+                                <h5>وقت الاستجابة</h5>
+                                <div class="kpi-value">4.2 ساعة</div>
+                                <div class="kpi-trend negative">+0.5</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- قسم المخططات البيانية -->
+            <div class="report-section">
+                <div class="section-header">
+                    <h4>المخططات البيانية</h4>
+                    <div>
+                        <button class="btn btn-sm btn-outline-secondary me-1 chart-view-toggle" data-target="trend-chart" data-chart-type="line">
+                            <i class="fas fa-chart-line"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-secondary me-1 chart-view-toggle" data-target="trend-chart" data-chart-type="bar">
+                            <i class="fas fa-chart-bar"></i>
+                        </button>
+                        <button class="btn btn-sm btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#chartsCollapse">
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="collapse show" id="chartsCollapse">
+                    <div class="row">
+                        <!-- مخطط الاتجاهات الزمنية -->
+                        <div class="col-md-6 mb-4">
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h5 class="card-title mb-0">تطور متوسط التقييمات</h5>
+                                    <div class="dropdown">
+                                        <button class="btn btn-sm btn-link" type="button" data-bs-toggle="dropdown">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                            <li><a class="dropdown-item" href="#" onclick="exportChartAsImage('trend-chart', 'تطور_التقييمات')"><i class="fas fa-download me-2"></i>تصدير كصورة</a></li>
+                                            <li><a class="dropdown-item" href="#" onclick="exportChartData('trend-chart', 'بيانات_التقييمات')"><i class="fas fa-file-export me-2"></i>تصدير البيانات</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="chart-container">
+                                        <canvas id="trend-chart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- مخطط توزيع التقييمات -->
+                        <div class="col-md-6 mb-4">
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h5 class="card-title mb-0">توزيع التقييمات</h5>
+                                    <div class="dropdown">
+                                        <button class="btn btn-sm btn-link" type="button" data-bs-toggle="dropdown">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                            <li><a class="dropdown-item" href="#" onclick="exportChartAsImage('distribution-chart', 'توزيع_التقييمات')"><i class="fas fa-download me-2"></i>تصدير كصورة</a></li>
+                                            <li><a class="dropdown-item" href="#" onclick="exportChartData('distribution-chart', 'بيانات_توزيع_التقييمات')"><i class="fas fa-file-export me-2"></i>تصدير البيانات</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="chart-container">
+                                        <canvas id="distribution-chart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- مخطط المقارنة -->
+                        <div class="col-md-6 mb-4">
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h5 class="card-title mb-0">مقارنة معايير التقييم</h5>
+                                    <div class="dropdown">
+                                        <button class="btn btn-sm btn-link" type="button" data-bs-toggle="dropdown">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                            <li><a class="dropdown-item" href="#" onclick="exportChartAsImage('comparison-chart', 'مقارنة_معايير_التقييم')"><i class="fas fa-download me-2"></i>تصدير كصورة</a></li>
+                                            <li><a class="dropdown-item" href="#" onclick="exportChartData('comparison-chart', 'بيانات_المقارنة')"><i class="fas fa-file-export me-2"></i>تصدير البيانات</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="chart-container">
+                                        <canvas id="comparison-chart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- مخطط تحليل المشاعر -->
+                        <div class="col-md-6 mb-4">
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h5 class="card-title mb-0">تحليل مشاعر العملاء</h5>
+                                    <div class="dropdown">
+                                        <button class="btn btn-sm btn-link" type="button" data-bs-toggle="dropdown">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                            <li><a class="dropdown-item" href="#" onclick="exportChartAsImage('sentiment-chart', 'تحليل_المشاعر')"><i class="fas fa-download me-2"></i>تصدير كصورة</a></li>
+                                            <li><a class="dropdown-item" href="#" onclick="exportChartData('sentiment-chart', 'بيانات_تحليل_المشاعر')"><i class="fas fa-file-export me-2"></i>تصدير البيانات</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="chart-container">
+                                        <canvas id="sentiment-chart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- قسم الجداول التفاعلية -->
+            <div class="report-section">
+                <div class="section-header">
+                    <h4>جداول البيانات</h4>
+                    <button class="btn btn-sm btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#tablesCollapse">
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
+                <div class="collapse show" id="tablesCollapse">
+                    <div class="row">
+                        <!-- جدول البيانات التفصيلية -->
+                        <div class="col-12 mb-4">
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h5 class="card-title mb-0">البيانات التفصيلية للتقييمات</h5>
+                                    <div class="d-flex">
+                                        <select id="table-filter" class="form-select form-select-sm me-2" style="width: auto;">
+                                            <option value="all">جميع التقييمات</option>
+                                            <option value="positive">التقييمات الإيجابية (4-5 نجوم)</option>
+                                            <option value="neutral">التقييمات المحايدة (3 نجوم)</option>
+                                            <option value="negative">التقييمات السلبية (1-2 نجوم)</option>
+                                        </select>
+                                        <div class="dropdown">
+                                            <button class="btn btn-sm btn-link" type="button" data-bs-toggle="dropdown">
+                                                <i class="fas fa-ellipsis-v"></i>
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-end">
+                                                <li><a class="dropdown-item" href="#" id="export-table-excel"><i class="fas fa-file-excel me-2"></i>تصدير إلى Excel</a></li>
+                                                <li><a class="dropdown-item" href="#" id="export-table-csv"><i class="fas fa-file-csv me-2"></i>تصدير إلى CSV</a></li>
+                                                <li><a class="dropdown-item" href="#" id="print-table"><i class="fas fa-print me-2"></i>طباعة الجدول</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table id="detailed-data-table" class="table table-striped table-hover" style="width:100%">
+                                            <!-- سيتم إنشاء الجدول ديناميكياً من خلال DataTables -->
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- جدول ملخص البيانات -->
+                        <div class="col-md-6 mb-4">
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h5 class="card-title mb-0">ملخص التقييمات حسب المعايير</h5>
+                                    <div class="dropdown">
+                                        <button class="btn btn-sm btn-link" type="button" data-bs-toggle="dropdown">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                            <li><a class="dropdown-item" href="#" id="export-summary-excel"><i class="fas fa-file-excel me-2"></i>تصدير إلى Excel</a></li>
+                                            <li><a class="dropdown-item" href="#" id="export-summary-csv"><i class="fas fa-file-csv me-2"></i>تصدير إلى CSV</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table id="summary-table" class="table table-striped table-hover" style="width:100%">
+                                            <thead>
+                                                <tr>
+                                                    <th>معيار التقييم</th>
+                                                    <th>متوسط التقييم</th>
+                                                    <th>التغير</th>
+                                                    <th>الاتجاه</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>جودة الخدمة</td>
+                                                    <td>4.8</td>
+                                                    <td>+0.3</td>
+                                                    <td><span class="text-success"><i class="fas fa-arrow-up"></i></span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>سرعة الاستجابة</td>
+                                                    <td>4.2</td>
+                                                    <td>-0.1</td>
+                                                    <td><span class="text-danger"><i class="fas fa-arrow-down"></i></span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>دقة المعلومات</td>
+                                                    <td>4.6</td>
+                                                    <td>+0.2</td>
+                                                    <td><span class="text-success"><i class="fas fa-arrow-up"></i></span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>شفافية الأسعار</td>
+                                                    <td>4.5</td>
+                                                    <td>+0.4</td>
+                                                    <td><span class="text-success"><i class="fas fa-arrow-up"></i></span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>المتابعة بعد البيع</td>
+                                                    <td>4.3</td>
+                                                    <td>+0.1</td>
+                                                    <td><span class="text-success"><i class="fas fa-arrow-up"></i></span></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- جدول مقارنة البيانات -->
+                        <div class="col-md-6 mb-4">
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h5 class="card-title mb-0">مقارنة التقييمات حسب النوع</h5>
+                                    <div class="dropdown">
+                                        <button class="btn btn-sm btn-link" type="button" data-bs-toggle="dropdown">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                            <li><a class="dropdown-item" href="#" id="export-comparison-excel"><i class="fas fa-file-excel me-2"></i>تصدير إلى Excel</a></li>
+                                            <li><a class="dropdown-item" href="#" id="export-comparison-csv"><i class="fas fa-file-csv me-2"></i>تصدير إلى CSV</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table id="comparison-table" class="table table-striped table-hover" style="width:100%">
+                                            <thead>
+                                                <tr>
+                                                    <th>نوع العقار</th>
+                                                    <th>عدد التقييمات</th>
+                                                    <th>متوسط التقييم</th>
+                                                    <th>نسبة التغير</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>شقق</td>
+                                                    <td>18</td>
+                                                    <td>4.6</td>
+                                                    <td>+3.2%</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>فلل</td>
+                                                    <td>12</td>
+                                                    <td>4.8</td>
+                                                    <td>+5.1%</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>أراضي</td>
+                                                    <td>8</td>
+                                                    <td>4.4</td>
+                                                    <td>+1.8%</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>عقارات تجارية</td>
+                                                    <td>7</td>
+                                                    <td>4.7</td>
+                                                    <td>+2.5%</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- قسم التوصيات والملاحظات -->
+            <div class="report-section">
+                <div class="section-header">
+                    <h4>التوصيات والملاحظات</h4>
+                    <button class="btn btn-sm btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#recommendationsCollapse">
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
+                <div class="collapse show" id="recommendationsCollapse">
+                    <div class="row">
+                        <!-- التوصيات -->
+                        <div class="col-md-6 mb-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0">التوصيات</h5>
+                                </div>
+                                <div class="card-body">
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">
+                                            <div class="d-flex align-items-center">
+                                                <span class="badge bg-primary me-2">1</span>
+                                                <div>
+                                                    <h6 class="mb-1">تحسين سرعة الاستجابة للاستفسارات</h6>
+                                                    <p class="mb-0 text-muted small">يظهر التحليل أن متوسط وقت الاستجابة ارتفع بنسبة 0.5 ساعة، وهو ما يؤثر سلباً على رضا العملاء.</p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div class="d-flex align-items-center">
+                                                <span class="badge bg-primary me-2">2</span>
+                                                <div>
+                                                    <h6 class="mb-1">زيادة التركيز على الوحدات السكنية</h6>
+                                                    <p class="mb-0 text-muted small">الوحدات السكنية (شقق وفلل) تحظى بأعلى نسبة تقييمات إيجابية، يُوصى بزيادة التركيز على هذه الفئات.</p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <div class="d-flex align-items-center">
+                                                <span class="badge bg-primary me-2">3</span>
+                                                <div>
+                                                    <h6 class="mb-1">تحسين شفافية الأسعار</h6>
+                                                    <p class="mb-0 text-muted small">أظهرت التقييمات تحسناً كبيراً في شفافية الأسعار، ينبغي الاستمرار في هذا النهج.</p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- تعليقات العملاء البارزة -->
+                        <div class="col-md-6 mb-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0">تعليقات بارزة</h5>
+                                </div>
+                                <div class="card-body p-0">
+                                    <div class="report-comments">
+                                        <div class="comment-item">
+                                            <div class="comment-meta">
+                                                <div>
+                                                    <span class="me-2"><i class="fas fa-user"></i> أحمد محمد</span>
+                                                    <span class="me-2"><i class="fas fa-calendar-alt"></i> 25/03/2025</span>
+                                                </div>
+                                                <div>
+                                                    <span class="text-warning">
+                                                        <i class="fas fa-star"></i>
+                                                        <i class="fas fa-star"></i>
+                                                        <i class="fas fa-star"></i>
+                                                        <i class="fas fa-star"></i>
+                                                        <i class="fas fa-star"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <p class="mb-0">تجربتي مع المسوق كانت ممتازة. تميز بالمهنية العالية والشفافية في عرض المعلومات. سأتعامل معه مجدداً بكل تأكيد.</p>
+                                            <div class="mt-2 badge bg-success">إيجابي</div>
+                                        </div>
+                                        <div class="comment-item">
+                                            <div class="comment-meta">
+                                                <div>
+                                                    <span class="me-2"><i class="fas fa-user"></i> سارة علي</span>
+                                                    <span class="me-2"><i class="fas fa-calendar-alt"></i> 23/03/2025</span>
+                                                </div>
+                                                <div>
+                                                    <span class="text-warning">
+                                                        <i class="fas fa-star"></i>
+                                                        <i class="fas fa-star"></i>
+                                                        <i class="fas fa-star"></i>
+                                                        <i class="fas fa-star-half-alt"></i>
+                                                        <i class="far fa-star"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <p class="mb-0">المعلومات المقدمة كانت دقيقة ومفصلة، ولكن استغرق الرد على استفساراتي وقتاً أطول من المتوقع. أتمنى تحسين سرعة الاستجابة.</p>
+                                            <div class="mt-2 badge bg-primary">محايد</div>
+                                        </div>
+                                        <div class="comment-item">
+                                            <div class="comment-meta">
+                                                <div>
+                                                    <span class="me-2"><i class="fas fa-user"></i> عمر خالد</span>
+                                                    <span class="me-2"><i class="fas fa-calendar-alt"></i> 27/03/2025</span>
+                                                </div>
+                                                <div>
+                                                    <span class="text-warning">
+                                                        <i class="fas fa-star"></i>
+                                                        <i class="fas fa-star"></i>
+                                                        <i class="far fa-star"></i>
+                                                        <i class="far fa-star"></i>
+                                                        <i class="far fa-star"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <p class="mb-0">كانت هناك بعض التناقضات في المعلومات المقدمة حول العقار، وتأخر الرد على استفساراتي. آمل تحسين هذه الجوانب مستقبلاً.</p>
+                                            <div class="mt-2 badge bg-danger">سلبي</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- النوافذ المنبثقة -->
+    
+    <!-- نافذة مشاركة التقرير -->
+    <div class="modal fade" id="shareReportModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">مشاركة التقرير</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="share-email-form">
+                        <input type="hidden" id="share-report-id" value="current">
+                        <div class="mb-3">
+                            <label for="share-email" class="form-label">البريد الإلكتروني</label>
+                            <input type="email" class="form-control" id="share-email" placeholder="أدخل البريد الإلكتروني للمستلم">
+                        </div>
+                        <div class="mb-3">
+                            <label for="share-subject" class="form-label">عنوان الرسالة</label>
+                            <input type="text" class="form-control" id="share-subject" value="مشاركة تقرير: تقرير أداء التقييمات">
+                        </div>
+                        <div class="mb-3">
+                            <label for="share-message" class="form-label">نص الرسالة</label>
+                            <textarea class="form-control" id="share-message" rows="3">مرحبًا، أود مشاركة هذا التقرير معك. يمكنك الاطلاع عليه من خلال الرابط المرفق.</textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">إرسال</button>
+                        <button type="button" id="share-link-btn" class="btn btn-outline-secondary">نسخ الرابط</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- نافذة جدولة التقرير -->
+    <div class="modal fade" id="scheduleReportModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">جدولة التقرير</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="schedule-report-form">
+                        <input type="hidden" id="schedule-report-id" value="current">
+                        <div class="mb-3">
+                            <label for="schedule-title" class="form-label">عنوان الجدولة</label>
+                            <input type="text" class="form-control" id="schedule-title" value="تقرير أداء التقييمات الأسبوعي">
+                        </div>
+                        <div class="mb-3">
+                            <label for="schedule-frequency" class="form-label">التكرار</label>
+                            <select class="form-select" id="schedule-frequency">
+                                <option value="daily">يومي</option>
+                                <option value="weekly" selected>أسبوعي</option>
+                                <option value="monthly">شهري</option>
+                                <option value="quarterly">ربع سنوي</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="schedule-start-date" class="form-label">تاريخ البدء</label>
+                            <input type="date" class="form-control" id="schedule-start-date">
+                        </div>
+                        <div class="mb-3">
+                            <label for="schedule-recipients" class="form-label">المستلمون</label>
+                            <input type="text" class="form-control" id="schedule-recipients" placeholder="أدخل البريد الإلكتروني (استخدم فاصلة للفصل بين العناوين)">
+                        </div>
+                        <div class="mb-3">
+                            <label for="schedule-format" class="form-label">صيغة التقرير</label>
+                            <select class="form-select" id="schedule-format">
+                                <option value="pdf">PDF</option>
+                                <option value="excel">Excel</option>
+                                <option value="csv">CSV</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">جدولة التقرير</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- سكربتات JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- مكتبة Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- مكتبة DataTables -->
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.bootstrap5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.print.min.js"></script>
+    
+    <!-- سكربتات مخصصة -->
+    <script src="js/chart_components.js"></script>
+    <script src="js/data_tables.js"></script>
+    <script src="js/report_utils.js"></script>
+    
+    <script>
+        // تهيئة المكونات عند تحميل الصفحة
+        $(document).ready(function() {
+            // تهيئة أحداث شريط الأدوات
+            $('#schedule-report-btn').on('click', function() {
+                $('#scheduleReportModal').modal('show');
+            });
+            
+            $('#share-report-btn').on('click', function() {
+                $('#shareReportModal').modal('show');
+            });
+            
+            $('#print-report-btn').on('click', function() {
+                ReportUtils.printReport('report-content');
+            });
+            
+            $('#export-pdf-btn').on('click', function() {
+                ReportUtils.exportToPDF('current', 'تقرير_أداء_التقييمات');
+                showToast('تم تصدير التقرير بصيغة PDF بنجاح', 'success');
+            });
+            
+            $('#export-excel-btn').on('click', function() {
+                ReportUtils.exportToExcel('current', 'تقرير_أداء_التقييمات');
+                showToast('تم تصدير التقرير بصيغة Excel بنجاح', 'success');
+            });
+            
+            $('#export-csv-btn').on('click', function() {
+                ReportUtils.exportToCSV('current', 'تقرير_أداء_التقييمات');
+                showToast('تم تصدير التقرير بصيغة CSV بنجاح', 'success');
+            });
+            
+            // تعيين تاريخ البدء للجدولة كتاريخ اليوم
+            $('#schedule-start-date').val(new Date().toISOString().split('T')[0]);
+            
+            // تهيئة نموذج جدولة التقرير
+            $('#schedule-report-form').on('submit', function(e) {
+                e.preventDefault();
+                const formData = {
+                    title: $('#schedule-title').val(),
+                    frequency: $('#schedule-frequency').val(),
+                    startDate: $('#schedule-start-date').val(),
+                    recipients: $('#schedule-recipients').val(),
+                    format: $('#schedule-format').val()
+                };
+                
+                console.log('جدولة التقرير:', formData);
+                $('#scheduleReportModal').modal('hide');
+                showToast('تمت جدولة التقرير بنجاح', 'success');
+            });
+            
+            // تهيئة نموذج مشاركة التقرير
+            $('#share-email-form').on('submit', function(e) {
+                e.preventDefault();
+                const formData = {
+                    email: $('#share-email').val(),
+                    subject: $('#share-subject').val(),
+                    message: $('#share-message').val()
+                };
+                
+                console.log('مشاركة التقرير:', formData);
+                $('#shareReportModal').modal('hide');
+                showToast('تم إرسال التقرير بنجاح', 'success');
+            });
+            
+            // نسخ رابط التقرير إلى الحافظة
+            $('#share-link-btn').on('click', function() {
+                navigator.clipboard.writeText(window.location.href).then(function() {
+                    showToast('تم نسخ الرابط بنجاح', 'success');
+                });
+            });
+            
+            // تهيئة فلتر الجدول
+            $('#table-filter').on('change', function() {
+                const filterValue = $(this).val();
+                console.log('تغيير فلتر الجدول إلى:', filterValue);
+                
+                // إعادة تحميل الجدول مع الفلتر الجديد
+                if (window.detailedTable) {
+                    // في النسخة النهائية سيتم استبدال هذا بمنطق تحديث الجدول الفعلي
+                    // detailedTable.search(filterValue).draw();
+                }
+            });
+            
+            // تهيئة أزرار تصدير الجداول
+            $('#export-table-excel').on('click', function() {
+                ReportUtils.exportTableToExcel('detailed-data-table', 'تقييمات_تفصيلية');
+                showToast('تم تصدير الجدول بصيغة Excel بنجاح', 'success');
+            });
+            
+            $('#export-table-csv').on('click', function() {
+                ReportUtils.exportTableToCSV('detailed-data-table', 'تقييمات_تفصيلية');
+                showToast('تم تصدير الجدول بصيغة CSV بنجاح', 'success');
+            });
+            
+            $('#print-table').on('click', function() {
+                ReportUtils.printTable('detailed-data-table');
+            });
+            
+            // تغيير نوع المخطط
+            $('.chart-view-toggle').on('click', function() {
+                const targetChart = $(this).data('target');
+                const chartType = $(this).data('chart-type');
+                console.log('تغيير نوع المخطط:', targetChart, 'إلى', chartType);
+                
+                // في النسخة النهائية سيتم استبدال هذا بمنطق تحديث المخطط الفعلي
+                if (window[targetChart]) {
+                    // window[targetChart].config.type = chartType;
+                    // window[targetChart].update();
+                }
+            });
+            
+            // فلتر الفترة الزمنية للمخططات
+            $('#chart-period-filter').on('change', function() {
+                const periodValue = $(this).val();
+                console.log('تغيير فترة المخططات إلى:', periodValue);
+                // في النسخة النهائية سيتم استبدال هذا بمنطق تحديث بيانات المخطط الفعلي
+                
+                // تحديث جميع المخططات مع الفترة الزمنية الجديدة
+                loadCharts(periodValue);
+            });
+            
+            // تحميل مكونات التقرير
+            loadReportView();
+        });
+        
+        // تحميل مكونات التقرير
+        function loadReportView() {
+            // تهيئة المخططات البيانية
+            loadCharts('week');
+            
+            // تهيئة جداول البيانات
+            loadTables();
+        }
+        
+        // تهيئة المخططات البيانية
+        function loadCharts(period) {
+            // استدعاء وظائف تهيئة المخططات من ملف chart_components.js
+            if (window.trendChart) {
+                window.trendChart.destroy();
+            }
+            window.trendChart = ChartComponents.initTrendChart(period);
+            
+            if (window.distributionChart) {
+                window.distributionChart.destroy();
+            }
+            window.distributionChart = ChartComponents.initDistributionChart();
+            
+            if (window.comparisonChart) {
+                window.comparisonChart.destroy();
+            }
+            window.comparisonChart = ChartComponents.initComparisonChart();
+            
+            if (window.sentimentChart) {
+                window.sentimentChart.destroy();
+            }
+            window.sentimentChart = ChartComponents.initSentimentChart();
+        }
+        
+        // تهيئة جداول البيانات
+        function loadTables() {
+            // استدعاء وظائف تهيئة الجداول من ملف data_tables.js
+            window.detailedTable = DataTables.initDetailedDataTable();
+            
+            // تطبيق DataTables على الجداول الأخرى التي لا تحتاج إلى بيانات ديناميكية
+            $('#summary-table').DataTable({
+                paging: false,
+                searching: false,
+                language: {
+                    url: 'https://cdn.datatables.net/plug-ins/1.11.5/i18n/ar.json'
+                }
+            });
+            
+            $('#comparison-table').DataTable({
+                paging: false,
+                searching: false,
+                language: {
+                    url: 'https://cdn.datatables.net/plug-ins/1.11.5/i18n/ar.json'
+                }
+            });
+        }
+        
+        // عرض رسالة توست
+        function showToast(message, type = 'info') {
+            // إنشاء توست دينامكي
+            const toastId = 'toast-' + Date.now();
+            const toastHTML = `
+                <div id="${toastId}" class="toast align-items-center text-white bg-${type}" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            ${message}
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="إغلاق"></button>
+                    </div>
+                </div>
+            `;
+            
+            // إضافة التوست للصفحة إذا لم يكن عنصر حاوية التوست موجوداً
+            if (!document.querySelector('.toast-container')) {
+                const toastContainer = document.createElement('div');
+                toastContainer.className = 'toast-container position-fixed bottom-0 end-0 p-3';
+                document.body.appendChild(toastContainer);
+            }
+            
+            // إضافة التوست إلى الحاوية
+            document.querySelector('.toast-container').innerHTML += toastHTML;
+            
+            // إظهار التوست
+            const toastElement = new bootstrap.Toast(document.getElementById(toastId), {
+                autohide: true,
+                delay: 3000
+            });
+            toastElement.show();
+            
+            // حذف التوست بعد الإخفاء
+            const element = document.getElementById(toastId);
+            element.addEventListener('hidden.bs.toast', function() {
+                element.remove();
+            });
+        }
+    </script>
+</body>
+</html>

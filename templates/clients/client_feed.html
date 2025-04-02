@@ -149,7 +149,7 @@
     .action-buttons {
         position: absolute;
         left: 20px;
-        bottom: 100px;
+        bottom: 150px; 
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -552,35 +552,62 @@
     
     /* زر البحث والفلترة */
     .search-filter-button {
-        position: fixed; /* تغيير من absolute إلى fixed للتأكد من ظهوره */
+        position: absolute;
+        top: 20px;
         right: 20px;
-        top: 100px;
-        width: 50px; /* تكبير حجم الزر */
+        width: 50px;
         height: 50px;
-        background-color: transparent !important; /* تأكيد الشفافية الكاملة */
-        border: 1px solid rgba(255, 255, 255, 0.5); /* حدود أقل وضوحاً */
         border-radius: 50%;
-        color: white;
-        font-size: 20px; /* تكبير حجم الأيقونة */
+        background-color: rgba(0, 0, 0, 0.5);
+        border: 2px solid rgba(255, 255, 255, 0.5);
+        color: var(--text-color);
+        font-size: 20px;
         display: flex;
         align-items: center;
         justify-content: center;
-        z-index: 999; /* زيادة قيمة z-index للتأكد من ظهوره فوق كل العناصر */
         cursor: pointer;
-        transition: background-color 0.3s, transform 0.2s;
-        backdrop-filter: blur(8px); /* زيادة تأثير الضبابية للوضوح */
-        box-shadow: 0 2px 10px rgba(255, 255, 255, 0.2); /* ظل فاتح للوضوح */
+        z-index: 999;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(4px);
+        overflow: hidden;
+    }
+    
+    .search-filter-button {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: rgba(0, 0, 0, 0.5);
+        border: 2px solid rgba(255, 255, 255, 0.5);
+        color: var(--text-color);
+        font-size: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 999;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(4px);
+        overflow: hidden;
+    }
+    
+    .profile-button {
+        border: 2px solid var(--primary-color);
+        box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+    }
+    
+    .profile-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
     }
     
     .search-filter-button:hover {
-        background-color: rgba(255, 255, 255, 0.1) !important;
-        transform: scale(1.1);
-        border: 1px solid rgba(255, 255, 255, 0.8);
-    }
-    
-    .search-filter-button.active {
-        background-color: transparent !important;
-        border: 1px solid rgba(255, 255, 255, 0.8);
+        transform: scale(1.05);
+        border-color: var(--primary-color);
     }
     
     /* تنسيقات شاشة البحث والفلترة */
@@ -835,6 +862,73 @@
         background-color: transparent !important;
         border: 1px solid rgba(255, 255, 255, 0.8);
     }
+    
+    /* شريط التنقل السفلي */
+    .bottom-navigation {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 60px;
+        background-color: rgba(0, 0, 0, 0.95);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        display: flex !important;
+        justify-content: space-around;
+        align-items: center;
+        z-index: 999999 !important;
+        border-top: 2px solid var(--primary-color);
+        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.7);
+    }
+
+    .nav-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        color: rgba(255, 255, 255, 0.7);
+        text-decoration: none;
+        padding: 8px 0;
+        transition: all 0.3s;
+        width: 60px;
+    }
+
+    .nav-item i {
+        font-size: 22px;
+        margin-bottom: 3px;
+    }
+
+    .nav-item span {
+        font-size: 12px;
+    }
+
+    .nav-item.active {
+        color: var(--primary-color);
+    }
+
+    .nav-item:hover {
+        color: var(--highlight-color);
+        transform: translateY(-3px);
+    }
+
+    /* تعديلات إضافية لتجنب التداخل مع شريط التنقل */
+    .video-feed {
+        padding-bottom: 70px !important;
+    }
+    
+    .action-buttons {
+        bottom: 150px !important; /* تعديل موضع أزرار التفاعل ليناسب شريط التنقل */
+    }
+    
+    /* تأكيد إظهار القائمة في حالة تداخل z-index */
+    .bottom-navigation::after {
+        content: '';
+        position: absolute;
+        top: -1px;
+        left: 0;
+        width: 100%;
+        height: 1px;
+        background-color: rgba(212, 175, 55, 0.5);
+    }
 </style>
 {% endblock %}
 
@@ -866,9 +960,9 @@
     </div>
     
     <!-- زر البحث والفلترة -->
-    <button class="search-filter-button" onclick="showInteractionScreen('searchFilterScreen')">
-        <i class="fas fa-search"></i>
-    </button>
+    <a href="/clients/profile" class="search-filter-button profile-button">
+        <img src="{{ url_for('static', filename='images/default-profile.png') }}" alt="الملف الشخصي" class="profile-image">
+    </a>
     
     <div class="swipe-indicator">
         <div class="swipe-arrow">
@@ -1451,6 +1545,34 @@
 
 <!-- عنصر الإشعارات */
 <div id="notification" class="notification"></div>
+
+<!-- شريط التنقل السفلي -->
+<div id="fixedBottomNav" style="position: fixed; bottom: 0; left: 0; width: 100%; height: 60px; background-color: rgba(0, 0, 0, 0.95); display: flex; justify-content: space-around; align-items: center; z-index: 9999999; border-top: 2px solid #d4af37; box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.7);">
+    <a href="/clients/feed" style="display: flex; flex-direction: column; align-items: center;">
+        <i class="fas fa-home" style="font-size: 22px; margin-bottom: 3px;"></i>
+        <span style="font-size: 12px;">الرئيسية</span>
+    </a>
+    <a href="/clients/search" style="display: flex; flex-direction: column; align-items: center;">
+        <i class="fas fa-search" style="font-size: 22px; margin-bottom: 3px;"></i>
+        <span style="font-size: 12px;">البحث</span>
+    </a>
+    <a href="/clients/likes" style="display: flex; flex-direction: column; align-items: center;">
+        <i class="fas fa-heart" style="font-size: 22px; margin-bottom: 3px;"></i>
+        <span style="font-size: 12px;">الإعجابات</span>
+    </a>
+    <a href="/clients/messages" style="display: flex; flex-direction: column; align-items: center;">
+        <i class="fas fa-comment-dots" style="font-size: 22px; margin-bottom: 3px;"></i>
+        <span style="font-size: 12px;">المحادثات</span>
+    </a>
+    <a href="/clients/profile" style="display: flex; flex-direction: column; align-items: center;">
+        <i class="fas fa-user" style="font-size: 22px; margin-bottom: 3px;"></i>
+        <span style="font-size: 12px;">البروفايل</span>
+    </a>
+</div>
+
+<!-- إضافة حيز في أسفل الصفحة للتأكد من عدم تغطية المحتوى */
+<div style="height: 70px; width: 100%;"></div>
+
 {% endblock %}
 
 {% block extra_js %}
@@ -1478,11 +1600,6 @@
                 });
             }
         }
-        
-        // تهيئة وظائف البحث المتقدم
-        initializeVoiceSearch();
-        initializeImageSearch();
-        initializeMapSearch();
         
         // إضافة مستمع أحداث لزر تطبيق البحث
         const applyFilterBtn = document.querySelector('.btn-apply');
@@ -2529,37 +2646,83 @@
 </script>
 
 <script>
-    // سكريبت خاص بزر البحث - يتم تنفيذه فور تحميل الصفحة
+    // سكريبت إضافي للتأكد من ظهور شريط التنقل السفلي
     document.addEventListener('DOMContentLoaded', function() {
-        // التأكد من وجود زر البحث
-        const searchButton = document.querySelector('.search-filter-button');
-        if (searchButton) {
-            // تعديل خصائص الزر لجعله أكثر وضوحاً
-            searchButton.style.position = 'fixed';
-            searchButton.style.right = '20px';
-            searchButton.style.top = '120px'; /* تم تعديله ليكون أسفل تصنيفات الفيديوهات */
-            searchButton.style.width = '60px'; /* تم تعديله ليكون أكبر */
-            searchButton.style.height = '60px';
-            searchButton.style.backgroundColor = 'transparent !important';
-            searchButton.style.border = '2px solid rgba(255, 255, 255, 0.7)';
-            searchButton.style.borderRadius = '50%';
-            searchButton.style.display = 'flex';
-            searchButton.style.alignItems = 'center';
-            searchButton.style.justifyContent = 'center';
-            searchButton.style.zIndex = '9999';
-            searchButton.style.cursor = 'pointer';
-            searchButton.style.transition = 'background-color 0.3s, transform 0.2s';
-            searchButton.style.backdropFilter = 'blur(8px)';
-            searchButton.style.boxShadow = '0 2px 10px rgba(255, 255, 255, 0.2)';
-            
-            // التأكد من أن الزر مرئي
-            searchButton.style.opacity = '1';
-            searchButton.style.visibility = 'visible';
-            
-            console.log('تم تهيئة زر البحث بنجاح');
-        } else {
-            console.error('لم يتم العثور على زر البحث!');
-        }
+        // إضافة شريط تنقل جديد في حالة عدم ظهور الشريط الحالي
+        setTimeout(function() {
+            if (!document.getElementById('fixedBottomNav') || getComputedStyle(document.getElementById('fixedBottomNav')).display === 'none') {
+                console.log('إنشاء شريط تنقل جديد...');
+                
+                // إنشاء شريط التنقل وإضافته إلى نهاية body
+                const newNav = document.createElement('div');
+                newNav.id = 'js-bottom-nav';
+                newNav.style.cssText = 'position: fixed; bottom: 0; left: 0; width: 100%; height: 60px; background-color: rgba(0, 0, 0, 0.95); display: flex; justify-content: space-around; align-items: center; z-index: 9999999; border-top: 2px solid #d4af37; box-shadow: 0 -2px 15px rgba(0, 0, 0, 0.8);';
+                
+                // إنشاء روابط التنقل
+                const links = [
+                    { href: '/clients/feed', icon: 'fa-home', text: 'الرئيسية', active: true },
+                    { href: '/clients/search', icon: 'fa-search', text: 'البحث' },
+                    { href: '/clients/likes', icon: 'fa-heart', text: 'الإعجابات' },
+                    { href: '/clients/messages', icon: 'fa-comment-dots', text: 'المحادثات' },
+                    { href: '/clients/profile', icon: 'fa-user', text: 'البروفايل' }
+                ];
+                
+                // إضافة الروابط إلى شريط التنقل
+                links.forEach(link => {
+                    const a = document.createElement('a');
+                    a.href = link.href;
+                    a.style.cssText = 'display: flex; flex-direction: column; align-items: center; text-decoration: none; width: 60px; color: ' + (link.active ? '#d4af37' : 'rgba(255, 255, 255, 0.7)');
+                    
+                    const i = document.createElement('i');
+                    i.className = 'fas ' + link.icon;
+                    i.style.cssText = 'font-size: 22px; margin-bottom: 3px;';
+                    
+                    const span = document.createElement('span');
+                    span.textContent = link.text;
+                    span.style.cssText = 'font-size: 12px;';
+                    
+                    a.appendChild(i);
+                    a.appendChild(span);
+                    newNav.appendChild(a);
+                });
+                
+                // إضافة الشريط إلى الصفحة
+                document.body.appendChild(newNav);
+                
+                // إضافة مساحة إضافية لتجنب تغطية المحتوى
+                const spacer = document.createElement('div');
+                spacer.style.cssText = 'height: 70px; width: 100%;';
+                document.body.appendChild(spacer);
+            }
+        }, 500); // تأخير للتأكد من تحميل كل محتويات الصفحة
     });
 </script>
 {% endblock %}
+
+</body>
+
+<!-- شريط التنقل الثابت في أسفل الصفحة - مضاف بشكل مباشر بعد إغلاق وسم body -->
+<footer style="position: fixed; bottom: 0; left: 0; right: 0; height: 60px; background: rgb(0, 0, 0); display: flex; justify-content: space-around; align-items: center; z-index: 999999; border-top: 2px solid rgb(212, 175, 55); direction: rtl; font-family: 'Cairo', sans-serif; box-shadow: 0 -2px 15px rgba(0, 0, 0, 0.8);">
+    <a href="/clients/feed" style="color: rgb(212, 175, 55); text-decoration: none; display: flex; flex-direction: column; align-items: center;">
+        <i class="fas fa-home" style="font-size: 22px; margin-bottom: 5px;"></i>
+        <span style="font-size: 12px;">الرئيسية</span>
+    </a>
+    <a href="/clients/search" style="color: rgba(255, 255, 255, 0.7); text-decoration: none; display: flex; flex-direction: column; align-items: center;">
+        <i class="fas fa-search" style="font-size: 22px; margin-bottom: 5px;"></i>
+        <span style="font-size: 12px;">البحث</span>
+    </a>
+    <a href="/clients/likes" style="color: rgba(255, 255, 255, 0.7); text-decoration: none; display: flex; flex-direction: column; align-items: center;">
+        <i class="fas fa-heart" style="font-size: 22px; margin-bottom: 5px;"></i>
+        <span style="font-size: 12px;">الإعجابات</span>
+    </a>
+    <a href="/clients/messages" style="color: rgba(255, 255, 255, 0.7); text-decoration: none; display: flex; flex-direction: column; align-items: center;">
+        <i class="fas fa-comment-dots" style="font-size: 22px; margin-bottom: 5px;"></i>
+        <span style="font-size: 12px;">المحادثات</span>
+    </a>
+    <a href="/clients/profile" style="color: rgba(255, 255, 255, 0.7); text-decoration: none; display: flex; flex-direction: column; align-items: center;">
+        <i class="fas fa-user" style="font-size: 22px; margin-bottom: 5px;"></i>
+        <span style="font-size: 12px;">البروفايل</span>
+    </a>
+</footer>
+
+</html>

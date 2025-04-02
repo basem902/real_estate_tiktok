@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حاسبة التمويل العقاري - تيك توك العقاري</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2196F3;
+            --secondary-color: #FFC107;
+            --dark-color: #f8f9fa;
+            --light-color: #333;
+            --danger-color: #dc3545;
+            --success-color: #28a745;
+            --border-radius: 8px;
+            --box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+        
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: #f5f5f5;
+            color: var(--light-color);
+            padding-bottom: 70px;
+        }
+        
+        body.dark-mode {
+            background-color: #222;
+            color: var(--dark-color);
+        }
+        
+        .container {
+            max-width: 1200px;
+            padding-top: 20px;
+        }
+        
+        /* هيدر الصفحة */
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .header-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 0;
+        }
+        
+        .header-actions {
+            display: flex;
+        }
+        
+        .back-button, .mode-toggle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: transparent;
+            margin-right: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .back-button:hover, .mode-toggle:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+        
+        body.dark-mode .back-button:hover, body.dark-mode .mode-toggle:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        /* تنسيقات الأقسام */
+        .section-title {
+            position: relative;
+            padding-right: 15px;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+        
+        .section-title::before {
+            content: "";
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 5px;
+            height: 20px;
+            background-color: var(--primary-color);
+            border-radius: 3px;
+        }
+        
+        /* بطاقات القسم */
+        .card {
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            margin-bottom: 20px;
+            border: none;
+            overflow: hidden;
+        }
+        
+        body.dark-mode .card {
+            background-color: #333;
+            border: 1px solid #444;
+        }
+        
+        .card-header {
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+            padding: 15px 20px;
+            font-weight: bold;
+        }
+        
+        body.dark-mode .card-header {
+            background-color: #2a2a2a;
+            border-bottom: 1px solid #444;
+        }
+        
+        .card-body {
+            padding: 20px;
+        }
+        
+        /* أشرطة التمرير */
+        .custom-range-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .range-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+        
+        .range-title {
+            font-weight: 500;
+        }
+        
+        .range-value {
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        body.dark-mode .range-value {
+            color: #5eb3f6;
+        }
+        
+        .custom-range {
+            width: 100%;
+            height: 10px;
+            border-radius: 5px;
+            appearance: none;
+            background-color: #e9ecef;
+            margin: 0;
+        }
+        
+        body.dark-mode .custom-range {
+            background-color: #444;
+        }
+        
+        .custom-range::-webkit-slider-thumb {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            cursor: pointer;
+        }
+        
+        .custom-range::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            cursor: pointer;
+        }
+        
+        /* بطاقة النتيجة */
+        .result-card {
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .result-title {
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+            opacity: 0.9;
+        }
+        
+        .result-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 0;
+        }
+        
+        .result-note {
+            font-size: 0.8rem;
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+        
+        /* التفاصيل الإضافية */
+        .details-list {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        
+        .details-list li {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        body.dark-mode .details-list li {
+            border-bottom: 1px solid #444;
+        }
+        
+        .details-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .detail-label {
+            color: #6c757d;
+        }
+        
+        body.dark-mode .detail-label {
+            color: #adb5bd;
+        }
+        
+        .detail-value {
+            font-weight: 500;
+        }
+        
+        /* تنسيقات متنوعة */
+        @media (max-width: 768px) {
+            .result-card {
+                margin-top: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- هيدر الصفحة -->
+        <div class="page-header">
+            <h1 class="header-title">حاسبة التمويل العقاري</h1>
+            <div class="header-actions">
+                <button class="mode-toggle" aria-label="تبديل الوضع">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="back-button" aria-label="العودة">
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+        
+        <div class="row">
+            <!-- القسم الأيسر - معلومات الحاسبة -->
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-calculator me-2"></i> تفاصيل التمويل
+                    </div>
+                    <div class="card-body">
+                        <!-- سعر العقار -->
+                        <div class="custom-range-group">
+                            <div class="range-header">
+                                <span class="range-title">سعر العقار</span>
+                                <span class="range-value" id="propertyPriceValue">1,000,000 ر.س</span>
+                            </div>
+                            <input type="range" class="custom-range" id="propertyPrice" min="100000" max="10000000" step="50000" value="1000000">
+                        </div>
+                        
+                        <!-- الدفعة المقدمة -->
+                        <div class="custom-range-group">
+                            <div class="range-header">
+                                <span class="range-title">الدفعة المقدمة</span>
+                                <span class="range-value" id="downPaymentValue">200,000 ر.س (20%)</span>
+                            </div>
+                            <input type="range" class="custom-range" id="downPaymentPercent" min="5" max="70" step="1" value="20">
+                        </div>
+                        
+                        <!-- مبلغ التمويل -->
+                        <div class="mb-4">
+                            <div class="range-header">
+                                <span class="range-title">مبلغ التمويل</span>
+                                <span class="range-value" id="financingAmountValue">800,000 ر.س</span>
+                            </div>
+                            <div class="progress" style="height: 10px;">
+                                <div class="progress-bar bg-success" role="progressbar" id="financingAmountBar" style="width: 80%;" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- مدة التمويل -->
+                        <div class="custom-range-group">
+                            <div class="range-header">
+                                <span class="range-title">مدة التمويل</span>
+                                <span class="range-value" id="loanTermValue">25 سنة</span>
+                            </div>
+                            <input type="range" class="custom-range" id="loanTerm" min="5" max="30" step="1" value="25">
+                        </div>
+                        
+                        <!-- معدل الربح -->
+                        <div class="custom-range-group">
+                            <div class="range-header">
+                                <span class="range-title">معدل الربح السنوي</span>
+                                <span class="range-value" id="interestRateValue">3.5%</span>
+                            </div>
+                            <input type="range" class="custom-range" id="interestRate" min="1" max="8" step="0.25" value="3.5">
+                        </div>
+                        
+                        <!-- اختيار نوع التمويل -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">نوع التمويل</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="financingType" id="typeConventional" value="conventional" checked>
+                                <label class="form-check-label" for="typeConventional">
+                                    تمويل تقليدي
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="financingType" id="typeIslamic" value="islamic">
+                                <label class="form-check-label" for="typeIslamic">
+                                    تمويل إسلامي
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- القسم الأيمن - النتائج -->
+            <div class="col-lg-4">
+                <!-- بطاقة الناتج الرئيسية -->
+                <div class="result-card">
+                    <div class="result-title">القسط الشهري</div>
+                    <div class="result-value" id="monthlyPaymentResult">4,015 ر.س</div>
+                    <div class="result-note">بإجمالي مدفوعات 1,204,500 ر.س</div>
+                </div>
+                
+                <!-- تفاصيل التمويل -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-file-invoice-dollar me-2"></i> تفاصيل التمويل
+                    </div>
+                    <div class="card-body">
+                        <ul class="details-list">
+                            <li>
+                                <span class="detail-label">إجمالي ثمن العقار</span>
+                                <span class="detail-value" id="totalPropertyPriceResult">1,000,000 ر.س</span>
+                            </li>
+                            <li>
+                                <span class="detail-label">الدفعة المقدمة</span>
+                                <span class="detail-value" id="downPaymentResult">200,000 ر.س</span>
+                            </li>
+                            <li>
+                                <span class="detail-label">قيمة التمويل</span>
+                                <span class="detail-value" id="loanAmountResult">800,000 ر.س</span>
+                            </li>
+                            <li>
+                                <span class="detail-label">إجمالي الفوائد/الأرباح</span>
+                                <span class="detail-value" id="totalInterestResult">404,500 ر.س</span>
+                            </li>
+                            <li>
+                                <span class="detail-label">إجمالي المدفوعات</span>
+                                <span class="detail-value" id="totalPaymentsResult">1,204,500 ر.س</span>
+                            </li>
+                            <li>
+                                <span class="detail-label">عدد الأقساط</span>
+                                <span class="detail-value" id="numberOfPaymentsResult">300 قسط</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- أزرار الإجراءات -->
+                <div class="d-grid gap-2 mt-3">
+                    <button class="btn btn-primary" id="compareFinancingOptions">
+                        <i class="fas fa-exchange-alt me-2"></i> مقارنة خيارات التمويل
+                    </button>
+                    <button class="btn btn-outline-primary" id="saveCalculation">
+                        <i class="fas fa-save me-2"></i> حفظ الحسابات
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- قسم مخطط تفاصيل التمويل -->
+        <div class="card mt-4">
+            <div class="card-header">
+                <i class="fas fa-chart-pie me-2"></i> مخطط التمويل
+            </div>
+            <div class="card-body">
+                <!-- حاوية المخطط البياني -->
+                <div style="height: 300px;" id="loanChartContainer">
+                    <canvas id="loanChart"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <!-- قسم مقارنة البنوك -->
+        <div class="card mt-4">
+            <div class="card-header">
+                <i class="fas fa-university me-2"></i> مقارنة خيارات البنوك
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>البنك</th>
+                                <th>معدل الربح</th>
+                                <th>القسط الشهري</th>
+                                <th>إجمالي الفائدة</th>
+                                <th>إجمالي المدفوعات</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="banksTableBody">
+                            <!-- سيتم ملء هذا القسم بواسطة الجافاسكريبت -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- قسم جدول الاستهلاك -->
+        <div class="card mt-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <div>
+                    <i class="fas fa-table me-2"></i> جدول الاستهلاك
+                </div>
+                <button class="btn btn-sm btn-outline-secondary" id="toggleAmortizationTable">
+                    عرض/إخفاء الجدول
+                </button>
+            </div>
+            <div class="card-body" id="amortizationTableContainer" style="display: none;">
+                <div class="table-responsive">
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>السنة</th>
+                                <th>القسط الشهري</th>
+                                <th>أصل المبلغ</th>
+                                <th>الفائدة/الربح</th>
+                                <th>المبلغ المتبقي</th>
+                            </tr>
+                        </thead>
+                        <tbody id="amortizationTableBody">
+                            <!-- سيتم ملء هذا القسم بواسطة الجافاسكريبت -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- المكتبات المطلوبة -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <script>
+        // العناصر المهمة في الصفحة
+        const propertyPriceInput = document.getElementById('propertyPrice');
+        const propertyPriceValue = document.getElementById('propertyPriceValue');
+        const downPaymentPercentInput = document.getElementById('downPaymentPercent');
+        const downPaymentValue = document.getElementById('downPaymentValue');
+        const loanTermInput = document.getElementById('loanTerm');
+        const loanTermValue = document.getElementById('loanTermValue');
+        const interestRateInput = document.getElementById('interestRate');
+        const interestRateValue = document.getElementById('interestRateValue');
+        
+        // عناصر النتائج
+        const financingAmountValue = document.getElementById('financingAmountValue');
+        const financingAmountBar = document.getElementById('financingAmountBar');
+        const monthlyPaymentResult = document.getElementById('monthlyPaymentResult');
+        const totalPropertyPriceResult = document.getElementById('totalPropertyPriceResult');
+        const downPaymentResult = document.getElementById('downPaymentResult');
+        const loanAmountResult = document.getElementById('loanAmountResult');
+        const totalInterestResult = document.getElementById('totalInterestResult');
+        const totalPaymentsResult = document.getElementById('totalPaymentsResult');
+        const numberOfPaymentsResult = document.getElementById('numberOfPaymentsResult');
+        
+        // عناصر إضافية
+        const toggleAmortizationTable = document.getElementById('toggleAmortizationTable');
+        const amortizationTableContainer = document.getElementById('amortizationTableContainer');
+        const amortizationTableBody = document.getElementById('amortizationTableBody');
+        const banksTableBody = document.getElementById('banksTableBody');
+        const saveCalculationBtn = document.getElementById('saveCalculation');
+        const compareFinancingOptionsBtn = document.getElementById('compareFinancingOptions');
+        const modeToggleBtn = document.querySelector('.mode-toggle');
+        
+        // المتغيرات العامة
+        let propertyPrice = 1000000;
+        let downPaymentPercent = 20;
+        let downPaymentAmount = 200000;
+        let loanAmount = 800000;
+        let loanTerm = 25;
+        let interestRate = 3.5;
+        let monthlyPayment = 0;
+        let totalInterest = 0;
+        let totalPayment = 0;
+        let numberOfPayments = loanTerm * 12;
+        let loanChart = null;
+        
+        // بيانات البنوك (مثال)
+        const banks = [
+            { name: "البنك الأهلي", imageUrl: "https://via.placeholder.com/40", rate: 3.25, minDownPayment: 10 },
+            { name: "بنك الرياض", imageUrl: "https://via.placeholder.com/40", rate: 3.45, minDownPayment: 15 },
+            { name: "مصرف الراجحي", imageUrl: "https://via.placeholder.com/40", rate: 3.5, minDownPayment: 10 },
+            { name: "بنك البلاد", imageUrl: "https://via.placeholder.com/40", rate: 3.65, minDownPayment: 15 },
+            { name: "البنك السعودي الفرنسي", imageUrl: "https://via.placeholder.com/40", rate: 3.55, minDownPayment: 20 }
+        ];
+        
+        // تهيئة الصفحة
+        document.addEventListener('DOMContentLoaded', function() {
+            // تحديث القيم الأولية
+            updateCalculator();
+            
+            // إنشاء الرسم البياني الأولي
+            createChart();
+            
+            // تحديث جدول مقارنة البنوك
+            updateBanksTable();
+            
+            // التحقق من وضع الظلام
+            checkDarkMode();
+        });
+        
+        // تحديث حسابات التمويل بناء على المدخلات
+        function updateCalculator() {
+            // تحديث القيم من المدخلات
+            propertyPrice = parseInt(propertyPriceInput.value);
+            downPaymentPercent = parseInt(downPaymentPercentInput.value);
+            loanTerm = parseInt(loanTermInput.value);
+            interestRate = parseFloat(interestRateInput.value);
+            
+            // حساب القيم التابعة
+            downPaymentAmount = propertyPrice * (downPaymentPercent / 100);
+            loanAmount = propertyPrice - downPaymentAmount;
+            numberOfPayments = loanTerm * 12;
+            
+            // حساب القسط الشهري
+            monthlyPayment = calculateMonthlyPayment(loanAmount, interestRate, loanTerm);
+            totalPayment = monthlyPayment * numberOfPayments;
+            totalInterest = totalPayment - loanAmount;
+            
+            // تحديث واجهة المستخدم
+            updateUI();
+        }
+        
+        // تحديث واجهة المستخدم
+        function updateUI() {
+            // تنسيق القيم الرقمية
+            const formatter = new Intl.NumberFormat('ar-SA');
+            
+            // تحديث قيم الحاسبة
+            propertyPriceValue.textContent = formatter.format(propertyPrice) + ' ر.س';
+            downPaymentValue.textContent = formatter.format(downPaymentAmount) + ' ر.س (' + downPaymentPercent + '%)';
+            loanTermValue.textContent = loanTerm + ' سنة';
+            interestRateValue.textContent = interestRate + '%';
+            
+            // تحديث مبلغ التمويل
+            financingAmountValue.textContent = formatter.format(loanAmount) + ' ر.س';
+            const financingPercentage = (loanAmount / propertyPrice) * 100;
+            financingAmountBar.style.width = financingPercentage + '%';
+            financingAmountBar.setAttribute('aria-valuenow', financingPercentage);
+            
+            // تحديث النتائج
+            monthlyPaymentResult.textContent = formatter.format(Math.round(monthlyPayment)) + ' ر.س';
+            totalPropertyPriceResult.textContent = formatter.format(propertyPrice) + ' ر.س';
+            downPaymentResult.textContent = formatter.format(downPaymentAmount) + ' ر.س';
+            loanAmountResult.textContent = formatter.format(loanAmount) + ' ر.س';
+            totalInterestResult.textContent = formatter.format(Math.round(totalInterest)) + ' ر.س';
+            totalPaymentsResult.textContent = formatter.format(Math.round(totalPayment)) + ' ر.س';
+            numberOfPaymentsResult.textContent = formatter.format(numberOfPayments) + ' قسط';
+            
+            // تحديث نص النتيجة
+            document.querySelector('.result-note').textContent = 'بإجمالي مدفوعات ' + formatter.format(Math.round(totalPayment)) + ' ر.س';
+            
+            // تحديث الرسم البياني إذا كان موجودًا
+            if (loanChart) {
+                updateChart();
+            }
+            
+            // تحديث جدول الاستهلاك
+            updateAmortizationTable();
+        }
+        
+        // حساب القسط الشهري
+        function calculateMonthlyPayment(principal, annualRate, years) {
+            const monthlyRate = annualRate / 100 / 12;
+            const numPayments = years * 12;
+            
+            // صيغة حساب القسط الشهري
+            if (monthlyRate === 0) {
+                return principal / numPayments;
+            }
+            
+            const x = Math.pow(1 + monthlyRate, numPayments);
+            return (principal * monthlyRate * x) / (x - 1);
+        }
+        
+        // إنشاء الرسم البياني
+        function createChart() {
+            const ctx = document.getElementById('loanChart').getContext('2d');
+            
+            loanChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['أصل القرض', 'إجمالي الفوائد/الأرباح'],
+                    datasets: [{
+                        data: [loanAmount, totalInterest],
+                        backgroundColor: ['#2196F3', '#FFC107']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 20,
+                                font: {
+                                    size: 14
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const value = context.raw;
+                                    const formatter = new Intl.NumberFormat('ar-SA');
+                                    return formatter.format(Math.round(value)) + ' ر.س';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // تحديث الرسم البياني
+        function updateChart() {
+            loanChart.data.datasets[0].data = [loanAmount, totalInterest];
+            loanChart.update();
+        }
+        
+        // تحديث جدول الاستهلاك
+        function updateAmortizationTable() {
+            // مسح الجدول
+            amortizationTableBody.innerHTML = '';
+            
+            // حساب جدول الاستهلاك
+            let balance = loanAmount;
+            const monthlyRate = interestRate / 100 / 12;
+            const formatter = new Intl.NumberFormat('ar-SA');
+            
+            // إنشاء جدول مختصر للسنوات
+            for (let year = 1; year <= loanTerm; year++) {
+                let yearlyPrincipal = 0;
+                let yearlyInterest = 0;
+                let yearlyPayment = 0;
+                
+                // حساب مجاميع السنة
+                for (let month = 1; month <= 12; month++) {
+                    if ((year - 1) * 12 + month <= numberOfPayments) {
+                        const interestPayment = balance * monthlyRate;
+                        const principalPayment = monthlyPayment - interestPayment;
+                        
+                        yearlyPrincipal += principalPayment;
+                        yearlyInterest += interestPayment;
+                        yearlyPayment += monthlyPayment;
+                        
+                        balance -= principalPayment;
+                    }
+                }
+                
+                // إضافة صف للجدول
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${year}</td>
+                    <td>${formatter.format(Math.round(yearlyPayment / 12))} ر.س</td>
+                    <td>${formatter.format(Math.round(yearlyPrincipal))} ر.س</td>
+                    <td>${formatter.format(Math.round(yearlyInterest))} ر.س</td>
+                    <td>${formatter.format(Math.round(balance))} ر.س</td>
+                `;
+                amortizationTableBody.appendChild(row);
+            }
+        }
+        
+        // تحديث جدول البنوك
+        function updateBanksTable() {
+            // مسح الجدول
+            banksTableBody.innerHTML = '';
+            
+            // إضافة البنوك إلى الجدول
+            banks.forEach(bank => {
+                // حساب قيم التمويل بناءً على معدل البنك
+                const bankMonthlyPayment = calculateMonthlyPayment(loanAmount, bank.rate, loanTerm);
+                const bankTotalPayment = bankMonthlyPayment * numberOfPayments;
+                const bankTotalInterest = bankTotalPayment - loanAmount;
+                
+                // تنسيق القيم
+                const formatter = new Intl.NumberFormat('ar-SA');
+                
+                // إنشاء صف جديد
+                const row = document.createElement('tr');
+                
+                // تحديد الصف الأفضل
+                const isOptimal = bank.rate === Math.min(...banks.map(b => b.rate));
+                if (isOptimal) {
+                    row.classList.add('table-success');
+                }
+                
+                // محتوى الصف
+                row.innerHTML = `
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <img src="${bank.imageUrl}" class="rounded-circle me-2" width="30" alt="${bank.name}">
+                            <span>${bank.name}</span>
+                            ${isOptimal ? '<span class="badge bg-success ms-2">الأفضل</span>' : ''}
+                        </div>
+                    </td>
+                    <td>${bank.rate}%</td>
+                    <td>${formatter.format(Math.round(bankMonthlyPayment))} ر.س</td>
+                    <td>${formatter.format(Math.round(bankTotalInterest))} ر.س</td>
+                    <td>${formatter.format(Math.round(bankTotalPayment))} ر.س</td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-primary apply-btn">
+                            <i class="fas fa-external-link-alt me-1"></i> التفاصيل
+                        </button>
+                    </td>
+                `;
+                
+                banksTableBody.appendChild(row);
+            });
+        }
+        
+        // إظهار/إخفاء جدول الاستهلاك
+        toggleAmortizationTable.addEventListener('click', function() {
+            if (amortizationTableContainer.style.display === 'none') {
+                amortizationTableContainer.style.display = 'block';
+                this.innerHTML = '<i class="fas fa-chevron-up me-1"></i> إخفاء الجدول';
+            } else {
+                amortizationTableContainer.style.display = 'none';
+                this.innerHTML = '<i class="fas fa-chevron-down me-1"></i> عرض الجدول';
+            }
+        });
+        
+        // التبديل بين الوضع الداكن والفاتح
+        modeToggleBtn.addEventListener('click', function() {
+            document.body.classList.toggle('dark-mode');
+            
+            // تغيير أيقونة الزر
+            const icon = this.querySelector('i');
+            if (document.body.classList.contains('dark-mode')) {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+                localStorage.setItem('darkMode', 'enabled');
+            } else {
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+                localStorage.setItem('darkMode', 'disabled');
+            }
+        });
+        
+        // التحقق من وضع الظلام من التخزين المحلي
+        function checkDarkMode() {
+            if (localStorage.getItem('darkMode') === 'enabled') {
+                document.body.classList.add('dark-mode');
+                const icon = document.querySelector('.mode-toggle i');
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            }
+        }
+        
+        // مقارنة خيارات التمويل
+        compareFinancingOptionsBtn.addEventListener('click', function() {
+            // تحريك الشاشة إلى قسم مقارنة البنوك
+            document.querySelector('.card:nth-of-type(3)').scrollIntoView({ behavior: 'smooth' });
+        });
+        
+        // حفظ الحسابات
+        saveCalculationBtn.addEventListener('click', function() {
+            alert('تم حفظ الحسابات بنجاح!');
+            
+            // هنا يمكن إضافة ميزة حفظ الحسابات في قاعدة البيانات أو التخزين المحلي
+            const calculationData = {
+                propertyPrice: propertyPrice,
+                downPaymentAmount: downPaymentAmount,
+                downPaymentPercent: downPaymentPercent,
+                loanAmount: loanAmount,
+                loanTerm: loanTerm,
+                interestRate: interestRate,
+                monthlyPayment: monthlyPayment,
+                totalInterest: totalInterest,
+                totalPayment: totalPayment,
+                savedDate: new Date().toISOString()
+            };
+            
+            // حفظ البيانات في التخزين المحلي
+            const savedCalculations = JSON.parse(localStorage.getItem('savedCalculations') || '[]');
+            savedCalculations.push(calculationData);
+            localStorage.setItem('savedCalculations', JSON.stringify(savedCalculations));
+        });
+        
+        // زر العودة
+        document.querySelector('.back-button').addEventListener('click', function() {
+            history.back();
+        });
+        
+        // أحداث تغيير قيم المدخلات
+        propertyPriceInput.addEventListener('input', updateCalculator);
+        downPaymentPercentInput.addEventListener('input', updateCalculator);
+        loanTermInput.addEventListener('input', updateCalculator);
+        interestRateInput.addEventListener('input', updateCalculator);
+        
+        // أزرار في جدول البنوك
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('apply-btn') || e.target.closest('.apply-btn')) {
+                alert('سيتم توجيهك إلى صفحة التفاصيل والتقديم على التمويل');
+            }
+        });
+    </script>
+</body>
+</html>

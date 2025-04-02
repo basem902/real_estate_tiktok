@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تقييم الزيارة العقارية - تيك توك العقاري</title>
+    <!-- Bootstrap RTL -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom Styles -->
+    <style>
+        :root {
+            --primary-color: #2a9d8f;
+            --secondary-color: #e9c46a;
+            --dark-color: #264653;
+            --light-color: #f1faee;
+            --danger-color: #e76f51;
+            --success-color: #2a9d8f;
+            --border-radius: 10px;
+            --box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Cairo', 'Tajawal', sans-serif;
+            background-color: #f7f7f7;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        body.dark-mode {
+            background-color: #222;
+            color: #eee;
+        }
+
+        .review-container {
+            max-width: 800px;
+            margin: 30px auto;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+        }
+
+        .header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .back-button {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        .property-summary {
+            display: flex;
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .property-image {
+            width: 120px;
+            height: 120px;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-left: 15px;
+        }
+
+        .property-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .property-details {
+            flex: 1;
+        }
+
+        .property-details h5 {
+            margin-bottom: 10px;
+            color: var(--dark-color);
+        }
+
+        .property-specs {
+            display: flex;
+            margin-bottom: 10px;
+        }
+
+        .property-specs span {
+            display: inline-flex;
+            align-items: center;
+            margin-left: 12px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .property-specs i {
+            margin-left: 5px;
+            color: var(--primary-color);
+        }
+
+        .property-price {
+            font-weight: bold;
+            color: var(--success-color);
+        }
+
+        .property-address {
+            font-size: 0.9rem;
+            color: #777;
+            display: flex;
+            align-items: center;
+        }
+
+        .property-address i {
+            margin-left: 5px;
+            color: var(--primary-color);
+        }
+
+        .review-form {
+            padding: 20px;
+        }
+
+        .form-section {
+            margin-bottom: 25px;
+        }
+
+        .form-section-title {
+            margin-bottom: 15px;
+            font-weight: 600;
+            color: var(--dark-color);
+            display: flex;
+            align-items: center;
+        }
+
+        .form-section-title i {
+            margin-left: 8px;
+            color: var(--primary-color);
+        }
+
+        .rating-stars {
+            direction: ltr;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+
+        .star {
+            font-size: 2rem;
+            color: #ddd;
+            cursor: pointer;
+            transition: color 0.2s ease;
+            margin: 0 5px;
+        }
+
+        .star.active {
+            color: var(--secondary-color);
+        }
+
+        .rating-label {
+            text-align: center;
+            font-size: 1.1rem;
+            margin-top: 5px;
+            min-height: 24px;
+        }
+
+        .criteria-rating {
+            margin-bottom: 15px;
+        }
+
+        .criteria-title {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+
+        .criteria-name {
+            font-weight: 500;
+        }
+
+        .criteria-value {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .voice-note-container {
+            border: 2px dashed #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            margin-bottom: 15px;
+            transition: all 0.3s;
+        }
+
+        .voice-note-container:hover {
+            border-color: var(--primary-color);
+        }
+
+        .record-button {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 10px auto;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .record-button:hover {
+            transform: scale(1.05);
+        }
+
+        .record-button i {
+            font-size: 1.5rem;
+        }
+
+        .record-button.recording {
+            animation: pulse 1.5s infinite;
+            background-color: var(--danger-color);
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .recording-status {
+            font-size: 0.9rem;
+            margin-top: 5px;
+            min-height: 20px;
+            color: #666;
+        }
+
+        .recorded-notes {
+            margin-top: 10px;
+        }
+
+        .voice-note-item {
+            display: flex;
+            align-items: center;
+            background-color: #f5f5f5;
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .voice-controls {
+            margin-right: 10px;
+        }
+
+        .voice-controls button {
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            cursor: pointer;
+            padding: 3px;
+            margin-right: 5px;
+        }
+
+        .voice-duration {
+            flex: 1;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .photo-evidence {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .photo-item {
+            width: calc(33.33% - 10px);
+            height: 100px;
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .photo-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .photo-item .delete-photo {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: rgba(0,0,0,0.5);
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .add-photo {
+            width: calc(33.33% - 10px);
+            height: 100px;
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .add-photo:hover {
+            border-color: var(--primary-color);
+        }
+
+        .add-photo i {
+            font-size: 1.5rem;
+            color: #aaa;
+        }
+
+        .recommendation-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .recommendation-option {
+            flex: 1;
+            min-width: 120px;
+            text-align: center;
+            padding: 15px 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .recommendation-option:hover {
+            border-color: var(--primary-color);
+            background-color: rgba(42, 157, 143, 0.05);
+        }
+
+        .recommendation-option.selected {
+            background-color: rgba(42, 157, 143, 0.2);
+            border-color: var(--primary-color);
+        }
+
+        .recommendation-option i {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .submit-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        .submit-buttons button {
+            padding: 10px 20px;
+        }
+
+        .btn-outline-secondary {
+            border-color: #ddd;
+        }
+
+        .rating-range {
+            width: 100%;
+        }
+
+        @media (max-width: 576px) {
+            .property-summary {
+                flex-direction: column;
+            }
+
+            .property-image {
+                width: 100%;
+                height: 150px;
+                margin-left: 0;
+                margin-bottom: 15px;
+            }
+
+            .photo-item, .add-photo {
+                width: calc(50% - 5px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="review-container">
+        <div class="header">
+            <div class="back-button">
+                <i class="fas fa-arrow-right"></i>
+            </div>
+            <h4>تقييم الزيارة العقارية</h4>
+        </div>
+
+        <!-- ملخص معلومات العقار -->
+        <div class="property-summary">
+            <div class="property-image">
+                <img src="https://via.placeholder.com/150" alt="صورة العقار">
+            </div>
+            <div class="property-details">
+                <h5>فيلا حي النرجس الفاخرة</h5>
+                <div class="property-specs">
+                    <span><i class="fas fa-bed"></i> 5 غرف</span>
+                    <span><i class="fas fa-bath"></i> 6 حمامات</span>
+                    <span><i class="fas fa-ruler-combined"></i> 450م²</span>
+                </div>
+                <div class="property-price mb-2">2,300,000 ريال</div>
+                <div class="property-address">
+                    <i class="fas fa-map-marker-alt"></i>
+                    حي النرجس، شارع الأمير سلطان، الرياض
+                </div>
+            </div>
+        </div>
+
+        <!-- استمارة التقييم -->
+        <form class="review-form">
+            <!-- تقييم عام للعقار -->
+            <div class="form-section">
+                <div class="form-section-title">
+                    <i class="fas fa-star"></i>
+                    التقييم العام للعقار
+                </div>
+                <div class="rating-stars">
+                    <div class="star" data-value="1"><i class="fas fa-star"></i></div>
+                    <div class="star" data-value="2"><i class="fas fa-star"></i></div>
+                    <div class="star" data-value="3"><i class="fas fa-star"></i></div>
+                    <div class="star" data-value="4"><i class="fas fa-star"></i></div>
+                    <div class="star" data-value="5"><i class="fas fa-star"></i></div>
+                </div>
+                <div class="rating-label" id="ratingLabel">اختر تقييمك</div>
+            </div>
+
+            <!-- تقييم معايير محددة -->
+            <div class="form-section">
+                <div class="form-section-title">
+                    <i class="fas fa-clipboard-check"></i>
+                    تقييم العناصر الأساسية
+                </div>
+                
+                <div class="criteria-rating">
+                    <div class="criteria-title">
+                        <div class="criteria-name">الموقع والحي</div>
+                        <div class="criteria-value">5</div>
+                    </div>
+                    <input type="range" class="form-range rating-range" min="1" max="5" step="1" value="5" id="locationRating">
+                </div>
+                
+                <div class="criteria-rating">
+                    <div class="criteria-title">
+                        <div class="criteria-name">جودة البناء</div>
+                        <div class="criteria-value">4</div>
+                    </div>
+                    <input type="range" class="form-range rating-range" min="1" max="5" step="1" value="4" id="buildQualityRating">
+                </div>
+                
+                <div class="criteria-rating">
+                    <div class="criteria-title">
+                        <div class="criteria-name">التصميم الداخلي</div>
+                        <div class="criteria-value">3</div>
+                    </div>
+                    <input type="range" class="form-range rating-range" min="1" max="5" step="1" value="3" id="interiorRating">
+                </div>
+                
+                <div class="criteria-rating">
+                    <div class="criteria-title">
+                        <div class="criteria-name">المساحات والغرف</div>
+                        <div class="criteria-value">4</div>
+                    </div>
+                    <input type="range" class="form-range rating-range" min="1" max="5" step="1" value="4" id="spacesRating">
+                </div>
+                
+                <div class="criteria-rating">
+                    <div class="criteria-title">
+                        <div class="criteria-name">القيمة مقابل السعر</div>
+                        <div class="criteria-value">3</div>
+                    </div>
+                    <input type="range" class="form-range rating-range" min="1" max="5" step="1" value="3" id="valueRating">
+                </div>
+            </div>
+
+            <!-- ملاحظات صوتية -->
+            <div class="form-section">
+                <div class="form-section-title">
+                    <i class="fas fa-microphone"></i>
+                    تسجيل ملاحظات صوتية
+                </div>
+                <div class="voice-note-container">
+                    <div class="record-button">
+                        <i class="fas fa-microphone"></i>
+                    </div>
+                    <div class="recording-status">اضغط للبدء في التسجيل</div>
+                </div>
+                <div class="recorded-notes">
+                    <div class="voice-note-item">
+                        <div class="voice-controls">
+                            <button type="button"><i class="fas fa-play"></i></button>
+                            <button type="button"><i class="fas fa-trash"></i></button>
+                        </div>
+                        <div class="voice-duration">ملاحظة صوتية (0:35)</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ملاحظات وتعليقات -->
+            <div class="form-section">
+                <div class="form-section-title">
+                    <i class="fas fa-comment"></i>
+                    ملاحظات مكتوبة
+                </div>
+                <div class="mb-3">
+                    <textarea class="form-control" rows="4" placeholder="اكتب ملاحظاتك وتقييمك للعقار..."></textarea>
+                </div>
+            </div>
+
+            <!-- صور توثيقية -->
+            <div class="form-section">
+                <div class="form-section-title">
+                    <i class="fas fa-camera"></i>
+                    صور توثيقية للزيارة
+                </div>
+                <div class="photo-evidence">
+                    <div class="photo-item">
+                        <img src="https://via.placeholder.com/150" alt="صورة توثيقية">
+                        <div class="delete-photo">
+                            <i class="fas fa-times"></i>
+                        </div>
+                    </div>
+                    <div class="photo-item">
+                        <img src="https://via.placeholder.com/150" alt="صورة توثيقية">
+                        <div class="delete-photo">
+                            <i class="fas fa-times"></i>
+                        </div>
+                    </div>
+                    <div class="add-photo">
+                        <i class="fas fa-plus"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- التوصية بالعقار -->
+            <div class="form-section">
+                <div class="form-section-title">
+                    <i class="fas fa-thumbs-up"></i>
+                    هل توصي بهذا العقار؟
+                </div>
+                <div class="recommendation-options">
+                    <div class="recommendation-option selected">
+                        <i class="fas fa-thumbs-up text-success"></i>
+                        <div>أوصي به بشدة</div>
+                    </div>
+                    <div class="recommendation-option">
+                        <i class="fas fa-thumbs-up text-primary"></i>
+                        <div>أوصي به</div>
+                    </div>
+                    <div class="recommendation-option">
+                        <i class="fas fa-meh text-warning"></i>
+                        <div>متردد</div>
+                    </div>
+                    <div class="recommendation-option">
+                        <i class="fas fa-thumbs-down text-danger"></i>
+                        <div>لا أوصي به</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- أزرار الحفظ -->
+            <div class="submit-buttons">
+                <button type="button" class="btn btn-outline-secondary">حفظ كمسودة</button>
+                <button type="submit" class="btn btn-primary">إرسال التقييم</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Bootstrap و JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // تفعيل نظام التقييم بالنجوم
+            const stars = document.querySelectorAll('.rating-stars .star');
+            const ratingLabel = document.getElementById('ratingLabel');
+            const ratingLabels = [
+                '',
+                'سيء',
+                'مقبول',
+                'جيد',
+                'جيد جداً',
+                'ممتاز'
+            ];
+
+            stars.forEach(star => {
+                star.addEventListener('click', function() {
+                    const value = parseInt(this.getAttribute('data-value'));
+                    
+                    // تحديث النجوم النشطة
+                    stars.forEach(s => {
+                        const starValue = parseInt(s.getAttribute('data-value'));
+                        if (starValue <= value) {
+                            s.classList.add('active');
+                        } else {
+                            s.classList.remove('active');
+                        }
+                    });
+                    
+                    // تحديث نص التقييم
+                    ratingLabel.textContent = ratingLabels[value];
+                });
+
+                // إضافة تأثير hover
+                star.addEventListener('mouseover', function() {
+                    const value = parseInt(this.getAttribute('data-value'));
+                    
+                    stars.forEach(s => {
+                        const starValue = parseInt(s.getAttribute('data-value'));
+                        if (starValue <= value) {
+                            s.classList.add('active');
+                        } else {
+                            s.classList.remove('active');
+                        }
+                    });
+                    
+                    ratingLabel.textContent = ratingLabels[value];
+                });
+            });
+
+            // إعادة التقييم إلى الحالة الأصلية عند إزالة المؤشر
+            const ratingStarsContainer = document.querySelector('.rating-stars');
+            ratingStarsContainer.addEventListener('mouseout', function() {
+                // العثور على آخر نجمة نشطة
+                const activeStars = document.querySelectorAll('.rating-stars .star.active');
+                const lastActiveStar = activeStars.length ? parseInt(activeStars[activeStars.length - 1].getAttribute('data-value')) : 0;
+                
+                stars.forEach(s => {
+                    const starValue = parseInt(s.getAttribute('data-value'));
+                    if (starValue <= lastActiveStar) {
+                        s.classList.add('active');
+                    } else {
+                        s.classList.remove('active');
+                    }
+                });
+                
+                ratingLabel.textContent = lastActiveStar ? ratingLabels[lastActiveStar] : 'اختر تقييمك';
+            });
+
+            // تحديث قيم التقييم عند تغيير النطاق
+            const rangeInputs = document.querySelectorAll('.rating-range');
+            rangeInputs.forEach(input => {
+                input.addEventListener('input', function() {
+                    const value = this.value;
+                    const criteriaValue = this.parentElement.querySelector('.criteria-value');
+                    criteriaValue.textContent = value;
+                });
+            });
+
+            // تشغيل وإيقاف زر التسجيل الصوتي
+            const recordButton = document.querySelector('.record-button');
+            const recordingStatus = document.querySelector('.recording-status');
+            let isRecording = false;
+
+            recordButton.addEventListener('click', function() {
+                isRecording = !isRecording;
+                
+                if (isRecording) {
+                    this.classList.add('recording');
+                    recordingStatus.textContent = 'جاري التسجيل...';
+                    // هنا يتم تنفيذ كود بدء التسجيل الصوتي
+                } else {
+                    this.classList.remove('recording');
+                    recordingStatus.textContent = 'اضغط للبدء في التسجيل';
+                    // هنا يتم تنفيذ كود إيقاف التسجيل الصوتي وحفظه
+                    
+                    // إضافة التسجيل الجديد إلى القائمة (هذا مثال فقط)
+                    const recordedNotes = document.querySelector('.recorded-notes');
+                    const randomDuration = Math.floor(Math.random() * 60) + 10; // عشوائي بين 10 ثواني و 70 ثانية
+                    const minutes = Math.floor(randomDuration / 60);
+                    const seconds = randomDuration % 60;
+                    const formattedDuration = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+                    
+                    const noteItem = document.createElement('div');
+                    noteItem.className = 'voice-note-item';
+                    noteItem.innerHTML = `
+                        <div class="voice-controls">
+                            <button type="button"><i class="fas fa-play"></i></button>
+                            <button type="button"><i class="fas fa-trash"></i></button>
+                        </div>
+                        <div class="voice-duration">ملاحظة صوتية (${formattedDuration})</div>
+                    `;
+                    
+                    recordedNotes.appendChild(noteItem);
+                }
+            });
+
+            // اختيار خيار التوصية
+            const recommendationOptions = document.querySelectorAll('.recommendation-option');
+            recommendationOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    recommendationOptions.forEach(o => o.classList.remove('selected'));
+                    this.classList.add('selected');
+                });
+            });
+
+            // زر الرجوع
+            const backButton = document.querySelector('.back-button');
+            backButton.addEventListener('click', function() {
+                // الرجوع للصفحة السابقة
+                console.log('العودة للصفحة السابقة');
+                // window.history.back();
+            });
+
+            // إضافة صورة جديدة
+            const addPhotoButton = document.querySelector('.add-photo');
+            addPhotoButton.addEventListener('click', function() {
+                console.log('إضافة صورة جديدة');
+                // إضافة منطق فتح معرض الصور أو الكاميرا
+            });
+
+            // حذف صورة
+            const deletePhotoButtons = document.querySelectorAll('.delete-photo');
+            deletePhotoButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const photoItem = this.parentElement;
+                    photoItem.remove();
+                });
+            });
+
+            // حفظ النموذج وإرساله
+            const form = document.querySelector('.review-form');
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                console.log('تم إرسال التقييم');
+                
+                // جمع بيانات التقييم
+                const overallRating = document.querySelectorAll('.rating-stars .star.active').length;
+                const locationRating = document.getElementById('locationRating').value;
+                const buildQualityRating = document.getElementById('buildQualityRating').value;
+                const interiorRating = document.getElementById('interiorRating').value;
+                const spacesRating = document.getElementById('spacesRating').value;
+                const valueRating = document.getElementById('valueRating').value;
+                const comments = document.querySelector('textarea').value;
+                const recommendation = document.querySelector('.recommendation-option.selected');
+                const recommendationValue = recommendation ? recommendation.innerText.trim() : '';
+                
+                // بناء كائن البيانات
+                const reviewData = {
+                    propertyId: '12345', // مثال فقط، يجب أخذه من بيانات العقار
+                    overallRating,
+                    criteria: {
+                        location: locationRating,
+                        buildQuality: buildQualityRating,
+                        interior: interiorRating,
+                        spaces: spacesRating,
+                        value: valueRating
+                    },
+                    comments,
+                    recommendation: recommendationValue,
+                    visitDate: new Date().toISOString()
+                };
+                
+                console.log('بيانات التقييم:', reviewData);
+                
+                // هنا يتم إرسال البيانات إلى الخادم
+                
+                // عرض رسالة نجاح وتوجيه المستخدم
+                alert('تم حفظ التقييم بنجاح، شكراً لمشاركتك!');
+                // بعد الحفظ بنجاح، يمكن التوجيه لصفحة أخرى
+                // window.location.href = '/property-details.html';
+            });
+        });
+    </script>
+</body>
+</html>
